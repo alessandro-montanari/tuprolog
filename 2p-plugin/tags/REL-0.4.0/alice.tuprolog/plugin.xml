@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin
+   id="alice.tuprolog"
+   name="%plugin.name"
+   version="2.0.1"
+   provider-name="%plugin.provider-name">
+
+   <runtime>
+      <library name="2p.jar">
+         <export name="*"/>
+      </library>
+   </runtime>
+
+</plugin>
