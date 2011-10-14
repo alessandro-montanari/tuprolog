@@ -1,0 +1,5 @@
+\contentsline {chapter}{\numberline {1}The IDE}{2}
+\contentsline {section}{\numberline {1.1}Editing the theory}{4}
+\contentsline {section}{\numberline {1.2}Solving goals}{4}
+\contentsline {section}{\numberline {1.3}Debug Informations}{8}
+\contentsline {section}{\numberline {1.4}Dynamic library management}{8}

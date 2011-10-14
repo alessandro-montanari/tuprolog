@@ -1,0 +1,1188 @@
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009) (format=pdflatex 2010.1.29)  1 AUG 2010 16:41
+entering extended mode
+ \write18 enabled.
+ %&-line parsing enabled.
+**tuprolog-guide.tex
+(./tuprolog-guide.tex
+LaTeX2e <2009/09/24>
+Babel <v3.8l> and hyphenation patterns for english, usenglishmax, dumylang, noh
+yphenation, german-x-2009-06-19, ngerman-x-2009-06-19, ancientgreek, ibycus, ar
+abic, basque, bulgarian, catalan, pinyin, coptic, croatian, czech, danish, dutc
+h, esperanto, estonian, farsi, finnish, french, galician, german, ngerman, mono
+greek, greek, hungarian, icelandic, indonesian, interlingua, irish, italian, ku
+rmanji, latin, latvian, lithuanian, mongolian, mongolian2a, bokmal, nynorsk, po
+lish, portuguese, romanian, russian, sanskrit, serbian, slovak, slovenian, span
+ish, swedish, turkish, ukenglish, ukrainian, uppersorbian, welsh, loaded.
+(/usr/local/texlive/2009/texmf-dist/tex/latex/base/report.cls
+Document Class: report 2007/10/19 v1.4h Standard LaTeX document class
+(/usr/local/texlive/2009/texmf-dist/tex/latex/base/size11.clo
+File: size11.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@chapter=\count80
+\c@section=\count81
+\c@subsection=\count82
+\c@subsubsection=\count83
+\c@paragraph=\count84
+\c@subparagraph=\count85
+\c@figure=\count86
+\c@table=\count87
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(/usr/local/texlive/2009/texmf-dist/tex/latex/upquote/upquote.sty
+Package: upquote 2003/08/11 v1.1 Covington's upright-quote modification to verb
+atim and verb
+
+(/usr/local/texlive/2009/texmf-dist/tex/latex/base/textcomp.sty
+Package: textcomp 2005/09/27 v1.99g Standard LaTeX package
+Package textcomp Info: Sub-encoding information:
+(textcomp)               5 = only ISO-Adobe without \textcurrency
+(textcomp)               4 = 5 + \texteuro
+(textcomp)               3 = 4 + \textohm
+(textcomp)               2 = 3 + \textestimated + \textcurrency
+(textcomp)               1 = TS1 - \textcircled - \t
+(textcomp)               0 = TS1 (full)
+(textcomp)             Font families with sub-encoding setting implement
+(textcomp)             only a restricted character set as indicated.
+(textcomp)             Family '?' is the default used for unknown fonts.
+(textcomp)             See the documentation for details.
+Package textcomp Info: Setting ? sub-encoding to TS1/1 on input line 71.
+
+(/usr/local/texlive/2009/texmf-dist/tex/latex/base/ts1enc.def
+File: ts1enc.def 2001/06/05 v3.0e (jk/car/fm) Standard LaTeX file
+)
+LaTeX Info: Redefining \oldstylenums on input line 266.
+Package textcomp Info: Setting cmr sub-encoding to TS1/0 on input line 281.
+Package textcomp Info: Setting cmss sub-encoding to TS1/0 on input line 282.
+Package textcomp Info: Setting cmtt sub-encoding to TS1/0 on input line 283.
+Package textcomp Info: Setting cmvtt sub-encoding to TS1/0 on input line 284.
+Package textcomp Info: Setting cmbr sub-encoding to TS1/0 on input line 285.
+Package textcomp Info: Setting cmtl sub-encoding to TS1/0 on input line 286.
+Package textcomp Info: Setting ccr sub-encoding to TS1/0 on input line 287.
+Package textcomp Info: Setting ptm sub-encoding to TS1/4 on input line 288.
+Package textcomp Info: Setting pcr sub-encoding to TS1/4 on input line 289.
+Package textcomp Info: Setting phv sub-encoding to TS1/4 on input line 290.
+Package textcomp Info: Setting ppl sub-encoding to TS1/3 on input line 291.
+Package textcomp Info: Setting pag sub-encoding to TS1/4 on input line 292.
+Package textcomp Info: Setting pbk sub-encoding to TS1/4 on input line 293.
+Package textcomp Info: Setting pnc sub-encoding to TS1/4 on input line 294.
+Package textcomp Info: Setting pzc sub-encoding to TS1/4 on input line 295.
+Package textcomp Info: Setting bch sub-encoding to TS1/4 on input line 296.
+Package textcomp Info: Setting put sub-encoding to TS1/5 on input line 297.
+Package textcomp Info: Setting uag sub-encoding to TS1/5 on input line 298.
+Package textcomp Info: Setting ugq sub-encoding to TS1/5 on input line 299.
+Package textcomp Info: Setting ul8 sub-encoding to TS1/4 on input line 300.
+Package textcomp Info: Setting ul9 sub-encoding to TS1/4 on input line 301.
+Package textcomp Info: Setting augie sub-encoding to TS1/5 on input line 302.
+Package textcomp Info: Setting dayrom sub-encoding to TS1/3 on input line 303.
+Package textcomp Info: Setting dayroms sub-encoding to TS1/3 on input line 304.
+
+Package textcomp Info: Setting pxr sub-encoding to TS1/0 on input line 305.
+Package textcomp Info: Setting pxss sub-encoding to TS1/0 on input line 306.
+Package textcomp Info: Setting pxtt sub-encoding to TS1/0 on input line 307.
+Package textcomp Info: Setting txr sub-encoding to TS1/0 on input line 308.
+Package textcomp Info: Setting txss sub-encoding to TS1/0 on input line 309.
+Package textcomp Info: Setting txtt sub-encoding to TS1/0 on input line 310.
+Package textcomp Info: Setting futs sub-encoding to TS1/4 on input line 311.
+Package textcomp Info: Setting futx sub-encoding to TS1/4 on input line 312.
+Package textcomp Info: Setting futj sub-encoding to TS1/4 on input line 313.
+Package textcomp Info: Setting hlh sub-encoding to TS1/3 on input line 314.
+Package textcomp Info: Setting hls sub-encoding to TS1/3 on input line 315.
+Package textcomp Info: Setting hlst sub-encoding to TS1/3 on input line 316.
+Package textcomp Info: Setting hlct sub-encoding to TS1/5 on input line 317.
+Package textcomp Info: Setting hlx sub-encoding to TS1/5 on input line 318.
+Package textcomp Info: Setting hlce sub-encoding to TS1/5 on input line 319.
+Package textcomp Info: Setting hlcn sub-encoding to TS1/5 on input line 320.
+Package textcomp Info: Setting hlcw sub-encoding to TS1/5 on input line 321.
+Package textcomp Info: Setting hlcf sub-encoding to TS1/5 on input line 322.
+Package textcomp Info: Setting pplx sub-encoding to TS1/3 on input line 323.
+Package textcomp Info: Setting pplj sub-encoding to TS1/3 on input line 324.
+Package textcomp Info: Setting ptmx sub-encoding to TS1/4 on input line 325.
+Package textcomp Info: Setting ptmj sub-encoding to TS1/4 on input line 326.
+))
+(/usr/local/texlive/2009/texmf-dist/tex/latex/hyperref/hyperref.sty
+Package: hyperref 2009/10/09 v6.79a Hypertext links for LaTeX
+
+(/usr/local/texlive/2009/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+(/usr/local/texlive/2009/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2009/04/10 v2.0 Provides the ifpdf switch (HO)
+Package ifpdf Info: pdfTeX in pdf mode detected.
+)
+(/usr/local/texlive/2009/texmf-dist/tex/generic/oberdiek/ifvtex.sty
+Package: ifvtex 2008/11/04 v1.4 Switches for detecting VTeX and its modes (HO)
+Package ifvtex Info: VTeX not detected.
+)
+(/usr/local/texlive/2009/texmf-dist/tex/generic/ifxetex/ifxetex.sty
+Package: ifxetex 2009/01/23 v0.5 Provides ifxetex conditional
+)
+(/usr/local/texlive/2009/texmf-dist/tex/latex/oberdiek/hycolor.sty
+Package: hycolor 2009/10/02 v1.5 Code for color options of hyperref/bookmark (H
+O)
+
+(/usr/local/texlive/2009/texmf-dist/tex/latex/oberdiek/xcolor-patch.sty
+Package: xcolor-patch 2009/10/02 xcolor patch
+))
+\@linkdim=\dimen103
+\Hy@linkcounter=\count88
+\Hy@pagecounter=\count89
+
+(/usr/local/texlive/2009/texmf-dist/tex/latex/hyperref/pd1enc.def
+File: pd1enc.def 2009/10/09 v6.79a Hyperref: PDFDocEncoding definition (HO)
+)
+(/usr/local/texlive/2009/texmf-dist/tex/generic/oberdiek/etexcmds.sty
+Package: etexcmds 2007/12/12 v1.2 Prefix for e-TeX command names (HO)
+
+(/usr/local/texlive/2009/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+Package: infwarerr 2007/09/09 v1.2 Providing info/warning/message (HO)
+)
+Package etexcmds Info: Could not find \expanded.
+(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
+(etexcmds)             that some package has redefined \expanded.
+(etexcmds)             In the latter case, load this package earlier.
+)
+(/usr/local/texlive/2009/texmf-dist/tex/latex/latexconfig/hyperref.cfg
+File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
+)
+(/usr/local/texlive/2009/texmf-dist/tex/latex/oberdiek/kvoptions.sty
+Package: kvoptions 2009/08/13 v3.4 Keyval support for LaTeX options (HO)
+
+(/usr/local/texlive/2009/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
+Package: kvsetkeys 2009/07/30 v1.5 Key value parser with default handler suppor
+t (HO)
+))
+Package hyperref Info: Option `bookmarks' set `true' on input line 2864.
+Package hyperref Info: Option `bookmarksopen' set `true' on input line 2864.
+Package hyperref Info: Option `bookmarksnumbered' set `true' on input line 2864
+.
+Package hyperref Info: Hyper figures OFF on input line 2975.
+Package hyperref Info: Link nesting OFF on input line 2980.
+Package hyperref Info: Hyper index ON on input line 2983.
+Package hyperref Info: Plain pages OFF on input line 2990.
+Package hyperref Info: Backreferencing OFF on input line 2995.
+
+Implicit mode ON; LaTeX internals redefined
+Package hyperref Info: Bookmarks ON on input line 3191.
+(/usr/local/texlive/2009/texmf-dist/tex/latex/ltxmisc/url.sty
+\Urlmuskip=\muskip10
+Package: url 2006/04/12  ver 3.3  Verb mode for urls, etc.
+)
+LaTeX Info: Redefining \url on input line 3428.
+
+(/usr/local/texlive/2009/texmf-dist/tex/generic/oberdiek/bitset.sty
+Package: bitset 2007/09/28 v1.0 Data type bit set (HO)
+
+(/usr/local/texlive/2009/texmf-dist/tex/generic/oberdiek/intcalc.sty
+Package: intcalc 2007/09/27 v1.1 Expandable integer calculations (HO)
+)
+(/usr/local/texlive/2009/texmf-dist/tex/generic/oberdiek/bigintcalc.sty
+Package: bigintcalc 2007/11/11 v1.1 Expandable big integer calculations (HO)
+
+(/usr/local/texlive/2009/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
+Package: pdftexcmds 2009/09/23 v0.6 LuaTeX support for pdfTeX utility functions
+ (HO)
+
+(/usr/local/texlive/2009/texmf-dist/tex/generic/oberdiek/ifluatex.sty
+Package: ifluatex 2009/04/17 v1.2 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+)
+(/usr/local/texlive/2009/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+Package: ltxcmds 2009/08/05 v1.0 Some LaTeX kernel commands for general use (HO
+)
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+)))
+\Fld@menulength=\count90
+\Field@Width=\dimen104
+\Fld@charsize=\dimen105
+\Field@toks=\toks15
+Package hyperref Info: Hyper figures OFF on input line 4377.
+Package hyperref Info: Link nesting OFF on input line 4382.
+Package hyperref Info: Hyper index ON on input line 4385.
+Package hyperref Info: backreferencing OFF on input line 4392.
+Package hyperref Info: Link coloring OFF on input line 4397.
+Package hyperref Info: Link coloring with OCG OFF on input line 4402.
+Package hyperref Info: PDF/A mode OFF on input line 4407.
+
+(/usr/local/texlive/2009/texmf-dist/tex/generic/oberdiek/atbegshi.sty
+Package: atbegshi 2008/07/31 v1.9 At begin shipout hook (HO)
+)
+\Hy@abspage=\count91
+\c@Item=\count92
+\c@Hfootnote=\count93
+)
+*hyperref using default driver hpdftex*
+(/usr/local/texlive/2009/texmf-dist/tex/latex/hyperref/hpdftex.def
+File: hpdftex.def 2009/10/09 v6.79a Hyperref driver for pdfTeX
+\Fld@listcount=\count94
+)
+(/usr/local/texlive/2009/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2009/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2009/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/usr/local/texlive/2009/texmf-dist/tex/latex/latexconfig/graphics.cfg
+File: graphics.cfg 2009/08/28 v1.8 graphics configuration of TeX Live
+)
+Package graphics Info: Driver file: pdftex.def on input line 91.
+
+(/usr/local/texlive/2009/texmf-dist/tex/latex/pdftex-def/pdftex.def
+File: pdftex.def 2009/08/25 v0.04m Graphics/color for pdfTeX
+\Gread@gobject=\count95
+))
+\Gin@req@height=\dimen106
+\Gin@req@width=\dimen107
+)
+(./tuprolog-guide.aux (./what-is-tuprolog/what-is-tuprolog.aux)
+(./installing-tuprolog/installing-tuprolog.aux)
+(./getting-started/getting-started.aux) (./tuprolog-basics/tuprolog-basics.aux)
+(./tuprolog-libraries/tuprolog-libraries.aux) (./java-library/java-library.aux)
+(./ide/ide.aux) (./using-tuprolog-from-java/using-tuprolog-from-java.aux)
+(./howto-develop-libraries/howto-develop-libraries.aux)
+(./exceptions/exceptions.aux))
+\openout1 = `tuprolog-guide.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 129.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 129.
+
+
+(/usr/local/texlive/2009/texmf-dist/tex/latex/base/ts1cmr.fd
+File: ts1cmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+Package hyperref Info: Link coloring OFF on input line 129.
+
+(/usr/local/texlive/2009/texmf-dist/tex/latex/hyperref/nameref.sty
+Package: nameref 2007/05/29 v2.31 Cross-referencing by name of section
+
+(/usr/local/texlive/2009/texmf-dist/tex/latex/oberdiek/refcount.sty
+Package: refcount 2008/08/11 v3.1 Data extraction from references (HO)
+)
+\c@section@level=\count96
+)
+LaTeX Info: Redefining \ref on input line 129.
+LaTeX Info: Redefining \pageref on input line 129.
+
+(./tuprolog-guide.out) (./tuprolog-guide.out)
+\@outlinefile=\write3
+\openout3 = `tuprolog-guide.out'.
+
+\AtBeginShipoutBox=\box26
+
+(/usr/local/texlive/2009/texmf-dist/tex/context/base/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count97
+\scratchdimen=\dimen108
+\scratchbox=\box27
+\nofMPsegments=\count98
+\nofMParguments=\count99
+\everyMPshowfont=\toks16
+\MPscratchCnt=\count100
+\MPscratchDim=\dimen109
+\MPnumerator=\count101
+\everyMPtoPDFconversion=\toks17
+) <images/logo.png, id=263, 182.6825pt x 199.74625pt>
+File: images/logo.png Graphic file (type png)
+ <use images/logo.png>
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 134.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 134.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 134.
+
+Overfull \hbox (1.16643pt too wide) in paragraph at lines 134--134
+ [][] 
+ []
+
+[1
+
+{/usr/local/texlive/2009/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./image
+s/logo.png>] (./tuprolog-guide.toc
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <10.95> on input line 4.
+pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.42 ...e {5.3.1}Predicates}{38}{subsection.5.3.1}
+                                                   [1
+
+] [2])
+\tf@toc=\write4
+\openout4 = `tuprolog-guide.toc'.
+
+ [3]
+\openout2 = `what-is-tuprolog/what-is-tuprolog.aux'.
+
+
+(./what-is-tuprolog/what-is-tuprolog.tex
+Chapter 1.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <9> on input line 8.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 8.
+[4
+
+
+]
+Overfull \hbox (18.71841pt too wide) in paragraph at lines 36--56
+\OT1/cmr/m/n/10.95 step the most suit-able paradigm --- ei-ther declar-a-tive/l
+ogic or imperative/object-
+ []
+
+
+LaTeX Warning: Citation `respect-scico2001' on page 5 undefined on input line 6
+8.
+
+
+LaTeX Warning: Citation `luce-aamas2001' on page 5 undefined on input line 72.
+
+
+LaTeX Warning: Citation `tucson-aamas99' on page 5 undefined on input line 72.
+
+) [5]
+\openout2 = `installing-tuprolog/installing-tuprolog.aux'.
+
+ (./installing-tuprolog/installing-tuprolog.tex
+Chapter 2.
+
+Underfull \hbox (badness 10000) in paragraph at lines 6--24
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 6--24
+
+ []
+
+[6
+
+
+
+]
+LaTeX Font Info:    Try loading font information for OMS+cmtt on input line 73.
+
+LaTeX Font Info:    No file OMScmtt.fd. on input line 73.
+
+
+LaTeX Font Warning: Font shape `OMS/cmtt/m/n' undefined
+(Font)              using `OMS/cmsy/m/n' instead
+(Font)              for symbol `textbackslash' on input line 73.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 68--103
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 68--103
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 68--103
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 68--103
+
+ []
+
+[7]
+Underfull \hbox (badness 10000) in paragraph at lines 103--116
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 103--116
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 116--128
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 116--128
+
+ []
+
+) [8]
+\openout2 = `getting-started/getting-started.aux'.
+
+ (./getting-started/getting-started.tex
+Chapter 3.
+
+Underfull \hbox (badness 10000) in paragraph at lines 13--26
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 13--26
+
+ []
+
+LaTeX Font Info:    Try loading font information for TS1+cmtt on input line 28.
+
+(/usr/local/texlive/2009/texmf-dist/tex/latex/base/ts1cmtt.fd
+File: ts1cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+Underfull \hbox (badness 10000) in paragraph at lines 29--36
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 29--36
+
+ []
+
+[9
+
+
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 44--49
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 44--49
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 54--67
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 54--67
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 68--75
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 68--75
+
+ []
+
+)
+Underfull \hbox (badness 10000) in paragraph at lines 76--139
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 76--139
+
+ []
+
+[10] [11]
+\openout2 = `tuprolog-basics/tuprolog-basics.aux'.
+
+ (./tuprolog-basics/tuprolog-basics.tex
+Chapter 4.
+[12
+
+
+
+] [13]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 77.
+ (/usr/local/texlive/2009/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 77.
+
+[14] [15] [16]
+LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <10.95> not available
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 212.
+ [17] [18] [19]
+Overfull \hbox (6.54764pt too wide) in paragraph at lines 413--421
+\OT1/cmtt/m/n/10.95 flag(FlagName, ValidValuesList, DefaultValue, IsModifiable)
+
+ []
+
+
+Overfull \hbox (14.24553pt too wide) in paragraph at lines 413--421
+\OT1/cmtt/m/n/10.95 DefaultValue \OT1/cmr/m/n/10.95 as de-fault value, and that
+ can be mod-i-fied if \OT1/cmtt/m/n/10.95 IsModifiable
+ []
+
+[20]
+Overfull \hbox (1.74586pt too wide) in paragraph at lines 430--437
+\OT1/cmtt/m/n/10.95 load[]library(LibraryName) \OT1/cmr/m/n/10.95 is a valid di
+-rec-tive if true if \OT1/cmtt/m/n/10.95 LibraryName
+ []
+
+) [21]
+\openout2 = `tuprolog-libraries/tuprolog-libraries.aux'.
+
+ (./tuprolog-libraries/tuprolog-libraries.tex
+Chapter 5.
+[22
+
+
+
+]
+Overfull \hbox (8.00294pt too wide) in paragraph at lines 84--88
+[]\OT1/cmr/m/n/10.95 (class \OT1/cmtt/m/n/10.95 alice.tuprolog.lib.BasicLibrary
+\OT1/cmr/m/n/10.95 ) | pro-vides com-
+ []
+
+
+LaTeX Warning: Citation `iso95' on page 23 undefined on input line 97.
+
+[23] [24] [25]
+Overfull \hbox (28.8154pt too wide) in paragraph at lines 219--225
+\OT1/cmtt/m/n/10.95 text[]concat(TextSource1, TextSource2, TextDest) \OT1/cmr/m
+/n/10.95 is true iff \OT1/cmtt/m/n/10.95 TextDest
+ []
+
+
+Overfull \hbox (9.65279pt too wide) in paragraph at lines 219--225
+\OT1/cmr/m/n/10.95 is the text re-sult-ing by ap-pend-ing the text \OT1/cmtt/m/
+n/10.95 TestSource2 \OT1/cmr/m/n/10.95 to \OT1/cmtt/m/n/10.95 TextSource1\OT1/c
+mr/m/n/10.95 _ 
+ []
+
+
+LaTeX Warning: Citation `ss94' on page 26 undefined on input line 240.
+
+[26] [27]
+
+LaTeX Warning: Citation `iso95' on page 28 undefined on input line 354.
+
+[28] [29] [30]
+Overfull \hbox (23.46225pt too wide) in paragraph at lines 527--533
+\OT1/cmr/m/n/10.95 can be ob-tained by re-mov-ing the el-e-ment \OT1/cmtt/m/n/1
+0.95 Element \OT1/cmr/m/n/10.95 from the list \OT1/cmtt/m/n/10.95 ListSource\OT
+1/cmr/m/n/10.95 . 
+ []
+
+
+Overfull \hbox (24.64642pt too wide) in paragraph at lines 533--539
+\OT1/cmtt/m/n/10.95 element(Position, List, Element) \OT1/cmr/m/n/10.95 is true
+ iff \OT1/cmtt/m/n/10.95 Element \OT1/cmr/m/n/10.95 is the \OT1/cmtt/m/n/10.95 
+Position\OT1/cmr/m/n/10.95 th
+ []
+
+
+Overfull \hbox (47.6711pt too wide) in paragraph at lines 539--545
+\OT1/cmtt/m/n/10.95 quicksort(List, ComparisonPredicate, SortedList) \OT1/cmr/m
+/n/10.95 is true iff \OT1/cmtt/m/n/10.95 SortedList
+ []
+
+
+Overfull \hbox (15.88808pt too wide) in paragraph at lines 539--545
+\OT1/cmr/m/n/10.95 is the list \OT1/cmtt/m/n/10.95 List \OT1/cmr/m/n/10.95 sort
+ed by the com-par-i-son pred-i-cate \OT1/cmtt/m/n/10.95 ComparisonPredicate\OT1
+/cmr/m/n/10.95 . 
+ []
+
+[31]
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 564.
+
+Overfull \hbox (3.04698pt too wide) in paragraph at lines 565--565
+[]\OT1/cmtt/m/n/10 Assoc.| 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[32] [33]
+Overfull \hbox (17.31802pt too wide) in paragraph at lines 684--691
+\OT1/cmtt/m/n/10.95 sub[]atom(Atom, Before, Length, After, SubAtom) \OT1/cmr/m/
+n/10.95 is true iff \OT1/cmtt/m/n/10.95 SubAtom
+ []
+
+
+Overfull \hbox (14.84494pt too wide) in paragraph at lines 684--691
+\OT1/cmr/m/n/10.95 char-ac-ters pre-ced-ing it and \OT1/cmtt/m/n/10.95 After \O
+T1/cmr/m/n/10.95 char-ac-ters fol-low-ing. It is re-executable. 
+ []
+
+
+Overfull \hbox (16.82338pt too wide) in paragraph at lines 684--691
+\OT1/cmr/m/it/10.95 Template: \OT1/cmtt/m/n/10.95 sub[]atom(+atom, ?integer, ?i
+nteger, ?integer, ?atom) 
+ []
+
+[34
+
+] [35]
+Overfull \hbox (3.04698pt too wide) in paragraph at lines 754--754
+[]\OT1/cmtt/m/n/10 Assoc.| 
+ []
+
+
+Overfull \hbox (17.43304pt too wide) in paragraph at lines 776--789
+ [] 
+ []
+
+[36]
+
+LaTeX Warning: Citation `bra00' on page 37 undefined on input line 801.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 810--812
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 810--812
+
+ []
+
+[37
+
+]
+Overfull \hbox (3.04698pt too wide) in paragraph at lines 915--915
+[]\OT1/cmtt/m/n/10 Assoc.| 
+ []
+
+[38] [39] [40] [41]) [42]
+\openout2 = `java-library/java-library.aux'.
+
+ (./java-library/java-library.tex
+Chapter 6.
+[43
+
+
+
+] [44] [45] [46]
+
+LaTeX Warning: Citation `tuprolog-padl2001' on page 47 undefined on input line 
+371.
+
+[47] [48]
+Overfull \hbox (11.63338pt too wide) in paragraph at lines 460--464
+\OT1/cmtt/m/n/10.95 java[]object[]bt(ClassName, ArgList, ObjId) \OT1/cmr/m/n/10
+.95 has the same be-haviour
+ []
+
+
+Overfull \hbox (33.68144pt too wide) in paragraph at lines 470--483
+\OT1/cmtt/m/n/10.95 java[]class(ClassSourceText, FullClassName, ClassPathList, 
+ObjId)
+ []
+
+
+Overfull \hbox (44.87697pt too wide) in paragraph at lines 470--483
+\OT1/cmr/m/it/10.95 Template: \OT1/cmtt/m/n/10.95 java[]class(@java[]source, @f
+ull[]class[]name, @list, ?obj[]id) 
+ []
+
+[49] [50]
+Overfull \hbox (4.63615pt too wide) in paragraph at lines 541--577
+\OT1/cmr/m/it/10.95 Template: \OT1/cmtt/m/n/10.95 java[]array[]set(@obj[]id, @p
+ositive[]integer, +obj[]id) 
+ []
+
+
+Overfull \hbox (32.95445pt too wide) in paragraph at lines 577--608
+\OT1/cmtt/m/n/10.95 java[]array[]get(ObjArrayId, Index, ObjIdResult) \OT1/cmr/m
+/n/10.95 is true iff \OT1/cmtt/m/n/10.95 ObjArrayId
+ []
+
+
+Overfull \hbox (4.63615pt too wide) in paragraph at lines 577--608
+\OT1/cmr/m/it/10.95 Template: \OT1/cmtt/m/n/10.95 java[]array[]get(@obj[]id, @p
+ositive[]integer, ?obj[]id) 
+ []
+
+[51]
+Overfull \hbox (15.70839pt too wide) in paragraph at lines 608--614
+\OT1/cmtt/m/n/10.95 java[]array[]length(ObjArrayId, ArrayLength) \OT1/cmr/m/n/1
+0.95 is true iff \OT1/cmtt/m/n/10.95 ArrayLength
+ []
+
+
+Overfull \hbox (3.04698pt too wide) in paragraph at lines 646--646
+[]\OT1/cmtt/m/n/10 Assoc.| 
+ []
+
+[52]
+Overfull \hbox (24.4968pt too wide) in paragraph at lines 678--680
+[]\OT1/cmtt/m/n/10 java -Djava.security.all=policy.all alice.tuprologx.runtime.
+rmi.Daemon
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 678--680
+
+ []
+
+[53] [54]
+Overfull \hbox (38.99158pt too wide) in paragraph at lines 817--817
+[]        \OT1/cmtt/m/n/10 class(\TS1/cmtt/m/n/10 '\OT1/cmtt/m/n/10 java.lang.C
+lass\TS1/cmtt/m/n/10 '\OT1/cmtt/m/n/10 ) <- forName(\TS1/cmtt/m/n/10 '\OT1/cmtt
+/m/n/10 sun.jdbc.odbc.JdbcOdbcDriver\TS1/cmtt/m/n/10 '\OT1/cmtt/m/n/10 ),[] 
+ []
+
+
+Overfull \hbox (75.74373pt too wide) in paragraph at lines 817--817
+[]        \OT1/cmtt/m/n/10 class(\TS1/cmtt/m/n/10 '\OT1/cmtt/m/n/10 java.sql.Dr
+iverManager\TS1/cmtt/m/n/10 '\OT1/cmtt/m/n/10 ) <- getConnection(DBase, Usernam
+e, Password)[] 
+ []
+
+
+Overfull \hbox (7.49185pt too wide) in paragraph at lines 817--817
+[]        \OT1/cmtt/m/n/10 write(\TS1/cmtt/m/n/10 '\OT1/cmtt/m/n/10 [ Database 
+\TS1/cmtt/m/n/10 '\OT1/cmtt/m/n/10 ), write(DBase), write(\TS1/cmtt/m/n/10 ' \O
+T1/cmtt/m/n/10 connected ]\TS1/cmtt/m/n/10 '\OT1/cmtt/m/n/10 ), nl.[] 
+ []
+
+
+Overfull \hbox (10.86917pt too wide) in paragraph at lines 824--841
+\OT1/cmtt/m/n/10.95 newInstance \OT1/cmr/m/n/10.95 method, to re-trieve spe-cif
+ic con-struc-tors via the \OT1/cmtt/m/n/10.95 getConstructor
+ []
+
+[55]
+Overfull \hbox (22.5011pt too wide) in paragraph at lines 895--895
+[]\OT1/cmtt/m/n/8 % A user whose name is \TS1/cmtt/m/n/8 '\OT1/cmtt/m/n/8 myNam
+e\TS1/cmtt/m/n/8 ' \OT1/cmtt/m/n/8 and whose password is \TS1/cmtt/m/n/8 '\OT1/
+cmtt/m/n/8 myPwd\TS1/cmtt/m/n/8 ' \OT1/cmtt/m/n/8 gets the content of the file[
+] 
+ []
+
+
+Overfull \hbox (18.25104pt too wide) in paragraph at lines 895--895
+[]\OT1/cmtt/m/n/8 % \TS1/cmtt/m/n/8 '\OT1/cmtt/m/n/8 Counter.java\TS1/cmtt/m/n/
+8 ' \OT1/cmtt/m/n/8 from the server whose IP address is \TS1/cmtt/m/n/8 '\OT1/c
+mtt/m/n/8 srvAddr\TS1/cmtt/m/n/8 '\OT1/cmtt/m/n/8 , creates the corresponding[]
+ 
+ []
+
+
+Overfull \hbox (31.00122pt too wide) in paragraph at lines 895--895
+[]    \OT1/cmtt/m/n/8 get_remote_file(\TS1/cmtt/m/n/8 '\OT1/cmtt/m/n/8 alice/tu
+prolog/test\TS1/cmtt/m/n/8 '\OT1/cmtt/m/n/8 , \TS1/cmtt/m/n/8 '\OT1/cmtt/m/n/8 
+Counter.java\TS1/cmtt/m/n/8 '\OT1/cmtt/m/n/8 , srvAddr, myName, myPwd, Content)
+,[] 
+ []
+
+) [56] [57]
+\openout2 = `ide/ide.aux'.
+
+ (./ide/ide.tex
+Chapter 7.
+<images/tuPrologIDE.png, id=654, 577.15625pt x 667.49374pt>
+File: images/tuPrologIDE.png Graphic file (type png)
+
+<use images/tuPrologIDE.png> [58
+
+
+
+] [59 <./images/tuPrologIDE.png>]
+<images/syntaxErrorFound.png, id=666, 577.15625pt x 667.49374pt>
+File: images/syntaxErrorFound.png Graphic file (type png)
+
+<use images/syntaxErrorFound.png>
+<images/setTheorySucceeded.png, id=667, 577.15625pt x 667.49374pt>
+File: images/setTheorySucceeded.png Graphic file (type png)
+
+<use images/setTheorySucceeded.png> [60] [61 <./images/syntaxErrorFound.png>]
+[62 <./images/setTheorySucceeded.png>] [63]
+<images/queryIssued.png, id=700, 577.15625pt x 667.49374pt>
+File: images/queryIssued.png Graphic file (type png)
+
+<use images/queryIssued.png>
+<images/nextSolutionAsked.png, id=701, 577.15625pt x 667.49374pt>
+File: images/nextSolutionAsked.png Graphic file (type png)
+
+<use images/nextSolutionAsked.png>
+<images/acceptSolution.png, id=702, 577.15625pt x 667.49374pt>
+File: images/acceptSolution.png Graphic file (type png)
+
+<use images/acceptSolution.png>
+<images/viewDebugInformation.png, id=704, 576.1525pt x 666.49pt>
+File: images/viewDebugInformation.png Graphic file (type png)
+
+<use images/viewDebugInformation.png>
+<images/libraryManagerDialog.png, id=706, 276.03125pt x 273.02pt>
+File: images/libraryManagerDialog.png Graphic file (type png)
+
+<use images/libraryManagerDialog.png> [64] [65 <./images/queryIssued.png>]
+[66 <./images/nextSolutionAsked.png>] [67 <./images/acceptSolution.png>]
+[68 <./images/viewDebugInformation.png>]) [69 <./images/libraryManagerDialog.pn
+g>]
+\openout2 = `using-tuprolog-from-java/using-tuprolog-from-java.aux'.
+
+ (./using-tuprolog-from-java/using-tuprolog-from-java.tex
+Chapter 8.
+
+Underfull \hbox (badness 10000) in paragraph at lines 23--37
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 23--37
+
+ []
+
+
+Underfull \hbox (badness 4254) in paragraph at lines 44--44
+\OT1/cmtt/m/n/9 tuprolog.jar Test2P.java \OT1/cmr/m/n/9 and then ex-e-cute it w
+ith \OT1/cmtt/m/n/9 java -cp .;tuprolog.jar
+ []
+
+[70
+
+
+
+] [71] [72] [73]
+Overfull \hbox (12.74428pt too wide) in paragraph at lines 217--217
+[]\OT1/cmtt/m/n/10 // complex_compound(1, _, q(Y, 3.03, \TS1/cmtt/m/n/10 '\OT1/
+cmtt/m/n/10 Hotel\TS1/cmtt/m/n/10 '\OT1/cmtt/m/n/10 , k(Y,X)), [303, 13, _, Y])
+[] 
+ []
+
+
+Overfull \hbox (33.7441pt too wide) in paragraph at lines 217--217
+[]     \OT1/cmtt/m/n/10 "complex_compound(1, _, q(Y, 3.03, \TS1/cmtt/m/n/10 '\O
+T1/cmtt/m/n/10 Hotel\TS1/cmtt/m/n/10 '\OT1/cmtt/m/n/10 , k(Y,X)), [303, 13, _, 
+Y])"[] 
+ []
+
+
+Overfull \hbox (9.25684pt too wide) in paragraph at lines 277--302
+\OT1/cmr/m/n/10.95 ba-sic and well-known Pro-log built-ins, \OT1/cmtt/m/n/10.95
+ alice.tuprolog.lib.IOLibrary
+ []
+
+
+Overfull \hbox (73.7364pt too wide) in paragraph at lines 277--302
+\OT1/cmr/m/n/10.95 pro-vid-ing \OT1/cmr/m/it/10.95 de facto \OT1/cmr/m/n/10.95 
+stan-dard Pro-log I/O pred-i-cates, \OT1/cmtt/m/n/10.95 alice.tuprolog.lib.ISOL
+ibrary
+ []
+
+
+Overfull \hbox (40.70769pt too wide) in paragraph at lines 277--302
+\OT1/cmr/m/n/10.95 pro-vid-ing some ISO pred-i-cates/functors not di-rectly pro
+-vided by \OT1/cmtt/m/n/10.95 BasicLibrary
+ []
+
+[74] [75]
+Underfull \hbox (badness 10000) in paragraph at lines 351--366
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 351--366
+
+ []
+
+[76] [77]
+Overfull \hbox (14.00537pt too wide) in paragraph at lines 588--588
+[]                                              \OT1/cmtt/m/n/8 new Struct(new 
+Term[]{new Struct("hotel"),[] 
+ []
+
+[78] [79]) [80]
+\openout2 = `howto-develop-libraries/howto-develop-libraries.aux'.
+
+ (./howto-develop-libraries/howto-develop-libraries.tex
+Chapter 9.
+[81
+
+
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 84--85
+[]\OT1/cmtt/m/it/10 % tuProlog test
+ []
+
+
+Overfull \hbox (40.99901pt too wide) in paragraph at lines 81--104
+ [] 
+ []
+
+[82]) [83] [84]
+\openout2 = `exceptions/exceptions.aux'.
+
+ (./exceptions/exceptions.tex
+Chapter 10.
+[85
+
+
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 56--57
+
+ []
+
+
+Overfull \hbox (6.12175pt too wide) in paragraph at lines 82--87
+[]\OT1/cmr/m/n/10.95 Perhaps sur-pris-ingly, the pro-gram will just print \OT1/
+cmtt/m/n/10.95 'error'\OT1/cmr/m/n/10.95 , not \OT1/cmtt/m/n/10.95 'error---'
+ []
+
+[86] [87]
+Overfull \hbox (1.96469pt too wide) in paragraph at lines 180--189
+\OT1/cmtt/m/n/10.95 error(\OT1/cmtt/m/it/10.95 Error[]term\OT1/cmtt/m/n/10.95 ,
+ \OT1/cmtt/m/it/10.95 Implementation[]defined[]term\OT1/cmtt/m/n/10.95 ) \OT1/c
+mr/m/n/10.95 where \OT1/cmtt/m/it/10.95 Error[]term \OT1/cmr/m/n/10.95 is
+ []
+
+
+Overfull \hbox (10.35735pt too wide) in paragraph at lines 197--208
+\OT1/cmtt/m/n/10.95 in[]byte\OT1/cmr/m/n/10.95 , \OT1/cmtt/m/n/10.95 in[]charac
+ter\OT1/cmr/m/n/10.95 , \OT1/cmtt/m/n/10.95 integer\OT1/cmr/m/n/10.95 , \OT1/cm
+tt/m/n/10.95 list\OT1/cmr/m/n/10.95 , \OT1/cmtt/m/n/10.95 number\OT1/cmr/m/n/10
+.95 , \OT1/cmtt/m/n/10.95 predicate[]indicator\OT1/cmr/m/n/10.95 ,
+ []
+
+
+Overfull \hbox (25.05597pt too wide) in paragraph at lines 209--219
+\OT1/cmr/m/n/10.95 one of \OT1/cmtt/m/n/10.95 character[]code[]list\OT1/cmr/m/n
+/10.95 , \OT1/cmtt/m/n/10.95 close[]option\OT1/cmr/m/n/10.95 , \OT1/cmtt/m/n/10
+.95 flag[]value\OT1/cmr/m/n/10.95 , \OT1/cmtt/m/n/10.95 not[]empty[]list\OT1/cm
+r/m/n/10.95 ,
+ []
+
+
+Overfull \hbox (22.8352pt too wide) in paragraph at lines 209--219
+\OT1/cmtt/m/n/10.95 not[]less[]than[]zero\OT1/cmr/m/n/10.95 , \OT1/cmtt/m/n/10.
+95 io[]mode\OT1/cmr/m/n/10.95 , \OT1/cmtt/m/n/10.95 operator[]priority\OT1/cmr/
+m/n/10.95 , \OT1/cmtt/m/n/10.95 operator[]specifier\OT1/cmr/m/n/10.95 ,
+ []
+
+
+Overfull \hbox (7.19878pt too wide) in paragraph at lines 209--219
+\OT1/cmtt/m/n/10.95 stream[]or[]alias\OT1/cmr/m/n/10.95 , \OT1/cmtt/m/n/10.95 s
+tream[]position\OT1/cmr/m/n/10.95 , \OT1/cmtt/m/n/10.95 stream[]property\OT1/cm
+r/m/n/10.95 , \OT1/cmtt/m/n/10.95 write[]option\OT1/cmr/m/n/10.95 .
+ []
+
+[88]
+Overfull \hbox (4.4984pt too wide) in paragraph at lines 220--226
+[]\OT1/cmtt/m/n/10.95 existence[]error(\OT1/cmtt/m/it/10.95 ObjectType\OT1/cmtt
+/m/n/10.95 , \OT1/cmtt/m/it/10.95 ObjectName\OT1/cmr/m/n/10.95 : when the ref-e
+r-enced ob-
+ []
+
+
+Overfull \hbox (16.94397pt too wide) in paragraph at lines 220--226
+\OT1/cmtt/m/n/10.95 procedure\OT1/cmr/m/n/10.95 , \OT1/cmtt/m/n/10.95 source[]s
+ink\OT1/cmr/m/n/10.95 , or \OT1/cmtt/m/n/10.95 stream\OT1/cmr/m/n/10.95 . If, f
+or in-stance, the file \OT1/cmtt/m/n/10.95 'usr/goofy'
+ []
+
+
+Overfull \hbox (24.26802pt too wide) in paragraph at lines 227--235
+[]\OT1/cmtt/m/n/10.95 permission[]error(\OT1/cmtt/m/it/10.95 Operation\OT1/cmtt
+/m/n/10.95 , \OT1/cmtt/m/it/10.95 ObjectType\OT1/cmtt/m/n/10.95 , \OT1/cmtt/m/i
+t/10.95 Object\OT1/cmtt/m/n/10.95 )\OT1/cmr/m/n/10.95 : when \OT1/cmtt/m/it/10.
+95 Operation
+ []
+
+
+Overfull \hbox (44.68546pt too wide) in paragraph at lines 227--235
+\OT1/cmr/m/n/10.95 while \OT1/cmtt/m/it/10.95 ObjectType \OT1/cmr/m/n/10.95 fal
+ls among \OT1/cmtt/m/n/10.95 binary[]stream\OT1/cmr/m/n/10.95 , \OT1/cmtt/m/n/1
+0.95 operator\OT1/cmr/m/n/10.95 , \OT1/cmtt/m/n/10.95 past[]end[]of[]stream\OT1
+/cmr/m/n/10.95 ,
+ []
+
+
+Overfull \hbox (6.0201pt too wide) in paragraph at lines 236--241
+[]\OT1/cmtt/m/n/10.95 representation[]error(\OT1/cmtt/m/it/10.95 Flag\OT1/cmtt/
+m/n/10.95 )\OT1/cmr/m/n/10.95 : when an implementation-defined limit,
+ []
+
+
+Overfull \hbox (16.20003pt too wide) in paragraph at lines 242--246
+\OT1/cmr/m/n/10.95 duces an ex-cep-tional value. Ac-cord-ingly, \OT1/cmtt/m/it/
+10.95 Error \OT1/cmr/m/n/10.95 is one of \OT1/cmtt/m/n/10.95 float[]overflow\OT
+1/cmr/m/n/10.95 ,
+ []
+
+
+Overfull \hbox (10.16196pt too wide) in paragraph at lines 247--251
+\OT1/cmr/m/n/10.95 fur-ther avail-able mem-ory, etc. Ac-cord-ingly, \OT1/cmtt/m
+/n/10.95 resource[]error(Resource)
+ []
+
+[89]
+
+LaTeX Warning: Citation `iuliani-masterthesis-2009' on page 90 undefined on inp
+ut line 275.
+
+[90]
+Overfull \hbox (6.97702pt too wide) in paragraph at lines 297--300
+[]\OT1/cmr/m/n/10.95 the Java catch-ing mech-a-nisms op-er-ates hi-er-ar-chi-ca
+lly, while the \OT1/cmtt/m/n/10.95 catch/3
+ []
+
+
+Overfull \hbox (20.84796pt too wide) in paragraph at lines 301--304
+\OT1/cmr/m/n/10.95 cause ISO Pro-log does not con-sider multi-paradigm pro-gram
+-ming: \OT1/cmtt/m/n/10.95 java[]throw/1
+ []
+
+
+Overfull \hbox (4.86655pt too wide) in paragraph at lines 316--322
+\OT1/cmr/m/n/10.95 where \OT1/cmr/m/it/10.95 JavaEx-cep-tion \OT1/cmr/m/n/10.95
+ is named af-ter the spe-cific Java ex-cep-tion to be launched
+ []
+
+[91]
+Underfull \hbox (badness 10000) in paragraph at lines 356--357
+
+ []
+
+
+Overfull \hbox (30.73013pt too wide) in paragraph at lines 379--379
+[]       \OT1/cmtt/m/n/10.95 [(\TS1/cmtt/m/n/10.95 '\OT1/cmtt/m/n/10.95 java.la
+ng.ClassNotFoundException\TS1/cmtt/m/n/10.95 '\OT1/cmtt/m/n/10.95 (Cause, Msg, 
+StackTrace),[] 
+ []
+
+
+Overfull \hbox (19.49623pt too wide) in paragraph at lines 380--391
+\OT1/cmr/m/n/10.95 pred-i-cate is ex-e-cuted. Then, a \OT1/cmtt/m/n/10.95 'java
+.lang.ClassNotFoundException'(Cause,
+ []
+
+[92]
+Overfull \hbox (1.9867pt too wide) in paragraph at lines 405--405
+[]       \OT1/cmtt/m/n/10.95 [(\TS1/cmtt/m/n/10.95 '\OT1/cmtt/m/n/10.95 java.la
+ng.ClassNotFoundException\TS1/cmtt/m/n/10.95 '\OT1/cmtt/m/n/10.95 (Cause, Messa
+ge, _),[] 
+ []
+
+
+Overfull \hbox (1.9867pt too wide) in paragraph at lines 422--422
+[]       \OT1/cmtt/m/n/10.95 [(\TS1/cmtt/m/n/10.95 '\OT1/cmtt/m/n/10.95 java.la
+ng.ClassNotFoundException\TS1/cmtt/m/n/10.95 '\OT1/cmtt/m/n/10.95 (Cause, Messa
+ge, _),[] 
+ []
+
+
+Overfull \hbox (13.48407pt too wide) in paragraph at lines 422--422
+[]       \OT1/cmtt/m/n/10.95 [(\TS1/cmtt/m/n/10.95 '\OT1/cmtt/m/n/10.95 java.la
+ng.ClassNotFoundException\TS1/cmtt/m/n/10.95 '\OT1/cmtt/m/n/10.95 (Cause2, Mess
+age2, _),[] 
+ []
+
+
+Overfull \hbox (29.54048pt too wide) in paragraph at lines 426--428
+[]\OT1/cmr/m/n/10.95 Substitutions: \OT1/cmtt/m/n/10.95 Cause/0\OT1/cmr/m/n/10.
+95 , \OT1/cmtt/m/n/10.95 Message/'Counter'\OT1/cmr/m/n/10.95 , \OT1/cmtt/m/n/10
+.95 X/5\OT1/cmr/m/n/10.95 , \OT1/cmtt/m/n/10.95 C/0\OT1/cmr/m/n/10.95 , \OT1/cm
+tt/m/n/10.95 Message2/'Counter'\OT1/cmr/m/n/10.95 . 
+ []
+
+
+Overfull \hbox (13.48407pt too wide) in paragraph at lines 436--436
+[]      \OT1/cmtt/m/n/10.95 [(\TS1/cmtt/m/n/10.95 '\OT1/cmtt/m/n/10.95 java.lan
+g.Exception\TS1/cmtt/m/n/10.95 '\OT1/cmtt/m/n/10.95 (Cause, Message, _), true)]
+, true)).[] 
+ []
+
+
+Overfull \hbox (19.23276pt too wide) in paragraph at lines 446--446
+[]      \OT1/cmtt/m/n/10.95 [(\TS1/cmtt/m/n/10.95 '\OT1/cmtt/m/n/10.95 java.lan
+g.Exception\TS1/cmtt/m/n/10.95 '\OT1/cmtt/m/n/10.95 (Cause, Message, _), false)
+], true)).[] 
+ []
+
+[93]
+Overfull \hbox (59.47357pt too wide) in paragraph at lines 484--484
+[]      \OT1/cmtt/m/n/10.95 (\TS1/cmtt/m/n/10.95 '\OT1/cmtt/m/n/10.95 java.lang
+.ClassNotFoundException\TS1/cmtt/m/n/10.95 '\OT1/cmtt/m/n/10.95 (Cause, Message
+, _), Y is 3+5)],[] 
+ []
+
+) [94]
+No file tuprolog-guide.bbl.
+(./tuprolog-guide.aux (./what-is-tuprolog/what-is-tuprolog.aux)
+(./installing-tuprolog/installing-tuprolog.aux)
+(./getting-started/getting-started.aux) (./tuprolog-basics/tuprolog-basics.aux)
+(./tuprolog-libraries/tuprolog-libraries.aux) (./java-library/java-library.aux)
+(./ide/ide.aux) (./using-tuprolog-from-java/using-tuprolog-from-java.aux)
+(./howto-develop-libraries/howto-develop-libraries.aux)
+(./exceptions/exceptions.aux))
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+
+LaTeX Warning: There were undefined references.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 5180 strings out of 493848
+ 77941 string characters out of 3149207
+ 152246 words of memory out of 3000000
+ 8078 multiletter control sequences out of 15000+200000
+ 16625 words of font info for 59 fonts, out of 3000000 for 9000
+ 714 hyphenation exceptions out of 8191
+ 38i,10n,39p,611b,457s stack positions out of 5000i,500n,10000p,200000b,50000s
+{/usr/local/texlive/2009/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc
+}</usr/local/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb>
+</usr/local/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><
+/usr/local/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb>
+</usr/local/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb>
+</usr/local/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmitt10.pfb>
+</usr/local/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><
+/usr/local/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></u
+sr/local/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr
+/local/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/l
+ocal/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/loca
+l/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/t
+exlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texl
+ive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/local/texli
+ve/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmss12.pfb></usr/local/texliv
+e/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmss17.pfb></usr/local/texlive
+/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmss9.pfb></usr/local/texlive/2
+009/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/20
+09/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2009
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2009/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2009/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive/2009/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb></usr/local/texlive/2009/texmf
+-dist/fonts/type1/public/cm-super/sfrm1095.pfb></usr/local/texlive/2009/texmf-d
+ist/fonts/type1/public/cm-super/sftt0800.pfb></usr/local/texlive/2009/texmf-dis
+t/fonts/type1/public/cm-super/sftt1000.pfb></usr/local/texlive/2009/texmf-dist/
+fonts/type1/public/cm-super/sftt1095.pfb>
+Output written on tuprolog-guide.pdf (95 pages, 946377 bytes).
+PDF statistics:
+ 991 PDF objects out of 1000 (max. 8388607)
+ 219 named destinations out of 1000 (max. 500000)
+ 566 words of extra memory for PDF output out of 10000 (max. 10000000)
+
