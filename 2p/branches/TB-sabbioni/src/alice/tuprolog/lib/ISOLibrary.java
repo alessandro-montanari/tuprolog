@@ -429,7 +429,10 @@ public class ISOLibrary extends Library {
                 + "atom_codes0(A,L):-chars_codes(L1,L),atom_chars(A,L1).\n"
                 + "chars_codes([],[]).\n"
                 + "chars_codes([X|L1],[Y|L2]):-char_code(X,Y),chars_codes(L1,L2).\n"
-                + "sub_atom(Atom,B,L,A,Sub):- sub_atom_guard(Atom,B,L,A,Sub), sub_atom(Atom,B,L,A,Sub).\n"
+                /*Sabbioni 10/2011 for bug 3386231*/
+                //+ "sub_atom(Atom,B,L,A,Sub):- sub_atom_guard(Atom,B,L,A,Sub), sub_atom(Atom,B,L,A,Sub).\n"
+                + "sub_atom(Atom,B,L,A,Sub):- sub_atom_guard(Atom,B,L,A,Sub), sub_atom0(Atom,B,L,A,Sub).\n"
+                /**/
                 + "sub_atom0(Atom,B,L,A,Sub):-atom_chars(Atom,L1),atom_chars(Sub,L2),!,sub_list(L2,L1,B),length(L2,L), length(L1,Len), A is Len-(B+L).\n"
                 + "sub_atom0(Atom,B,L,A,Sub):-atom_chars(Atom,L1),sub_list(L2,L1,B),atom_chars(Sub,L2),length(L2,L), length(L1,Len), A is Len-(B+L).\n"
                 + "sub_list([],_,0).\n"
