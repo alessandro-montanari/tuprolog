@@ -61,10 +61,10 @@ public class PrologEditor extends TextEditor implements OperatorListener,
 		Map<String, PrologEditor> args = new HashMap<String, PrologEditor>();
 		args.put("Editor", this);
 
-		try {
-			getProject().build(IncrementalProjectBuilder.FULL_BUILD,PrologParser.BUILDER_ID, args, null);
-		} catch (CoreException e) {
-		}
+//		try {
+//			getProject().build(IncrementalProjectBuilder.FULL_BUILD,PrologParser.BUILDER_ID, args, null);
+//		} catch (CoreException e) {
+//		}
 
 		// //effettua il build con il builder
 		// try{
