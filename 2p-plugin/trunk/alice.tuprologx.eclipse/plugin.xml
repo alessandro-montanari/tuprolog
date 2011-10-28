@@ -3,7 +3,7 @@
 <plugin
    id="it.unibo.alice.tuprologx.eclipse"
    name="tuProlog Development Tools"
-   version="0.6.0"
+   version="0.6.1"
    provider-name="tuProlog Team"
    class="alice.tuprologx.eclipse.TuProlog">
    
