@@ -2,7 +2,7 @@
 <feature
       id="alice.tuprologx.eclipse"
       label="tuProlog plugin feature"
-      version="0.5.0">
+      version="0.6.0">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
