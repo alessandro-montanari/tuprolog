@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="alice.tuprologx.eclipse"
-      label="Feature"
-      version="0.6.2">
+      label="tuProlog plugin feature"
+      version="0.4.0">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
