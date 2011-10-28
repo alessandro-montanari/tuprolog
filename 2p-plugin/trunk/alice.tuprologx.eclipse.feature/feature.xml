@@ -2,7 +2,7 @@
 <feature
       id="alice.tuprologx.eclipse"
       label="Feature"
-      version="0.6.0">
+      version="0.6.1">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
@@ -17,10 +17,9 @@
    </license>
 
    <plugin
-         id="alice.tuprologx.eclipse"
+         id="it.unibo.alice.tuprologx.eclipse"
          download-size="0"
          install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
 </feature>
