@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/alice.tuprologx.eclipse_0.5.0.jar" id="alice.tuprologx.eclipse" version="0.5.0">
+      <category name="tuProlog Plugin"/>
+   </feature>
+   <category-def name="tuProlog Plugin" label="tuProlog Plugin"/>
+</site>
