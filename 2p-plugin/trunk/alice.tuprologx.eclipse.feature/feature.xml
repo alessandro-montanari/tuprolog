@@ -2,19 +2,28 @@
 <feature
       id="alice.tuprologx.eclipse"
       label="tuProlog plugin feature"
-      version="0.6.0">
+      version="0.7.0"
+      provider-name="aliCE Research Group @ DEIS"
+      os="linux,macosx,win32"
+      ws="carbon,cocoa,gtk,win32"
+      nl="en"
+      arch="ia64,ia64_32,x86,x86_64">
 
-   <description url="http://www.example.com/description">
-      [Enter Feature Description here.]
+   <description>
+      This feature is designed to offer users tuProlog plug-in installation and update using Eclipse Update Manager.
    </description>
 
-   <copyright url="http://www.example.com/copyright">
-      [Enter Copyright Description here.]
+   <copyright>
+      Copyright © 2008 aliCE Research Group @ DEIS
    </copyright>
 
-   <license url="http://www.example.com/license">
-      [Enter License Description here.]
+   <license url="www.gnu.org/licenses/lgpl-2.1.html">
+      jksadhfkjhdjkfhjks
    </license>
+
+   <url>
+      <discovery label="Related Update Sites" url="http://sourceforge.net/projects/tuprolog/files/"/>
+   </url>
 
    <plugin
          id="it.unibo.alice.tuprologx.eclipse"
