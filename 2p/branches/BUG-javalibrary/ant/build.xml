@@ -401,6 +401,7 @@
 	            <arg value="-reference:${build.archives.net.dir}/archives/javassist.dll" />
 	            <arg value="-target:winexe" />
 	            <arg value="-compressresources" />
+	 			<arg value="-classloader:ikvm.runtime.ClassPathAssemblyClassLoader" />
 	            <arg value="-version:${project.version}" />
 	            <arg value="-out:${build.archives.net.dir}/archives/2p.exe" />
 	            <arg value="${build.archives.dir}/2p.jar" />
@@ -417,6 +418,7 @@
 		            <arg value="-reference:${build.archives.net.dir}/archives/javassist.dll" />
  		            <arg value="-target:exe" />
  		            <arg value="-compressresources" />
+	 				<arg value="-classloader:ikvm.runtime.ClassPathAssemblyClassLoader" />
  		            <arg value="-version:${project.version}" />
  		            <arg value="-out:${build.archives.net.dir}/archives/Console.exe" />
  		            <arg value="${build.archives.dir}/Console.jar" />
