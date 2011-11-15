@@ -173,7 +173,7 @@
 			<fileset dir="${test.dir}/fit/doc">
 				<exclude name="isoAcceptanceTests.html"/>
 				<exclude name="termCreationAndDecomposition.html"/>
-				<exclude name="atomicTermProcessing.html"/> 
+				<!-- <exclude name="atomicTermProcessing.html"/>--> 
 		    	<include name="*.html"/>
 		    </fileset>
 			
