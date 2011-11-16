@@ -416,20 +416,18 @@ public class ISOLibrary extends Library {
                 //
                 "bound(X):-ground(X).\n                                                                                  "
                 + "unbound(X):-not(ground(X)).\n                                                                          "
-                +
+                
                 //
-                "atom_concat(F,S,R) :- catch(atom_concat0(F,S,R), Error, false).\n"
+                + "atom_concat(F,S,R) :- catch(atom_concat0(F,S,R), Error, false).\n"
                 + "atom_concat0(F,S,R) :- var(R), !,(atom_chars(S,SL),append(FL,SL,RS),atom_chars(F,FL),atom_chars(R,RS)).  \n"
                 + "atom_concat0(F,S,R) :-(atom_chars(R,RS), append(FL,SL,RS),atom_chars(F,FL),atom_chars(S,SL)).\n"
+                
                 + "atom_codes(A,L):- catch(atom_codes0(A,L), Error, false).\n"
-                /*Castagna 09/2011*/
-                //+ "atom_codes0(A,L):-atom_chars(A,L1),!,chars_codes(L1,L).\n"
                 + "atom_codes0(A,L):-nonvar(A),atom_chars(A,L1),!,chars_codes(L1,L).\n"
-                /**/
-                + "atom_codes0(A,L):-chars_codes(L1,L),atom_chars(A,L1).\n"
+                + "atom_codes0(A,L):-nonvar(L), list(L), !,chars_codes(L1,L),atom_chars(A,L1).\n"
                 + "chars_codes([],[]).\n"
                 + "chars_codes([X|L1],[Y|L2]):-char_code(X,Y),chars_codes(L1,L2).\n"
-                /**/
+            
                 + "sub_atom(Atom,B,L,A,Sub):- sub_atom_guard(Atom,B,L,A,Sub), sub_atom0(Atom,B,L,A,Sub).\n"
                 + "sub_atom0(Atom,B,L,A,Sub):-atom_chars(Atom,L1),sub_list(L2,L1,B),atom_chars(Sub,L2),length(L2,L), length(L1,Len), A is Len-(B+L).\n"
                 + "sub_list([],_,0).\n"
