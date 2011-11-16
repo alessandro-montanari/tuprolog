@@ -2,9 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="lib" path="icons/"/>
-	<classpathentry exported="true" kind="lib" path="prefuse.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry kind="lib" path="2p.jar"/>
+	<classpathentry kind="lib" path="lib/2p.jar"/>
+	<classpathentry kind="lib" path="lib/prefuse.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
