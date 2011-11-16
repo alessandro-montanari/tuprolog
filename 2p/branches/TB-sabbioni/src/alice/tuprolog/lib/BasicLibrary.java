@@ -338,7 +338,7 @@ public class BasicLibrary extends Library {
         alice.tuprolog.Number val0n = (alice.tuprolog.Number) val0;
         alice.tuprolog.Number val1n = (alice.tuprolog.Number) val1;
         if (val0n.isInteger() && val1n.isInteger()) {
-            // return (val0n.intValue() == val1n.intValue()) ? true : false;
+            //return (val0n.intValue() == val1n.intValue()) ? true : false;
             // by ED: note that this would work also with intValue, even with Long args,
             // because in that case both values would be wrong, but 'equally wrong' :)
             // However, it is much better to always operate consistently on long values
@@ -781,8 +781,10 @@ public class BasicLibrary extends Library {
     public boolean text_term_2(Term arg0, Term arg1) {
         arg0 = arg0.getTerm();
         arg1 = arg1.getTerm();
-        System.out.println(arg0);
-        System.out.println(arg1);
+        /*System.out.println(arg0);
+        System.out.println(arg1);*/
+        getEngine().stdOutput(arg0.toString() + 
+        "\n" + arg1.toString());
         if (!arg0.isGround()) {
             return unify(arg0, new Struct(arg1.toString()));
         } else {
@@ -990,11 +992,23 @@ public class BasicLibrary extends Library {
                 +
                 // catch/3
                 "catch(Goal, Catcher, Handler) :- call(Goal).\n"
-                +
                 //
                 // All solutions predicates
                 //
-                "findall(Template, Goal, Instances) :- \n"
+                //swi findall
+                /*+ "findall(Templ, Goal, List) :- \n"
+                + "findall(Templ, Goal, List, []). \n"
+
+                + "findall(Templ, Goal, List, Tail) :- \n"
+                + "setup_call_cleanup('$new_findall_bag'(Bag), \n"
+                + "fa_loop(Templ, Goal, Bag, List, Tail), \n"
+                + "'$destroy_findall_bag'(Bag)). \n"
+
+                + "fa_loop(Templ, Goal, Bag, List, Tail) :- \n"
+                + "\\+ (Goal, \\+ '$add_findall_bag'(Bag, Templ)), \n"
+                + "'$collect_findall_bag'(Bag, List, Tail). \n"*/
+                //
+                + "findall(Template, Goal, Instances) :- \n"
                 + "all_solutions_predicates_guard(Template, Goal, Instances), \n"
                 + "L = [], \n"
                 + "'$findall0'(Template, Goal, L), \n"
@@ -1005,6 +1019,7 @@ public class BasicLibrary extends Library {
                 + "'$append'(CL, L), \n"
                 + "fail. \n"
                 + "'$findall0'(_, _, _). \n"
+                
                 + "variable_set(T, []) :- atomic(T), !. \n"
                 + "variable_set(T, [T]) :- var(T), !. \n"
                 + "variable_set([H | T], [SH | ST]) :- \n"
@@ -1042,6 +1057,7 @@ public class BasicLibrary extends Library {
                 + "'$wt_list'([], []). \n"
                 + "'$wt_list'([W + T | STail], [WW + T | WTTail]) :- copy_term(W, WW), '$wt_list'(STail, WTTail). \n"
                 + "'$s_next'(Witness, WT_List, S_Next) :- copy_term(Witness, W2), '$s_next0'(W2, WT_List, S_Next), !. \n"
+                
                 + "bagof(Template, Goal, Instances) :- \n"
                 + "all_solutions_predicates_guard(Template, Goal, Instances), \n"
                 + "free_variables_set(Goal, Template, Set), \n"
@@ -1058,6 +1074,44 @@ public class BasicLibrary extends Library {
                 + "'$wt_list'(S, WT_List), \n"
                 + "'$s_next'(Witness, WT_List, S_Next), \n"
                 + "'$bagof0'(Witness, S_Next, Instances). \n"
+                
+                //bag of swi
+               /* + "bagof(Templ, Goal0, List) :- \n"
+				+ "'$free_variable_set'(Templ^Goal0, Goal, Vars), \n"
+				+ "(   Vars == v \n"
+				+ "->  findall(Templ, Goal, List), \n"
+				+ "List \\== [] \n"
+				+ ";   findall(Vars-Templ, Goal, Answers), \n"
+				+ "bind_bagof_keys(Answers,_), \n"
+				+ "keysort(Answers, Sorted), \n"
+				+ "pick(Sorted, Vars, List) \n"
+				+ "). \n"
+
+				+ "bind_bagof_keys([], _). \n"
+				+ "bind_bagof_keys([W-_|WTs], Vars) :- \n"
+				+ "term_variables(W, Vars, _), \n"
+				+ "bind_bagof_keys(WTs, Vars). \n"
+
+				+ "pick(Bags, Vars1, Bag1) :- \n"
+				+ "pick_first(Bags, Vars0, Bag0, RestBags), \n"
+				+ "select_bag(RestBags, Vars0, Bag0, Vars1, Bag1). \n"
+
+				+ "pick_first([Vars-Templ|T0], Vars, [Templ|T], RestBag) :- \n"
+				+ "pick_same(T0, Vars, T, RestBag). \n"
+
+
+				+ "pick_same([V-H|T0], Vars, [H|T], Bag) :- \n"
+				+ "V == Vars, !, \n"
+				+ "pick_same(T0, Vars, T, Bag). \n"
+				+ "pick_same(Bag, _, [], Bag). \n"
+				
+				+ "select_bag([], Vars0, Bag0, Vars1, Bag1) :- !, % last one: deterministic \n"
+				+ "Vars0 = Vars1, \n"
+				+ "Bag0 = Bag1. \n"
+				+ "select_bag(_, Vars, Bag, Vars, Bag). \n"
+				+ "select_bag(RestBags, _, _, Vars1, Bag1) :- \n"
+				+ "pick(RestBags, Vars1, Bag1). \n"*/
+				//
                 + "setof(Template, Goal, Instances) :- \n"
                 + "all_solutions_predicates_guard(Template, Goal, Instances), \n"
                 + "bagof(Template, Goal, List), \n"
