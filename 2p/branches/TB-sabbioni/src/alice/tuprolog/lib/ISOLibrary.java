@@ -418,9 +418,9 @@ public class ISOLibrary extends Library {
                 + "unbound(X):-not(ground(X)).\n                                                                          "
                 +
                 //
-                "atom_concat(F,S,R) :- catch(atom_concat0(F,S,R), Error, false).\n            "
-                + "atom_concat0(F,S,R) :- atom_chars(R,RS),append(FL,SL,RS),atom_chars(F,FL),atom_chars(S,SL).\n            "
-                + "atom_concat0(F,S,R) :- atom_chars(R,RS),append(FL,SL,RS),atom_chars(F,FL),atom_chars(S,SL).\n            "   
+                "atom_concat(F,S,R) :- catch(atom_concat0(F,S,R), Error, false).\n"
+                + "atom_concat0(F,S,R) :- var(R), !,(atom_chars(S,SL),append(FL,SL,RS),atom_chars(F,FL),atom_chars(R,RS)).  \n"
+                + "atom_concat0(F,S,R) :-(atom_chars(R,RS), append(FL,SL,RS),atom_chars(F,FL),atom_chars(S,SL)).\n"
                 + "atom_codes(A,L):- catch(atom_codes0(A,L), Error, false).\n"
                 /*Castagna 09/2011*/
                 //+ "atom_codes0(A,L):-atom_chars(A,L1),!,chars_codes(L1,L).\n"
@@ -429,17 +429,15 @@ public class ISOLibrary extends Library {
                 + "atom_codes0(A,L):-chars_codes(L1,L),atom_chars(A,L1).\n"
                 + "chars_codes([],[]).\n"
                 + "chars_codes([X|L1],[Y|L2]):-char_code(X,Y),chars_codes(L1,L2).\n"
-                /*Sabbioni 10/2011 for bug 3386231*/
-                //+ "sub_atom(Atom,B,L,A,Sub):- sub_atom_guard(Atom,B,L,A,Sub), sub_atom(Atom,B,L,A,Sub).\n"
-                + "sub_atom(Atom,B,L,A,Sub):- sub_atom_guard(Atom,B,L,A,Sub), sub_atom0(Atom,B,L,A,Sub).\n"
                 /**/
-                + "sub_atom0(Atom,B,L,A,Sub):-atom_chars(Atom,L1),atom_chars(Sub,L2),!,sub_list(L2,L1,B),length(L2,L), length(L1,Len), A is Len-(B+L).\n"
+                + "sub_atom(Atom,B,L,A,Sub):- sub_atom_guard(Atom,B,L,A,Sub), sub_atom0(Atom,B,L,A,Sub).\n"
                 + "sub_atom0(Atom,B,L,A,Sub):-atom_chars(Atom,L1),sub_list(L2,L1,B),atom_chars(Sub,L2),length(L2,L), length(L1,Len), A is Len-(B+L).\n"
                 + "sub_list([],_,0).\n"
                 + "sub_list([X|L1],[X|L2],0):- sub_list_seq(L1,L2).\n"
                 + "sub_list(L1,[_|L2],N):- sub_list(L1,L2,M), N is M + 1.\n"
                 + "sub_list_seq([],L).\n"
                 + "sub_list_seq([X|L1],[X|L2]):-sub_list_seq(L1,L2).\n"
+                
                 + "number_chars(Number,List):-catch(number_chars0(Number,List), Error, false).\n"
                 + "number_chars0(Number,List):-num_atom(Number,Struct),atom_chars(Struct,List),!.\n"
                 + "number_chars0(Number,List):-atom_chars(Struct,List),num_atom(Number,Struct).\n"
