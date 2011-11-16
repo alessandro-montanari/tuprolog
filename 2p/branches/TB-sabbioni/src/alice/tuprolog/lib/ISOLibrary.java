@@ -411,10 +411,9 @@ public class ISOLibrary extends Library {
                 + ",false).\n"
                 + ":- flag(undefined_predicate, [error,fail,warning], fail, false).\n"
                 + ":- flag(double_quotes, [atom,chars,codes], atom, false).\n"
-                +
                 //
                 //
-                "bound(X):-ground(X).\n                                                                                  "
+                + "bound(X):-ground(X).\n                                                                                  "
                 + "unbound(X):-not(ground(X)).\n                                                                          "
                 
                 //
@@ -437,10 +436,11 @@ public class ISOLibrary extends Library {
                 + "sub_list_seq([X|L1],[X|L2]):-sub_list_seq(L1,L2).\n"
                 
                 + "number_chars(Number,List):-catch(number_chars0(Number,List), Error, false).\n"
-                + "number_chars0(Number,List):-num_atom(Number,Struct),atom_chars(Struct,List),!.\n"
+                + "number_chars0(Number,List):-nonvar(Number),!,num_atom(Number,Struct),atom_chars(Struct,List).\n"
                 + "number_chars0(Number,List):-atom_chars(Struct,List),num_atom(Number,Struct).\n"
+                
                 + "number_codes(Number,List):-catch(number_codes0(Number,List), Error, false).\n"
-                + "number_codes0(Number,List):-num_atom(Number,Struct),atom_codes(Struct,List),!.\n"
+                + "number_codes0(Number,List):-nonvar(Number),!,num_atom(Number,Struct),atom_codes(Struct,List).\n"
                 + "number_codes0(Number,List):-atom_codes(Struct,List),num_atom(Number,Struct).\n";
         //
         // ISO default
