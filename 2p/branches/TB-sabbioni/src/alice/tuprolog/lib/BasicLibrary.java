@@ -828,12 +828,8 @@ public class BasicLibrary extends Library {
             String st = null;
             if (n0.isInteger()) {
                 st = new java.lang.Integer(n0.intValue()).toString();
-            } /*
-             * else if (arg0.isLong()){ st=new Long(arg0.getLong()).toString();
-             * } else if (arg0.isFloat()){ st=new
-             * Float(arg0.getFloat()).toString(); } else if (arg0.isDouble()){
-             * st=new Double(arg0.doubleValue()).toString(); }
-             */else {
+            } 
+            else {
                 st = new java.lang.Double(n0.doubleValue()).toString();
             }
             return (unify(arg1, new Struct(st)));
@@ -843,22 +839,107 @@ public class BasicLibrary extends Library {
                         "atom", arg1);
             }
             String st = ((Struct) arg1).getName();
-            try {
-                if (st.startsWith("'") && st.endsWith("'")) {
-                    st = st.substring(1, st.length() - 1);
-                }
-            } catch (Exception ex) {
+            String st2="";
+            for(int i=0; i<st.length(); i++)
+            {
+            	st2+=st.charAt(i);
+            	
+            	if (st.charAt(0)=='0' && st.charAt(1)==39 && st.charAt(2)==39 && st.length()==4)
+            	{
+            		String sti=""+st.charAt(3);
+            		byte[] b= sti.getBytes();
+            		st2=""+b[0];
+            	}
+            	if (st.charAt(0)=='0' && st.charAt(1)=='x' && st.charAt(2)>='a' && st.charAt(2)<='f' && st.length()==3)
+            	{
+            		String sti=""+st.charAt(2);
+            		int dec=java.lang.Integer.parseInt(sti, 16);
+            		st2=""+dec;
+            	}
             }
+            boolean before=true;
+            boolean after=false;
+            boolean between=false;
+            int numBefore=0;
+            int numAfter=0;
+            int numBetween=0;
+            String st3=null;
+            String iBetween="";
+            for(int i=0; i<st2.length(); i++)
+            {
+            	if((st2.charAt(i)<'0' || st2.charAt(i)>'9') && before) // find non number at first
+            		numBefore++;
+            	
+            	between=false;
+            	if(st2.charAt(i)>='0' && st2.charAt(i)<='9') //found a number
+            	{
+            		int k=0;
+            		for(int j=i+1; j<st2.length(); j++) //into the rest of the string
+            		{
+            			if(st2.charAt(j)>='0' && st2.charAt(j)<='9' && j-i>1) // control if there is another numbers
+            			{
+            				k+=i+1;
+            				numBetween+=2; 
+            				iBetween=""+k+j;
+            				i+=j;
+            				j=st2.length();
+            				between=true;
+            			}
+            			else if(st2.charAt(j)>='0' && st2.charAt(j)<='9' && j-i==1)
+            				k++;
+            		}
+            		
+            		if (!between)
+            		{
+            			before=false;
+            			after=true;
+            		}
+            		else
+            			before=false;
+            	}
+            	
+            	if((st2.charAt(i)<'0' || st2.charAt(i)>'9') && after)
+            		numAfter++;
+            }
+            for(int i=0; i<numBefore; i++)
+            {
+            	if (st2.charAt(i)==' ')
+            		st3=st2.substring(i+1, st2.length());
+            	else if (st2.charAt(i)=='\\' && (st2.charAt(i+1)=='n' || st2.charAt(i+1)=='t'))
+            	{
+            		st3=st2.substring(i+2, st2.length());
+            		i++;
+            	}
+            	else if (st2.charAt(i)!='-' && st2.charAt(i)!='+')
+            		st3="";
+            }
+            for(int i=0; i<numBetween; i+=2)
+            {
+            	for(int j=java.lang.Integer.parseInt(""+iBetween.charAt(i)); j<java.lang.Integer.parseInt(""+iBetween.charAt(i+1)); j++)
+            	{
+            		if (st2.charAt(j)!='.' && (st2.charAt(i)!='E' || (st2.charAt(i)!='E' && (st2.charAt(i+1)!='+' || st2.charAt(i+1)!='-'))) && (st2.charAt(i)!='e' || (st2.charAt(i)!='e' && (st2.charAt(i+1)!='+' || st2.charAt(i+1)!='-'))))
+            		{
+            			st3="";
+            		}
+            	}
+            }
+            for(int i=0; i<numAfter; i++)
+            {
+            	if ((st2.charAt(i)!='E' || (st2.charAt(i)!='E' && (st2.charAt(i+1)!='+' || st2.charAt(i+1)!='-'))) && st2.charAt(i)!='.' && (st2.charAt(i)!='e' || (st2.charAt(i)!='e' && (st2.charAt(i+1)!='+' || st2.charAt(i+1)!='-'))))
+            		st3="";
+            }
+            if (st3!=null)
+            	st2=st3;
             ;
             Term term = null;
             try {
-                term = new alice.tuprolog.Int(java.lang.Integer.parseInt(st));
+                term = new alice.tuprolog.Int(java.lang.Integer.parseInt(st2));
             } catch (Exception ex) {
             }
             if (term == null) {
                 try {
                     term = new alice.tuprolog.Double(java.lang.Double
-                            .parseDouble(((Struct) arg1).getName()));
+                            .parseDouble(st2));
                 } catch (Exception ex) {
                 }
             }
