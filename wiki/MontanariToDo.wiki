@@ -1,3 +1,2 @@
-  * Fix the creation of console.jar (build.xml)
   * Fix the compilation with IKVM on mac os x (build.xml)
-  * Create an ant task for the bin and src releases
+  * Create an ant task for the bin and src releases (build.xml)
