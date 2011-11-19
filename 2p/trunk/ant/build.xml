@@ -459,7 +459,7 @@
  		            <arg value="${lib.dir}/javassist.jar" />
 	 		</exec>
 	        
-	        <echo>Building "2p...</echo>
+	        <echo>Building 2p...</echo>
 	 		<exec executable="${ikvmc}">
 	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Beans.dll" />
 	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Corba.dll" />
@@ -475,6 +475,7 @@
 	            <arg value="${build.archives.dir}/2p.jar" />
 	        </exec>
 	 	
+	 		<!--
 	 		<echo>Building tuprolog...</echo>
 	 		<exec executable="${ikvmc}">
 					<arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Beans.dll" />
@@ -522,6 +523,8 @@
  		            <arg value="-out:${build.archives.net.dir}/archives/tuprolog-ide.dll" />
  		            <arg value="${build.archives.dir}/tuprolog-ide.jar" />
 	 		</exec>
+	 	
+	 		--> 
 	 	
 		 	<echo>Building Unit Tests...</echo>
 			<exec executable="${ikvmc}">
