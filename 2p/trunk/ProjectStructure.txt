@@ -9,6 +9,7 @@ Structure of the project:
 		|---fit
 		|---unit
 	|---tests			Tests’ .class files
+	|---release			Destination for task "11.release.bin". Folder and zip.
 |---doc					Documentation (guide + javadoc)
 |---lib					
 |---src

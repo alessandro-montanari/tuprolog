@@ -31,6 +31,7 @@
 	    <property name="build.classes.dir" value="${build.dir}/classes"/>
 	    <property name="build.tests.dir" value="${build.dir}/tests"/>
 	    <property name="build.archives.dir" value="${build.dir}/archives"/>
+		<property name="build.release.dir" value="${build.dir}/release"/>
 		<property name="build.unit.reports.dir" value="${build.dir}/reports/unit"/>
 		<property name="build.fit.reports.dir" value="${build.dir}/reports/fit"/>
 		
@@ -518,7 +519,7 @@
 	 	 <echo>Look directory ${build.archives.net.dir}</echo>
 	    </target>
 
-	    <target name="10.javadoc" depends="01.set.classpath" description="Create Javadocs">
+	    <target name="10.javadoc" depends="01.set.classpath" description="Creates Javadocs">
 	    	<delete dir="${doc.dir}/javadoc"/>
 	    	<mkdir dir="${doc.dir}/javadoc"/>
 	    	
@@ -537,4 +538,47 @@
 	    	
 	    	<echo>Look directory ${doc.dir}/javadoc</echo>
 	    </target>
+	
+		<target name="11.release.bin" depends="01.set.classpath, 04.prepare, 06.unit.test.report, 07.fit.test, 08.package, 10.javadoc " description="Creates the structure for the release">
+			<delete dir="${build.release.dir}"/>
+			<mkdir dir="${build.release.dir}"/>
+			
+			<mkdir dir="${build.release.dir}/2p-${project.version}"/>
+			<mkdir dir="${build.release.dir}/2p-${project.version}/bin"/>
+			<mkdir dir="${build.release.dir}/2p-${project.version}/lib"/>
+			<mkdir dir="${build.release.dir}/2p-${project.version}/reports"/>
+			<mkdir dir="${build.release.dir}/2p-${project.version}/doc"/>
+			
+				<copy todir="${build.release.dir}/2p-${project.version}/reports">
+			    	<fileset dir="${build.dir}/reports"/>
+			  	</copy>
+			
+				<copy todir="${build.release.dir}/2p-${project.version}/bin">
+			   		<fileset dir="${build.archives.dir}">
+			      		<include name="*.jar"/>
+			    	</fileset>
+			  	</copy>
+			
+				<copy todir="${build.release.dir}/2p-${project.version}/lib">
+					<fileset dir="${lib.dir}">
+						<include name="javassist.jar"/>
+					</fileset>
+				</copy>
+			
+				<copy todir="${build.release.dir}/2p-${project.version}/doc">
+					<fileset dir="${doc.dir}"/>
+				</copy>
+			
+				<copy todir="${build.release.dir}/2p-${project.version}">
+					<fileset dir=".">
+						<include name="LICENSE.txt"/>
+					</fileset>
+				</copy>
+			
+				<zip destfile="${build.release.dir}/2p-${project.version}.zip"
+			       	 basedir="${build.release.dir}/2p-${project.version}"
+			 	 	/>
+			
+			<echo>Look directory ${build.release.dir}</echo>
+		</target>
 </project>
