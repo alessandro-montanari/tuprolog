@@ -216,7 +216,9 @@
     	    </manifest>
     	  </jar>
     	
-    	<jar destfile="${build.archives.dir}/Console.jar" basedir="${build.archives.dir}/tmp">
+    	<jar destfile="${build.archives.dir}/tuprolog.jar" 	basedir="${build.archives.dir}/tmp" 
+    														includes="alice/tuprolog/**, alice/util/**"
+    	       												excludes="alice/tuprologx/**, alice/util/jedit/**">
     	    	    <manifest>
     	    	      	<!-- Who is building this jar? -->
     	    	      	<attribute name="Built-By" value="${user.name}"/>
@@ -225,10 +227,42 @@
     	    	      	<attribute name="Implementation-Title" value="tuProlog Engine"/>
     	    	      	<attribute name="Implementation-Version" value="${project.version}"/>
     	    	      	<!-- details -->
-    	    	   		<attribute name="Main-Class" value="alice.tuprologx.ide.CUIConsole"/>
+    	    	    	
     	    	    </manifest>
     	 </jar>
    
+    	<jar destfile="${build.archives.dir}/tuprolog-ide.jar" 		basedir="${build.archives.dir}/tmp" 
+    	    														includes="alice/tuprologx/ide/**, alice/util/jedit/**"
+    	    	       												excludes="alice/tuprolog/**, alice/tuprologx/pj/**, 
+    																		  alice/tuprologx/runtime/**,alice/util/*.class">
+		    <manifest>
+		      	<!-- Who is building this jar? -->
+		      	<attribute name="Built-By" value="${user.name}"/>
+		      	<!-- Information about the program itself -->
+		      	<attribute name="Implementation-Vendor" value="tuProlog team"/>
+		      	<attribute name="Implementation-Title" value="tuProlog Engine"/>
+		      	<attribute name="Implementation-Version" value="${project.version}"/>
+		      	<!-- details -->
+
+		    </manifest>
+    	  </jar>
+    	
+    	<jar destfile="${build.archives.dir}/tuprolog-extensions.jar" 		basedir="${build.archives.dir}/tmp" 
+    	    	    														includes="alice/tuprologx/runtime/**, alice/tuprologx/pj/**"
+    	    	    	       												excludes="alice/tuprolog/**, alice/tuprologx/ide/**, 
+    	    																		  alice/util/**">
+		    <manifest>
+		      	<!-- Who is building this jar? -->
+		      	<attribute name="Built-By" value="${user.name}"/>
+		      	<!-- Information about the program itself -->
+		      	<attribute name="Implementation-Vendor" value="tuProlog team"/>
+		      	<attribute name="Implementation-Title" value="tuProlog Engine"/>
+		      	<attribute name="Implementation-Version" value="${project.version}"/>
+		      	<!-- details -->
+
+		    </manifest>
+    	    	    	 </jar>
+    	
     	<jar destfile="${build.tests.dir}/unit-tests.jar" basedir="${build.tests.dir}/unit">
 	    	<manifest>
 		      	<!-- Who is building this jar? -->
@@ -257,78 +291,112 @@
     </target>
 	
 	<target name="08.package.debug" depends="01.set.classpath, 04.prepare, 05.build.tests" description="Create runnable Jar" >
-	    	<!--
-	    	<input
-	    		message="tuProlog version (n.n.n):"
-	    		addproperty="version"
-	    	/>
-	    	-->
-	    	<delete dir="${build.archives.dir}"/>
-	    	<mkdir dir="${build.archives.dir}"/>
-	    	<mkdir dir="${build.archives.dir}/tmp"/>
-	    	
-	   		<javac destdir="${build.archives.dir}/tmp" debug="true" deprecation="false" 
-	   				optimize="false" failonerror="true">
-	    		<src path="${src.dir}"/>
-	    	   	<classpath refid="ant-classpath"/>
-	    	</javac>
-	    	
-	    	<copy todir="${build.archives.dir}/tmp/alice/tuprologx/ide/img">
-	    		<fileset dir="${src.dir}/alice/tuprologx/ide/img"/>
-	    	</copy>
-	    	
-	    	<jar destfile="${build.archives.dir}/2p.jar" basedir="${build.archives.dir}/tmp">
-	    	    <manifest>
-	    	      	<!-- Who is building this jar? -->
-	    	      	<attribute name="Built-By" value="${user.name}"/>
-	    	      	<!-- Information about the program itself -->
-	    	      	<attribute name="Implementation-Vendor" value="tuProlog team"/>
-	    	      	<attribute name="Implementation-Title" value="tuProlog Engine"/>
-	    	      	<attribute name="Implementation-Version" value="${project.version}"/>
-	    	      	<!-- details -->
-	    	   		<attribute name="Main-Class" value="alice.tuprologx.ide.GUILauncher"/>
-	    	    </manifest>
-	    	  </jar>
-	    	
-	    	<jar destfile="${build.archives.dir}/Console.jar" basedir="${build.archives.dir}/tmp">
-	    	    	    <manifest>
-	    	    	      	<!-- Who is building this jar? -->
-	    	    	      	<attribute name="Built-By" value="${user.name}"/>
-	    	    	      	<!-- Information about the program itself -->
-	    	    	      	<attribute name="Implementation-Vendor" value="tuProlog team"/>
-	    	    	      	<attribute name="Implementation-Title" value="tuProlog Engine"/>
-	    	    	      	<attribute name="Implementation-Version" value="${project.version}"/>
-	    	    	      	<!-- details -->
-	    	    	   		<attribute name="Main-Class" value="alice.tuprologx.ide.CUIConsole"/>
-	    	    	    </manifest>
-	    	 </jar>
-	   
-	    	<jar destfile="${build.tests.dir}/unit-tests.jar" basedir="${build.tests.dir}/unit">
-		    	<manifest>
-			      	<!-- Who is building this jar? -->
-			      	<attribute name="Built-By" value="${user.name}"/>
-			      	<!-- Information about the program itself -->
-			      	<attribute name="Implementation-Vendor" value="tuProlog team"/>
-			      	<attribute name="Implementation-Title" value="tuProlog Engine"/>
-			      	<attribute name="Implementation-Version" value="${project.version}"/>
-			    </manifest>
-		 	</jar>
-	    	
-	    	<jar destfile="${build.tests.dir}/fixtures.jar" basedir="${build.tests.dir}/fixtures">
-		    	<manifest>
-			      	<!-- Who is building this jar? -->
-			      	<attribute name="Built-By" value="${user.name}"/>
-			      	<!-- Information about the program itself -->
-			      	<attribute name="Implementation-Vendor" value="tuProlog team"/>
-			      	<attribute name="Implementation-Title" value="tuProlog Engine"/>
-			      	<attribute name="Implementation-Version" value="${project.version}"/>
-			    </manifest>
-	    	</jar>
-	    	
-	    	<delete dir="${build.archives.dir}/tmp"/>
+    	<!--
+    	<input
+    		message="tuProlog version (n.n.n):"
+    		addproperty="version"
+    	/>
+    	-->
+		<delete dir="${build.archives.dir}"/>
+		<mkdir dir="${build.archives.dir}"/>
+    	<mkdir dir="${build.archives.dir}/tmp"/>
+    	
+   		<javac destdir="${build.archives.dir}/tmp" debug="true" deprecation="false" 
+   				optimize="false" failonerror="true">
+    		<src path="${src.dir}"/>
+    	   	<classpath refid="ant-classpath"/>
+    	</javac>
+    	
+    	<copy todir="${build.archives.dir}/tmp/alice/tuprologx/ide/img">
+    		<fileset dir="${src.dir}/alice/tuprologx/ide/img"/>
+    	</copy>
+    	
+    	<jar destfile="${build.archives.dir}/2p.jar" basedir="${build.archives.dir}/tmp">
+    	    <manifest>
+    	      	<!-- Who is building this jar? -->
+    	      	<attribute name="Built-By" value="${user.name}"/>
+    	      	<!-- Information about the program itself -->
+    	      	<attribute name="Implementation-Vendor" value="tuProlog team"/>
+    	      	<attribute name="Implementation-Title" value="tuProlog Engine"/>
+    	      	<attribute name="Implementation-Version" value="${project.version}"/>
+    	      	<!-- details -->
+    	   		<attribute name="Main-Class" value="alice.tuprologx.ide.GUILauncher"/>
+    	    </manifest>
+    	  </jar>
+    	
+    	<jar destfile="${build.archives.dir}/tuprolog.jar" 	basedir="${build.archives.dir}/tmp" 
+    														includes="alice/tuprolog/**, alice/util/**"
+    	       												excludes="alice/tuprologx/**, alice/util/jedit/**">
+		    <manifest>
+		      	<!-- Who is building this jar? -->
+		      	<attribute name="Built-By" value="${user.name}"/>
+		      	<!-- Information about the program itself -->
+		      	<attribute name="Implementation-Vendor" value="tuProlog team"/>
+		      	<attribute name="Implementation-Title" value="tuProlog Engine"/>
+		      	<attribute name="Implementation-Version" value="${project.version}"/>
+		      	<!-- details -->
+
+		    </manifest>
+    	 </jar>
+   
+    	<jar destfile="${build.archives.dir}/tuprolog-ide.jar" 		basedir="${build.archives.dir}/tmp" 
+    	    														includes="alice/tuprologx/ide/**, alice/util/jedit/**"
+    	    	       												excludes="alice/tuprolog/**, alice/tuprologx/pj/**, 
+    																		  alice/tuprologx/runtime/**,alice/util/*.class">
+		    <manifest>
+		      	<!-- Who is building this jar? -->
+		      	<attribute name="Built-By" value="${user.name}"/>
+		      	<!-- Information about the program itself -->
+		      	<attribute name="Implementation-Vendor" value="tuProlog team"/>
+		      	<attribute name="Implementation-Title" value="tuProlog Engine"/>
+		      	<attribute name="Implementation-Version" value="${project.version}"/>
+		      	<!-- details -->
+		    	
+		    </manifest>
+    	  </jar>
+    	
+    	<jar destfile="${build.archives.dir}/tuprolog-extensions.jar" 		basedir="${build.archives.dir}/tmp" 
+    	    	    														includes="alice/tuprologx/runtime/**, alice/tuprologx/pj/**"
+    	    	    	       												excludes="alice/tuprolog/**, alice/tuprologx/ide/**, 
+    	    																		  alice/util/**">
+		    <manifest>
+		      	<!-- Who is building this jar? -->
+		      	<attribute name="Built-By" value="${user.name}"/>
+		      	<!-- Information about the program itself -->
+		      	<attribute name="Implementation-Vendor" value="tuProlog team"/>
+		      	<attribute name="Implementation-Title" value="tuProlog Engine"/>
+		      	<attribute name="Implementation-Version" value="${project.version}"/>
+		      	<!-- details -->
+
+		    </manifest>
+    	 </jar>
+    	
+    	<jar destfile="${build.tests.dir}/unit-tests.jar" basedir="${build.tests.dir}/unit">
+	    	<manifest>
+		      	<!-- Who is building this jar? -->
+		      	<attribute name="Built-By" value="${user.name}"/>
+		      	<!-- Information about the program itself -->
+		      	<attribute name="Implementation-Vendor" value="tuProlog team"/>
+		      	<attribute name="Implementation-Title" value="tuProlog Engine"/>
+		      	<attribute name="Implementation-Version" value="${project.version}"/>
+		    </manifest>
+	 	</jar>
+    	
+    	<jar destfile="${build.tests.dir}/fixtures.jar" basedir="${build.tests.dir}/fixtures">
+	    	<manifest>
+		      	<!-- Who is building this jar? -->
+		      	<attribute name="Built-By" value="${user.name}"/>
+		      	<!-- Information about the program itself -->
+		      	<attribute name="Implementation-Vendor" value="tuProlog team"/>
+		      	<attribute name="Implementation-Title" value="tuProlog Engine"/>
+		      	<attribute name="Implementation-Version" value="${project.version}"/>
+		    </manifest>
+    	</jar>
+    	
+    	<delete dir="${build.archives.dir}/tmp"/>
 		
-			<echo>Look directories ${build.archives.dir} and ${build.tests.dir}</echo>
-	    </target>
+		<echo>Look directories ${build.archives.dir} and ${build.tests.dir}</echo>
+	 </target>
 	
 	 <target name="09.build.NET" depends="08.package" description="Build.NET files">
 	 		<delete dir="${build.archives.net.dir}"/>
