@@ -459,7 +459,7 @@
  		            <arg value="${lib.dir}/javassist.jar" />
 	 		</exec>
 	        
-	        <echo>Building tuProlog GUI...</echo>
+	        <echo>Building "2p...</echo>
 	 		<exec executable="${ikvmc}">
 	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Beans.dll" />
 	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Corba.dll" />
@@ -475,7 +475,7 @@
 	            <arg value="${build.archives.dir}/2p.jar" />
 	        </exec>
 	 	
-	 		<echo>Building tuProlog Console...</echo>
+	 		<echo>Building tuprolog...</echo>
 	 		<exec executable="${ikvmc}">
 					<arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Beans.dll" />
 		            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Corba.dll" />
@@ -484,11 +484,43 @@
 		            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Misc.dll" />
 		            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.SwingAWT.dll" />
 		            <arg value="-reference:${build.archives.net.dir}/archives/javassist.dll" />
- 		            <arg value="-target:exe" />
+ 		            <arg value="-target:library" />
  		            <arg value="-compressresources" />
  		            <arg value="-version:${project.version}" />
- 		            <arg value="-out:${build.archives.net.dir}/archives/Console.exe" />
- 		            <arg value="${build.archives.dir}/Console.jar" />
+ 		            <arg value="-out:${build.archives.net.dir}/archives/tuprolog.dll" />
+ 		            <arg value="${build.archives.dir}/tuprolog.jar" />
+	 		</exec>
+	 	
+	 		<echo>Building tuprolog extensions...</echo>
+	 		<exec executable="${ikvmc}">
+					<arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Beans.dll" />
+		            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Corba.dll" />
+		            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Remoting.dll" />
+		            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Core.dll" />
+		            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Misc.dll" />
+		            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.SwingAWT.dll" />
+		            <arg value="-reference:${build.archives.net.dir}/archives/javassist.dll" />
+ 		            <arg value="-target:library" />
+ 		            <arg value="-compressresources" />
+ 		            <arg value="-version:${project.version}" />
+ 		            <arg value="-out:${build.archives.net.dir}/archives/tuprolog-extensions.dll" />
+ 		            <arg value="${build.archives.dir}/tuprolog-extensions.jar" />
+	 		</exec>
+	 	
+	 		<echo>Building tuprolog ide...</echo>
+	 		<exec executable="${ikvmc}">
+					<arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Beans.dll" />
+		            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Corba.dll" />
+		            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Remoting.dll" />
+		            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Core.dll" />
+		            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Misc.dll" />
+		            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.SwingAWT.dll" />
+		            <arg value="-reference:${build.archives.net.dir}/archives/javassist.dll" />
+ 		            <arg value="-target:library" />
+ 		            <arg value="-compressresources" />
+ 		            <arg value="-version:${project.version}" />
+ 		            <arg value="-out:${build.archives.net.dir}/archives/tuprolog-ide.dll" />
+ 		            <arg value="${build.archives.dir}/tuprolog-ide.jar" />
 	 		</exec>
 	 	
 		 	<echo>Building Unit Tests...</echo>
