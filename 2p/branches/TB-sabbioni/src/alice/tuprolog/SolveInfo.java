@@ -195,31 +195,6 @@ public class SolveInfo implements Serializable/*, ISolution<Term,Term,Term>*/  {
                     st.append("  ");
                 }
             }
-            if (st.toString().contains(""+'_'))
-            {
-            	StringBuffer st2 = new StringBuffer("");
-            	boolean found=false;
-            	for(int i=0; i<st.toString().length(); i++)
-            	{
-            		if (st.toString().charAt(i)!='_')
-            		{
-            			if (!found)
-            				st2.append(st.toString().charAt(i));
-            		}
-            		else
-            		{
-            			st2.append(st.toString().charAt(i));
-            			found=true;
-            			i++;
-            		}
-            		if (found)
-            		{
-            			if (st.toString().charAt(i)<'0' || st.toString().charAt(i)>'9')
-            				found=false;
-            		}
-            	}
-            	return st2.toString().trim();
-            }
             return st.toString().trim();
         } else {
         	/*Castagna 06/2011*/
