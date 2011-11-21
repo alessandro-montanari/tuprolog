@@ -9,4 +9,4 @@
 || 2.3.1 beta || Fast-match (Contessi / Gattavecchia) <br> + bug fix Denti || swing || Yes || - || 639K || Indexing (Contessi) + refactoring <br> getTerm (Gattavecchia) <br> Performance improvement +20% average <br> NB: all exceptions tests pass ||
 || 2.4.0 RC1 || cesenati + Castagna || swing || Yes ||  ||  || Improved GUI with full Exceptions support. <br> Modified CUIconsole to handle exceptions correctly. <br> Bugfix: fixed unification bug which unified incorrectly variable in inner terms in some cases. <br> Code rewrite using generics, overall refactoring introducing new interfaces and factories, to better separate engine from upper layers. <br> New Eclipse Plug-in redesigned accordingly ||
 || 2.4.0 RC2 || Montanari + (Castagna) || swing || Yes ||  ||  || Bugfix in indexing mechanism and operator handling: removed operators remained in the index, causing their retrieval even when logically deleted, and creating double method retrieval in some cases. <br> Other minor bugs fixed. ||
-|| 2.4.2 || Silvia Umiliacchi || swing || Yes ||  ||  || Tail recursion optimisation ||
+|| 2.5.0 || Silvia Umiliacchi || swing || Yes ||  ||  || Tail recursion optimisation ||
