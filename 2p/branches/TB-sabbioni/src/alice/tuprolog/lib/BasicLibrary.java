@@ -248,7 +248,7 @@ public class BasicLibrary extends Library {
     }
 
     public boolean integer_1(Term t) {
-        if (!(t instanceof Number))
+        if (!(t  instanceof Number))
             return false;
         alice.tuprolog.Number n = (alice.tuprolog.Number) t.getTerm();
         return (n.isInteger());
@@ -1006,11 +1006,11 @@ public class BasicLibrary extends Library {
                 + ":- op(  200, xfy,  '^'). \n"
                 + ":- op(  200, fy,   '\\'). \n"
                 + ":- op(  200, fy,   '-'). \n"
-                +
+                
                 //
                 // flag management
                 //
-                "current_prolog_flag(Name,Value) :- catch(get_prolog_flag(Name,Value), Error, false),!.\n"
+                + "current_prolog_flag(Name,Value) :- catch(get_prolog_flag(Name,Value), Error, false),!.\n"
                 + "current_prolog_flag(Name,Value) :- flag_list(L), member(flag(Name,Value),L).\n"
                 +
                 //
@@ -1039,9 +1039,9 @@ public class BasicLibrary extends Library {
                 + "functor(Term, Name, Arity) :- compound(Term), !, Term =.. [Name | Args], length(Args, Arity). \n"
                 + "functor(Term, Name, Arity) :- var(Term), atomic(Name), Arity == 0, !, Term = Name. \n"
                 //Original Line
-                //+ "functor(Term, Name, Arity) :- var(Term), atom(Name), I is Arity, integer(I), I > 0, newlist([], I, L), Term =.. [Name | L]. \n"
+                + "functor(Term, Name, Arity) :- var(Term), atom(Name), I is Arity, integer(I), I > 0, newlist([], I, L), Term =.. [Name | L]. \n"
                 // integer() predicate remove due to recognition bug, I seems not to be a number even if it is.
-                + "functor(Term, Name, Arity) :- var(Term), atom(Name), I is Arity, I > 0, newlist([], I, L), !, Term =.. [Name | L]. \n"
+                //+ "functor(Term, Name, Arity) :- var(Term), atom(Name), I is Arity, I > 0, newlist([], I, L), !, Term =.. [Name | L]. \n"
                 + "arg(N,C,T):- arg_guard(N,C,T), C =.. [_|Args], element(N,Args,T).\n"
                 + "clause(H, B) :- clause_guard(H,B), L = [], '$find'(H, L), copy_term(L, LC), member((':-'(H, B)), LC). \n"
                 +
@@ -1076,19 +1076,7 @@ public class BasicLibrary extends Library {
                 //
                 // All solutions predicates
                 //
-                //swi findall
-                /*+ "findall(Templ, Goal, List) :- \n"
-                + "findall(Templ, Goal, List, []). \n"
-
-                + "findall(Templ, Goal, List, Tail) :- \n"
-                + "setup_call_cleanup('$new_findall_bag'(Bag), \n"
-                + "fa_loop(Templ, Goal, Bag, List, Tail), \n"
-                + "'$destroy_findall_bag'(Bag)). \n"
-
-                + "fa_loop(Templ, Goal, Bag, List, Tail) :- \n"
-                + "\\+ (Goal, \\+ '$add_findall_bag'(Bag, Templ)), \n"
-                + "'$collect_findall_bag'(Bag, List, Tail). \n"*/
-                //
+               
                 + "findall(Template, Goal, Instances) :- \n"
                 + "all_solutions_predicates_guard(Template, Goal, Instances), \n"
                 + "L = [], \n"
@@ -1156,43 +1144,6 @@ public class BasicLibrary extends Library {
                 + "'$s_next'(Witness, WT_List, S_Next), \n"
                 + "'$bagof0'(Witness, S_Next, Instances). \n"
                 
-                //bag of swi
-               /* + "bagof(Templ, Goal0, List) :- \n"
-				+ "'$free_variable_set'(Templ^Goal0, Goal, Vars), \n"
-				+ "(   Vars == v \n"
-				+ "->  findall(Templ, Goal, List), \n"
-				+ "List \\== [] \n"
-				+ ";   findall(Vars-Templ, Goal, Answers), \n"
-				+ "bind_bagof_keys(Answers,_), \n"
-				+ "keysort(Answers, Sorted), \n"
-				+ "pick(Sorted, Vars, List) \n"
-				+ "). \n"
-
-				+ "bind_bagof_keys([], _). \n"
-				+ "bind_bagof_keys([W-_|WTs], Vars) :- \n"
-				+ "term_variables(W, Vars, _), \n"
-				+ "bind_bagof_keys(WTs, Vars). \n"
-
-				+ "pick(Bags, Vars1, Bag1) :- \n"
-				+ "pick_first(Bags, Vars0, Bag0, RestBags), \n"
-				+ "select_bag(RestBags, Vars0, Bag0, Vars1, Bag1). \n"
-
-				+ "pick_first([Vars-Templ|T0], Vars, [Templ|T], RestBag) :- \n"
-				+ "pick_same(T0, Vars, T, RestBag). \n"
-
-
-				+ "pick_same([V-H|T0], Vars, [H|T], Bag) :- \n"
-				+ "V == Vars, !, \n"
-				+ "pick_same(T0, Vars, T, Bag). \n"
-				+ "pick_same(Bag, _, [], Bag). \n"
-				
-				+ "select_bag([], Vars0, Bag0, Vars1, Bag1) :- !, % last one: deterministic \n"
-				+ "Vars0 = Vars1, \n"
-				+ "Bag0 = Bag1. \n"
-				+ "select_bag(_, Vars, Bag, Vars, Bag). \n"
-				+ "select_bag(RestBags, _, _, Vars1, Bag1) :- \n"
-				+ "pick(RestBags, Vars1, Bag1). \n"*/
-				//
                 + "setof(Template, Goal, Instances) :- \n"
                 + "all_solutions_predicates_guard(Template, Goal, Instances), \n"
                 + "bagof(Template, Goal, List), \n"
