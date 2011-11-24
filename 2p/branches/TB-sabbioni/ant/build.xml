@@ -171,8 +171,7 @@
 			<classpath path="${build.tests.dir}/fixtures"/>
 		
 			<fileset dir="${test.dir}/fit/doc">
-				<exclude name="isoAcceptanceTests.html"/>
-				<exclude name="termCreationAndDecomposition.html"/> 
+				<exclude name="isoAcceptanceTests.html"/> 
 		    	<include name="*.html"/>
 		    </fileset>
 			
