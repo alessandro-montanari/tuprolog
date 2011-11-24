@@ -65,6 +65,12 @@ public class ISOLibrary extends Library {
                     if (st1.startsWith("'") && st1.endsWith("'")) {
                         st1 = st1.substring(1, st1.length() - 1);
                     }
+                    /*else
+                    {
+                    	byte[] b= st1.getBytes();
+                    	st1=""+b[0];
+                    }*/
+                    
                 } catch (Exception ex) {
                 }
                 ;
