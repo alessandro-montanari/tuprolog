@@ -555,8 +555,9 @@
 	    </target>
 
 	    <target name="10.javadoc" depends="01.set.classpath" description="Creates Javadocs">
-	    	<delete dir="${doc.dir}/javadoc"/>
-	    	<mkdir dir="${doc.dir}/javadoc"/>
+	    	<delete includeemptydirs="true">
+	    	    <fileset dir="${doc.dir}/javadoc" includes="**/*"/>
+	    	</delete>
 	    	
 	    	<javadoc sourcepath="${src.dir}"
 	               destdir="${doc.dir}/javadoc"
