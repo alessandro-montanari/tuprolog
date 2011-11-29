@@ -248,7 +248,7 @@ public class BasicLibrary extends Library {
     }
 
     public boolean integer_1(Term t) {
-        if (!(t  instanceof Number))
+        if (!(t.getTerm()  instanceof Number))
             return false;
         alice.tuprolog.Number n = (alice.tuprolog.Number) t.getTerm();
         return (n.isInteger());
@@ -1035,13 +1035,12 @@ public class BasicLibrary extends Library {
                 "'=..'(T, [T]) :- atomic(T), !. \n                                                          "
                 + "'=..'(T,L)  :- compound(T),!, '$tolist'(T,L). \n                                                          "
                 + "'=..'(T,L)  :- nonvar(L), catch('$fromlist'(T,L),Error,false). \n                                                          "
+                
                 + "functor(Term, Name, Arity) :- atomic(Term), !, Name = Term, Arity = 0. \n"
                 + "functor(Term, Name, Arity) :- compound(Term), !, Term =.. [Name | Args], length(Args, Arity). \n"
                 + "functor(Term, Name, Arity) :- var(Term), atomic(Name), Arity == 0, !, Term = Name. \n"
-                //Original Line
-                + "functor(Term, Name, Arity) :- var(Term), atom(Name), I is Arity, integer(I), I > 0, newlist([], I, L), Term =.. [Name | L]. \n"
-                // integer() predicate remove due to recognition bug, I seems not to be a number even if it is.
-                //+ "functor(Term, Name, Arity) :- var(Term), atom(Name), I is Arity, I > 0, newlist([], I, L), !, Term =.. [Name | L]. \n"
+                + "functor(Term, Name, Arity) :- var(Term), atom(Name), integer(Arity), Arity > 0, current_prolog_flag(max_arity, Max), Arity=<Max, !, newlist([], Arity, L), Term =.. [Name | L]. \n"
+                
                 + "arg(N,C,T):- arg_guard(N,C,T), C =.. [_|Args], element(N,Args,T).\n"
                 + "clause(H, B) :- clause_guard(H,B), L = [], '$find'(H, L), copy_term(L, LC), member((':-'(H, B)), LC). \n"
                 +
