@@ -663,7 +663,7 @@
 		
 		<svn refid="settings">
 			<copy
-				srcUrl="https://tuprolog.googlecode.com/svn/2p/trunk" 
+				srcPath="." 
 				destUrl="https://tuprolog.googlecode.com/svn/2p/tags/REL-${project.version}"
 				message="test"
 				makeParents="true" >
