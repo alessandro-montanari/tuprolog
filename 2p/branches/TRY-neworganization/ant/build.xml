@@ -666,10 +666,15 @@
 			<copy
 				srcPath="." 
 				destUrl="https://tuprolog.googlecode.com/svn/2p/tags/REL-${project.version}"
-				message="test"
+				message="Tag ${project.version}"
 				makeParents="true" >
-				
-			</copy>
+			</copy> 
+			<import
+				path="./build/archives/2p.jar" 
+				url="https://tuprolog.googlecode.com/svn/2p/tags/REL-${project.version}/build/archives/2p.jar"
+				message="Tag ${project.version}"
+				recurse="false" >
+			</import> 
 		</svn>
 	</target>
 </project>
