@@ -436,7 +436,7 @@ public class Var extends Term {
                            ;
                 // occur-check
                 if (occurCheck(vl2, (Struct)t)) {
-                    return false;
+                    return true;
                 }
             } else if (!(t instanceof Number)) {
                 return false;
