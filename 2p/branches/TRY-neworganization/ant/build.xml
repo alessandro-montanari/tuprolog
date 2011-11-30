@@ -659,10 +659,12 @@
 		<svnSetting
 			id="settings"
 			username="${username}"
-			password="${password}" />
+			password="${password}"
+			svnkit="true" 
+			javahl="false" />
 		
 		
-		<svn refid="settings" svnkit="true" javahl="false">
+		<svn refid="settings">
 			<copy
 				srcPath="." 
 				destUrl="https://tuprolog.googlecode.com/svn/2p/tags/REL-${project.version}"
