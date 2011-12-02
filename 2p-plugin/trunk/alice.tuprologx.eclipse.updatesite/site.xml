@@ -3,5 +3,6 @@
    <feature url="features/alice.tuprologx.eclipse_0.7.0.jar" id="alice.tuprologx.eclipse" version="0.7.0" os="linux,macosx,win32" ws="carbon,cocoa,gtk,win32" nl="en" arch="ia64,ia64_32,x86,x86_64">
       <category name="tuProlog Plugin"/>
    </feature>
+   <feature url="features/alice.tuprologx.eclipse_0.7.1.jar" id="alice.tuprologx.eclipse" version="0.7.1" os="linux,macosx,win32" ws="carbon,cocoa,gtk,win32" nl="en" arch="ia64,ia64_32,x86,x86_64"/>
    <category-def name="tuProlog Plugin" label="tuProlog Plugin"/>
 </site>
