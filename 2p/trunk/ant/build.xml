@@ -540,8 +540,10 @@
 	    </target>
 	
 		<target name="11.release.bin" depends="01.set.classpath, 04.prepare, 06.unit.test.report, 07.fit.test, 08.package, 10.javadoc " description="Creates the structure for the release">
-			<delete dir="${build.release.dir}"/>
-			<mkdir dir="${build.release.dir}"/>
+			
+			<delete includeemptydirs="true">
+				<fileset dir="${build.release.dir}" includes="**/*"/>
+			</delete>
 			
 			<mkdir dir="${build.release.dir}/2p-${project.version}"/>
 			<mkdir dir="${build.release.dir}/2p-${project.version}/bin"/>
