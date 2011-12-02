@@ -1,3 +1,40 @@
   * Fix the compilation with IKVM on mac os x (build.xml)
   * fix  "isoAcceptanceTests.html"
   * merge TB-sabbioni into trunk
+
+
+
+plugin
+  * Eliminare 0.5.0RC1
+  * il trunk ha tutto (sono tre progetti indipendenti ma con intedipendenze) ma nei branch si mette nei branch solo il codice del plugin (o degli altri)
+  * nei tag si tagga tutto
+  * mettere note su quello sopra e note sulle versioni vecchie che sono manuali e non hanno update site
+  * va avanti con la sua versione (per ora)
+  * far girare qualcosa sul plugin installato
+
+Distribuzione (2p-jar - tuprolog.jar, tuprolog-extensions.jar, tuprolog-ide.jar ?)
+  * mantenere solo 2p.jar e tuprolog.jar
+  
+Dipendenze (2p.jar - tuprolog.jar)
+  * solo su tuprolog.jar
+
+prossimo numero versione (2.4.1 ?)
+  * vedi sotto
+
+svn:externals
+  * ok
+
+ikvm branch
+  * per ogni versione di ikvm serve mettere un'informazione su cosa va e cosa non va
+  * nuova versione con build x.x.x-xxx
+  * controllare ikvm per P@J
+  * pipolo: questione velocità/compilazione e struttura
+
+android
+  * stessa versione di java (senza build) per ora
+
+java
+  * elimino 2.4.0 e metto 2.4.1 nei tags lasciamo le note news che ci sono nella versione 2.5.0 (file che ho inviato io)
+
+bug
+  * occur_check: X = f(X) sicstus -> yes. Da inserire in un wiki la discussione in merito al bug ID: 2892689 (vedi anche mail). 
