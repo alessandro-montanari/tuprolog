@@ -671,9 +671,17 @@
 				message="Tag ${project.version}"
 				makeParents="true" >
 			</copy> 
+			
 			<import
 				path="./build/archives/2p.jar" 
 				url="https://tuprolog.googlecode.com/svn/2p/tags/REL-${project.version}/build/archives/2p.jar"
+				message="Tag ${project.version}"
+				recurse="false" >
+			</import> 
+			
+			<import
+				path="./build/archives/tuprolog.jar" 
+				url="https://tuprolog.googlecode.com/svn/2p/tags/REL-${project.version}/build/archives/tuprolog.jar"
 				message="Tag ${project.version}"
 				recurse="false" >
 			</import> 
