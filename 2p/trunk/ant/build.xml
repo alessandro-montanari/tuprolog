@@ -10,6 +10,19 @@
 		</classpath>
 	</taskdef>
 	
+	<path id="path.svnant">
+ 		<pathelement location="lib/svnant.jar"/>
+ 		<pathelement location="lib/svnClientAdapter.jar"/>
+		<pathelement location="lib/svnjavahl.jar"/>
+		<pathelement location="lib/svnkit.jar"/>
+ 		<!-- ... -->
+	</path>
+	    
+	<typedef 
+	      resource="org/tigris/subversion/svnant/svnantlib.xml" 
+	      classpathref="path.svnant"	
+	/>
+	
 	<!-- ================ -->
 	<!-- Properties setup -->
 	<!-- ================ -->
@@ -102,8 +115,10 @@
 	</target>
     
 	<target name="05.build" depends="01.set.classpath, 04.prepare" description="Compile main source tree java files">
-		<delete dir="${build.classes.dir}"/>
-		<mkdir dir="${build.classes.dir}"/>
+		
+		<delete includeemptydirs="true">
+			<fileset dir="${build.classes.dir}" includes="**/*"/>
+		</delete>
 		
 		<javac destdir="${build.classes.dir}" debug="true"
 		deprecation="false" optimize="false" failonerror="true">
@@ -117,7 +132,11 @@
 	</target>
 
 	<target name="05.build.tests" depends="05.build" description="Compile test java files">
-		<delete dir="${build.tests.dir}"/>
+		
+		<delete includeemptydirs="true">
+			<fileset dir="${build.tests.dir}" includes="**/*"/>
+		</delete>
+		
 		<mkdir dir="${build.tests.dir}"/>
 		<mkdir dir="${build.tests.dir}/unit"/>
 		<mkdir dir="${build.tests.dir}/fixtures"/>
@@ -138,8 +157,10 @@
     </target>
 
 	<target name="06.unit.test" depends="05.build.tests">
-		<delete dir="${build.unit.reports.dir}"/>
-		<mkdir dir="${build.unit.reports.dir}"/>
+		
+		<delete includeemptydirs="true">
+			<fileset dir="${build.unit.reports.dir}" includes="**/*"/>
+		</delete>
 		
 		<junit fork="yes" printsummary="yes" dir="${tmp.dir}">
 			<formatter type="xml" />
@@ -163,8 +184,10 @@
 	</target>
 	
 	<target name="07.fit.test" depends="05.build.tests">
-		<delete dir="${build.fit.reports.dir}"/>
-		<mkdir dir="${build.fit.reports.dir}"/>
+		
+		<delete includeemptydirs="true">
+			<fileset dir="${build.fit.reports.dir}" includes="**/*"/>
+		</delete>
 		
 		<fit destdir="${build.fit.reports.dir}" usewiki="false" fork="true">
 			<classpath refid="ant-classpath"/>
@@ -190,8 +213,10 @@
     		addproperty="version"
     	/>
     	-->
-    	<delete dir="${build.archives.dir}"/>
-    	<mkdir dir="${build.archives.dir}"/>
+    	
+    	<delete includeemptydirs="true">
+    		<fileset dir="${build.archives.dir}" includes="**/*"/>
+    	</delete>
     	<mkdir dir="${build.archives.dir}/tmp"/>
     	
    		<javac destdir="${build.archives.dir}/tmp" debug="false" deprecation="false" 
@@ -266,9 +291,10 @@
     		addproperty="version"
     	/>
     	-->
-		<delete dir="${build.archives.dir}"/>
-		<mkdir dir="${build.archives.dir}"/>
-    	<mkdir dir="${build.archives.dir}/tmp"/>
+		<delete includeemptydirs="true">
+			<fileset dir="${build.archives.dir}" includes="**/*"/>
+		</delete>
+		<mkdir dir="${build.archives.dir}/tmp"/>
     	
    		<javac destdir="${build.archives.dir}/tmp" debug="true" deprecation="false" 
    				optimize="false" failonerror="true">
@@ -336,6 +362,7 @@
 	 </target>
 	
 	 <target name="09.build.NET" depends="08.package" description="Build.NET files">
+	 	
 	 		<delete dir="${build.archives.net.dir}"/>
  			<mkdir dir="${build.archives.net.dir}"/>
 	 		<mkdir dir="${build.archives.net.dir}/archives"/>
@@ -491,8 +518,10 @@
 	    </target>
 
 	    <target name="10.javadoc" depends="01.set.classpath" description="Creates Javadocs">
-	    	<delete dir="${doc.dir}/javadoc"/>
-	    	<mkdir dir="${doc.dir}/javadoc"/>
+	    	
+	    	<delete includeemptydirs="true">
+	    	    <fileset dir="${doc.dir}/javadoc" includes="**/*"/>
+	    	</delete>
 	    	
 	    	<javadoc sourcepath="${src.dir}"
 	               destdir="${doc.dir}/javadoc"
@@ -552,4 +581,46 @@
 			
 			<echo>Look directory ${build.release.dir}</echo>
 		</target>
+	
+	<target name="12.tag" depends="01.set.classpath, 04.prepare, 08.package" description="Tags the code">
+		<input
+			message="tuProlog version (n.n.n):"
+			addproperty="project.version"
+		/>
+		<input
+			message="Password for ${username}:"
+			addproperty="password"
+		/>
+		
+		<svnSetting
+			id="settings"
+			username="${username}"
+			password="${password}"
+			svnkit="true" 
+			javahl="false" />
+		
+		
+		<svn refid="settings">
+			<copy
+				srcPath="." 
+				destUrl="https://tuprolog.googlecode.com/svn/2p/tags/REL-${project.version}"
+				message="Tag ${project.version}"
+				makeParents="true" >
+			</copy> 
+			
+			<import
+				path="./build/archives/2p.jar" 
+				url="https://tuprolog.googlecode.com/svn/2p/tags/REL-${project.version}/build/archives/2p.jar"
+				message="Tag ${project.version}"
+				recurse="false" >
+			</import> 
+			
+			<import
+				path="./build/archives/tuprolog.jar" 
+				url="https://tuprolog.googlecode.com/svn/2p/tags/REL-${project.version}/build/archives/tuprolog.jar"
+				message="Tag ${project.version}"
+				recurse="false" >
+			</import> 
+		</svn>
+	</target>
 </project>
