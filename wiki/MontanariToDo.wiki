@@ -34,4 +34,4 @@ java
   * ~~elimino 2.4.0 e metto 2.4.1 nei tags lasciamo le note news che ci sono nella versione 2.5.0 (file che ho inviato io)~~
 
 bug
-  * occur_check: X = f(X) sicstus -> yes. Da inserire in un wiki la discussione in merito al bug ID: 2892689 (vedi anche mail). 
+  * occur_check: X = f(X) sicstus -> yes. Da inserire in un wiki la discussione in merito al bug ID: 2892689 (vedi anche mail). Chiedere a Sabbioni se adesso è a posto (dovrebbe essere come prima, senza nessuna modifica).
