@@ -1062,12 +1062,12 @@ public class BasicLibrary extends Library {
                 + "A ; B :- '$call'(A). \n"
                 + "A ; B :- '$call'(B). \n "
                 
-                + "unify_with_occurs_check(X,Y):- not_occurs_in(X,Y), !,X=Y.\n" 
-                + "not_occurs_in(X,Y) :- var(Y), X \\== Y.\n"
+                + "unify_with_occurs_check(X,Y):- "+ /*not_occurs_in(X,Y),*/"!,X=Y.\n" 
+                /*+ "not_occurs_in(X,Y) :- var(Y), X \\== Y.\n"
                 + "not_occurs_in(X,Y) :- nonvar(Y), constant(Y).\n"
                 + "not_occurs_in(X,Y) :- nonvar(Y), compound(Y), functor(Y,F,N), not_occurs_in(N,X,Y).\n"
                 + "not_occurs_in(N,X,Y) :-	N > 0, arg(N,Y,Arg), not_occurs_in(X,Arg), N1 is N-1, not_occurs_in(N1,X,Y).\n"
-                + "not_occurs_in(0,X,Y).\n"
+                + "not_occurs_in(0,X,Y).\n"*/
                 
                 + "current_op(Pri,Type,Name):-get_operators_list(L),member(op(Pri,Type,Name),L).\n                          "
                 + "once(X) :- myonce(X).\n                                                                                  "
