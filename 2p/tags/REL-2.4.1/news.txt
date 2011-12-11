@@ -1,6 +1,5 @@
-In allegato l'"ultima" versione del motore.
 Riassumo le modifiche:
 - TRO (Silvia Umiliacchi)
-- Rotellina mause (Valerio Pipolo)
+- Rotellina mouse (Valerio Pipolo)
 - Shortcut mac os x per copia,taglia,incolla,...
 - Nuova struttura progetto + ant.
