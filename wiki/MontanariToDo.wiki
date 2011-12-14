@@ -3,7 +3,6 @@
   * merge TB-sabbioni into trunk
 
 
-
 plugin
   * ~~Eliminare 0.5.0RC1~~
   * il trunk ha tutto (sono tre progetti indipendenti ma con intedipendenze) ma nei branch si mette solo il codice del plugin (o degli altri feature o updatesite)
@@ -37,3 +36,6 @@ java
 bug
   * occur_check: X = f(X) sicstus -> yes. Da inserire in un wiki la discussione in merito al bug ID: 2892689 (vedi anche mail). ~~Chiedere a Sabbioni se adesso è a posto (dovrebbe essere come prima, senza nessuna modifica).~~
   * alice.tuprologx.ide.ConsoleDialog problema di tab "AllSolutions" (vedi mail).
+
+da rivedere
+  * sezione download sul repo (vedi mail "meditazione").
