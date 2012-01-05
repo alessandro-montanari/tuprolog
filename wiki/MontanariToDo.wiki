@@ -1,7 +1,7 @@
   * Fix the compilation with IKVM on mac os x (build.xml)
   * fix  "isoAcceptanceTests.html"
   * merge TB-sabbioni into trunk
-  * vedere se è possibile modificare la versione di tuProlog (file Prolog.java) inserendo la versione presente nelle configurazioni di ant (environment.properties)
+  * vedere se è possibile modificare la versione di tuProlog (file Prolog.java) inserendo la versione presente nelle configurazioni di ant (environment.properties) (http://ant.apache.org/manual/Tasks/replace.html)
 
 
 plugin
