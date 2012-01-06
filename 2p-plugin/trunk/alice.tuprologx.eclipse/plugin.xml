@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <plugin
-   id="it.unibo.alice.tuprologx.eclipse"
+   id="alice.tuprologx.eclipse"
    name="tuProlog Development Tools"
    version="0.5.0"
    provider-name="tuProlog Team"
