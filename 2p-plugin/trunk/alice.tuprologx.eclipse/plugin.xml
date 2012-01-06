@@ -3,82 +3,11 @@
 <plugin
    id="it.unibo.alice.tuprologx.eclipse"
    name="tuProlog Development Tools"
-   version="0.7.0"
+   version="0.5.0"
    provider-name="tuProlog Team"
    class="alice.tuprologx.eclipse.TuProlog">
    
   <runtime>
-     <library name="2p2.3.1.jar">
-        <export
-              name="alice.tuprolog.*">
-        </export>
-        <export
-              name="alice.tuprolog.event.*">
-        </export>
-        <export
-              name="alice.tuprolog.interfaces.*">
-        </export>
-        <export
-              name="alice.tuprolog.lib.*">
-        </export>
-        <export
-              name="alice.tuprologx.ide.*">
-        </export>
-        <export
-              name="alice.tuprologx.ide.img.*">
-        </export>
-        <export
-              name="alice.tuprologx.pj.annotations.*">
-        </export>
-        <export
-              name="alice.tuprologx.pj.annotations.parser.*">
-        </export>
-        <export
-              name="alice.tuprologx.pj.annotations.processing.*">
-        </export>
-        <export
-              name="alice.tuprologx.pj.engine.*">
-        </export>
-        <export
-              name="alice.tuprologx.pj.lib.*">
-        </export>
-        <export
-              name="alice.tuprologx.pj.meta.*">
-        </export>
-        <export
-              name="alice.tuprologx.pj.model.*">
-        </export>
-        <export
-              name="alice.tuprologx.pj.test.*">
-        </export>
-        <export
-              name="alice.tuprologx.pj.test.agent.*">
-        </export>
-        <export
-              name="alice.tuprologx.pj.test.expr.*">
-        </export>
-        <export
-              name="alice.tuprologx.pj.test.pjlibrary.*">
-        </export>
-        <export
-              name="alice.tuprologx.pj.test.termifiable.*">
-        </export>
-        <export
-              name="alice.tuprologx.runtime.corba.*">
-        </export>
-        <export
-              name="alice.tuprologx.runtime.rmi.*">
-        </export>
-        <export
-              name="alice.tuprologx.runtime.tcp.*">
-        </export>
-        <export
-              name="alice.util.*">
-        </export>
-        <export
-              name="alice.util.jedit.*">
-        </export>
-     </library>
      <library name="2pPlugin.jar">
         <export
               name="alice.tuprologx.eclipse.*">
