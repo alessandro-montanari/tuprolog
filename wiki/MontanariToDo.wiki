@@ -39,4 +39,4 @@ bug
   * alice.tuprologx.ide.ConsoleDialog problema di tab "AllSolutions" (vedi mail).
 
 da rivedere
-  * sezione download sul repo (vedi mail "meditazione").
+  * sezione download sul repo e aggiunta download automatica (ant?) (vedi mail "meditazione").
