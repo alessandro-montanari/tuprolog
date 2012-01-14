@@ -1,4 +1,4 @@
-package gianluca.tesi;
+package alice.tuprologx.android;
 
 import android.app.Activity;
 import android.database.Cursor;
