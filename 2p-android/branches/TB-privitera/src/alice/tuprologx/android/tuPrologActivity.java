@@ -1,5 +1,6 @@
-package gianluca.tesi;
+package alice.tuprologx.android;
 
+import alice.tuprologx.android.R;
 import alice.tuprolog.InvalidTheoryException;
 import alice.tuprolog.Theory;
 import android.app.Activity;

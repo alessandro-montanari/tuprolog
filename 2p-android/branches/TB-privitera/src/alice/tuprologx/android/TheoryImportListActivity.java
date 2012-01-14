@@ -1,4 +1,6 @@
-package gianluca.tesi;
+package alice.tuprologx.android;
+
+import alice.tuprologx.android.R;
 
 import java.io.File;
 
