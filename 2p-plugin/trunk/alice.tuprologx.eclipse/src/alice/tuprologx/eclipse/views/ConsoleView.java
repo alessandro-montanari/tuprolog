@@ -78,9 +78,9 @@ import alice.tuprologx.eclipse.core.PrologQueryFactory;
 import alice.tuprologx.eclipse.core.PrologQueryResult;
 import alice.tuprologx.eclipse.core.PrologQueryScope;
 import alice.tuprologx.eclipse.util.QueryDialog;
-import alice.tuprologx.ide.ConsoleDialog;
-import alice.tuprologx.ide.ConsoleManager;
-import alice.tuprologx.ide.TheoryTabbedPane;
+//import alice.tuprologx.ide.ConsoleDialog;
+//import alice.tuprologx.ide.ConsoleManager;
+//import alice.tuprologx.ide.TheoryTabbedPane;
 
 public class ConsoleView extends ViewPart{
 	private Tree tree;
