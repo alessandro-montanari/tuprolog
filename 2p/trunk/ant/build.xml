@@ -286,8 +286,7 @@
 			<classpath path="${build.tests.dir}/fixtures"/>
 		
 			<fileset dir="${test.dir}/fit/doc">
-				<exclude name="isoAcceptanceTests.html"/> 
-		    	<include name="*.html"/>
+				<include name="AcceptanceTests.html"/> 
 		    </fileset>
 			
 		</fit>
