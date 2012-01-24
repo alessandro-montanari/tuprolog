@@ -16,8 +16,8 @@ Distribuzione (2p-jar - tuprolog.jar, tuprolog-extensions.jar, tuprolog-ide.jar 
   * ~~mantenere solo 2p.jar e tuprolog.jar~~
   
 Dipendenze (2p.jar - tuprolog.jar)
-  * solo su tuprolog.jar (COSA STRANA: ANDROID NON VA (ERRORE A RUNTIME) CON TUPROLOG.JAR MENTRE VA CON 2P.JAR - DA RIVEDERE)
-  * da rivedere anche per il plugin
+  * ~~solo su tuprolog.jar (COSA STRANA: ANDROID NON VA (ERRORE A RUNTIME) CON TUPROLOG.JAR MENTRE VA CON 2P.JAR - DA RIVEDERE)~~
+  * ~~da rivedere anche per il plugin~~
 
 svn:externals
   * ok
