@@ -34,7 +34,7 @@ import alice.tuprologx.eclipse.TuProlog;
 import alice.tuprologx.eclipse.core.PrologEngine;
 import alice.tuprologx.eclipse.core.PrologEngineFactory;
 import alice.tuprologx.eclipse.editors.PrologEditor;
-import alice.tuprologx.ide.CUIConsole;
+//import alice.tuprologx.ide.CUIConsole;
 
 public class PrologGetTheoryAction implements IWorkbenchWindowActionDelegate {
 

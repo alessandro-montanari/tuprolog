@@ -25,8 +25,8 @@ import alice.tuprolog.interfaces.IOperatorManager;
 import alice.tuprolog.interfaces.IPrimitiveManager;
 import alice.tuprolog.interfaces.IProlog;
 import alice.tuprolog.interfaces.PrologFactory;
-import alice.tuprologx.ide.ConsoleDialog;
-import alice.tuprologx.ide.PrologTable;
+//import alice.tuprologx.ide.ConsoleDialog;
+//import alice.tuprologx.ide.PrologTable;
 
 public class PrologEngine {
 	private String name;
