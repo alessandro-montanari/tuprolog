@@ -4,7 +4,7 @@
 	<classpathentry exported="true" kind="lib" path="icons/"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry kind="lib" path="lib/2p.jar"/>
+	<classpathentry kind="lib" path="lib/2p.jar" sourcepath="/2p/src"/>
 	<classpathentry kind="lib" path="lib/prefuse.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

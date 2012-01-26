@@ -20,7 +20,6 @@
  * 15/04/11
  */
 package alice.tuprologx.eclipse.util;
-import java.util.*;
 
 /**
  * This interface defines the method handling Operator event

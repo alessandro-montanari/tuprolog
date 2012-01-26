@@ -1,30 +1,8 @@
 package alice.tuprologx.eclipse.core;
 
-import alice.tuprologx.eclipse.util.*;
-import alice.tuprologx.eclipse.views.ViewSet;
-import alice.tuprolog.interfaces.IOperatorManager;
-import alice.tuprolog.interfaces.IParser;
-import alice.tuprolog.Library;
-import alice.tuprolog.Number;
-import alice.tuprolog.Operator;
-
-import alice.tuprolog.Struct;
-import alice.tuprolog.Term;
-import alice.tuprolog.TermVisitor;
-import alice.tuprolog.Theory;
-import alice.tuprolog.Var;
-import alice.tuprolog.Int;
-import alice.tuprolog.interfaces.ParserFactory;
-import alice.tuprologx.eclipse.properties.*;
-import alice.tuprologx.eclipse.TuProlog;
-import alice.tuprologx.eclipse.editors.PrologEditor;
-
-import org.eclipse.core.resources.*;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.ui.IEditorReference;
-import org.eclipse.ui.IEditorPart;
-
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,17 +12,43 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import java.io.*;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceVisitor;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IEditorReference;
+
+import alice.tuprolog.Int;
+import alice.tuprolog.Library;
+import alice.tuprolog.Number;
+import alice.tuprolog.Operator;
+import alice.tuprolog.Struct;
+import alice.tuprolog.Term;
+import alice.tuprolog.TermVisitor;
+import alice.tuprolog.Theory;
+import alice.tuprolog.Var;
+import alice.tuprolog.interfaces.IOperatorManager;
+import alice.tuprolog.interfaces.IParser;
+import alice.tuprolog.interfaces.ParserFactory;
+import alice.tuprologx.eclipse.TuProlog;
+import alice.tuprologx.eclipse.editors.PrologEditor;
+import alice.tuprologx.eclipse.properties.PropertyManager;
+import alice.tuprologx.eclipse.util.OperatorEvent;
+import alice.tuprologx.eclipse.util.OperatorListener;
+import alice.tuprologx.eclipse.views.ViewSet;
 
 public class PrologParser extends IncrementalProjectBuilder {
 
 	public static final String BUILDER_ID = "alice.tuprologx.eclipse.prologParser";
-	@SuppressWarnings({ "rawtypes" })
-	public static Vector t;
+	public static Vector<Theory> t;
 	private IParser parser;
 	private boolean correct = true;
-	@SuppressWarnings({ "rawtypes" })
-	private static Vector scope;
+	private static Vector<String> scope;
 	private static boolean allTheories = false;
 	@SuppressWarnings({ "rawtypes" })
 	private static Vector[] alternativeScope;
@@ -66,11 +70,11 @@ public class PrologParser extends IncrementalProjectBuilder {
 			throws CoreException {
 		if (go == true) {
 			go = false;
-			t = new Vector();
+			t = new Vector<Theory>();
 			alternativeScope = new Vector[PrologEngineFactory.getInstance()
 					.getProjectEngines(projectName).size()];
 			for (int i = 0; i < alternativeScope.length; i++) {
-				alternativeScope[i] = new Vector();
+				alternativeScope[i] = new Vector<String>();
 				String tmp = "";
 				try {
 					tmp = args.get(new Integer(i)).toString();
@@ -94,7 +98,7 @@ public class PrologParser extends IncrementalProjectBuilder {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected void fullBuild(final IProgressMonitor monitor,Map args) {
-		t = new Vector();
+		t = new Vector<Theory>();
 		IProject project = getProject();
 		projectName = project.getName();
 		Vector<PrologEngine> engines =PrologEngineFactory.getInstance().getProjectEngines(project.getName());
@@ -105,7 +109,7 @@ public class PrologParser extends IncrementalProjectBuilder {
 			if (alternativeScope == null) {
 				try {
 				if (PropertyManager.allTheories(project, engine.getName())) {
-					Vector theories = new Vector();
+					Vector<String> theories = new Vector<String>();
 					
 						IResource[] resources = project.members();
 						for (int i = 0; i < resources.length; i++)
@@ -136,7 +140,7 @@ public class PrologParser extends IncrementalProjectBuilder {
 
 					Term[] termsArray = new Term[terms.size()];
 					for (int i = 0; i < terms.size(); i++)
-						termsArray[i] = (Term)(terms.elementAt(i));
+						termsArray[i] = (terms.elementAt(i));
 
 					Struct struct = new Struct(termsArray);
 					try {
@@ -190,8 +194,9 @@ public class PrologParser extends IncrementalProjectBuilder {
 	 * Gets a copy of current listener list to operator events
 	 *
 	 */
-	public synchronized List getOperatorListenerList() {
-		return (List) opListeners.clone();
+	@SuppressWarnings("unchecked")
+	public synchronized List<OperatorListener> getOperatorListenerList() {
+		return (List<OperatorListener>) opListeners.clone();
 	}
 	/**
 	 * Notifies a operatorList Change
@@ -199,9 +204,9 @@ public class PrologParser extends IncrementalProjectBuilder {
 	 * @param e the event
 	 */
 	protected void notifyOpChanged(OperatorEvent e) {
-		Iterator it = opListeners.listIterator();
+		Iterator<OperatorListener> it = opListeners.listIterator();
 		while (it.hasNext()) {
-			((OperatorListener) it.next()).opChanged(e);
+			it.next().opChanged(e);
 		}
 	}
 	/**
@@ -594,7 +599,6 @@ public class PrologParser extends IncrementalProjectBuilder {
 			}			
 		}
 
-		@Override
 		public void visit(Struct s) {
 			String sID = s.getName() + "/" + s.getArity();		
 			
@@ -616,11 +620,9 @@ public class PrologParser extends IncrementalProjectBuilder {
 				s.getArg(i).accept(this);
 		}
 
-		@Override
 		public void visit(Var v) {
 		}
 
-		@Override
 		public void visit(Number n) {
 		}
 	}

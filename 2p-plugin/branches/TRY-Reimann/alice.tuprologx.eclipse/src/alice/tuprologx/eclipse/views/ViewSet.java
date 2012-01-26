@@ -3,18 +3,12 @@ package alice.tuprologx.eclipse.views;
 import java.util.Observable;
 import java.util.Observer;
 
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.TreeItem;
-import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.views.navigator.ResourceNavigator;
 
 import alice.tuprologx.eclipse.core.PrologQuery;
 import alice.tuprologx.eclipse.core.PrologQueryFactory;
@@ -22,7 +16,6 @@ import alice.tuprologx.eclipse.core.PrologQueryFactory;
 public class ViewSet implements Observer {
 
 	private ConsoleView console;
-	@SuppressWarnings("unused")
 	private QueryList queryList;
 	private ASTView ASTview;
 	public ViewSet() {
@@ -31,7 +24,7 @@ public class ViewSet implements Observer {
 
 	public void refresh(final String theoryToShow) {
 		final IWorkbenchPage wp = PlatformUI.getWorkbench()
-		.getActiveWorkbenchWindow().getActivePage();
+				.getActiveWorkbenchWindow().getActivePage();
 		try {
 			IViewReference[] viewList = wp.getViewReferences();
 			for(IViewReference ref : viewList){
@@ -42,20 +35,19 @@ public class ViewSet implements Observer {
 					queryList = (QueryList) ref.getView(false);
 				}
 			}
-		
-		queryList.addSelectionListener(new SelectionListener(){
+
+			queryList.addSelectionListener(new SelectionListener(){
 				public void widgetSelected(SelectionEvent e) {
 					TreeItem selection = (TreeItem)e.item;
 					PrologQuery query = (PrologQuery) selection.getData();
 					console.setQuery(query);
 					wp.activate(console);
 				}
-				@Override
 				public void widgetDefaultSelected(SelectionEvent e) {
 				}
 			});
-			
-		//} catch (PartInitException e) {
+
+			//} catch (PartInitException e) {
 		} catch (NullPointerException e) {
 		}
 	}
@@ -68,5 +60,5 @@ public class ViewSet implements Observer {
 
 		}
 
-}
+	}
 }
