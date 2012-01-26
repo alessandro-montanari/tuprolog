@@ -73,8 +73,6 @@ public class Method2 extends ViewPart {
 
 
 
-		@SuppressWarnings("unchecked")
-		@Override
 		public Object getAdapter(Class adapter) {
 			// TODO Auto-generated method stub
 			return null;
@@ -106,8 +104,6 @@ public class Method2 extends ViewPart {
     		return voices.size()>0;
     	}
 
-		@SuppressWarnings("unchecked")
-		@Override
 		public Object getAdapter(Class adapter) {
 			// TODO Auto-generated method stub
 			return null;
@@ -119,7 +115,6 @@ public class Method2 extends ViewPart {
 
     	public TableObject table;
     	
-		@Override
 		public Object[] getElements(Object listObject) {
 			// TODO Auto-generated method stub
 			if(listObject.equals(getViewSite())){
@@ -130,13 +125,11 @@ public class Method2 extends ViewPart {
 			return getVoices(listObject);
 		}
 
-		@Override
 		public void dispose() {
 			// TODO Auto-generated method stub
 			
 		}
 
-		@Override
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 			// TODO Auto-generated method stub
 			
@@ -187,7 +180,7 @@ public class Method2 extends ViewPart {
                 int line=0;
                 Term t=null;
                 try{
-                	//t= ms.nextTerm(true);
+                	t= ms.nextTerm(true);
                 	if (t != null) {
                     	line = ms.getCurrentLine();
                     	//end = ms.getCurrentPos() - off - 2;

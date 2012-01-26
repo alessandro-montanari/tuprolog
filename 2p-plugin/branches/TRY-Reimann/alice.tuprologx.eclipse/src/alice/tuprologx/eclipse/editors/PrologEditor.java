@@ -3,35 +3,33 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
-import javax.swing.undo.UndoManager;
-
-import alice.tuprolog.Operator;
-import alice.tuprologx.eclipse.util.OperatorEvent;
-import alice.tuprologx.eclipse.util.OperatorListener;
-import alice.tuprologx.eclipse.TuProlog;
-import alice.tuprologx.eclipse.preferences.PreferenceConstants;
-
-import alice.tuprologx.eclipse.util.*;
-import alice.tuprologx.eclipse.core.*;
-
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.resources.*;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.resource.JFaceResources;
-import org.eclipse.jface.text.*;
-
+import org.eclipse.jface.text.DocumentEvent;
+import org.eclipse.jface.text.IDocumentListener;
 import org.eclipse.jface.text.source.ISourceViewer;
-import org.eclipse.jface.text.source.ISourceViewerExtension2;
-
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.text.undo.DocumentUndoManager;
-import org.eclipse.ui.*;
+import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.texteditor.SourceViewerDecorationSupport;
+
+import alice.tuprologx.eclipse.TuProlog;
+import alice.tuprologx.eclipse.core.PrologEngine;
+import alice.tuprologx.eclipse.core.PrologEngineFactory;
+import alice.tuprologx.eclipse.core.PrologParser;
+import alice.tuprologx.eclipse.preferences.PreferenceConstants;
+import alice.tuprologx.eclipse.util.BracketMatcher;
+import alice.tuprologx.eclipse.util.OperatorEvent;
+import alice.tuprologx.eclipse.util.OperatorListener;
+import alice.tuprologx.eclipse.util.TokenManager;
 
 /**
  * An example showing how to create a multi-page editor. This example has 3
@@ -63,8 +61,8 @@ public class PrologEditor extends TextEditor implements OperatorListener,
 		args.put("Editor", this);
 
 		try {
-			getProject().build(IncrementalProjectBuilder.FULL_BUILD,
-					PrologParser.BUILDER_ID, args, null);
+//			getProject().build(IncrementalProjectBuilder.FULL_BUILD, PrologParser.BUILDER_ID, args, null);
+			getProject().build(IncrementalProjectBuilder.FULL_BUILD, PrologParser.BUILDER_ID, null, null);
 		} catch (CoreException e) {
 		}
 	}
@@ -178,7 +176,7 @@ public class PrologEditor extends TextEditor implements OperatorListener,
 	}
 
 
-	@Override
+	@SuppressWarnings("unchecked")
 	public void opChanged(OperatorEvent e) {
 		Vector<String> dynOps = e.getOpListAsStringList();
 		if(hasChanged(dynOps)){
@@ -194,6 +192,7 @@ public class PrologEditor extends TextEditor implements OperatorListener,
 			}
 		}
 	}
+	@SuppressWarnings("unchecked")
 	boolean hasChanged(Vector<String> newList){
 		if(first){
 			lastDynOps = (Vector<String>)newList.clone();

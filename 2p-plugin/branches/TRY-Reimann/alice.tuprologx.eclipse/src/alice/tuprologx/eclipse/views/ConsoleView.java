@@ -1,86 +1,42 @@
 package alice.tuprologx.eclipse.views;
 
-import alice.tuprolog.Term;
-
-import alice.tuprolog.interfaces.IParser;
-import alice.tuprolog.interfaces.ParserFactory;
-import alice.tuprologx.eclipse.core.*;
-
 import java.util.ArrayList;
 import java.util.Vector;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import org.eclipse.core.resources.FileInfoMatcherDescription;
-import org.eclipse.core.resources.IContainer;
-import org.eclipse.core.resources.IMarker;
-import org.eclipse.core.resources.IPathVariableManager;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IProjectDescription;
-import org.eclipse.core.resources.IProjectNature;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IResourceFilterDescription;
-import org.eclipse.core.resources.IResourceProxy;
-import org.eclipse.core.resources.IResourceProxyVisitor;
-import org.eclipse.core.resources.IResourceVisitor;
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.ResourceAttributes;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IPluginDescriptor;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.content.IContentTypeMatcher;
-import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.KeyListener;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Device;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.ToolTip;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.part.ViewPart;
 
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
-
+import alice.tuprolog.Term;
+import alice.tuprolog.interfaces.IParser;
+import alice.tuprolog.interfaces.ParserFactory;
 import alice.tuprologx.eclipse.TuProlog;
 import alice.tuprologx.eclipse.core.PrologEngine;
-import alice.tuprologx.eclipse.core.PrologEngineFactory;
 import alice.tuprologx.eclipse.core.PrologQuery;
 import alice.tuprologx.eclipse.core.PrologQueryFactory;
 import alice.tuprologx.eclipse.core.PrologQueryResult;
 import alice.tuprologx.eclipse.core.PrologQueryScope;
-import alice.tuprologx.eclipse.util.QueryDialog;
-import alice.tuprologx.ide.ConsoleDialog;
-import alice.tuprologx.ide.ConsoleManager;
-import alice.tuprologx.ide.TheoryTabbedPane;
 
 public class ConsoleView extends ViewPart{
 	private Tree tree;
@@ -110,70 +66,71 @@ public class ConsoleView extends ViewPart{
 	private JFrame frame;
 	private ArrayList<String> list;
 	private ArrayList<Term> list2;
-	
+
 	private String[] columnNames;
 	private JTable bindTable;
 	private Object[][] data; 
 	private Button bind;
-	
+
 	public ConsoleView()
 	{
 		super();
 	}
-	
+
 	public void createPartControl(Composite parent) {
-		
+
 		GridData groupData = new GridData();
 		groupData.grabExcessHorizontalSpace = true;
 		groupData.horizontalAlignment = SWT.FILL;
-		
+
 		GridData filesData = new GridData();
 		filesData.grabExcessHorizontalSpace = true;
 		filesData.grabExcessVerticalSpace = true;
 		filesData.horizontalAlignment = SWT.FILL;
 		filesData.verticalAlignment = SWT.FILL;
-		
+
 		GridLayout groupLayout = new GridLayout();
 		groupLayout.numColumns = 1;
-		
+
 		GridLayout tabLayout = new GridLayout();
 		tabLayout.numColumns = 3;
-		
+
 		GridLayout buttonLayout = new GridLayout();
 		buttonLayout.numColumns = 3;
-		
+
 		Composite mainFrame = new Composite(parent, SWT.NONE);
 		mainFrame.setLayout(groupLayout);
 		mainFrame.setLayoutData(groupData);
-		
+
 		CTabFolder notebook = new CTabFolder(mainFrame, SWT.TOP | SWT.BORDER);
 		notebook.setLayout(groupLayout);
 		notebook.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		
+
 		CTabItem queryResult = new CTabItem(notebook,SWT.NONE);
 		queryResult.setImage(TuProlog.getIconFromResources("console.gif"));
 		queryResult.setText("Results");
-		
+
 		CTabItem queryScope = new CTabItem(notebook, SWT.NONE);
 		queryScope.setImage(TuProlog.getIconFromResources("scope.gif"));
 		queryScope.setText("Scope");
-		
+
 		CTabItem debug = new CTabItem(notebook,SWT.NONE);
 		debug.setImage(TuProlog.getIconFromResources("Debugger.gif"));
 		debug.setText("Debug");
-		
+
 		CTabItem Output = new CTabItem(notebook,SWT.NONE);
 		Output.setImage(TuProlog.getIconFromResources("sample.gif"));
 		Output.setText("Output");
-		
+
 		/*Castagna 06/2011*/
 		CTabItem Exception = new CTabItem(notebook,SWT.NONE);
 		Exception.setImage(TuProlog.getIconFromResources("exception.gif"));
+//		Exception.setImage(TuProlog.getIconFromResources("EnginesManager.gif"));
 		Exception.setText("Exceptions");
 		/**/
-		
+
 		notebook.setSelection(queryResult);
-		
+
 		//Costruzione Tab Result
 		sash = new SashForm(notebook, SWT.HORIZONTAL);
 		sash.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
@@ -188,20 +145,20 @@ public class ConsoleView extends ViewPart{
 			}
 		});
 		queryResult.setControl(sash);
-		
+
 		resultViewer = new Composite(sash, SWT.NONE);
 		resultViewer.setLayout(tabLayout);
-		
+
 		spy = new Text(notebook, SWT.MULTI | SWT.BORDER | SWT.READ_ONLY);
 		spy.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		debug.setControl(spy);
-		
+
 		Label resultLabel = new Label(resultViewer,SWT.NONE);
 		resultLabel.setText("Solution: ");
-		
+
 		result = new Text(resultViewer, SWT.MULTI | SWT.BORDER | SWT.READ_ONLY | SWT.SCROLL_LINE);
 		result.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		
+
 		sash.setWeights(new int[] { 1, 3});
 		Group solExplorer = new Group(resultViewer,SWT.NONE);
 		solExplorer.setText("Solution explorer");
@@ -227,41 +184,41 @@ public class ConsoleView extends ViewPart{
 			}
 
 			public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
-			if(e.keyCode==13){
-				/*when enter key is pressed, the query in the fqueryText is executed*/
-				String message = "";
-				String newText = fQueryText.getText();
-				if (newText.equals("")) {
-					message = "The query is empty.";
-					queryIsValid = false;
-					 ErrorDialog.openError(null, null,"Error", new Status(Status.ERROR, "alice.tuprologx.eclipse", message));
-				}
-				else if (newText.startsWith("?"))
-				{
-					message = "'?-' will be added automatically.";
-					queryIsValid = false;
-					ErrorDialog.openError(null, null,"Error", new Status(Status.ERROR, "alice.tuprologx.eclipse", message));
-				}
-				else
-				{
-					IParser p = ParserFactory.createParser(newText);
-					try{	
-						Term t = p.nextTerm(true);
-						queryIsValid = true;
-						message = "The query is valid.";
-					}catch(Exception e1){
+				if(e.keyCode==13){
+					/*when enter key is pressed, the query in the fqueryText is executed*/
+					String message = "";
+					String newText = fQueryText.getText();
+					if (newText.equals("")) {
+						message = "The query is empty.";
 						queryIsValid = false;
-						message = "Syntax error. The query isn't valid";
 						ErrorDialog.openError(null, null,"Error", new Status(Status.ERROR, "alice.tuprologx.eclipse", message));
 					}
-				}
-				if(queryIsValid){
-				query = new PrologQuery(fQueryText.getText());
-				bind.setEnabled(false);
-				PrologQueryFactory.getInstance().executeQueryWS(query);
-				queryResultIndex=0;
-				tree.setSelection(tree.getItem(0));
-				refreshResultViewer();}
+					else if (newText.startsWith("?"))
+					{
+						message = "'?-' will be added automatically.";
+						queryIsValid = false;
+						ErrorDialog.openError(null, null,"Error", new Status(Status.ERROR, "alice.tuprologx.eclipse", message));
+					}
+					else
+					{
+						IParser p = ParserFactory.createParser(newText);
+						try{	
+							Term t = p.nextTerm(true);
+							queryIsValid = true;
+							message = "The query is valid.";
+						}catch(Exception e1){
+							queryIsValid = false;
+							message = "Syntax error. The query isn't valid";
+							ErrorDialog.openError(null, null,"Error", new Status(Status.ERROR, "alice.tuprologx.eclipse", message));
+						}
+					}
+					if(queryIsValid){
+						query = new PrologQuery(fQueryText.getText());
+						bind.setEnabled(false);
+						PrologQueryFactory.getInstance().executeQueryWS(query);
+						queryResultIndex=0;
+						tree.setSelection(tree.getItem(0));
+						refreshResultViewer();}
 				}
 			}
 		});
@@ -298,13 +255,13 @@ public class ConsoleView extends ViewPart{
 						ErrorDialog.openError(null, null,"Error", new Status(Status.ERROR, "alice.tuprologx.eclipse", message));
 					}
 					if(queryIsValid){
-				bind.setEnabled(false);
-				PrologQueryFactory.getInstance().executeQueryWS(query);
-				queryResultIndex=0;
-				tree.setSelection(tree.getItem(0));
-				refreshResultViewer();
-				}
-			}}
+						bind.setEnabled(false);
+						PrologQueryFactory.getInstance().executeQueryWS(query);
+						queryResultIndex=0;
+						tree.setSelection(tree.getItem(0));
+						refreshResultViewer();
+					}
+				}}
 			public void widgetDefaultSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
 			}});	
@@ -314,27 +271,23 @@ public class ConsoleView extends ViewPart{
 		prev.setLayoutData(new GridData(SWT.FILL,SWT.None,true,false));
 		prev.setEnabled(false);
 		prev.addSelectionListener(new SelectionListener(){
-			@Override
 			public void widgetSelected(SelectionEvent e) {
 				queryResultIndex--;
 				refreshResultViewer();
 			}
-			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {}
 		});
 
-		
+
 		next = new Button(solExplorer,SWT.PUSH);
 		next.setText("Next Result");
 		next.setLayoutData(new GridData(SWT.FILL,SWT.None,true,false));
 		next.setEnabled(false);
 		next.addSelectionListener(new SelectionListener(){
-			@Override
 			public void widgetSelected(SelectionEvent e) {
 				queryResultIndex++;
 				refreshResultViewer();
 			}
-			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {}
 		});
 		bind = new Button(solExplorer, SWT.PUSH);
@@ -376,13 +329,12 @@ public class ConsoleView extends ViewPart{
 				frame.setLocation(550,350);
 				frame.setAlwaysOnTop(true);
 			}
-	@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub		
 			}
 		});
 		//Costruzione Tab Scope
-		
+
 		Composite scopeViewer = new Composite(notebook,SWT.NONE);
 		scopeViewer.setLayout(tabLayout);
 		queryScope.setControl(scopeViewer);	
@@ -398,7 +350,7 @@ public class ConsoleView extends ViewPart{
 		filesLabel.setText("Files: ");
 		files = new Text(scopeViewer, SWT.MULTI | SWT.BORDER | SWT.READ_ONLY);
 		files.setLayoutData(filesData);
-		
+
 		/**
 		 * Andrea Mordenti 17/04/2011
 		 *  Costruzione tab Output
@@ -423,11 +375,11 @@ public class ConsoleView extends ViewPart{
 		outputLabel.setText("Output: ");
 		output = new Text(outputViewer, SWT.MULTI | SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY | SWT.SCROLL_LINE);
 		output.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		
+
 		/*Castagna 06/2011*/
 		SashForm sashException = new SashForm(notebook, SWT.HORIZONTAL);
 		sashException.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-				
+
 		Exception.setControl(sashException);
 		exceptionViewer = new Composite(sashException, SWT.NONE);
 		exceptionViewer.setLayout(tabLayout);
@@ -441,7 +393,7 @@ public class ConsoleView extends ViewPart{
 	public void setFocus() {
 		resultViewer.setFocus();
 	}
-	
+
 	public void setQuery( PrologQuery query )
 	{
 		tree.removeAll();
@@ -490,25 +442,25 @@ public class ConsoleView extends ViewPart{
 			this.project.setText(projStr);
 			this.engines.setText(engStr);
 			this.files.setText(fileStr);
-		/*	bind.setEnabled(false);
+			/*	bind.setEnabled(false);
 			PrologQueryFactory.getInstance().executeQueryWS(query);
 			queryResultIndex=0;
 			tree.setSelection(tree.getItem(0));
 			refreshResultViewer();*/
 		}
 	}
-	
+
 	private void refreshResultViewer() 
 	{
 		TreeItem engineNode = tree.getSelection()[0];
 		PrologEngine engine = (PrologEngine) engineNode.getData();	
 		queryResults = query.getEngineSolutions(engine);
 		PrologQueryResult result = queryResults.get(queryResultIndex);
-		
+
 		/**Andrea Mordenti 01/05/2011
 		/*obtain the variables and terms with those that do bind
 		 * */
-		
+
 		list = engine.getSolveInfo();
 		list2 = engine.getListTerm();
 		this.output.setText(result.getOutput());

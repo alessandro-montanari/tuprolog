@@ -56,6 +56,16 @@
               name="*">
         </export>
      </library>
+     <library name="lib/2p.jar">
+        <export
+              name="*">
+        </export>
+     </library>
+     <library name="lib/prefuse.jar">
+        <export
+              name="*">
+        </export>
+     </library>
         
   </runtime>
   <requires>

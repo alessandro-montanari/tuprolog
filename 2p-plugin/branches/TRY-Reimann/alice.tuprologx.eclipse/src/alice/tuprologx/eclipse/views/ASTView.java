@@ -19,6 +19,7 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.ISharedImages;
@@ -31,7 +32,6 @@ import prefuse.data.Node;
 import prefuse.data.Schema;
 import prefuse.data.Table;
 import prefuse.data.Tree;
-
 import alice.tuprolog.Struct;
 import alice.tuprolog.Term;
 import alice.tuprolog.interfaces.IParser;
@@ -123,24 +123,21 @@ public class ASTView extends ViewPart implements IResourceChangeListener{
 	 */
 	class TermContentProvider implements ITreeContentProvider{
 
-		@Override
 		public void dispose() {
 			// TODO Auto-generated method stub
 			
 		}
 
-		@Override
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 			// TODO Auto-generated method stub
 			
 		}
 
-		@Override
+		@SuppressWarnings("unchecked")
 		public Object[] getElements(Object inputElement) {
 			return ((Vector<Struct>)inputElement).toArray();
 		}
 
-		@Override
 		public Object[] getChildren(Object parentElement) {
 			Vector<Term> terms = null;
 			//System.out.println("parentClass: "+parentElement.getClass().toString());
@@ -157,12 +154,10 @@ public class ASTView extends ViewPart implements IResourceChangeListener{
 			return terms!=null?terms.toArray():new String[]{"Empty"};
 		}
 
-		@Override
 		public Object getParent(Object element) {
 			return null;
 		}
 
-		@Override
 		public boolean hasChildren(Object element) {
 //			System.out.println("elementClass: "+element.getClass().toString());
 			if(element instanceof Struct){
@@ -238,10 +233,16 @@ public class ASTView extends ViewPart implements IResourceChangeListener{
 			if(t instanceof Struct)visit((Struct)t);
 		}
 	}
-	@Override
+
 	public void resourceChanged(IResourceChangeEvent event) {
 		updateTerms();
 		updateTree(theoryTerms);
-		viewer.setInput(theoryTerms);
+//		Display display = Display.getDefault();
+//		display.asyncExec(new Runnable() {
+//			
+//			public void run() {
+				viewer.setInput(theoryTerms);
+//			}
+//		});
 	}
 }

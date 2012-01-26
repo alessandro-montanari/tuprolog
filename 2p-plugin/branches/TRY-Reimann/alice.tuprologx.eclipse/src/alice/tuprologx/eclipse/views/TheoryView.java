@@ -4,13 +4,6 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import org.eclipse.core.runtime.IAdaptable;
-//import org.eclipse.jface.action.Action;
-//import org.eclipse.jface.action.IMenuListener;
-//import org.eclipse.jface.action.IMenuManager;
-//import org.eclipse.jface.action.MenuManager;
-//import org.eclipse.jface.action.Separator;
-//import org.eclipse.jface.viewers.DoubleClickEvent;
-//import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -20,10 +13,7 @@ import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
-//import org.eclipse.swt.widgets.Menu;
-//import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.ISharedImages;
-//import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.DrillDownAdapter;
 import org.eclipse.ui.part.ViewPart;
@@ -61,8 +51,6 @@ public class TheoryView extends ViewPart {
 			this.parent = parent;
 		}
 
-		@SuppressWarnings("unchecked")
-		@Override
 		public Object getAdapter(Class adapter) {
 			// TODO Auto-generated method stub
 			return null;
@@ -76,17 +64,14 @@ public class TheoryView extends ViewPart {
 
 	class TreeParent extends TreeObject {
 
-		@SuppressWarnings("unchecked")
-		private ArrayList children;
+		private ArrayList<TreeObject> children;
 
-		@SuppressWarnings("unchecked")
 		public TreeParent(String name) {
 			super(name);
-			children = new ArrayList();
+			children = new ArrayList<TreeObject>();
 			// TODO Auto-generated constructor stub
 		}
 
-		@SuppressWarnings("unchecked")
 		public void addChild(TreeObject child) {
 			children.add(child);
 			child.setParent(this);
@@ -97,9 +82,8 @@ public class TheoryView extends ViewPart {
 			child.setParent(null);
 		}
 
-		@SuppressWarnings("unchecked")
 		public TreeObject[] getChildren() {
-			return (TreeObject[]) children.toArray(new TreeObject[children
+			return children.toArray(new TreeObject[children
 					.size()]);
 		}
 
@@ -114,7 +98,6 @@ public class TheoryView extends ViewPart {
 
 		private TreeParent invisibleRoot;
 
-		@Override
 		public Object[] getChildren(Object parent) {
 			// TODO Auto-generated method stub
 			if (parent instanceof TreeParent) {
@@ -123,7 +106,6 @@ public class TheoryView extends ViewPart {
 			return new Object[0];
 		}
 
-		@Override
 		public Object getParent(Object child) {
 			// TODO Auto-generated method stub
 			if (child instanceof TreeObject) {
@@ -132,7 +114,6 @@ public class TheoryView extends ViewPart {
 			return null;
 		}
 
-		@Override
 		public boolean hasChildren(Object parent) {
 			// TODO Auto-generated method stub
 			if (parent instanceof TreeParent)
@@ -140,7 +121,6 @@ public class TheoryView extends ViewPart {
 			return false;
 		}
 
-		@Override
 		public Object[] getElements(Object parent) {
 			// TODO Auto-generated method stub
 			if (parent.equals(getViewSite())) {
@@ -149,13 +129,11 @@ public class TheoryView extends ViewPart {
 			return getChildren(parent);
 		}
 
-		@Override
 		public void dispose() {
 			// TODO Auto-generated method stub
 
 		}
 
-		@Override
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 			// TODO Auto-generated method stub
 

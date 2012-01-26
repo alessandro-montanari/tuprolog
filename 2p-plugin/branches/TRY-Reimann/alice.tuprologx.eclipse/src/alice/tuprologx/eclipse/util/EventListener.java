@@ -15,7 +15,6 @@ public class EventListener implements SpyListener, OutputListener/*Castagna06/20
 	private String exception = "";
 	/**/
 
-	@Override
 	public void onSpy(SpyEvent arg0) {
 		// TODO Auto-generated method stub
 		if (arg0.getSnapshot() == null) {
@@ -26,7 +25,6 @@ public class EventListener implements SpyListener, OutputListener/*Castagna06/20
 
 	}
 
-	@Override
 	public void onOutput(OutputEvent arg0) {
 		// TODO Auto-generated method stub
 		output = arg0.getMsg();
@@ -49,7 +47,6 @@ public class EventListener implements SpyListener, OutputListener/*Castagna06/20
 	}
 
 	/*Castagna 06/2011*/
-	@Override
 	public void onException(ExceptionEvent arg0) {
 		this.exception = arg0.getMsg();
 	}
