@@ -1,40 +1,31 @@
 package alice.tuprologx.eclipse;
 
-import alice.tuprologx.eclipse.core.OpenProjectListener;
-import alice.tuprologx.eclipse.util.*;
-import alice.tuprologx.eclipse.perspective.*;
-
-import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
-import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.WorkbenchException;
-import org.eclipse.ui.navigator.CommonNavigator;
-import org.eclipse.ui.navigator.resources.ProjectExplorer;
-import org.eclipse.ui.plugin.*;
-import org.eclipse.ui.views.navigator.ResourceNavigator;
-import org.eclipse.ui.IViewReference;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+
+import alice.tuprologx.eclipse.core.OpenProjectListener;
+import alice.tuprologx.eclipse.perspective.PrologPerspective;
+import alice.tuprologx.eclipse.util.TokenManager;
 
 /**
  * The main plugin class to be used in the desktop.
@@ -44,7 +35,10 @@ public class TuProlog extends AbstractUIPlugin {
 	private static TuProlog plugin;
 	// Resource bundle.
 	private ResourceBundle resourceBundle;
+
+	private static final String PLUGIN_ID = "alice.tuprologx.eclipse";
 	public final static String PROLOG_PARTITIONING = "__prolog_partitioning"; //$NON-NLS-1$
+	private static final String ICON_FOLDER = "icons/";
 
 	private TokenManager tokenManager;
 
@@ -75,7 +69,7 @@ public class TuProlog extends AbstractUIPlugin {
 		 * metodo statico di una classe apposita per es.
 		 */
 		alice.tuprologx.eclipse.properties.PropertyManager
-				.initializeWorkspace();
+		.initializeWorkspace();
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(
 				new OpenProjectListener());
 
@@ -127,35 +121,35 @@ public class TuProlog extends AbstractUIPlugin {
 			tokenManager = new TokenManager(this.getPreferenceStore());
 		return tokenManager;
 	}
-	
+
 	public static IProject getActiveProject() {
 		IWorkbenchWindow win = getDefault().getWorkbench().getActiveWorkbenchWindow();
-        IWorkbenchPage page = win.getActivePage();
-	        if (page != null) {
-	            IEditorPart editor = page.getActiveEditor();
-	            if (editor != null) {
-	                IEditorInput input = editor.getEditorInput();
-	                if (input instanceof IFileEditorInput) {
-	                    return ((IFileEditorInput)input).getFile().getProject();
-	                }
-	            }
-	        }
-	        return null;
+		IWorkbenchPage page = win.getActivePage();
+		if (page != null) {
+			IEditorPart editor = page.getActiveEditor();
+			if (editor != null) {
+				IEditorInput input = editor.getEditorInput();
+				if (input instanceof IFileEditorInput) {
+					return ((IFileEditorInput)input).getFile().getProject();
+				}
+			}
+		}
+		return null;
 	}
 	/*like the method above, return the current opened file Prolog*/
 	public static IFile getActiveFile() {
 		IWorkbenchWindow win = getDefault().getWorkbench().getActiveWorkbenchWindow();
-        IWorkbenchPage page = win.getActivePage();
-	        if (page != null) {
-	            IEditorPart editor = page.getActiveEditor();
-	            if (editor != null) {
-	                IEditorInput input = editor.getEditorInput();
-	                if (input instanceof IFileEditorInput) {
-	                    return ((IFileEditorInput)input).getFile();
-	                }
-	            }
-	        }
-	        return null;
+		IWorkbenchPage page = win.getActivePage();
+		if (page != null) {
+			IEditorPart editor = page.getActiveEditor();
+			if (editor != null) {
+				IEditorInput input = editor.getEditorInput();
+				if (input instanceof IFileEditorInput) {
+					return ((IFileEditorInput)input).getFile();
+				}
+			}
+		}
+		return null;
 	}
 
 	public static void showPerspective() {
@@ -181,20 +175,14 @@ public class TuProlog extends AbstractUIPlugin {
 	public static IWorkspace getWorkspace() {
 		return ResourcesPlugin.getWorkspace();
 	}
-	
+
 	public static Image getIconFromResources(String filename) {
 		Image icon = null;
-
-		Bundle bundle = Platform.getBundle("alice.tuprologx.eclipse");
-		URL url = bundle.getEntry("icons/" + filename);
-		String absPath = null;
-		try {
-			absPath = FileLocator.toFileURL(url).getFile().toString();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		icon = new Image(null, absPath);
+		Bundle bundle = TuProlog.getDefault().getBundle();
+		String iconPath = ICON_FOLDER + filename;
+		URL url = bundle.getEntry(iconPath);
+		ImageDescriptor imageDescriptor = ImageDescriptor.createFromURL(url);
+		icon = imageDescriptor.createImage(true);
 		return icon;
 	}
 

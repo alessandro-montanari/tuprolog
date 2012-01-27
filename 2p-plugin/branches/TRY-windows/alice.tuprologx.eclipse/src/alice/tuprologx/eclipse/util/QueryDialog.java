@@ -2,15 +2,12 @@ package alice.tuprologx.eclipse.util;
 
 import java.util.Vector;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
@@ -20,7 +17,6 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -210,7 +206,7 @@ public class QueryDialog extends Dialog
 		if(project == null){
 			error = true;
 			message = "Invalid project name.";
-		//	position = fProjText.toDisplay(fQueryText.getSize());
+			position = fProjText.toDisplay(fQueryText.getSize());
 			position.x -= fProjText.getSize().x/2;
 		}
 		else
@@ -331,7 +327,6 @@ public class QueryDialog extends Dialog
 		});
 		
 		fQueryText.addModifyListener(new ModifyListener() {
-			@Override
 			public void modifyText(ModifyEvent e) {
 				String message = "";
 				Point position = fQueryText.toDisplay(fQueryText.getCaretLocation());
