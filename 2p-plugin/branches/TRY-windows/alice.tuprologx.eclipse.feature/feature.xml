@@ -2,7 +2,7 @@
 <feature
       id="alice.tuprologx.eclipse"
       label="tuProlog Plug-in Feature"
-      version="0.5.0"
+      version="0.6.0"
       provider-name="aliCE Research Group @ DEIS"
       plugin="alice.tuprologx.eclipse">
 
@@ -29,6 +29,6 @@
          id="alice.tuprologx.eclipse"
          download-size="0"
          install-size="0"
-         version="0.5.0"/>
+         version="0.6.0"/>
 
 </feature>
