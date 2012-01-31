@@ -9,7 +9,6 @@ public class DefaultScanner extends RuleBasedScanner {
 
 	private TokenManager tokenManager;
 
-	@SuppressWarnings("unchecked")
 	public DefaultScanner(TokenManager tManager) {
 
 		tokenManager = tManager;
@@ -34,7 +33,7 @@ public class DefaultScanner extends RuleBasedScanner {
 		Token other = tokenManager.getToken(PreferenceConstants.DEFAULT_COLOR,
 				PreferenceConstants.DEFAULT_STYLE);
 
-		List rules = new ArrayList();
+		List<IRule> rules = new ArrayList<IRule>();
 
 		// Add rule for literal strings
 		rules.add(new SingleLineRule("\"", "\"", literal1, '\\', true, true));

@@ -15,7 +15,6 @@ import org.eclipse.jface.text.rules.*;
 public class ListScanner extends RuleBasedScanner {
 	TokenManager tokenManager;
 
-	@SuppressWarnings("unchecked")
 	public ListScanner(TokenManager manager) {
 
 		tokenManager = manager;
@@ -36,7 +35,7 @@ public class ListScanner extends RuleBasedScanner {
 				PreferenceConstants.SINGLE_LINE_COMMENT_COLOR,
 				PreferenceConstants.SINGLE_LINE_COMMENT_STYLE);
 
-		List rules = new ArrayList();
+		List<IRule> rules = new ArrayList<IRule>();
 
 		// Add rules for comments
 		rules.add(new MultiLineRule("/*", "*/", comment1, (char) 0, true));

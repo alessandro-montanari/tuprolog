@@ -13,7 +13,7 @@ import org.eclipse.swt.events.*;
 public class LoadEngine extends MessageDialog {
 
 	private Text name;
-	private Button theories;
+//	private Button theories;
 	private String[] list;
 	private Label l;
 	private static String ret = "";

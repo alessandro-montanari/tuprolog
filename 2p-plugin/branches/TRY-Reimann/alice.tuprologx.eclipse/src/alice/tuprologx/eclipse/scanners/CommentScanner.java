@@ -18,7 +18,6 @@ import alice.tuprologx.eclipse.util.TokenManager;
  */
 public class CommentScanner extends RuleBasedScanner {
 
-	@SuppressWarnings("unchecked")
 	public CommentScanner(TokenManager tokenManager) {
 
 		Token comment1 = tokenManager.getToken(
@@ -30,7 +29,7 @@ public class CommentScanner extends RuleBasedScanner {
 
 		setDefaultReturnToken(comment1);
 
-		List rules = new ArrayList();
+		List<IRule> rules = new ArrayList<IRule>();
 
 		rules.add(new MultiLineRule("/*", "*/", comment1, (char) 0, true));
 		rules.add(new EndOfLineRule("%", comment2));

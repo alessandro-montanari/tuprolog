@@ -17,7 +17,7 @@ public class ViewSet implements Observer {
 
 	private ConsoleView console;
 	private QueryList queryList;
-	private ASTView ASTview;
+//	private ASTView ASTview;
 	public ViewSet() {
 		PrologQueryFactory.getInstance().addObserver(this);
 	}

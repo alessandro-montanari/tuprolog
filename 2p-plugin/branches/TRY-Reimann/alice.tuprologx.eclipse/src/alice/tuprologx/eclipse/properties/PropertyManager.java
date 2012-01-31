@@ -8,9 +8,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.QualifiedName;
 
-import com.sun.xml.internal.fastinfoset.sax.Properties;
-
-import alice.tuprologx.eclipse.TuProlog;
 import alice.tuprologx.eclipse.core.PrologEngine;
 import alice.tuprologx.eclipse.core.PrologEngineFactory;
 import alice.tuprologx.eclipse.core.PrologNature;
@@ -27,7 +24,6 @@ public class PropertyManager {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public static void configureProject(IProject project) {
 		// configurazione = creazione del motore e set delle librerie
 		// il metodo configura un progetto se è aperto e se ha la PrologNature
@@ -41,7 +37,7 @@ public class PropertyManager {
 			String[] engines = getEngineNumber(project);
 			for (int j = 0; j < engines.length; j++) {
 				createEngine(project, engines[j]);
-				Vector libraries = getLibrariesFromProperties(project,
+				Vector<String> libraries = getLibrariesFromProperties(project,
 						engines[j]);
 				setLibrariesOnEngine(libraries, PrologEngineFactory
 						.getInstance().getEngine(project.getName(), j));
@@ -124,11 +120,10 @@ public class PropertyManager {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public static Vector getLibrariesFromProperties(IProject project,
+	public static Vector<String> getLibrariesFromProperties(IProject project,
 			String engineName) {
 		String property = ""; // l'elenco di librerie
-		Vector libraries = new Vector();
+		Vector<String> libraries = new Vector<String>();
 		try {
 			property = project.getPersistentProperty(new QualifiedName(
 					qualifier, project.getName() + "." + engineName
@@ -155,14 +150,13 @@ public class PropertyManager {
 
 	}
 
-	@SuppressWarnings("unchecked")
-	public static void setLibrariesOnEngine(Vector libraries,
+	public static void setLibrariesOnEngine(Vector<String> libraries,
 			PrologEngine engine) {
 		String[] libs = engine.getLibrary();
 		for (int i = 0; i < libs.length; i++)
 			engine.removeLibrary(libs[i]);
 		for (int i = 0; i < libraries.size(); i++)
-			engine.addLibrary((String) libraries.elementAt(i));
+			engine.addLibrary(libraries.elementAt(i));
 	}
 
 	public static boolean allTheories(IProject project, String engineName) {
@@ -178,11 +172,10 @@ public class PropertyManager {
 													// LE TEORIE
 	}
 
-	@SuppressWarnings("unchecked")
-	public static Vector getTheoriesFromProperties(IProject project,
+	public static Vector<String> getTheoriesFromProperties(IProject project,
 			String engineName) {
 		String property = "";
-		Vector theories = new Vector();
+		Vector<String> theories = new Vector<String>();
 		try {
 			property = project.getPersistentProperty(new QualifiedName(
 					qualifier, project.getName() + "." + engineName

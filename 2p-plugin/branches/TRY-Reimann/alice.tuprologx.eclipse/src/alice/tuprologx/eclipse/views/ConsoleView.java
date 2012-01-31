@@ -29,8 +29,6 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.part.ViewPart;
 
 import alice.tuprolog.Term;
-import alice.tuprolog.interfaces.IParser;
-import alice.tuprolog.interfaces.ParserFactory;
 import alice.tuprologx.eclipse.TuProlog;
 import alice.tuprologx.eclipse.core.PrologEngine;
 import alice.tuprologx.eclipse.core.PrologQuery;
@@ -178,7 +176,7 @@ public class ConsoleView extends ViewPart{
 		fQueryText = new Text(queryGroup, SWT.SINGLE | SWT.BORDER);
 		fQueryText.setToolTipText("Here will be shown the query you'll editing");
 		fQueryText.setLayoutData(new GridData(SWT.FILL,SWT.CENTER,true,false));
-		final PrologQueryFactory proQ = new PrologQueryFactory(); 
+//		final PrologQueryFactory proQ = new PrologQueryFactory(); 
 		fQueryText.addKeyListener(new KeyListener() {
 			public void keyReleased(org.eclipse.swt.events.KeyEvent e) {
 			}
@@ -201,9 +199,9 @@ public class ConsoleView extends ViewPart{
 					}
 					else
 					{
-						IParser p = ParserFactory.createParser(newText);
+//						IParser p = ParserFactory.createParser(newText);
 						try{	
-							Term t = p.nextTerm(true);
+//							Term t = p.nextTerm(true);
 							queryIsValid = true;
 							message = "The query is valid.";
 						}catch(Exception e1){
@@ -244,9 +242,9 @@ public class ConsoleView extends ViewPart{
 				}
 				else
 				{
-					IParser p = ParserFactory.createParser(newText);
+//					IParser p = ParserFactory.createParser(newText);
 					try{	
-						Term t = p.nextTerm(true);
+//						Term t = p.nextTerm(true);
 						queryIsValid = true;
 						message = "The query is valid.";
 					}catch(Exception e1){

@@ -11,7 +11,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
@@ -21,7 +20,6 @@ import org.eclipse.ui.part.FileEditorInput;
 import alice.tuprologx.eclipse.TuProlog;
 import alice.tuprologx.eclipse.core.PrologEngine;
 import alice.tuprologx.eclipse.core.PrologEngineFactory;
-import alice.tuprologx.eclipse.editors.PrologEditor;
 
 public class PrologGetTheoryAction implements IWorkbenchWindowActionDelegate {
 
@@ -46,10 +44,10 @@ public class PrologGetTheoryAction implements IWorkbenchWindowActionDelegate {
 			e.printStackTrace();
 		}
 		try {
-			IEditorPart editor= win.getActivePage().getActiveEditor();
-			if (editor instanceof PrologEditor){
-				PrologEditor ed = (PrologEditor) editor;
-			}
+//			IEditorPart editor= win.getActivePage().getActiveEditor();
+//			if (editor instanceof PrologEditor){
+//				PrologEditor ed = (PrologEditor) editor;
+//			}
 			IWorkbenchPage page = win.getActivePage();
 			IFile file = currentProject.getFile(".tmp.pl");
 			if(currentProject.exists(new Path(".tmp.pl"))){

@@ -46,7 +46,6 @@ public class EnginesManagement extends PropertyPage {
 	}
 
 	// Crea i componenti grafici e ne gestisce la visualizzazione
-	@SuppressWarnings("unchecked")
 	protected Control createContents(final Composite parent) {
 		final String name = ((IResource) getElement()).getName();
 
@@ -79,7 +78,6 @@ public class EnginesManagement extends PropertyPage {
 		rowData_2.height = 100;
 		compositeEngine.setLayoutData(rowData_2);
 		listEngine.addMouseListener(new MouseAdapter() {
-			@SuppressWarnings("unchecked")
 			public void mouseUp(final MouseEvent e) {
 				String[] selection = listEngine.getSelection();
 				if (selection.length != 0) {
@@ -97,7 +95,7 @@ public class EnginesManagement extends PropertyPage {
 							if (PrologEngineFactory.getInstance()
 									.getEngine(name, i).getName()
 									.equals(motoreScelto)) {
-								Vector lib = PropertyManager
+								Vector<String> lib = PropertyManager
 										.getLibrariesFromProperties(
 												(IProject) getElement(),
 												motoreScelto);
@@ -112,7 +110,7 @@ public class EnginesManagement extends PropertyPage {
 
 					for (int j = 0; j < theoriesButtons.length; j++)
 						theoriesButtons[j].setSelection(false);
-					Vector theories = new Vector();
+					Vector<String> theories = new Vector<String>();
 					try {
 						IResource[] resources = ((IProject) getElement())
 								.members();
@@ -122,11 +120,11 @@ public class EnginesManagement extends PropertyPage {
 								theories.add(resources[j].getName());
 					} catch (CoreException e1) {
 					}
-					Vector theoriesFromProperties = PropertyManager
+					Vector<?> theoriesFromProperties = PropertyManager
 							.getTheoriesFromProperties((IProject) getElement(),
 									motoreScelto);
 					for (int j = 0; j < theories.size(); j++) {
-						theoriesButtons[j].setText((String) theories
+						theoriesButtons[j].setText(theories
 								.elementAt(j));
 						if (PropertyManager.allTheories(
 								(IProject) getElement(), motoreScelto))
@@ -134,7 +132,7 @@ public class EnginesManagement extends PropertyPage {
 						else
 							for (int k = 0; k < theoriesFromProperties.size(); k++)
 								if (((String) theoriesFromProperties
-										.elementAt(k)).equals((String) theories
+										.elementAt(k)).equals(theories
 										.elementAt(j))) {
 									theoriesButtons[j].setSelection(true);
 								}
@@ -155,7 +153,6 @@ public class EnginesManagement extends PropertyPage {
 
 		loadEngine = new Button(compositeEngine, SWT.NONE);
 		loadEngine.addMouseListener(new MouseAdapter() {
-			@SuppressWarnings("unchecked")
 			public void mouseUp(final MouseEvent e) {
 				String scelta = LoadEngine.show(null, "LoadEngine",
 						(IProject) getElement(), listEngine.getItems());
@@ -171,7 +168,7 @@ public class EnginesManagement extends PropertyPage {
 					listEngine.add(scelta);
 					PrologEngine engine = PrologEngineFactory.getInstance()
 							.addEngine(name, scelta);
-					Vector v = new Vector();
+					Vector<String> v = new Vector<String>();
 					PropertyManager.setLibrariesOnEngine(v, engine);
 					PropertyManager.setLibraryInProperties(
 							(IProject) getElement(), scelta, new String[0]);
@@ -225,7 +222,6 @@ public class EnginesManagement extends PropertyPage {
 
 		renameEngine = new Button(compositeEngine, SWT.NONE);
 		renameEngine.addMouseListener(new MouseAdapter() {
-			@SuppressWarnings("unchecked")
 			public void mouseUp(final MouseEvent e) {
 				InputDialog d = new InputDialog(null, "Rename Engine",
 						"Engine name:", "", new EngineValidator(listEngine
@@ -248,13 +244,13 @@ public class EnginesManagement extends PropertyPage {
 							PrologEngineFactory.getInstance()
 									.getEngine(name, i).rename(scelta);
 
-					Vector lib = PropertyManager.getLibrariesFromProperties(
+					Vector<?> lib = PropertyManager.getLibrariesFromProperties(
 							(IProject) getElement(), motoreScelto);
 					String[] library = new String[lib.size()];
 					for (int i = 0; i < lib.size(); i++)
 						library[i] = (String) lib.elementAt(i);
 
-					Vector theor = PropertyManager.getTheoriesFromProperties(
+					Vector<?> theor = PropertyManager.getTheoriesFromProperties(
 							(IProject) getElement(), motoreScelto);
 					String[] theories = new String[theor.size()];
 					boolean all = false;
@@ -322,7 +318,6 @@ public class EnginesManagement extends PropertyPage {
 
 		loadLibrary = new Button(compositeLibrary, SWT.NONE);
 		loadLibrary.addMouseListener(new MouseAdapter() {
-			@SuppressWarnings("unchecked")
 			public void mouseUp(final MouseEvent e) {
 				InputDialog d = new InputDialog(null, "Load Library on \""
 						+ motoreScelto + "\"", "Library:",
@@ -331,7 +326,7 @@ public class EnginesManagement extends PropertyPage {
 				d.open();
 				String scelta = d.getValue();
 				if (scelta != null) {
-					Vector r = new Vector();
+					Vector<String> r = new Vector<String>();
 					String[] t = listLibrary.getItems();
 					for (int i = 0; i < t.length; i++) {
 						r.add(t[i]);
@@ -366,7 +361,6 @@ public class EnginesManagement extends PropertyPage {
 
 		unloadLibrary = new Button(compositeLibrary, SWT.NONE);
 		unloadLibrary.addMouseListener(new MouseAdapter() {
-			@SuppressWarnings("unchecked")
 			public void mouseUp(final MouseEvent e) {
 				String[] selection = listLibrary.getSelection();
 				if (selection.length != 0) {
@@ -376,7 +370,7 @@ public class EnginesManagement extends PropertyPage {
 								(IProject) getElement(), motoreScelto,
 								listLibrary.getItems());
 					}
-					Vector r = new Vector();
+					Vector<String> r = new Vector<String>();
 					String[] t = listLibrary.getItems();
 					for (int i = 0; i < t.length; i++) {
 						r.add(t[i]);
@@ -405,7 +399,7 @@ public class EnginesManagement extends PropertyPage {
 		scopeGroup.setText("Default scope of:                  ");
 		scopeGroup.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		Vector theories = new Vector();
+		Vector<String> theories = new Vector<String>();
 		try {
 			IResource[] resources = ((IProject) getElement()).members();
 			for (int j = 0; j < resources.length; j++)
@@ -450,7 +444,7 @@ public class EnginesManagement extends PropertyPage {
 				}
 
 			});
-			theoriesButtons[j].setText((String) theories.elementAt(j));
+			theoriesButtons[j].setText(theories.elementAt(j));
 		}
 		return container;
 	}

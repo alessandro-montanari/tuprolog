@@ -4,13 +4,11 @@ import java.util.*;
 
 public class PrologEngineFactory {
 	
-	@SuppressWarnings({ "rawtypes" })
-	private Hashtable registry = null;
+	private Hashtable<String, Vector<PrologEngine>> registry = null;
 	private static PrologEngineFactory instance;
 
-	@SuppressWarnings({ "rawtypes" })
 	protected PrologEngineFactory() {
-		registry = new Hashtable();
+		registry = new Hashtable<String, Vector<PrologEngine>>();
 	}
 
 	public static PrologEngineFactory getInstance() {
@@ -19,33 +17,29 @@ public class PrologEngineFactory {
 		return instance;
 	}
 
-	@SuppressWarnings({ "rawtypes" })
-	public Vector getProjectEngines(String projectName) {
+	public Vector<PrologEngine> getProjectEngines(String projectName) {
 		if (projectName != null)
-			return (Vector) registry.get(projectName);
+			return registry.get(projectName);
 		else
 			return null;
 	}
 
-	@SuppressWarnings({ "rawtypes" })
-	public Vector getEngines() {
-		return (Vector) registry.values();
+	public Vector<Vector<PrologEngine>> getEngines() {
+		return (Vector<Vector<PrologEngine>>) registry.values();
 	}
 
-	@SuppressWarnings({ "rawtypes" })
 	public PrologEngine getEngine(String projectName, int index) {
-		Vector engines = getProjectEngines(projectName);
+		Vector<PrologEngine> engines = getProjectEngines(projectName);
 		if (engines != null)
-			return (PrologEngine)engines.elementAt(index);
+			return engines.elementAt(index);
 		else
 			return null;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public PrologEngine insertEntry(String projectName, String name) {
 		if (projectName != null) {
 			PrologEngine engine = new PrologEngine(projectName, name);
-			Vector engines = new Vector();
+			Vector<PrologEngine> engines = new Vector<PrologEngine>();
 			engines.add(engine);
 			registry.put(projectName, engines);
 			return engine;
@@ -53,11 +47,10 @@ public class PrologEngineFactory {
 		return null;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public PrologEngine addEngine(String projectName, String name) {
 		if (projectName != null) {
 			PrologEngine engine = new PrologEngine(projectName, name);
-			Vector engines = getProjectEngines(projectName);
+			Vector<PrologEngine> engines = getProjectEngines(projectName);
 			if (engines != null) {
 				engines.add(engine);
 				registry.put(projectName, engines);
@@ -67,10 +60,9 @@ public class PrologEngineFactory {
 		return null;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void deleteEngine(String projectName, String name) {
 		if (projectName != null) {
-			Vector engines = getProjectEngines(projectName);
+			Vector<PrologEngine> engines = getProjectEngines(projectName);
 			for (int i = 0; i < engines.size(); i++) {
 				if (name.equals(PrologEngineFactory.getInstance()
 						.getEngine(projectName, i).getName())) {

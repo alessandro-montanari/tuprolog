@@ -1,7 +1,5 @@
 package alice.tuprologx.eclipse.core;
 
-import java.io.IOException;
-import java.util.Hashtable;
 import java.util.Observable;
 import java.util.Vector;
 
@@ -62,8 +60,7 @@ public class PrologQueryFactory extends Observable {
 		}
 	}
 	
-	@SuppressWarnings("rawtypes")
-	public Vector getQueries(){
+	public Vector<PrologQuery> getQueries(){
 		return queries;
 	}
 	

@@ -92,7 +92,9 @@ import prefuse.visual.sort.TreeDepthItemSorter;
 public class TreeView extends Display {
 
     
-    private static final String tree = "tree";
+	private static final long serialVersionUID = -7977749696690374977L;
+	
+	private static final String tree = "tree";
     private static final String treeNodes = "tree.nodes";
     private static final String treeEdges = "tree.edges";
     
@@ -339,7 +341,9 @@ public class TreeView extends Display {
     // ------------------------------------------------------------------------
    
     public class OrientAction extends AbstractAction {
-        private int orientation;
+		private static final long serialVersionUID = 4044547995169180246L;
+		
+		private int orientation;
         
         public OrientAction(int orientation) {
             this.orientation = orientation;

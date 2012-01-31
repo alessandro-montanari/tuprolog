@@ -1,8 +1,6 @@
 package alice.tuprologx.eclipse;
 
 import java.net.URL;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -34,9 +32,8 @@ public class TuProlog extends AbstractUIPlugin {
 	// The shared instance.
 	private static TuProlog plugin;
 	// Resource bundle.
-	private ResourceBundle resourceBundle;
+//	private ResourceBundle resourceBundle;
 
-	private static final String PLUGIN_ID = "alice.tuprologx.eclipse";
 	public final static String PROLOG_PARTITIONING = "__prolog_partitioning"; //$NON-NLS-1$
 	private static final String ICON_FOLDER = "icons/";
 
@@ -44,32 +41,19 @@ public class TuProlog extends AbstractUIPlugin {
 
 	public static String[] PROLOG_EXTENSIONS = { "pro", "pl" };
 
-	/**
-	 * The constructor.
-	 */
-	public TuProlog() {
-		super();
-		plugin = this;
-		try {
-			resourceBundle = ResourceBundle
-					.getBundle("alice.tuprologx.eclipse.TuPrologResources");
-		} catch (MissingResourceException x) {
-			resourceBundle = null;
-		}
-	}
 
 	/**
 	 * This method is called upon plug-in activation
 	 */
 	public void start(BundleContext context) throws Exception {
-
 		super.start(context);
+		plugin = this;
+
 		/*
 		 * qui recuperare le proprietà persistenti, creare i motori richiamo un
 		 * metodo statico di una classe apposita per es.
 		 */
-		alice.tuprologx.eclipse.properties.PropertyManager
-		.initializeWorkspace();
+		alice.tuprologx.eclipse.properties.PropertyManager.initializeWorkspace();
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(
 				new OpenProjectListener());
 
@@ -80,6 +64,7 @@ public class TuProlog extends AbstractUIPlugin {
 	 */
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
+		plugin = null;
 	}
 
 	/**
@@ -89,27 +74,6 @@ public class TuProlog extends AbstractUIPlugin {
 		return plugin;
 	}
 
-	/**
-	 * Returns the string from the plugin's resource bundle, or 'key' if not
-	 * found.
-	 */
-	public static String getResourceString(String key) {
-		ResourceBundle bundle = TuProlog.getDefault().getResourceBundle();
-		try {
-			return (bundle != null) ? bundle.getString(key) : key;
-		} catch (MissingResourceException e) {
-			return key;
-		}
-	}
-
-	/**
-	 * Returns the plugin's resource bundle,
-	 * 
-	 * @uml.property name="resourceBundle"
-	 */
-	public ResourceBundle getResourceBundle() {
-		return resourceBundle;
-	}
 
 	// *** Start code for visualization support ***
 

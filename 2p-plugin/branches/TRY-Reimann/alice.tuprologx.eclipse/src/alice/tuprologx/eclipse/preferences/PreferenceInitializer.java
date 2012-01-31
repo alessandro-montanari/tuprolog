@@ -1,7 +1,5 @@
 package alice.tuprologx.eclipse.preferences;
 
-import java.awt.Color;
-
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
@@ -10,7 +8,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.RGB;
 
 import alice.tuprologx.eclipse.TuProlog;
-import alice.tuprologx.eclipse.views.ConsoleView;
 
 /** Class used to initialize default preference values. */
 public class PreferenceInitializer extends AbstractPreferenceInitializer {

@@ -1,7 +1,5 @@
 package alice.tuprologx.eclipse.views;
 
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Vector;
 
 import org.eclipse.jface.action.Action;
@@ -9,9 +7,7 @@ import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
@@ -24,8 +20,6 @@ import org.eclipse.ui.part.ViewPart;
 import alice.tuprologx.eclipse.TuProlog;
 import alice.tuprologx.eclipse.core.PrologQuery;
 import alice.tuprologx.eclipse.core.PrologQueryFactory;
-import alice.tuprologx.eclipse.core.PrologQueryScope;
-import alice.tuprologx.eclipse.util.QueryDialog;
 
 
 public class QueryList extends ViewPart{
