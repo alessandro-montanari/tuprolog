@@ -9,7 +9,6 @@ public class DynOpScanner extends RuleBasedScanner {
 
 	private TokenManager tokenManager;
 
-	@SuppressWarnings("unchecked")
 	public DynOpScanner(TokenManager tManager, Vector<String> newOps) {
 
 		tokenManager = tManager;
@@ -35,7 +34,7 @@ public class DynOpScanner extends RuleBasedScanner {
 				PreferenceConstants.DEFAULT_STYLE);
 		Token dynOp = tokenManager.getToken(PreferenceConstants.KEYWORD4_COLOR,
 				PreferenceConstants.KEYWORD4_STYLE);
-		List rules = new ArrayList();
+		List<IRule> rules = new ArrayList<IRule>();
 
 		// Add rule for literal strings
 		rules.add(new SingleLineRule("\"", "\"", literal1, '\\', true, true));

@@ -24,7 +24,7 @@ public class PrologProjectWizardPage extends WizardPage {
 	private Text projectText;
 	private String[] libraries;
 	private List libraryList;
-	private Button teorieButton;
+//	private Button teorieButton;
 
 	public PrologProjectWizardPage() {
 		super("wizardPage");

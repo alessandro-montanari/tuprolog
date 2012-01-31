@@ -7,7 +7,6 @@ import java.util.Vector;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
-import org.eclipse.core.internal.events.ResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.jface.action.Action;
@@ -19,7 +18,6 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.ISharedImages;
@@ -57,7 +55,7 @@ public class ASTView extends ViewPart implements IResourceChangeListener{
 	public void createPartControl(Composite parent) {
 		viewer=new TreeViewer(parent);
 		viewer.setContentProvider(new TermContentProvider());
-		TuProlog.getWorkspace().addResourceChangeListener(this, ResourceChangeEvent.POST_BUILD);
+		TuProlog.getWorkspace().addResourceChangeListener(this, IResourceChangeEvent.POST_BUILD);
 
 		createActions();
 		createToolbar();

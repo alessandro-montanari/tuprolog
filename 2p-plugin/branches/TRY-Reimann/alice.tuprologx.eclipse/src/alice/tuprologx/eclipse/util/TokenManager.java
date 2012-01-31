@@ -20,12 +20,9 @@ import alice.tuprologx.eclipse.preferences.PreferenceConstants;
  */
 
 public class TokenManager {
-	@SuppressWarnings("unchecked")
-	private Map colorTable = new HashMap(10);
-	@SuppressWarnings("unchecked")
-	private Map tokenTable = new HashMap(10);
-	@SuppressWarnings("unchecked")
-	private Map knownProperties = new HashMap(10);
+	private Map<RGB, Color> colorTable = new HashMap<RGB, Color>(10);
+	private Map<String, Token> tokenTable = new HashMap<String, Token>(10);
+	private Map<String, String> knownProperties = new HashMap<String, String>(10);
 
 	private final IPreferenceStore preferenceStore;
 
@@ -41,9 +38,8 @@ public class TokenManager {
 	 * @param stylePreference
 	 *            The preference for the text style
 	 */
-	@SuppressWarnings("unchecked")
 	public Token getToken(String colorPreference, String stylePreference) {
-		Token token = (Token) tokenTable.get(colorPreference);
+		Token token = tokenTable.get(colorPreference);
 		if (token == null) {
 			// Create Token
 			RGB rgb = PreferenceConverter.getColor(preferenceStore,
@@ -59,9 +55,8 @@ public class TokenManager {
 	/**
      * 
      */
-	@SuppressWarnings("unchecked")
 	public Color getColor(RGB rgb) {
-		Color color = (Color) colorTable.get(rgb);
+		Color color = colorTable.get(rgb);
 		if (color == null) {
 			color = new Color(Display.getCurrent(), rgb);
 			colorTable.put(rgb, color);
@@ -72,11 +67,10 @@ public class TokenManager {
 	/**
      * 
      */
-	@SuppressWarnings("unchecked")
 	public void dispose() {
-		Iterator e = colorTable.values().iterator();
+		Iterator<Color> e = colorTable.values().iterator();
 		while (e.hasNext())
-			((Color) e.next()).dispose();
+			e.next().dispose();
 	}
 
 	/**
@@ -85,8 +79,8 @@ public class TokenManager {
 	public boolean affectsTextPresentation(PropertyChangeEvent event) {
 		String prefKey = (String) event.getProperty();
 		if (knownProperties.containsKey(prefKey))
-			prefKey = (String) knownProperties.get(prefKey);
-		Token token = (Token) tokenTable.get(prefKey);
+			prefKey = knownProperties.get(prefKey);
+		Token token = tokenTable.get(prefKey);
 		return (token != null);
 	}
 
@@ -105,14 +99,14 @@ public class TokenManager {
 			return;
 		if (knownProperties.containsKey(prefKey)) {
 			// Changed style
-			prefKey = (String) knownProperties.get(prefKey);
-			Token token = (Token) tokenTable.get(prefKey);
+			prefKey = knownProperties.get(prefKey);
+			Token token = tokenTable.get(prefKey);
 			RGB rgb = PreferenceConverter.getColor(preferenceStore, prefKey);
 			int style = preferenceStore.getInt(event.getProperty());
 			token.setData(new TextAttribute(getColor(rgb), null, style));
 		} else {
 			// Changed color
-			Token token = (Token) tokenTable.get(prefKey);
+			Token token = tokenTable.get(prefKey);
 			TextAttribute tokenAttribute = (TextAttribute) token.getData();
 			RGB rgb = PreferenceConverter.getColor(preferenceStore, prefKey);
 			token.setData(new TextAttribute(getColor(rgb), null, tokenAttribute

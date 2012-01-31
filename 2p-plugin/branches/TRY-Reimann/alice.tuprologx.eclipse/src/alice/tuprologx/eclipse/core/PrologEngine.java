@@ -1,18 +1,14 @@
 package alice.tuprologx.eclipse.core;
 
-import java.awt.Component;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swt.widgets.Display;
-
-import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
 
 import alice.tuprolog.SolveInfo;
 import alice.tuprolog.Term;
@@ -25,8 +21,6 @@ import alice.tuprolog.interfaces.IOperatorManager;
 import alice.tuprolog.interfaces.IPrimitiveManager;
 import alice.tuprolog.interfaces.IProlog;
 import alice.tuprolog.interfaces.PrologFactory;
-import alice.tuprologx.ide.ConsoleDialog;
-import alice.tuprologx.ide.PrologTable;
 
 public class PrologEngine {
 	private String name;
@@ -141,7 +135,7 @@ public class PrologEngine {
 					 */
 					try {
 						si = prolog.solveNext();
-						List bindings = si.getBindingVars();
+						List<Var> bindings = si.getBindingVars();
 						Iterator<?> it = bindings.iterator();
 						while(it.hasNext()) {
 							Var v = (Var) it.next();
@@ -185,7 +179,7 @@ public class PrologEngine {
 			Info = new ArrayList<String>();
 			termList = new ArrayList<Term>();
 			si = prolog.solve(q);
-			List bindings = si.getBindingVars();
+			List<?> bindings = si.getBindingVars();
 			Iterator<?> it = bindings.iterator();
 			while(it.hasNext()) {
 				Var v = (Var) it.next();
@@ -269,7 +263,7 @@ public class PrologEngine {
 	/*Andrea Mordenti 19/04/2011
 	 * check if the binding variable is already inserted in the variable list*/
 	public boolean exist(String varName){
-		Iterator i = Info.iterator();
+		Iterator<String> i = Info.iterator();
 		while(i.hasNext()){
 			if(i.next().equals(varName)) return true;
 		}

@@ -15,14 +15,12 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -31,9 +29,6 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 
-import alice.tuprolog.Term;
-import alice.tuprolog.interfaces.IParser;
-import alice.tuprolog.interfaces.ParserFactory;
 import alice.tuprologx.eclipse.TuProlog;
 import alice.tuprologx.eclipse.core.PrologEngine;
 import alice.tuprologx.eclipse.core.PrologEngineFactory;
@@ -160,7 +155,7 @@ public class QueryDialog extends Dialog
 		if ( choosenProject != null)
 		{
 			fProjText.setText(choosenProject.getName());
-			Vector engines = PrologEngineFactory.getInstance().getProjectEngines(choosenProject.getName());
+			Vector<PrologEngine> engines = PrologEngineFactory.getInstance().getProjectEngines(choosenProject.getName());
 			for (int j = 0 ; j < engines.size(); j ++)
 			{
 				PrologEngine currEngine = (PrologEngine) engines.get(j);
@@ -306,7 +301,7 @@ public class QueryDialog extends Dialog
 					TreeItem selection = (TreeItem)e.item;
 					try
 					{
-						PrologEngine engine = (PrologEngine) selection.getData();
+//						PrologEngine engine = (PrologEngine) selection.getData();
 						for( int j = 0 ; j < selection.getItemCount(); j++)
 						{
 							selection.getItem(j).setChecked(false);
@@ -315,7 +310,7 @@ public class QueryDialog extends Dialog
 					catch(Exception e2){}
 					try
 					{	
-						String filename = (String) selection.getData();
+//						String filename = (String) selection.getData();
 						if(selection.getChecked())
 						{
 							selection.getParentItem().setChecked(true);
@@ -333,7 +328,7 @@ public class QueryDialog extends Dialog
 				position.y = position.y+fQueryText.getSize().y;
 				
 				String newText = fQueryText.getText();
-				Device dev = Display.getCurrent();
+//				Device dev = Display.getCurrent();
 				if (newText.equals("")) {
 					message = "The query is empty.";
 					queryIsValid = false;
@@ -345,7 +340,7 @@ public class QueryDialog extends Dialog
 				}
 				else
 				{
-					IParser p = ParserFactory.createParser(newText);
+//					IParser p = ParserFactory.createParser(newText);
 					/*int result = p.readTerm(true);
 					
 					switch (result) {
@@ -363,7 +358,7 @@ public class QueryDialog extends Dialog
 					 * Hooked with new parser
 					 */
 					try{	
-						Term t = p.nextTerm(true);
+//						Term t = p.nextTerm(true);
 						queryIsValid = true;
 						message = "The query is valid.";
 					}catch(Exception e1){
@@ -397,7 +392,7 @@ public class QueryDialog extends Dialog
 	
 	//Widget che permette di scegliere i progetti da configurare.
 	public class ProjectChooser extends ContainerSelectionDialog{
-		private IProject choosenProjects;
+//		private IProject choosenProjects;
 		
 		public ProjectChooser(Shell parent){
 			super(parent,ResourcesPlugin.getWorkspace().getRoot(), true, "Select a project to constrain your search:");

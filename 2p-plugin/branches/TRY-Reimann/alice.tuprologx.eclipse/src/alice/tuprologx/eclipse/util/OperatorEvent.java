@@ -21,9 +21,9 @@
  */
 package alice.tuprologx.eclipse.util;
 
-import java.util.*;
+import java.util.EventObject;
+import java.util.Vector;
 
-import alice.tuprolog.Engine;
 import alice.tuprolog.Operator;
 
 /**
@@ -33,6 +33,11 @@ import alice.tuprolog.Operator;
  */
 public class OperatorEvent extends EventObject {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4582320772037556853L;
+	
 	/** event description */
 	private String msg;
 	private Vector<Operator> opList;
