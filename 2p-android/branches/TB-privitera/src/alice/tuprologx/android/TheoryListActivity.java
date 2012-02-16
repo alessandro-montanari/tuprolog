@@ -12,8 +12,10 @@ import java.io.OutputStream;
 import alice.tuprolog.Theory;
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
@@ -40,10 +42,12 @@ public class TheoryListActivity extends ListActivity {
 	private static final int DELETE_ID = Menu.FIRST + 1;
 	private static final int EDIT_ID = Menu.FIRST + 2;
 	private static final int EXPORT_ID = Menu.FIRST + 3;
+	
+	private final static String MY_PREFERENCES = "MyPref";
+    private final static String PATH_DATA_KEY = "pathData";
 
 	private TheoryDbAdapter mDbHelper;
-	private File path = Environment
-			.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+	private File path;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -54,6 +58,7 @@ public class TheoryListActivity extends ListActivity {
 		mDbHelper.open();
 		fillData();
 		registerForContextMenu(getListView());
+		updatePreferencesData();
 	}
 
 	private void fillData() {
@@ -110,7 +115,7 @@ public class TheoryListActivity extends ListActivity {
 							try {
 								File newPath = new File(value);
 								if (newPath.exists() && newPath.isDirectory()) {
-									path = newPath;
+									savePreferencesData(value);
 									Toast.makeText(
 											getApplicationContext(),
 											"New export path selected: "
@@ -119,7 +124,7 @@ public class TheoryListActivity extends ListActivity {
 								}
 								else if (!newPath.exists()) {
 									if (newPath.mkdirs()) {
-										path = newPath;
+										savePreferencesData(value);
 										Toast.makeText(
 												getApplicationContext(),
 												"New export path selected: "
@@ -302,6 +307,23 @@ public class TheoryListActivity extends ListActivity {
 			}
 		}
 		fillData();
+	}
+	
+	private void savePreferencesData(String s) {
+        SharedPreferences prefs = getSharedPreferences(MY_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        if (s != null) {
+                editor.putString(PATH_DATA_KEY, s);
+                editor.commit();
+        }
+        updatePreferencesData();
+	}
+
+	private void updatePreferencesData() {
+        SharedPreferences prefs = getSharedPreferences(MY_PREFERENCES, Context.MODE_PRIVATE);
+        String s = prefs.getString(PATH_DATA_KEY, Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath());
+        // "/mnt/sdcard/Download"
+        path = new File(s);
 	}
 
 }
