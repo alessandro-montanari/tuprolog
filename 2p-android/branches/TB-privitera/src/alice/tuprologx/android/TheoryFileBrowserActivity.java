@@ -107,8 +107,6 @@ public class TheoryFileBrowserActivity extends ListActivity {
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		// test:
-		// TODO Bug here
 		//int selectionRowID = (int) this.getSelectedItemId();
 		String selectedFileString = this.directoryEntries.get(position);
 		if (selectedFileString.equals(".")) {
