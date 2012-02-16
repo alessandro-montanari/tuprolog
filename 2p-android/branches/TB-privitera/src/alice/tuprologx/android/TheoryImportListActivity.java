@@ -31,7 +31,6 @@ public class TheoryImportListActivity extends ListActivity {
 					int position, long id) {
 				// When clicked, should return back to the calling activity with
 				// some info to import the theory selected,
-				// TODO What to put into the bundle?
 				Bundle bundle = new Bundle();
 				String st = (String) parent.getItemAtPosition(position);
 				bundle.putString("nomeFile", st);

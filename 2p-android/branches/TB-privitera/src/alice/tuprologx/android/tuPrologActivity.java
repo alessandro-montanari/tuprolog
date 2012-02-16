@@ -169,7 +169,6 @@ public class tuPrologActivity extends Activity {
 							e1.printStackTrace();
 						}
 					} catch (IllegalArgumentException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}

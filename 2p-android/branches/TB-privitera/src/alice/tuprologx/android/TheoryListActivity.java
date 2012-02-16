@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import alice.tuprolog.Theory;
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.media.MediaScannerConnection;
@@ -25,6 +27,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
@@ -39,6 +42,8 @@ public class TheoryListActivity extends ListActivity {
 	private static final int EXPORT_ID = Menu.FIRST + 3;
 
 	private TheoryDbAdapter mDbHelper;
+	private File path = Environment
+			.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
 
 	/** Called when the activity is first created. */
 	@Override
@@ -84,10 +89,69 @@ public class TheoryListActivity extends ListActivity {
 			createTheory();
 			return true;
 		case R.id.import_theory:
-			// TODO Import della theory
 			Intent i = new Intent(this, TheoryFileBrowserActivity.class);
 			startActivityForResult(i, ACTIVITY_IMPORT);
 			return true;
+		case R.id.edit_path:
+			// DIALOG PER DECIDERE IL PATH
+			AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+			alert.setTitle("Export Path");
+			alert.setMessage("Edit the export path");
+
+			// Set an EditText view to get user input
+			final EditText input = new EditText(this);
+			input.setText(path.getAbsolutePath());
+			alert.setView(input);
+
+			alert.setPositiveButton("Ok",new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog,	int whichButton) {
+							String value = input.getText().toString();
+							try {
+								File newPath = new File(value);
+								if (newPath.exists() && newPath.isDirectory()) {
+									path = newPath;
+									Toast.makeText(
+											getApplicationContext(),
+											"New export path selected: "
+													+ path.getAbsolutePath(),
+											Toast.LENGTH_SHORT).show();
+								}
+								else if (!newPath.exists()) {
+									if (newPath.mkdirs()) {
+										path = newPath;
+										Toast.makeText(
+												getApplicationContext(),
+												"New export path selected: "
+														+ path.getAbsolutePath(),
+												Toast.LENGTH_SHORT).show();
+									}
+								}
+								else if(!newPath.isDirectory()) {
+									Toast.makeText(getApplicationContext(),
+											"Path not valid",
+											Toast.LENGTH_SHORT).show();
+								}
+							} catch (Exception e) {
+								e.printStackTrace();
+								Toast.makeText(getApplicationContext(),
+										"Path not valid", Toast.LENGTH_SHORT)
+										.show();
+							}
+
+						}
+					});
+
+			alert.setNegativeButton("Cancel",
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog,
+								int whichButton) {
+							// Canceled.
+						}
+					});
+
+			alert.show();
+			// DIALOG PER DECIDERE IL PATH
 		}
 
 		return super.onMenuItemSelected(featureId, item);
@@ -140,22 +204,22 @@ public class TheoryListActivity extends ListActivity {
 		boolean writeable = isExternalStorageWriteable();
 
 		if (writeable == true) {
-			File d = Environment
-					.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+			// File d =
+			// Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
 			// File d = Environment.getExternalStorageDirectory();
 
 			try {
 				// File file = new File(d, title);
-				d.mkdirs();
-				File file = new File(d, title);
+				path.mkdirs();
+				File file = new File(path, title);
 				OutputStream os = new FileOutputStream(file);
 				os.write(body.toString().getBytes());
 				os.close();
 				Toast.makeText(getApplicationContext(),
-						"Exported to Downloads directory!", Toast.LENGTH_SHORT)
-						.show();
+						("Exported to " + path.getAbsolutePath()),
+						Toast.LENGTH_SHORT).show();
 
-				// RENDERE IL FILE SUBITO DISPONIBILE ??
+				// RENDERE IL FILE SUBITO DISPONIBILE
 				MediaScannerConnection.scanFile(this,
 						new String[] { file.toString() }, null,
 						new MediaScannerConnection.OnScanCompletedListener() {
@@ -202,7 +266,6 @@ public class TheoryListActivity extends ListActivity {
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		// TODO CHECK THIS CODE HERE
 		Bundle bundle = new Bundle();
 		bundle.putLong(TheoryDbAdapter.KEY_ROWID, id);
 

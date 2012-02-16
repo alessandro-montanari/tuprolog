@@ -96,8 +96,6 @@ public class CUIConsole extends Automaton implements Serializable,
 		btnext.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-
 				// aggiungo query a text view
 
 				String choice = "";
@@ -112,7 +110,6 @@ public class CUIConsole extends Automaton implements Serializable,
 						}
 					}
 				} catch (NoMoreSolutionException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -123,7 +120,7 @@ public class CUIConsole extends Automaton implements Serializable,
 	@Override
 	public void boot() {
 		textView.setText(incipit);
-		textView1.setText("Select a Theory!");
+		textView1.setText("No Theory file selected.");
 		become("goalRequest");
 	}
 
@@ -236,7 +233,6 @@ public class CUIConsole extends Automaton implements Serializable,
 
 	public static void main(TextView tv, TextView tv1, AutoCompleteTextView et,
 			Button btn, TextView sol, TextView out, Button next, Toast t) {
-		// TODO Auto-generated method stub
 
 		new Thread(new CUIConsole(tv, tv1, et, btn, sol, out, next, t)).start();
 
