@@ -7,13 +7,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 public class TheoryFileBrowserActivity extends ListActivity {
+	
+	private final static String MY_PREFERENCES = "MyPref";
+    private final static String PATH_DATA_KEY = "lastData";
 
 	private enum DISPLAYMODE {
 		ABSOLUTE, RELATIVE;
@@ -29,14 +34,16 @@ public class TheoryFileBrowserActivity extends ListActivity {
 		super.onCreate(icicle);
 		// setContentView() gets called within the next line,
 		// so we do not need it here.
-		browseToRoot();
+		browseToPref();
 	}
 
 	/**
 	 * This function browses to the root-directory of the file-system.
 	 */
-	private void browseToRoot() {
-		browseTo(new File("/"));
+	private void browseToPref() {
+		SharedPreferences prefs = getSharedPreferences(MY_PREFERENCES, Context.MODE_PRIVATE);
+	    String s = prefs.getString(PATH_DATA_KEY, "/");
+		browseTo(new File(s));
 	}
 
 	private void upOneLevel() {
@@ -53,6 +60,9 @@ public class TheoryFileBrowserActivity extends ListActivity {
 			// clicked...
 			Bundle bundle = new Bundle();
 			String st = aDirectory.getAbsolutePath();
+			
+			saveLastData(aDirectory.getParent());
+			
 			bundle.putString("nomeFile", st);
 			Intent mIntent = new Intent();
 			mIntent.putExtras(bundle);
@@ -118,16 +128,23 @@ public class TheoryFileBrowserActivity extends ListActivity {
 			File clickedFile = null;
 			switch (this.displayMode) {
 			case RELATIVE:
-				clickedFile = new File(this.currentDirectory.getAbsolutePath()
-						+ this.directoryEntries.get(position));
+				clickedFile = new File(this.currentDirectory.getAbsolutePath()+ this.directoryEntries.get(position));
 				break;
 			case ABSOLUTE:
-				clickedFile = new File(
-						this.directoryEntries.get(position));
+				clickedFile = new File(this.directoryEntries.get(position));
 				break;
 			}
 			if (clickedFile != null)
 				this.browseTo(clickedFile);
 		}
+	}
+	
+	private void saveLastData(String s) {
+        SharedPreferences prefs = getSharedPreferences(MY_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        if (s != null) {
+                editor.putString(PATH_DATA_KEY, s);
+                editor.commit();
+        }
 	}
 }

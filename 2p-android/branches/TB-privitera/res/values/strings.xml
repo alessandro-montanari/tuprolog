@@ -17,4 +17,5 @@
     <string name="up_one_level">..</string>
     <string name="current_dir">.</string>
     <string name="edit_path">Edit Export Path</string>
+    <string name="about">About</string>
 </resources>
