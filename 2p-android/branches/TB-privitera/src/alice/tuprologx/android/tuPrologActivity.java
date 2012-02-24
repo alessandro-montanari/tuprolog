@@ -4,8 +4,10 @@ import alice.tuprologx.android.R;
 import alice.tuprolog.InvalidTheoryException;
 import alice.tuprolog.Theory;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
@@ -50,6 +52,7 @@ public class tuPrologActivity extends Activity {
 		return true;
 	}
 
+	@SuppressWarnings("static-access")
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
@@ -57,6 +60,21 @@ public class tuPrologActivity extends Activity {
 		case R.id.theories_list:
 			Intent i = new Intent(this, TheoryListActivity.class);
 			startActivityForResult(i, ACTIVITY_SELECT);
+			return true;
+		case R.id.about:
+			AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+			alert.setTitle("About tuProlog");
+			try {
+				alert.setMessage("tuProlog for Android\nApp Version: "
+						+ getPackageManager().getPackageInfo(getPackageName(),
+								0).versionName + "\nEngine Version: "
+						+ CUIConsole.engine.getVersion()
+						+ "\nhttp://alice.unibo.it/xwiki/bin/view/Tuprolog/");
+			} catch (NameNotFoundException e) {
+				e.printStackTrace();
+			}
+			alert.show();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

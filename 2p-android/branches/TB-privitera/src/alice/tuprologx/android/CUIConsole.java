@@ -110,6 +110,10 @@ public class CUIConsole extends Automaton implements Serializable,
 						}
 					}
 				} catch (NoMoreSolutionException e) {
+					
+					Toast toast = Toast.makeText(tuPrologActivity.getContext(), "No more solutions",
+							Toast.LENGTH_SHORT);
+					toast.show();
 					e.printStackTrace();
 				}
 			}
@@ -120,7 +124,13 @@ public class CUIConsole extends Automaton implements Serializable,
 	@Override
 	public void boot() {
 		textView.setText(incipit);
-		textView1.setText("No Theory file selected.");
+		String theory = engine.getTheory().toString();
+		if (theory.equals("")) {
+			textView1.setText("No Theory file selected.");
+		}
+		else {
+			textView1.setText("Selected Theory : "+theory);
+		}
 		become("goalRequest");
 	}
 
@@ -149,7 +159,6 @@ public class CUIConsole extends Automaton implements Serializable,
 					solution.setText("yes.");
 
 				} else {
-
 					solution.setText(solveInfoToString(info) + "\nyes.");
 					String result = solveGetTerm(info);
 					if (result.contains(output.getText())) {
@@ -166,7 +175,7 @@ public class CUIConsole extends Automaton implements Serializable,
 						solution.setText("no.");
 						become("goalRequest");
 					} else {
-						choice = solveInfoToString(info) + "\n";
+						choice = (solveInfoToString(info) + "\n");
 						solution.setText(choice);
 						// become("getChoice");
 					}
@@ -201,8 +210,7 @@ public class CUIConsole extends Automaton implements Serializable,
 	private String solveInfoToString(SolveInfo result) {
 		String s = "";
 		try {
-			for (@SuppressWarnings("rawtypes")
-			Iterator i = result.getBindingVars().iterator(); i.hasNext();) {
+			for (Iterator<Var> i = result.getBindingVars().iterator(); i.hasNext();) {
 				Var v = (Var) i.next();
 				if (v != null
 						&& !v.isAnonymous()
