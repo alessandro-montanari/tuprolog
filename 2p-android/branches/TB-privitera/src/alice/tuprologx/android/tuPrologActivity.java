@@ -20,7 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class tuPrologActivity extends Activity {
-	/** Called when the activity is first created. */
 
 	private TextView textView;
 	private AutoCompleteTextView editText;
@@ -65,11 +64,12 @@ public class tuPrologActivity extends Activity {
 
 			alert.setTitle("About tuProlog");
 			try {
-				alert.setMessage("tuProlog for Android\nApp Version: "
+				alert.setMessage("" +
+						"- tuProlog for Android - \nApp Version: "
 						+ getPackageManager().getPackageInfo(getPackageName(),
 								0).versionName + "\nEngine Version: "
 						+ CUIConsole.engine.getVersion()
-						+ "\nhttp://alice.unibo.it/xwiki/bin/view/Tuprolog/");
+						+ "\n\nhttp://alice.unibo.it/xwiki/bin/view/Tuprolog/");
 			} catch (NameNotFoundException e) {
 				e.printStackTrace();
 			}

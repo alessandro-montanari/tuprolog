@@ -30,9 +30,6 @@ import android.widget.Toast;
 public class CUIConsole extends Automaton implements Serializable,
 		WarningListener, OutputListener, SpyListener, ExceptionListener {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	public static Prolog engine;
 	private SolveInfo info;
@@ -71,7 +68,7 @@ public class CUIConsole extends Automaton implements Serializable,
 				btnext.setEnabled(false);
 				if (editText.getText().toString().equals("")) {
 					toast.show();
-					// solution.setText("Inserisci regola");
+					
 				} else {
 					ArrayAdapter<String> aa = new ArrayAdapter<String>(
 							tuPrologActivity.getContext(),
@@ -91,11 +88,9 @@ public class CUIConsole extends Automaton implements Serializable,
 
 		});
 
-		// esecuzione query
 		btnext.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
-				// aggiungo query a text view
 
 				String choice = "";
 				try {
