@@ -209,12 +209,7 @@ public class TheoryListActivity extends ListActivity {
 		boolean writeable = isExternalStorageWriteable();
 
 		if (writeable == true) {
-			// File d =
-			// Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-			// File d = Environment.getExternalStorageDirectory();
-
 			try {
-				// File file = new File(d, title);
 				path.mkdirs();
 				File file = new File(path, title);
 				OutputStream os = new FileOutputStream(file);
@@ -224,7 +219,6 @@ public class TheoryListActivity extends ListActivity {
 						("Exported to " + path.getAbsolutePath()),
 						Toast.LENGTH_SHORT).show();
 
-				// RENDERE IL FILE SUBITO DISPONIBILE
 				MediaScannerConnection.scanFile(this,
 						new String[] { file.toString() }, null,
 						new MediaScannerConnection.OnScanCompletedListener() {
@@ -235,9 +229,7 @@ public class TheoryListActivity extends ListActivity {
 							}
 
 						});
-				// RENDERE IL FILE SUBITO DISPONIBILE ??
 			} catch (Exception e) {
-				// Non dovrebbe mai arrivare qui, dovrebbe bloccare prima
 				e.printStackTrace();
 			}
 		} else {
@@ -250,15 +242,10 @@ public class TheoryListActivity extends ListActivity {
 	private boolean isExternalStorageWriteable() {
 		String state = Environment.getExternalStorageState();
 		if (Environment.MEDIA_MOUNTED.equals(state)) {
-			// We can read and write the media
 			return true;
 		} else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-			// We can only read the media
 			return false;
 		} else {
-			// Something else is wrong. It may be one of many other states, but
-			// all we need
-			// to know is we can neither read nor write
 			return false;
 		}
 	}
@@ -292,8 +279,6 @@ public class TheoryListActivity extends ListActivity {
 				String nomeFile = extras.getString("nomeFile");
 				Theory t = null;
 				try {
-					// String path =
-					// Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
 					nomeFile = nomeFile.toString();
 					t = new Theory(new FileInputStream(nomeFile));
 				} catch (FileNotFoundException e) {

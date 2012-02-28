@@ -23,7 +23,6 @@ public class tuPrologActivity extends Activity {
 	/** Called when the activity is first created. */
 
 	private TextView textView;
-	private TextView textView1;
 	private AutoCompleteTextView editText;
 	private Button execute;
 	private Button next;
@@ -90,7 +89,6 @@ public class tuPrologActivity extends Activity {
 		mDbHelper.open();
 
 		textView = (TextView) this.findViewById(R.id.textView);
-		textView1 = (TextView) this.findViewById(R.id.textView1);
 		editText = (AutoCompleteTextView) this.findViewById(R.id.editText);
 		execute = (Button) this.findViewById(R.id.btnExecute);
 		next = (Button) this.findViewById(R.id.btnNext);
@@ -110,36 +108,10 @@ public class tuPrologActivity extends Activity {
 
 		tabHost.getTabWidget();
 
-		CUIConsole.main(textView, textView1, editText, execute, solutionView,
+		CUIConsole.main(textView, editText, execute, solutionView,
 				outputView, next, toast);
 
 	}
-
-	// public class FileFilterAll implements java.io.FilenameFilter {
-	// @Override
-	// public boolean accept(File dir, String name) {
-	// if (name == null)
-	// return false;
-	// if (name.startsWith("//"))
-	// return false;
-	//
-	// if (name.endsWith(".pl") || name.endsWith(".txt")
-	// || name.endsWith(".doc"))
-	// return true;
-	// return false;
-	// }
-	// }
-	//
-	// public String[] FileInDirectory() {
-	// File d = new File(Environment.getExternalStorageDirectory()+ "");
-	// // System.out.println("Verifico se la directory esiste: " + d.exists());
-	// String a[] = d.list(new FileFilterAll()); // creo un array di stringhe e
-	// // lo riempio con la lista
-	// // dei files presenti nella
-	// // directory
-	//
-	// return a;
-	// }
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode,
@@ -165,7 +137,7 @@ public class tuPrologActivity extends Activity {
 										.getColumnIndexOrThrow(TheoryDbAdapter.KEY_BODY))
 										+ System.getProperty("line.separator"));
 						CUIConsole.engine.setTheory(t);
-						textView1
+						textView
 								.setText("Selected Theory : "
 										+ theoryCursor.getString(theoryCursor
 												.getColumnIndexOrThrow(TheoryDbAdapter.KEY_TITLE)));

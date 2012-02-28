@@ -3,25 +3,20 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-
+
     <TextView
         android:id="@+id/textView"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Medium Text"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
+        android:textAppearance="?android:attr/textAppearanceMedium" 
+        android:text="Select a Theory"/>
+
     <AutoCompleteTextView
         android:id="@+id/editText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint=" ?-" />
-
+
     <FrameLayout
         android:id="@+id/buttonhost"
         android:layout_width="match_parent"
@@ -46,24 +41,24 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/tabhost"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="1" >
-
+
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
-
+
             <TabWidget
                 android:id="@android:id/tabs"
                 android:layout_width="fill_parent"
-                android:layout_height="match_parent" />
-
+                android:layout_height="wrap_content" />
+
             <FrameLayout
                 android:id="@android:id/tabcontent"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" >
-
+
                 <TextView
                     android:id="@+id/solutionView"
                     android:layout_width="fill_parent"

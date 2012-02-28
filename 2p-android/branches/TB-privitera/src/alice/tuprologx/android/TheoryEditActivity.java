@@ -44,6 +44,7 @@ public class TheoryEditActivity extends Activity {
 
 			public void onClick(View view) {
 				setResult(RESULT_OK);
+				saveState();
 				finish();
 			}
 
@@ -64,14 +65,13 @@ public class TheoryEditActivity extends Activity {
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		saveState();
+//		saveState();
 		outState.putSerializable(TheoryDbAdapter.KEY_ROWID, mRowId);
 	}
 	
 	@Override
     protected void onPause() {
         super.onPause();
-        saveState();
     }
 	
     @Override

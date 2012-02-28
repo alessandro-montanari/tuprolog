@@ -10,6 +10,8 @@ import alice.tuprolog.NoSolutionException;
 import alice.tuprolog.Prolog;
 import alice.tuprolog.SolveInfo;
 import alice.tuprolog.Var;
+import alice.tuprolog.event.ExceptionEvent;
+import alice.tuprolog.event.ExceptionListener;
 import alice.tuprolog.event.OutputEvent;
 import alice.tuprolog.event.OutputListener;
 import alice.tuprolog.event.SpyEvent;
@@ -26,7 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class CUIConsole extends Automaton implements Serializable,
-		WarningListener, OutputListener, SpyListener {
+		WarningListener, OutputListener, SpyListener, ExceptionListener {
 
 	/**
 	 * 
@@ -36,7 +38,6 @@ public class CUIConsole extends Automaton implements Serializable,
 	private SolveInfo info;
 
 	private static TextView textView;
-	private static TextView textView1;
 	private static AutoCompleteTextView editText;
 	private static Button button;
 	private static Button btnext;
@@ -45,18 +46,16 @@ public class CUIConsole extends Automaton implements Serializable,
 	private ArrayList<String> arrayList = new ArrayList<String>();
 	private Toast toast;
 
-	final static String incipit = "tuProlog " + Prolog.getVersion();
-
-	public CUIConsole(TextView tv, TextView tv1, AutoCompleteTextView et,
+	public CUIConsole(TextView tv, AutoCompleteTextView et,
 			Button btn, TextView sol, TextView out, Button next, Toast t) {
 		engine = new Prolog();
 
 		engine.addWarningListener(this);
 		engine.addOutputListener(this);
 		engine.addSpyListener(this);
+		engine.addExceptionListener(this);
 
 		textView = tv;
-		textView1 = tv1;
 		editText = et;
 		button = btn;
 		btnext = next;
@@ -103,6 +102,8 @@ public class CUIConsole extends Automaton implements Serializable,
 					if ((info = engine.solveNext()) != null) {
 						if (!info.isSuccess()) {
 							solution.setText("no.");
+							Toast toast = Toast.makeText(tuPrologActivity.getContext(), "No more solutions", Toast.LENGTH_SHORT);
+							toast.show();
 							become("goalRequest");
 						} else {
 							choice = solveInfoToString(info) + "\n";
@@ -110,6 +111,10 @@ public class CUIConsole extends Automaton implements Serializable,
 						}
 					}
 				} catch (NoMoreSolutionException e) {
+					
+					Toast toast = Toast.makeText(tuPrologActivity.getContext(), "No more solutions",
+							Toast.LENGTH_SHORT);
+					toast.show();
 					e.printStackTrace();
 				}
 			}
@@ -119,8 +124,13 @@ public class CUIConsole extends Automaton implements Serializable,
 
 	@Override
 	public void boot() {
-		textView.setText(incipit);
-		textView1.setText("No Theory file selected.");
+		String theory = engine.getTheory().toString();
+		if (theory.equals("")) {
+			textView.setText("No Theory file selected.");
+		}
+		else {
+			textView.setText("Selected Theory : "+theory);
+		}
 		become("goalRequest");
 	}
 
@@ -149,7 +159,6 @@ public class CUIConsole extends Automaton implements Serializable,
 					solution.setText("yes.");
 
 				} else {
-
 					solution.setText(solveInfoToString(info) + "\nyes.");
 					String result = solveGetTerm(info);
 					if (result.contains(output.getText())) {
@@ -166,7 +175,7 @@ public class CUIConsole extends Automaton implements Serializable,
 						solution.setText("no.");
 						become("goalRequest");
 					} else {
-						choice = solveInfoToString(info) + "\n";
+						choice = (solveInfoToString(info) + "\n");
 						solution.setText(choice);
 						// become("getChoice");
 					}
@@ -201,8 +210,7 @@ public class CUIConsole extends Automaton implements Serializable,
 	private String solveInfoToString(SolveInfo result) {
 		String s = "";
 		try {
-			for (@SuppressWarnings("rawtypes")
-			Iterator i = result.getBindingVars().iterator(); i.hasNext();) {
+			for (Iterator<Var> i = result.getBindingVars().iterator(); i.hasNext();) {
 				Var v = (Var) i.next();
 				if (v != null
 						&& !v.isAnonymous()
@@ -231,11 +239,15 @@ public class CUIConsole extends Automaton implements Serializable,
 		output.setText(e.getMsg());
 	}
 
-	public static void main(TextView tv, TextView tv1, AutoCompleteTextView et,
+	public void onException(ExceptionEvent e) {
+		output.setText(e.getMsg());
+		
+	}
+	
+	public static void main(TextView tv, AutoCompleteTextView et,
 			Button btn, TextView sol, TextView out, Button next, Toast t) {
 
-		new Thread(new CUIConsole(tv, tv1, et, btn, sol, out, next, t)).start();
+		new Thread(new CUIConsole(tv, et, btn, sol, out, next, t)).start();
 
 	}
-
 }
