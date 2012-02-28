@@ -43,8 +43,8 @@ public class CUIConsole extends Automaton implements Serializable,
 	private ArrayList<String> arrayList = new ArrayList<String>();
 	private Toast toast;
 
-	public CUIConsole(TextView tv, AutoCompleteTextView et,
-			Button btn, TextView sol, TextView out, Button next, Toast t) {
+	public CUIConsole(TextView tv, AutoCompleteTextView et, Button btn,
+			TextView sol, TextView out, Button next, Toast t) {
 		engine = new Prolog();
 
 		engine.addWarningListener(this);
@@ -68,7 +68,7 @@ public class CUIConsole extends Automaton implements Serializable,
 				btnext.setEnabled(false);
 				if (editText.getText().toString().equals("")) {
 					toast.show();
-					
+
 				} else {
 					ArrayAdapter<String> aa = new ArrayAdapter<String>(
 							tuPrologActivity.getContext(),
@@ -97,7 +97,9 @@ public class CUIConsole extends Automaton implements Serializable,
 					if ((info = engine.solveNext()) != null) {
 						if (!info.isSuccess()) {
 							solution.setText("no.");
-							Toast toast = Toast.makeText(tuPrologActivity.getContext(), "No more solutions", Toast.LENGTH_SHORT);
+							Toast toast = Toast.makeText(
+									tuPrologActivity.getContext(),
+									"No more solutions", Toast.LENGTH_SHORT);
 							toast.show();
 							become("goalRequest");
 						} else {
@@ -106,9 +108,9 @@ public class CUIConsole extends Automaton implements Serializable,
 						}
 					}
 				} catch (NoMoreSolutionException e) {
-					
-					Toast toast = Toast.makeText(tuPrologActivity.getContext(), "No more solutions",
-							Toast.LENGTH_SHORT);
+
+					Toast toast = Toast.makeText(tuPrologActivity.getContext(),
+							"No more solutions", Toast.LENGTH_SHORT);
 					toast.show();
 					e.printStackTrace();
 				}
@@ -122,9 +124,8 @@ public class CUIConsole extends Automaton implements Serializable,
 		String theory = engine.getTheory().toString();
 		if (theory.equals("")) {
 			textView.setText("No Theory file selected.");
-		}
-		else {
-			textView.setText("Selected Theory : "+theory);
+		} else {
+			textView.setText("Selected Theory : " + theory);
 		}
 		become("goalRequest");
 	}
@@ -143,9 +144,11 @@ public class CUIConsole extends Automaton implements Serializable,
 		output.setText("");
 		try {
 			info = engine.solve(goal);
-			if (engine.isHalted())
-				System.exit(0);
-			if (!info.isSuccess()) {
+			if (engine.isHalted()) {
+				// System.exit(0);
+				solution.setText("Engine halted, check Output tab for more info");
+				become("goalRequest");
+			} else if (!info.isSuccess()) {
 				solution.setText("no.");
 				become("goalRequest");
 			} else if (!engine.hasOpenAlternatives()) {
@@ -205,7 +208,8 @@ public class CUIConsole extends Automaton implements Serializable,
 	private String solveInfoToString(SolveInfo result) {
 		String s = "";
 		try {
-			for (Iterator<Var> i = result.getBindingVars().iterator(); i.hasNext();) {
+			for (Iterator<Var> i = result.getBindingVars().iterator(); i
+					.hasNext();) {
 				Var v = (Var) i.next();
 				if (v != null
 						&& !v.isAnonymous()
@@ -236,11 +240,11 @@ public class CUIConsole extends Automaton implements Serializable,
 
 	public void onException(ExceptionEvent e) {
 		output.setText(e.getMsg());
-		
+
 	}
-	
-	public static void main(TextView tv, AutoCompleteTextView et,
-			Button btn, TextView sol, TextView out, Button next, Toast t) {
+
+	public static void main(TextView tv, AutoCompleteTextView et, Button btn,
+			TextView sol, TextView out, Button next, Toast t) {
 
 		new Thread(new CUIConsole(tv, et, btn, sol, out, next, t)).start();
 
