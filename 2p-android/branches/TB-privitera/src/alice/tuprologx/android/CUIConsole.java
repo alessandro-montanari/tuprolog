@@ -10,6 +10,7 @@ import alice.tuprolog.NoSolutionException;
 import alice.tuprolog.Prolog;
 import alice.tuprolog.SolveInfo;
 import alice.tuprolog.Var;
+import alice.tuprolog.event.ExceptionEvent;
 import alice.tuprolog.event.OutputEvent;
 import alice.tuprolog.event.OutputListener;
 import alice.tuprolog.event.SpyEvent;
@@ -36,7 +37,6 @@ public class CUIConsole extends Automaton implements Serializable,
 	private SolveInfo info;
 
 	private static TextView textView;
-	private static TextView textView1;
 	private static AutoCompleteTextView editText;
 	private static Button button;
 	private static Button btnext;
@@ -45,9 +45,7 @@ public class CUIConsole extends Automaton implements Serializable,
 	private ArrayList<String> arrayList = new ArrayList<String>();
 	private Toast toast;
 
-	final static String incipit = "tuProlog " + Prolog.getVersion();
-
-	public CUIConsole(TextView tv, TextView tv1, AutoCompleteTextView et,
+	public CUIConsole(TextView tv, AutoCompleteTextView et,
 			Button btn, TextView sol, TextView out, Button next, Toast t) {
 		engine = new Prolog();
 
@@ -56,7 +54,6 @@ public class CUIConsole extends Automaton implements Serializable,
 		engine.addSpyListener(this);
 
 		textView = tv;
-		textView1 = tv1;
 		editText = et;
 		button = btn;
 		btnext = next;
@@ -123,13 +120,13 @@ public class CUIConsole extends Automaton implements Serializable,
 
 	@Override
 	public void boot() {
-		textView.setText(incipit);
+
 		String theory = engine.getTheory().toString();
 		if (theory.equals("")) {
-			textView1.setText("No Theory file selected.");
+			textView.setText("No Theory file selected.");
 		}
 		else {
-			textView1.setText("Selected Theory : "+theory);
+			textView.setText("Selected Theory : "+theory);
 		}
 		become("goalRequest");
 	}
@@ -238,11 +235,15 @@ public class CUIConsole extends Automaton implements Serializable,
 	public void onWarning(WarningEvent e) {
 		output.setText(e.getMsg());
 	}
+	
+	public void onException(ExceptionEvent e) {
+		output.setText(e.getMsg());
+	}
 
-	public static void main(TextView tv, TextView tv1, AutoCompleteTextView et,
+	public static void main(TextView tv, AutoCompleteTextView et,
 			Button btn, TextView sol, TextView out, Button next, Toast t) {
 
-		new Thread(new CUIConsole(tv, tv1, et, btn, sol, out, next, t)).start();
+		new Thread(new CUIConsole(tv, et, btn, sol, out, next, t)).start();
 
 	}
 
