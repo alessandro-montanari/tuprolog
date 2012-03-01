@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class TheoryEditActivity extends Activity {
 	
@@ -43,6 +44,7 @@ public class TheoryEditActivity extends Activity {
 
 			public void onClick(View view) {
 				setResult(RESULT_OK);
+				saveState();
 				finish();
 			}
 
@@ -63,14 +65,13 @@ public class TheoryEditActivity extends Activity {
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		saveState();
+//		saveState();
 		outState.putSerializable(TheoryDbAdapter.KEY_ROWID, mRowId);
 	}
 	
 	@Override
     protected void onPause() {
         super.onPause();
-        saveState();
     }
 	
     @Override
@@ -83,13 +84,15 @@ public class TheoryEditActivity extends Activity {
         String title = mTitleText.getText().toString();
         String body = mBodyText.getText().toString();
 
-        if (mRowId == null) {
+        if (mRowId == null && !title.equals("")) {
             long id = mDbHelper.createTheory(title, body);
             if (id > 0) {
                 mRowId = id;
             }
-        } else {
+        } else if (mRowId != null) {
             mDbHelper.updateTheory(mRowId, title, body);
+        } else if (title.equals("")) {
+			Toast.makeText(getApplicationContext(), "Invalid Title", Toast.LENGTH_SHORT).show();
         }
     }
 

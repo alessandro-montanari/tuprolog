@@ -4,8 +4,10 @@ import alice.tuprologx.android.R;
 import alice.tuprolog.InvalidTheoryException;
 import alice.tuprolog.Theory;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,10 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class tuPrologActivity extends Activity {
-	/** Called when the activity is first created. */
 
 	private TextView textView;
-	private TextView textView1;
 	private AutoCompleteTextView editText;
 	private Button execute;
 	private Button next;
@@ -50,6 +50,7 @@ public class tuPrologActivity extends Activity {
 		return true;
 	}
 
+	@SuppressWarnings("static-access")
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
@@ -57,6 +58,22 @@ public class tuPrologActivity extends Activity {
 		case R.id.theories_list:
 			Intent i = new Intent(this, TheoryListActivity.class);
 			startActivityForResult(i, ACTIVITY_SELECT);
+			return true;
+		case R.id.about:
+			AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+			alert.setTitle("About tuProlog");
+			try {
+				alert.setMessage("" +
+						"- tuProlog for Android - \nApp Version: "
+						+ getPackageManager().getPackageInfo(getPackageName(),
+								0).versionName + "\nEngine Version: "
+						+ CUIConsole.engine.getVersion()
+						+ "\n\nhttp://alice.unibo.it/xwiki/bin/view/Tuprolog/");
+			} catch (NameNotFoundException e) {
+				e.printStackTrace();
+			}
+			alert.show();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -72,7 +89,6 @@ public class tuPrologActivity extends Activity {
 		mDbHelper.open();
 
 		textView = (TextView) this.findViewById(R.id.textView);
-		textView1 = (TextView) this.findViewById(R.id.textView1);
 		editText = (AutoCompleteTextView) this.findViewById(R.id.editText);
 		execute = (Button) this.findViewById(R.id.btnExecute);
 		next = (Button) this.findViewById(R.id.btnNext);
@@ -92,36 +108,10 @@ public class tuPrologActivity extends Activity {
 
 		tabHost.getTabWidget();
 
-		CUIConsole.main(textView, textView1, editText, execute, solutionView,
+		CUIConsole.main(textView, editText, execute, solutionView,
 				outputView, next, toast);
 
 	}
-
-	// public class FileFilterAll implements java.io.FilenameFilter {
-	// @Override
-	// public boolean accept(File dir, String name) {
-	// if (name == null)
-	// return false;
-	// if (name.startsWith("//"))
-	// return false;
-	//
-	// if (name.endsWith(".pl") || name.endsWith(".txt")
-	// || name.endsWith(".doc"))
-	// return true;
-	// return false;
-	// }
-	// }
-	//
-	// public String[] FileInDirectory() {
-	// File d = new File(Environment.getExternalStorageDirectory()+ "");
-	// // System.out.println("Verifico se la directory esiste: " + d.exists());
-	// String a[] = d.list(new FileFilterAll()); // creo un array di stringhe e
-	// // lo riempio con la lista
-	// // dei files presenti nella
-	// // directory
-	//
-	// return a;
-	// }
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode,
@@ -147,7 +137,7 @@ public class tuPrologActivity extends Activity {
 										.getColumnIndexOrThrow(TheoryDbAdapter.KEY_BODY))
 										+ System.getProperty("line.separator"));
 						CUIConsole.engine.setTheory(t);
-						textView1
+						textView
 								.setText("Selected Theory : "
 										+ theoryCursor.getString(theoryCursor
 												.getColumnIndexOrThrow(TheoryDbAdapter.KEY_TITLE)));
