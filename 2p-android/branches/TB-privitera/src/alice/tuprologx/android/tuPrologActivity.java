@@ -69,7 +69,7 @@ public class tuPrologActivity extends Activity {
 						+ getPackageManager().getPackageInfo(getPackageName(),
 								0).versionName + "\nEngine Version: "
 						+ CUIConsole.engine.getVersion()
-						+ "\n\nhttp://alice.unibo.it/xwiki/bin/view/Tuprolog/");
+						+ "\n\nhttp://tuprolog.alice.unibo.it");
 			} catch (NameNotFoundException e) {
 				e.printStackTrace();
 			}
