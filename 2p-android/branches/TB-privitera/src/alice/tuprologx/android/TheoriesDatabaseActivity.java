@@ -34,7 +34,7 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
-public class TheoryListActivity extends ListActivity {
+public class TheoriesDatabaseActivity extends ListActivity {
 	private static final int ACTIVITY_CREATE = 0;
 	private static final int ACTIVITY_EDIT = 1;
 	private static final int ACTIVITY_IMPORT = 2;
@@ -94,7 +94,7 @@ public class TheoryListActivity extends ListActivity {
 			createTheory();
 			return true;
 		case R.id.import_theory:
-			Intent i = new Intent(this, TheoryFileBrowserActivity.class);
+			Intent i = new Intent(this, TheoryImportActivity.class);
 			startActivityForResult(i, ACTIVITY_IMPORT);
 			return true;
 		case R.id.edit_path:
@@ -264,6 +264,7 @@ public class TheoryListActivity extends ListActivity {
 		Intent mIntent = new Intent();
 		mIntent.putExtras(bundle);
 		setResult(RESULT_OK, mIntent);
+		mDbHelper.close();
 		finish();
 
 	}

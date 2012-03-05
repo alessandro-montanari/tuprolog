@@ -56,7 +56,7 @@ public class tuPrologActivity extends Activity {
 		// Handle item selection
 		switch (item.getItemId()) {
 		case R.id.theories_list:
-			Intent i = new Intent(this, TheoryListActivity.class);
+			Intent i = new Intent(this, TheoriesDatabaseActivity.class);
 			startActivityForResult(i, ACTIVITY_SELECT);
 			return true;
 		case R.id.about:
@@ -148,7 +148,7 @@ public class tuPrologActivity extends Activity {
 												.getColumnIndexOrThrow(TheoryDbAdapter.KEY_TITLE)),
 								Toast.LENGTH_SHORT).show();
 					} catch (InvalidTheoryException e) {
-						Toast.makeText(context, "Invalid Theory!",
+						Toast.makeText(context, "Invalid Theory! "+e.getMessage(),
 								Toast.LENGTH_SHORT).show();
 						CUIConsole.engine.clearTheory();
 						try {
