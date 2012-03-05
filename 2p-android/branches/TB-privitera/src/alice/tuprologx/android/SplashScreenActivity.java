@@ -10,7 +10,7 @@ import android.os.Bundle;
 
 import android.os.Handler;
 
-public class SplashScreen extends Activity {
+public class SplashScreenActivity extends Activity {
 
 	private final int SPLASH_DISPLAY_LENGHT = 1000;
 
@@ -33,12 +33,12 @@ public class SplashScreen extends Activity {
 
 				/* Create an Intent that will start the Menu-Activity. */
 
-				Intent mainIntent = new Intent(SplashScreen.this,
+				Intent mainIntent = new Intent(SplashScreenActivity.this,
 						tuPrologActivity.class);
 
-				SplashScreen.this.startActivity(mainIntent);
+				SplashScreenActivity.this.startActivity(mainIntent);
 
-				SplashScreen.this.finish();
+				SplashScreenActivity.this.finish();
 
 			}
 

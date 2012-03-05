@@ -15,7 +15,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class TheoryFileBrowserActivity extends ListActivity {
+public class TheoryImportActivity extends ListActivity {
 	
 	private final static String MY_PREFERENCES = "MyPref";
     private final static String PATH_DATA_KEY = "lastData";
