@@ -545,7 +545,7 @@
 			addproperty="project.version"
 		/>
 		<input
-			message="Password for ${username}:"
+			message="You are tagging the project with version ${project.version}, if it is OK insert password for ${username}:"
 			addproperty="password"
 		/>
 		
