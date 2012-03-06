@@ -5,7 +5,8 @@
 	<taskdef name="fit" classname="com.cmdev.fit.ant.FitTask">
 		<classpath>
 			<fileset dir="lib">
-				<include name="*.jar"/>
+				<include name="fit.jar"/>
+				<include name="antfit.jar"/> 
 			</fileset>
 		</classpath>
 	</taskdef>
