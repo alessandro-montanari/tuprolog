@@ -27,8 +27,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class CUIConsole extends Automaton implements Serializable,
-		WarningListener, OutputListener, SpyListener, ExceptionListener {
+public class CUIConsole extends Automaton implements Serializable, WarningListener, OutputListener, SpyListener, ExceptionListener {
 
 	private static final long serialVersionUID = 1L;
 	public static Prolog engine;
@@ -43,8 +42,7 @@ public class CUIConsole extends Automaton implements Serializable,
 	private ArrayList<String> arrayList = new ArrayList<String>();
 	private Toast toast;
 
-	public CUIConsole(TextView tv, AutoCompleteTextView et, Button btn,
-			TextView sol, TextView out, Button next, Toast t) {
+	public CUIConsole(TextView tv, AutoCompleteTextView et, Button btn, TextView sol, TextView out, Button next, Toast t) {
 		engine = new Prolog();
 
 		engine.addWarningListener(this);
@@ -70,10 +68,7 @@ public class CUIConsole extends Automaton implements Serializable,
 					toast.show();
 
 				} else {
-					ArrayAdapter<String> aa = new ArrayAdapter<String>(
-							tuPrologActivity.getContext(),
-							android.R.layout.simple_dropdown_item_1line,
-							arrayList);
+					ArrayAdapter<String> aa = new ArrayAdapter<String>(tuPrologActivity.getContext(), android.R.layout.simple_dropdown_item_1line, arrayList);
 					if (!arrayList.contains(editText.getText().toString()))
 						arrayList.add(editText.getText().toString());
 
@@ -109,8 +104,7 @@ public class CUIConsole extends Automaton implements Serializable,
 					}
 				} catch (NoMoreSolutionException e) {
 
-					Toast toast = Toast.makeText(tuPrologActivity.getContext(),
-							"No more solutions", Toast.LENGTH_SHORT);
+					Toast toast = Toast.makeText(tuPrologActivity.getContext(), "No more solutions", Toast.LENGTH_SHORT);
 					toast.show();
 					e.printStackTrace();
 				}
@@ -121,6 +115,7 @@ public class CUIConsole extends Automaton implements Serializable,
 
 	@Override
 	public void boot() {
+
 		String theory = engine.getTheory().toString();
 		if (theory.equals("")) {
 			textView.setText("No Theory file selected.");
@@ -145,10 +140,10 @@ public class CUIConsole extends Automaton implements Serializable,
 		try {
 			info = engine.solve(goal);
 			if (engine.isHalted()) {
-				// System.exit(0);
-				solution.setText("Engine halted, check Output tab for more info");
+				solution.setText("Engine halted.");
 				become("goalRequest");
-			} else if (!info.isSuccess()) {
+			}
+			else if (!info.isSuccess()) {
 				solution.setText("no.");
 				become("goalRequest");
 			} else if (!engine.hasOpenAlternatives()) {
@@ -192,11 +187,7 @@ public class CUIConsole extends Automaton implements Serializable,
 			for (@SuppressWarnings("rawtypes")
 			Iterator i = result.getBindingVars().iterator(); i.hasNext();) {
 				Var v = (Var) i.next();
-				if (v != null
-						&& !v.isAnonymous()
-						&& v.isBound()
-						&& (!(v.getTerm() instanceof Var) || (!((Var) (v
-								.getTerm())).getName().startsWith("_")))) {
+				if (v != null && !v.isAnonymous() && v.isBound() && (!(v.getTerm() instanceof Var) || (!((Var) (v.getTerm())).getName().startsWith("_")))) {
 					s += v.getTerm() + "";
 				}
 			}
@@ -211,11 +202,7 @@ public class CUIConsole extends Automaton implements Serializable,
 			for (Iterator<Var> i = result.getBindingVars().iterator(); i
 					.hasNext();) {
 				Var v = (Var) i.next();
-				if (v != null
-						&& !v.isAnonymous()
-						&& v.isBound()
-						&& (!(v.getTerm() instanceof Var) || (!((Var) (v
-								.getTerm())).getName().startsWith("_")))) {
+				if (v != null && !v.isAnonymous() && v.isBound() && (!(v.getTerm() instanceof Var) || (!((Var) (v.getTerm())).getName().startsWith("_")))) {
 					s += v.getName() + " / " + v.getTerm();
 					if (i.hasNext())
 						s += "\n";
@@ -240,11 +227,9 @@ public class CUIConsole extends Automaton implements Serializable,
 
 	public void onException(ExceptionEvent e) {
 		output.setText(e.getMsg());
-
 	}
 
-	public static void main(TextView tv, AutoCompleteTextView et, Button btn,
-			TextView sol, TextView out, Button next, Toast t) {
+	public static void main(TextView tv, AutoCompleteTextView et, Button btn, TextView sol, TextView out, Button next, Toast t) {
 
 		new Thread(new CUIConsole(tv, et, btn, sol, out, next, t)).start();
 

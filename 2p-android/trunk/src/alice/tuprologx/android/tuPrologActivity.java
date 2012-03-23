@@ -1,6 +1,5 @@
 package alice.tuprologx.android;
 
-import alice.tuprologx.android.R;
 import alice.tuprolog.InvalidTheoryException;
 import alice.tuprolog.Theory;
 import android.app.Activity;
@@ -53,10 +52,9 @@ public class tuPrologActivity extends Activity {
 	@SuppressWarnings("static-access")
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle item selection
 		switch (item.getItemId()) {
 		case R.id.theories_list:
-			Intent i = new Intent(this, TheoryListActivity.class);
+			Intent i = new Intent(this, TheoriesDatabaseActivity.class);
 			startActivityForResult(i, ACTIVITY_SELECT);
 			return true;
 		case R.id.about:
@@ -64,12 +62,7 @@ public class tuPrologActivity extends Activity {
 
 			alert.setTitle("About tuProlog");
 			try {
-				alert.setMessage("" +
-						"- tuProlog for Android - \nApp Version: "
-						+ getPackageManager().getPackageInfo(getPackageName(),
-								0).versionName + "\nEngine Version: "
-						+ CUIConsole.engine.getVersion()
-						+ "\n\nhttp://alice.unibo.it/xwiki/bin/view/Tuprolog/");
+				alert.setMessage("" + "- tuProlog for Android - \nApp Version: " + getPackageManager().getPackageInfo(getPackageName(), 0).versionName + "\nEngine Version: " + CUIConsole.engine.getVersion() + "\n\nhttp://tuprolog.alice.unibo.it");
 			} catch (NameNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -97,29 +90,22 @@ public class tuPrologActivity extends Activity {
 		solutionView = (TextView) this.findViewById(R.id.solutionView);
 		outputView = (TextView) this.findViewById(R.id.outputView);
 
-		toast = Toast.makeText(tuPrologActivity.this, "Insert rule",
-				Toast.LENGTH_LONG);
+		toast = Toast.makeText(tuPrologActivity.this, "Insert rule", Toast.LENGTH_LONG);
 
 		tabHost.setup();
-		tabHost.addTab(tabHost.newTabSpec("Solution").setIndicator("Solution")
-				.setContent(R.id.solutionView));
-		tabHost.addTab(tabHost.newTabSpec("Output").setIndicator("Output")
-				.setContent(R.id.outputView));
+		tabHost.addTab(tabHost.newTabSpec("Solution").setIndicator("Solution").setContent(R.id.solutionView));
+		tabHost.addTab(tabHost.newTabSpec("Output").setIndicator("Output").setContent(R.id.outputView));
 
 		tabHost.getTabWidget();
 
-		CUIConsole.main(textView, editText, execute, solutionView,
-				outputView, next, toast);
+		CUIConsole.main(textView, editText, execute, solutionView, outputView, next, toast);
 
 	}
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode,
-			Intent intent) {
+	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		super.onActivityResult(requestCode, resultCode, intent);
-		if (resultCode == RESULT_OK) { // FIX, se premo Back nella ListView non
-										// ho un crash.
-
+		if (resultCode == RESULT_OK) {
 			Bundle extras = intent.getExtras();
 
 			switch (requestCode) {
@@ -132,30 +118,16 @@ public class tuPrologActivity extends Activity {
 
 					try {
 						Theory t;
-						t = new Theory(
-								theoryCursor.getString(theoryCursor
-										.getColumnIndexOrThrow(TheoryDbAdapter.KEY_BODY))
-										+ System.getProperty("line.separator"));
+						t = new Theory(theoryCursor.getString(theoryCursor.getColumnIndexOrThrow(TheoryDbAdapter.KEY_BODY)) + System.getProperty("line.separator"));
 						CUIConsole.engine.setTheory(t);
-						textView
-								.setText("Selected Theory : "
-										+ theoryCursor.getString(theoryCursor
-												.getColumnIndexOrThrow(TheoryDbAdapter.KEY_TITLE)));
-						Toast.makeText(
-								context,
-								"Theory selected: "
-										+ theoryCursor.getString(theoryCursor
-												.getColumnIndexOrThrow(TheoryDbAdapter.KEY_TITLE)),
-								Toast.LENGTH_SHORT).show();
+						textView.setText("Selected Theory : " + theoryCursor.getString(theoryCursor.getColumnIndexOrThrow(TheoryDbAdapter.KEY_TITLE)));
+						Toast.makeText(context, "Theory selected: " + theoryCursor.getString(theoryCursor.getColumnIndexOrThrow(TheoryDbAdapter.KEY_TITLE)), Toast.LENGTH_SHORT).show();
 					} catch (InvalidTheoryException e) {
-						Toast.makeText(context, "Invalid Theory!",
-								Toast.LENGTH_SHORT).show();
+						Toast.makeText(context, "Invalid Theory! " + e.getMessage(), Toast.LENGTH_SHORT).show();
 						CUIConsole.engine.clearTheory();
 						try {
 							CUIConsole.engine.setTheory(oldTheory);
 						} catch (InvalidTheoryException e1) {
-							// Should never get here since oldTheory is a valid
-							// Theory.
 							e1.printStackTrace();
 						}
 					} catch (IllegalArgumentException e) {
