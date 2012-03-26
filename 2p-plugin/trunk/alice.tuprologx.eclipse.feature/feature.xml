@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="alice.tuprologx.eclipse"
+      label="tuProlog Plug-in Feature"
+      version="2.4.1.b2"
+      provider-name="aliCE Research Group @ DEIS"
+      plugin="alice.tuprologx.eclipse">
+
+   <description>
+      This feature is designed to offer users tuProlog plug-in installation and automatic update
+      using Eclipse Update Manager.
+   </description>
+
+   <copyright url="http://alice.unibo.it/xwiki/bin/view/Tuprolog/">
+      Copyright © 2008 aliCE Research Group @ DEIS
+   </copyright>
+
+   <license url="www.gnu.org/licenses/lgpl-2.1.html">
+      LGPL License
+   </license>
+
+   <url>
+      <update label="tuProlog Plug-in Update Site" url="http://tuprolog.googlecode.com/svn/2p-plugin/trunk/alice.tuprologx.eclipse.updatesite/"/>
+      <discovery label="tuProlog in Sourseforge" url="https://tuprolog.svn.sourceforge.net/svnroot/tuprolog/Eclipse plugin/alice.tuprologx.eclipse.updatesite/"/>
+      <discovery label="tuProlog in Google code" url="http://tuprolog.googlecode.com/svn/2p-plugin/trunk/alice.tuprologx.eclipse.updatesite/"/>
+   </url>
+
+   <plugin
+         id="alice.tuprologx.eclipse"
+         download-size="0"
+         install-size="0"
+         version="2.4.1.b2"/>
+
+</feature>
