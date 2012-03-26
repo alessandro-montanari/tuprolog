@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 	
-<project name="tuProlog build file" basedir=".." default="02.print.properties">
+<project name="tuProlog build file" basedir=".." default="help">
 
 	<taskdef name="fit" classname="com.cmdev.fit.ant.FitTask">
 		<classpath>
@@ -217,16 +217,64 @@
        	<echo message="{ikvmc} is '${ikvmc}'"/>
         <echo message=" "/>
 	</target>
+	
+	<target name="help" depends="00.init.properties">
+			<echo>The following targets are available with this build file:
+		
+			05.build     		compile classes
+								Destination: ${build.classes.dir}
+				
+			05.build.test		compile test classes
+								Destination: ${build.tests.dir}
+		
+			06.unit.test		run unit tests (junit) and save the report in xml format
+								Destination: ${build.unit.reports.dir}
+				
+			06.unit.test.report	run unit tests (junit) and save the report in html format
+								Destination: ${build.unit.reports.dir}
+		
+			07.fit.test   		run acceptance tests (FIT) and save the report in html format
+								Destination: ${build.fit.reports.dir}
+		
+			08.package        	create the application jar files
+								Destination: ${build.archives.dir}
+				
+			08.package.debug	create the application jar files with debug informations. 
+								(-g option in javac)
+								Destination: ${build.archives.dir}
+		
+			09.build.NET		compile the application in .NET using ikvm.NET. 
+								Set the path of the ikvm binaries in "ant/environment.properties" to use this target.
+								Destination: ${build.archives.net.dir}
+				
+			10.javadoc			generate the javadoc of the application
+								Destination: ${doc.dir}
+				
+			11.release.bin		generate the package of the application ready for the distribution.
+								The package contains the binaries of 2p (2p.jar and tuprolog.jar), the javadoc, 
+								the guide and the results of tests (unit and acceptance).
+								Destination: ${build.release.dir}
+			 
+			12.tag				Tag the working copy into the googlecode repository (http://code.google.com/p/tuprolog/).
+								Set the username and project version in "ant/environment.properties" to use this target.
+								Your password will be prompted.
+				
+			help       	 		print this help
+			</echo>
+	 </target>
+
 
 	<!-- ============= -->
 	<!-- Project tasks -->
 	<!-- ============= -->
 
+	<!--
 	<target name="03.clean" depends="00.init.properties" description="Creates project structure, if needed">
-        <!-- <delete dir="${build.dir}"/>
-        <delete dir="${tmp.dir}" includes="**"/> -->
+        <delete dir="${build.dir}"/>
+        <delete dir="${tmp.dir}" includes="**"/> 
 	</target>
-
+	-->
+	
 	<target name="04.prepare" description="Creates project structure, if needed">
         <mkdir dir="${src.dir}"/>
         <mkdir dir="${lib.dir}"/>
