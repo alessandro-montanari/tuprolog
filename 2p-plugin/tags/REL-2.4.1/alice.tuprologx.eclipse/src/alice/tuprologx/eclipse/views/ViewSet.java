@@ -7,7 +7,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.IViewReference;
-import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
@@ -25,11 +24,6 @@ public class ViewSet implements Observer {
 	}
 
 	public void refresh(final String theoryToShow) {
-		//IWorkbench workbench = PlatformUI.getWorkbench();
-		//IWorkbenchWindow activeWindow = workbench.getActiveWorkbenchWindow();
-		//IWorkbenchPage activePage = activeWindow.getActivePage();
-
-
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() { 
 			@Override
 			public void run() { 
