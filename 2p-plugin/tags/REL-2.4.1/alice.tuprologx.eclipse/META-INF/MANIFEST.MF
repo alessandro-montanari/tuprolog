@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: tuProlog Development Tools
 Bundle-SymbolicName: alice.tuprologx.eclipse;singleton:=true
-Bundle-Version: 2.4.1
+Bundle-Version: 2.5.0
 Bundle-Activator: alice.tuprologx.eclipse.TuProlog
 Bundle-Vendor: tuProlog Team
 Export-Package: alice.tuprolog,
@@ -21,19 +21,7 @@ Export-Package: alice.tuprolog,
  alice.tuprologx.eclipse.util,
  alice.tuprologx.eclipse.views,
  alice.tuprologx.eclipse.wizards,
- alice.tuprologx.ide,
- alice.tuprologx.pj.annotations,
- alice.tuprologx.pj.annotations.parser,
- alice.tuprologx.pj.annotations.processing,
- alice.tuprologx.pj.engine,
- alice.tuprologx.pj.lib,
- alice.tuprologx.pj.meta,
- alice.tuprologx.pj.model,
- alice.tuprologx.runtime.corba,
- alice.tuprologx.runtime.rmi,
- alice.tuprologx.runtime.tcp,
  alice.util,
- alice.util.jedit,
  prefuse,
  prefuse.action,
  prefuse.action.animate,
@@ -79,6 +67,6 @@ Require-Bundle: javax.xml,
  org.eclipse.ui.editors
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: .,
- lib/2p.jar,
- lib/prefuse.jar
+ lib/prefuse.jar,
+ lib/tuprolog.jar
 Bundle-ActivationPolicy: lazy
