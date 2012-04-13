@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="alice.tuprologx.android"
+    android:versionCode="2"
+    android:versionName="2.4.4" >
+    <uses-sdk android:minSdkVersion="10"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:icon="@drawable/icon"
+        android:label="@string/app_name" android:debuggable="true">
+        <activity
+            android:label="@string/app_name"
+            android:name="SplashScreenActivity" >
+            <intent-filter >
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:label="@string/app_name"
+            android:name="tuPrologActivity" >
+            <intent-filter >
+                <action android:name="android.intent.action.DEFAULT" />
+                <category android:name="android.intent.category.VIEW" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:label="@string/app_name"
+            android:name=".TheoriesDatabaseActivity" >
+        </activity>
+        <activity
+            android:label="@string/app_name"
+            android:name="TheoryEditActivity" >
+        </activity>
+        <activity
+            android:label="@string/app_name"
+            android:name="TheoryImportListActivity" >
+        </activity>
+        <activity
+            android:label="@string/app_name"
+            android:name=".TheoryImportActivity" >
+        </activity>
+    </application>
+</manifest>
