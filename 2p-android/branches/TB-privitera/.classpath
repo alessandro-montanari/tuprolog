@@ -5,6 +5,6 @@
 	<classpathentry kind="src" path="res"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
-	<classpathentry kind="lib" path="lib/tuprolog.jar"/>
+	<classpathentry kind="lib" path="libs/tuprolog.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
