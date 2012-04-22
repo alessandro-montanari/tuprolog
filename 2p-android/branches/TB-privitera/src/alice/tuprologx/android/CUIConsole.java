@@ -124,7 +124,7 @@ public class CUIConsole extends Automaton implements Serializable,
       textView.setText("Selected Theory : " + theory);
     }
     solution.setText("tuProlog " + Prolog.getVersion() + " " + new Date().toLocaleString() +"\n");
-    become("goalRequest");
+    // become("goalRequest");
   }
 
   public void goalRequest() {
