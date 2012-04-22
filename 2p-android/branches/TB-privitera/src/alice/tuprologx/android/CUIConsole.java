@@ -2,6 +2,7 @@ package alice.tuprologx.android;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 
 import alice.tuprolog.MalformedGoalException;
@@ -94,7 +95,7 @@ public class CUIConsole extends Automaton implements Serializable,
         try {
           if ((info = engine.solveNext()) != null) {
             if (!info.isSuccess()) {
-              solution.setText("no.");
+              solution.setText("no.\n");
               become("goalRequest");
             } else {
               choice = solveInfoToString(info) + "\n";
@@ -122,6 +123,7 @@ public class CUIConsole extends Automaton implements Serializable,
     } else {
       textView.setText("Selected Theory : " + theory);
     }
+    solution.setText("tuProlog " + Prolog.getVersion() + " " + new Date().toLocaleString() +"\n");
     become("goalRequest");
   }
 
@@ -129,94 +131,70 @@ public class CUIConsole extends Automaton implements Serializable,
 
     String goal = "";
     while (goal.equals("")) {
-      solution.setText("\n "); // ?-
+      // solution.setText("\n ");
       goal = editText.getText().toString();
     }
     solveGoal(goal);
   }
 
   void solveGoal(String goal) {
-    output.setText("");
-    try {
-      info = engine.solve(goal);
-      if (engine.isHalted()) {
-        solution.setText("halt.");
+    output.setText("\n");
+    try
+    {
+      SolveInfo localSolveInfo = engine.solve(goal);
+      if (!localSolveInfo.isSuccess())
+      {
+        if (localSolveInfo.isHalted())
+          solution.setText("halt.\n");
+        else
+          solution.setText("no.\n");
         become("goalRequest");
-      } else if (!info.isSuccess()) {
-        solution.setText("no.");
-        become("goalRequest");
-      } else if (!engine.hasOpenAlternatives()) {
-        String binds = info.toString();
-        if (binds.equals("")) {
-          solution.setText("yes.");
-
-        } else {
-          solution.setText(solveInfoToString(info) + "\nyes.");
-          String result = solveGetTerm(info);
-          if (result.contains(output.getText())) {
-            output.setText(result);
-          } else {
-            output.setText(solveGetTerm(info) + output.getText());
-          }
-        }
-        become("goalRequest");
-      } else {
-        String choice = "";
-        if (info != null) {
-          if (!info.isSuccess()) {
-            solution.setText("no.");
-            become("goalRequest");
-          } else {
-            choice = (solveInfoToString(info) + "\n");
-            solution.setText(choice);
-            become("getChoice");
-          }
-        }
       }
-    } catch (MalformedGoalException ex) {
+      else if (!engine.hasOpenAlternatives())
+      {
+        String str = localSolveInfo.toString();
+        if (str.equals(""))
+          solution.setText("yes.");
+        else
+          solution.setText(solveInfoToString(localSolveInfo) + "\nyes.");
+        become("goalRequest");
+      }
+      else
+      {
+        String str = solveInfoToString(localSolveInfo);
+        if (str.equals("")) {
+          str = "yes.\n";
+        }
+        solution.setText(str + " ? ");
+        become("goalRequest");
+      }
+    }
+    catch (MalformedGoalException localMalformedGoalException)
+    {
       solution.setText("syntax error in goal:\n" + goal);
       become("goalRequest");
     }
   }
-
-  private String solveGetTerm(SolveInfo result) {
-    String s = "";
-    try {
-
-      for (@SuppressWarnings("rawtypes")
-      Iterator i = result.getBindingVars().iterator(); i.hasNext();) {
-        Var v = (Var) i.next();
-        if (v != null
-            && !v.isAnonymous()
-            && v.isBound()
-            && (!(v.getTerm() instanceof Var) || (!((Var) (v.getTerm()))
-                .getName().startsWith("_")))) {
-          s += v.getTerm() + "";
-        }
+  
+  private String solveInfoToString(SolveInfo paramSolveInfo)
+  {
+    String str = "";
+    try
+    {
+      Iterator localIterator = paramSolveInfo.getBindingVars().iterator();
+      while (localIterator.hasNext())
+      {
+        Var localVar = (Var)localIterator.next();
+        if ((!localVar.isAnonymous()) && (localVar.isBound()) && ((!(localVar.getTerm() instanceof Var)) || (!((Var)(Var)localVar.getTerm()).getName().startsWith("_"))))
+          str = str + localVar.getName() + " / " + localVar.getTerm() + "\n";
       }
-    } catch (NoSolutionException e) {
+      if (str.length() > 0)
+        str.substring(0, str.length() - 1);
     }
-    return s;
-  }
-
-  private String solveInfoToString(SolveInfo result) {
-    String s = "";
-    try {
-      for (Iterator<Var> i = result.getBindingVars().iterator(); i.hasNext();) {
-        Var v = (Var) i.next();
-        if (v != null
-            && !v.isAnonymous()
-            && v.isBound()
-            && (!(v.getTerm() instanceof Var) || (!((Var) (v.getTerm()))
-                .getName().startsWith("_")))) {
-          s += v.getName() + " / " + v.getTerm();
-          if (i.hasNext())
-            s += "\n";
-        }
-      }
-    } catch (NoSolutionException e) {
+    catch (NoSolutionException localNoSolutionException)
+    {
     }
-    return s;
+    return str;
   }
 
   public void onOutput(OutputEvent e) {
