@@ -131,7 +131,6 @@ public class CUIConsole extends Automaton implements Serializable,
 
     String goal = "";
     while (goal.equals("")) {
-      // solution.setText("\n ");
       goal = editText.getText().toString();
     }
     solveGoal(goal);
