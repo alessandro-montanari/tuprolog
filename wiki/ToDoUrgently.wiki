@@ -18,8 +18,7 @@ This page describes the top priority issues to be dealt with.
    Current workaround is adding a cut, e.g. (g1,g2,!),(g3,g4)
    but clearly this is not a good solution.
 
-2) A problem that is solved by SWI-prolog nearly in real time 
-   requires more than *an hour* with tuProlog. Code profiling 
+2) A problem that is solved by SWI-prolog nearly in real time requires more than *an hour* with tuProlog. Code profiling 
    showed that the method Struct.isList() consumes more than 
    90% of the time, and gets called extremely often.
    Tentative caching strategy: trying to cache the return 
