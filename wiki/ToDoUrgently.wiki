@@ -1,0 +1,31 @@
+#summary Things (bugfixes and similar) to be done urgently
+
+= Introduction =
+
+This page describes the top priority issues to be dealt with.
+
+1) BUG when handling goal conjuction in parentheses.
+
+2) SERIOUS PERFORMANCE ISSUE in large projects making large 
+   use of lists.
+
+
+= Details =
+
+1) BUG when handling goal conjuction in parentheses:
+                     (g1,g2),(g3,g4)  
+   returns true even if (g3,g4) fails, provided that (g1,g2) 
+   is true.
+   Current workaround is adding a cut, e.g. (g1,g2,!),(g3,g4)
+   but clearly this is not a good solution.
+
+2) A problem that is solved by SWI-prolog nearly in real time 
+   requires more than *an hour* with tuProlog. Code profiling 
+   showed that the method Struct.isList() consumes more than 
+   90% of the time, and gets called extremely often.
+   *Tentative caching strategy*: trying to cache the return 
+   value the first time it gets calculated, the overall time 
+   consumption reduced by more than 90% but the results look 
+   incorrect, too (as expected since the class is not immutable).
+
+   Deserves going in depth.
