@@ -6,8 +6,7 @@ This page describes the top priority issues to be dealt with.
 
 1) BUG when handling goal conjuction in parentheses.
 
-2) SERIOUS PERFORMANCE ISSUE in large projects making large 
-   use of lists.
+2) SERIOUS PERFORMANCE ISSUE in large projects making large use of lists.
 
 
 = Details =
@@ -23,7 +22,7 @@ This page describes the top priority issues to be dealt with.
    requires more than *an hour* with tuProlog. Code profiling 
    showed that the method Struct.isList() consumes more than 
    90% of the time, and gets called extremely often.
-   *Tentative caching strategy*: trying to cache the return 
+   Tentative caching strategy: trying to cache the return 
    value the first time it gets calculated, the overall time 
    consumption reduced by more than 90% but the results look 
    incorrect, too (as expected since the class is not immutable).
