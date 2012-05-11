@@ -1,0 +1,2 @@
+La guida per la pubblicazione delle nuove versione del plugin Eclipse è raggiungibile dal seguente link:
+http://code.google.com/p/tuprolog/source/browse/wiki/Guida_nuova_versione.pdf
