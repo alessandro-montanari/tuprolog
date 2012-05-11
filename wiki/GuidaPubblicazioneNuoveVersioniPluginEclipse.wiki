@@ -6,7 +6,7 @@ La procedura è la seguente:
 
  1. Nell’Overview della feature (feature.xml) si cambia la versione della feature che sarà la stessa impostata anche nel plug-in. 
 
-<img src="http://tuprolog.googlecode.com/svn/wiki/screenshots/EclipseGuide/feature.png" width=75% />
+<img src="http://tuprolog.googlecode.com/svn/wiki/screenshots/EclipseGuide/feature.png" align=center width=75% />
 
 Per fare ciò si va in : Plug-ins -> Versions... -> Force feauture version in plug-in e fragment manifests -> Finish . Salvando le modifiche si ha la nuova versione della feature e del plug-in.
 
@@ -22,4 +22,4 @@ Synchronize... -> Synchronize all features in the site -> Finish -> Build All
 
 A questo punto verranno generati i due jar della nuova versione del plug-in e della feature nelle rispettive cartelle.
 
-<img src="http://tuprolog.googlecode.com/svn/wiki/screenshots/EclipseGuide/project.png" width=75% />
+<img src="http://tuprolog.googlecode.com/svn/wiki/screenshots/EclipseGuide/project.png" width=50% />
