@@ -4,47 +4,22 @@ Quando si ha una nuova versione del plug-in non c’è bisogno di cambiare la ve
 
 La procedura è la seguente:
 
-Nell’Overview della feature (feature.xml) si cambia la versione della feature che sarà la stessa impostata anche nel plug-in. 
+ 1. Nell’Overview della feature (feature.xml) si cambia la versione della feature che sarà la stessa impostata anche nel plug-in. 
 
-
-
-
-
-
-
-http://code.google.com/p/tuprolog/source/browse/wiki/screenshots/EclipseGuide/feature.png
-
-
-
-
-
-
-
-
+http://tuprolog.googlecode.com/svn/wiki/screenshots/EclipseGuide/feature.png
 
 Per fare ciò si va in : Plug-ins -> Versions... -> Force feauture version in plug-in e fragment manifests -> Finish . Salvando le modifiche si ha la nuova versione della feature e del plug-in.
 
+http://tuprolog.googlecode.com/svn/wiki/screenshots/EclipseGuide/feature2.png
 
+ 2. Per aggiungere la nuova versione nell’ update site si lavora su “site.xml”: Site Map -> Seleziona la categoria “tuProlog plug-in features” -> Add Feature.. e si seleziona l’ultima versione. 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
-Per aggiungere la nuova versione nell’ update site si lavora su “site.xml”: Site Map -> Seleziona la categoria “tuProlog plug-in features” -> Add Feature.. e si seleziona l’ultima versione. 
-
+http://tuprolog.googlecode.com/svn/wiki/screenshots/EclipseGuide/UpdateSite.png
 
 Synchronize... -> Synchronize all features in the site -> Finish -> Build All
 
+http://tuprolog.googlecode.com/svn/wiki/screenshots/EclipseGuide/UpdateSite2.png
 
- A questo punto verranno generati i due jar della nuova versione del plug-in e della feature nelle rispettive cartelle.
+A questo punto verranno generati i due jar della nuova versione del plug-in e della feature nelle rispettive cartelle.
+
+http://tuprolog.googlecode.com/svn/wiki/screenshots/EclipseGuide/project.png
