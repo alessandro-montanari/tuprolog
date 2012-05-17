@@ -1,0 +1,17 @@
+#summary One-sentence summary of this page.
+
+= Introduction =
+
+Below are detailed the procedures that have to be followed in order to modify the version number of a project.
+
+= Java and .NET=
+Modify the values of the private fields (ENGINE_VERSION, JAVA_SPECIFIC_VERSION and NET_SPECIFIC_VERSION) inside the class alice.util.VersionInfo.
+----
+
+= Plugin Eclipse =
+http://code.google.com/p/tuprolog/wiki/GuidaPubblicazioneNuoveVersioniPluginEclipse
+----
+
+= Android =
+TODO
+----
