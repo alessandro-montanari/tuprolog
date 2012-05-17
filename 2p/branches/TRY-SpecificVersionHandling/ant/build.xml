@@ -189,7 +189,7 @@
 		    	<linecontains>
 		        	<contains value="String ENGINE_VERSION"/>
 		        </linecontains>
-				<deletecharacters chars="\n\r"/>
+				<deletecharacters chars="\n\r"/>	<!-- Do not get a number with a new line at the end -->
 		        <tokenfilter>
 		        	<replaceregex pattern="[^0-9]+&quot;" replace=""/>
 		        	<replaceregex pattern="&quot;.*" replace=""/>
@@ -202,7 +202,7 @@
 		    	<linecontains>
 		        	<contains value="String JAVA_SPECIFIC_VERSION"/>
 		        </linecontains>
-				<deletecharacters chars="\n\r"/>
+				<deletecharacters chars="\n\r"/>	<!-- Do not get a number with a new line at the end -->
 		        <tokenfilter>
 		        	<replaceregex pattern="[^0-9]+&quot;" replace=""/>
 		        	<replaceregex pattern="&quot;.*" replace=""/>
@@ -215,7 +215,7 @@
 		    	<linecontains>
 		        	<contains value="String NET_SPECIFIC_VERSION"/>
 		        </linecontains>
-				<deletecharacters chars="\n\r"/>
+				<deletecharacters chars="\n\r"/>	<!-- Do not get a number with a new line at the end -->
 		        <tokenfilter>
 		        	<replaceregex pattern="[^0-9]+&quot;" replace=""/>
 		        	<replaceregex pattern="&quot;.*" replace=""/>
