@@ -36,10 +36,10 @@
 				<fileset dir="${build.classes.dir}" includes="**/*"/>
 			</delete>
 			
-	    	<!-- Set the version in file Prolog.java from the version specified in file environment.properties -->
+	    	<!-- Set the version in file Prolog.java from the version specified in file environment.properties 
 			<replace file="${src.dir}/alice/tuprolog/Prolog.java" token="@engine.version@" value="${engine.version}"/>
 	    	<replace file="${src.dir}/alice/util/JavaVersionInfo.java" token="@JavaSpecific.version@" value="${JavaSpecific.version}"/>
-	    	<replace file="${src.dir}/alice/util/NetVersionInfo.java" token="@NETSpecific.version@" value="${NETSpecific.version}"/>
+	    	<replace file="${src.dir}/alice/util/NetVersionInfo.java" token="@NETSpecific.version@" value="${NETSpecific.version}"/> -->
 			
 			<javac destdir="${build.classes.dir}" debug="@{debug}"
 			deprecation="false" optimize="@{optimize}" failonerror="true">
@@ -51,10 +51,10 @@
 				<fileset dir="${src.dir}/alice/tuprologx/ide/img"/>
 			</copy>
 			
-	    	<!-- Set the keyword @version@ back into file Prolog.java so no modification is seen from subversion -->
+	    	<!-- Set the keyword @version@ back into file Prolog.java so no modification is seen from subversion 
 			<replace file="${src.dir}/alice/tuprolog/Prolog.java" token="${engine.version}" value="@engine.version@"/>	
 	    	<replace file="${src.dir}/alice/util/JavaVersionInfo.java" token="${JavaSpecific.version}" value="@JavaSpecific.version@"/>
-	    	<replace file="${src.dir}/alice/util/NetVersionInfo.java" token="${NETSpecific.version}" value="@NETSpecific.version@"/>
+	    	<replace file="${src.dir}/alice/util/NetVersionInfo.java" token="${NETSpecific.version}" value="@NETSpecific.version@"/> -->
 	    	
 	    </sequential>
 	</macrodef>
@@ -182,6 +182,47 @@
 		
 		<property name="lib.dir" value="lib"/>
 		<property name="tmp.dir" value="tmp"/>
+
+		
+		<loadfile srcfile="${src.dir}/alice/util/VersionInfo.java" property="engine.version">
+			<filterchain>
+		    	<linecontains>
+		        	<contains value="String ENGINE_VERSION"/>
+		        </linecontains>
+				<deletecharacters chars="\n\r"/>
+		        <tokenfilter>
+		        	<replaceregex pattern="[^0-9]+&quot;" replace=""/>
+		        	<replaceregex pattern="&quot;.*" replace=""/>
+		        </tokenfilter>
+		    </filterchain>
+		 </loadfile>
+		
+		<loadfile srcfile="${src.dir}/alice/util/VersionInfo.java" property="JavaSpecific.version">
+			<filterchain>
+		    	<linecontains>
+		        	<contains value="String JAVA_SPECIFIC_VERSION"/>
+		        </linecontains>
+				<deletecharacters chars="\n\r"/>
+		        <tokenfilter>
+		        	<replaceregex pattern="[^0-9]+&quot;" replace=""/>
+		        	<replaceregex pattern="&quot;.*" replace=""/>
+		        </tokenfilter>
+		    </filterchain>
+		 </loadfile>
+		
+		<loadfile srcfile="${src.dir}/alice/util/VersionInfo.java" property="NETSpecific.version">
+			<filterchain>
+		    	<linecontains>
+		        	<contains value="String NET_SPECIFIC_VERSION"/>
+		        </linecontains>
+				<deletecharacters chars="\n\r"/>
+		        <tokenfilter>
+		        	<replaceregex pattern="[^0-9]+&quot;" replace=""/>
+		        	<replaceregex pattern="&quot;.*" replace=""/>
+		        </tokenfilter>
+		    </filterchain>
+		 </loadfile>
+		
 	</target>
 
 	<target name="01.set.classpath" depends="00.init.properties" description="Sets up classpath properties for other tasks">
@@ -560,50 +601,43 @@
 			<mkdir dir="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}/reports"/>
 			<mkdir dir="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}/doc"/>
 			
-				<copy todir="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}/reports">
-			    	<fileset dir="${build.dir}/reports"/>
-			  	</copy>
-			
-				<copy todir="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}/bin">
-			   		<fileset dir="${build.archives.dir}">
-			      		<include name="*.jar"/>
-			    	</fileset>
-			  	</copy>
-			
-				<copy todir="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}/lib">
-					<fileset dir="${lib.dir}">
-						<include name="javassist.jar"/>
-					</fileset>
-				</copy>
-			
-				<copy todir="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}/doc">
-					<fileset dir="${doc.dir}"/>
-				</copy>
-			
-				<copy todir="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}">
-					<fileset dir=".">
-						<include name="LICENSE.txt"/>
-					</fileset>
-				</copy>
-			
-				<zip destfile="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}.zip"
-			       	 basedir="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}"
-			 	 	/>
+			<copy todir="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}/reports">
+		    	<fileset dir="${build.dir}/reports"/>
+		  	</copy>
+		
+			<copy todir="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}/bin">
+		   		<fileset dir="${build.archives.dir}">
+		      		<include name="*.jar"/>
+		    	</fileset>
+		  	</copy>
+		
+			<copy todir="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}/lib">
+				<fileset dir="${lib.dir}">
+					<include name="javassist.jar"/>
+				</fileset>
+			</copy>
+		
+			<copy todir="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}/doc">
+				<fileset dir="${doc.dir}"/>
+			</copy>
+		
+			<copy todir="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}">
+				<fileset dir=".">
+					<include name="LICENSE.txt"/>
+				</fileset>
+			</copy>
+		
+			<zip destfile="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}.zip"
+		       	 basedir="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}"
+		 	 	/>
 			
 			<echo>Look directory ${build.release.dir}</echo>
 		</target>
 	
 	<target name="12.tag" depends="01.set.classpath, 04.prepare, 08.package" description="Tags the code">
+		
 		<input
-			message="tuProlog ENGINE version (n.n):"
-			addproperty="engine.version"
-		/>
-		<input
-			message="tuProlog for Java specific version (n):"
-			addproperty="JavaSpecific.version"
-		/>
-		<input
-			message="You are tagging the project with version ${engine.version}.${specific.version}, if it is OK insert password for ${username}:"
+			message="You are tagging the project with version ${engine.version}.${JavaSpecific.version}, if it is OK insert password for ${username}:"
 			addproperty="password"
 		/>
 		
