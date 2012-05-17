@@ -2,27 +2,13 @@ package alice.tuprologx.ide;
 
 import javax.swing.*;
 
-import alice.util.VersionInfo;
-import alice.util.VersionInfoFactory;
 
 import java.awt.*;
-import java.io.IOException;
 import java.net.URL;
-import java.util.Map;
-import java.util.jar.Attributes;
-import java.util.jar.Manifest;
 
-public class AboutFrame
-    extends GenericFrame
+public class AboutFrame extends GenericFrame
 {
-    
     private static final long serialVersionUID = 1L;
-    private static final String PLATFORM_VERSION = "0";
-    
-    private String getPlatformVersion()
-    {
-    	return "0";
-    }
 
     public AboutFrame(JFrame mainWindow)
     {
@@ -39,9 +25,9 @@ public class AboutFrame
         
         JLabel versionSystem=new JLabel(" tuProlog engine version " + alice.tuprolog.Prolog.getVersion());
         
-        String platformMessage = VersionInfoFactory.getVersionInfo().getPlatform();
+        String platformMessage = alice.util.VersionInfo.getPlatform();
         platformMessage += " platform version ";
-        platformMessage += alice.tuprolog.Prolog.getVersion() + "." + VersionInfoFactory.getVersionInfo().getSpecificVersion();
+        platformMessage += alice.util.VersionInfo.getCompleteVersion();
         JLabel versionIDE=new JLabel(platformMessage);
         
         JLabel copyright=new JLabel(" tuProlog is (C) Copyright 2001-2011 aliCE team");
