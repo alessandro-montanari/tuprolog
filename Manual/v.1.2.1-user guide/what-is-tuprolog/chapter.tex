@@ -1,17 +1,16 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                                           %
-%   tuProlog 2.5 Documentation - 2012 edition                               %
+%  Helper file to generate a single chapter in the tuProlog documentation.  %
 %                                                                           %
-%   E.Denti, 26/06/12                                                       %
+%   Andrea Omicini, 2/8/2010                                                %
 %                                                                           %
-%   Strongly based on former contributions by                               %
-%   A.Ricci (2000-2002) and G.Piancastelli (2004-2007)                      %                                                %                                                                           %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \documentclass[11pt]{report}
-\usepackage[bookmarks=true,bookmarksopen=true,bookmarksnumbered]{hyperref}
-\usepackage{graphicx}
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[pdftex]{graphicx}
+\DeclareGraphicsExtensions{.png, .jpg, .eps, .pdf, .tif}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand\xa[1]{\appendixname~\ref{app:#1}}
 \newcommand\labelsec[1]{\label{sec:#1}}
 \newcommand\xs[1]{\sectionname~\ref{sec:#1}}
@@ -45,17 +44,19 @@
 \newcommand{\luce}{\mbox{\sf{{L}u{C}e}}}
 \newcommand{\tucson}{\mbox{\sf{{T}u{CS}o{N}}}}
 \newcommand{\alice}{\mbox{\sf{{aliCE}}}}
-\newcommand{\apice}{\mbox{\sf{{APICe}}}}
 \newcommand{\tuprolog}{\mbox{{\sf{tu}}Prolog}}
+\newcommand{\apice}{\mbox{\sf{{APICe}}}}
 %******************************************************************************%
 \newcommand\version[1]{\mbox{Document revision: #1}}
+\newcommand\approvedby[1]{\mbox{Approved by: #1}}
+\newcommand\receivedby[1]{\mbox{Received by: #1}}
 \newcommand\creationdate[1]{\mbox{Creation date: #1}}
 \newcommand\lastchangesdate[1]{\mbox{Last Changes date: #1}}
 \newcommand\noa[2]{\noindent\emph{Note of the author (#1): }#2\\\\}
 \newcommand\logo{
     \begin{figure}[tp]
         \begin{center}
-            \includegraphics[width=5cm]{images/logo}
+            \includegraphics[width=2cm]{common/logo}
         \end{center}
 \end{figure}
 }
@@ -69,49 +70,36 @@
 \newcommand{\userinput}[1]{\texttt{#1}}
 \newcommand{\figref}[1]{\figurename~\ref{#1}}
 %******************************************************************************%
-\title{{\huge{\bf{\tuprolog{} Manual\\\mbox{ }\\}}}
-        \tuprolog{} version: 2.5\\\mbox{ }\\
-{\small{
-    \lastchangesdate{2012-06-26}\\
-}}
-}
+%\title{{\huge{\bf{\tuprolog{} Guide\\\mbox{ }\\}}}
+%        \tuprolog{} version: 1.2.1\\\mbox{ }\\
+%        \tuprolog{} IDE version: 1.1.0\\\mbox{ }\\
+%{\small{
+%    \version{001}\\
+%    \creationdate{2002-09-17}\\
+%    \lastchangesdate{2004-09-27}\\
+%    % \receivedby{aricci}\\
+%    % \approvedby{aricci}\\
+%    }}
+%}
+%
+%\author{ \mbox{ }\\DEIS, Universit\`{a} di Bologna a Cesena, Italy
+%}
 
-\author{ \mbox{ }\\ \textsc{Alma Mater Studiorum}---Universit\`{a} di Bologna, Italy
-}
+%\date{}
 
-\date{}
+\usepackage{supertabular}
+\usepackage[bookmarks=true,bookmarksopen=true,bookmarksnumbered]{hyperref}
 
 \begin{document}
 
-\logo
+%\logo
 
-\maketitle
+%\maketitle
 
-\tableofcontents
-
-%******************************************************************************%
+%\tableofcontents
+\setcounter{chapter}{0}
 \include{what-is-tuprolog}
-%******************************************************************************%
-\include{installing-tuprolog}
-%******************************************************************************%
-\include{getting-started}
-%******************************************************************************%
-\include{tuprolog-basics}
-%******************************************************************************%
-\include{tuprolog-libraries}
-%******************************************************************************%
-\include{java-library}
-%******************************************************************************%
-\include{ide}
-%******************************************************************************%
-\include{using-tuprolog-from-java}
-%******************************************************************************%
-\include{howto-develop-libraries}
-%******************************************************************************%
-\include{exceptions}
-%******************************************************************************%
-\bibliography{bibliography}
-\bibliographystyle{plain}
-%******************************************************************************%
+%\bibliography{common/references}
+%\bibliographystyle{plain}
+
 \end{document}
-%******************************************************************************%
