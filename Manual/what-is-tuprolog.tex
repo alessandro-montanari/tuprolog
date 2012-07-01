@@ -3,76 +3,70 @@
 \label{what-is}
 %=======================================================================
 
-\tuprolog{} is a light-weight Prolog framework for distributed applications and infrastructures.
-%
-\tuprolog{} is developed and maintained by the \alice{} research group\footnote{\url{http://www.alice.unibo.it}} at the \textsc{Alma Mater Studiorum}---Universit\`{a} di Bologna.
-%
-It is built as an Open Source software, released under the LGPL license -- thus allowing also for commercial derivative work --, and made available through the pages of the \apice{} web portal\footnote{\url{http://tuprolog.apice.unibo.it}}.
+\tuprolog{} is an open-source, light-weight Prolog framework for distributed applications and infrastructures, released under the LGPL license (which allows also for commercial derivative work), available from \url{http://tuprolog.apice.unibo.it}.
 
-\tuprolog{} is designed to be \emph{minimal}, dynamically \emph{configurable}, \emph{interoperable}, straightforwardly \emph{integrated} with Java and .NET, and easily \emph{deployable}.
+Unlike most Prolog programming environments, aimed at providing a very efficient (yet monolithic) stand-alone Prolog system, \tuprolog{} is explicitly designed to be \emph{minimal}, dynamically \emph{configurable}, straightforwardly \emph{integrated} with Java and .NET so as to naturally support multi-paradigm/multi-language programming (MPP), and \emph{easily deployable}.
 
-First of all, \tuprolog{} is designed with \textit{minimality} in mind.
+\textit{Minimality} means that its core contains only the Prolog engine essentials -- roughly speaking, the resolution engine and some related basic mechanisms -- for as little as 155KB: any other feature is implemented in \textit{libraries}.
 %
-Accordingly, \tuprolog{} core is a tiny Java object that contains only the essential properties of a Prolog engine.
-%
-Only the required Prolog features -- like, say, ISO compliance, I/O predicates, DCG operators -- are then to be added to or removed from a \tuprolog{} engine according to the contingent application needs.
+So, each user can customize his/her prolog system to fit his/her own needs, and no more:
+this is what we mean by \tuprolog{} \textit{configurability}---the necessary counterpart of minimality.
 
-The obvious counterpart of minimality is \tuprolog{} \textit{configurability}.
+Libraries provide packages of predicates, functors and operators, and can be loaded and unloaded in a \tuprolog{} engine both statically and dynamically.
 %
-In fact, a simple yet powerful mechanism based on the notion of \tuprolog{} \textit{library} is provided tha allows required predicates, functors and operators to be loaded and unloaded in a \tuprolog{} engine, both statically and dynamically.
-%
-Libraries can be either included in the standard \tuprolog{} distribution, or defined \textit{ad hoc} by the \tuprolog{} user / developer. 
+Several standard libraries are included in the \tuprolog{} distribution, and are typically loaded by default in the standard \tuprolog{} configuration; however, users can easily develop their own libraries either in several ways -- just pure Prolog, just pure Java\footnote{The .NET version of \tuprolog{} supports other languages available on the .NET platform: more on this topic in Section \xch{dotnet}}, or a mix of the two --, as we will discuss in \xch{howto-develop-libraries}.
 
-A \tuprolog{} library can be built in different ways. 
-%
-First of all, a \tuprolog{} library could be straightforwardly written in Prolog.
-%
-On the other hand, a \tuprolog{} library could also be implemented using either Java or any language of .NET framework---depending on the chosen \tuprolog{} implementation.
-%
-Finally, a \tuprolog{ library could be built by combining Prolog and Java / .NET languages, thus paving the way for multi-language / multi-paradigm integration.
-%
-Whatever the language(s) used, a \tuprolog{} library can be either used to configure a \tuprolog{} engine when this is started up, or loaded -- and then unloaded -- dynamically at any time during the engine execution.
+\textit{Multi-paradigm programming} is another key feature of \tuprolog{}, whose design was intentionally calibrated from the early stages to support a straightforward, pervasive, multi-language/multi-paradigm integration, which enables users to:
+\begin{itemize}
+  \item using any Java class, library, object \emph{directly from the Prolog code}
+  (\xch{java-library}) with no need of pre-declarations, awkward syntax, etc., with full support of parameter passing from the two worlds, yet leaving the two languages and computational models totally separate so as to preserve \emph{a priori} their own semantics---thus bringing the power of Java (e.g. Swing, JDBC connect, etc) to the Prolog world for free;
 
-\tuprolog{} was first implemented upon Java, then ported upon .NET, and is now available on both platforms.
-%
-\textit{Deployability} of \tuprolog{} owes a lot to Java and .NET.
-%
-On the Java side, the requirements for \tuprolog{} installation simply amount to the presence of a standard Java VM, and a Java invocation upon a single JAR file is everything needed to start a \tuprolog{} activity.
-%
-On the .NET side, \ldots ENRICO ENRICO ENRICO ENRICO
+  \item using any Prolog engine \emph{directly from the Java code} as one would do
+  with any other Java libraries---all is needed is the JAR archive in the classpath (\xch{java-api}), again with full support of parameter passing from the two worlds in a non-intrusive, simple way that does not alter any semantics---thus bringing
+  the power of logic programming into virtually \emph{any} Java application;
 
-\tuprolog{} \textit{integration} with other languages and paradigms is kept as clean as possible, so that the components of a \tuprolog{} application can be developed by choosing at any step the most suitable paradigm---either declarative/logic or imperative/object-oriented.
+  \item augmenting Prolog by defining new libraries \xch{howto-develop-libraries})
+  either in Prolog, or in Java (again, with a straightforward, easy-to-use approach based on reflection which avoids any pre-declaration, language-to-language mapping, etc), or in a mix of both;
+
+  \item augmenting Java by defining new Java methods in Prolog (the so-called `P@J' framework---\xch{PJ}), which exploits reflection and type inference to provide the user with an easy-to-use way to implement Java methods declaratively.
+\end{itemize}
+
+Originally developed in/upon Java, which still remains the main reference platform,
+\tuprolog{} is currently available for several platforms/environments:
+\begin{itemize}
+  \item plain JavaSE;
+  \item Eclipse plugin;
+  \item Android;
+  \item Microsoft .NET.
+\end{itemize}
+
+While they all share the same core and libraries, the latter features an \emph{ad hoc} library which extends the multi-paradigm approach to virtually any language available on the .NET platform (more on this in Section \xch{dotnet}).
+
+Last but not least, \textit{easy deployability} means that the installation requirements are minimal, and that the installation procedure is as simple as copying one archive to the desired folder---that is, no complex setup procedures, no settings placed in the Windows registry, no installers, etc.
 %
-On the Prolog side, thanks to the \texttt{JavaLibrary} library, any Java entity (object, class, package) can be represented as a Prolog term, and exploited from Prolog.
+Coherently, a Java-based installation requires only a suitable Java Virtual Machine, and `installing' is just copying a single JAR file somewhere---for as much as 474KB of disk usage (yes, minimality is not just a claim here).
 %
-So, for instance, Java packages like Swing and {JDBC} can be directly used from within Prolog, straightforwardly enhancing \tuprolog{} with graphics and database access capabilities.
+Of course, other components can be added (documentation, extra libraries, sources..), but are not necessary for a standard everyday use.
 %
-In the same way, \texttt{DotNetLibrary} \ldots o come cavolo si chiama ENRICO ENRICO ENRICO ENRICO
+The file size is quite similar for the Android platform -- the single APK archive is 234KB -- although an Android-compliant install is performed for compatibility reasons.
 %
-On the Java side, a \tuprolog{} engine can be invoked and used as a simple Java object, possibly embedded in beans, or exploited in a multi-threaded context, according to the application needs.
+The install process is also quite the same on the .NET platform, although the files are slightly larger.
 %
-Also, a multiplicity of different \tuprolog{} engines can be used from a Java program at the same time, each one configured with its own libraries and knowledge base.
+The only platform which requires a different procedure is Eclipse, since plugin installation have to conform to Eclipse requirements to be managed by the Eclipse plugin manager: consequently, an update site was set up, where the \tuprolog{} plugin is available as an Eclipse feature. Due to these constraints, file size increases to 1.5MB.
+
+In order to manage all these platforms in a uniform way, a suitable \emph{version numbering scheme} was recently introduced:
+\begin{itemize}
+  \item the fist two digits represent the engine version;
+  \item the last (third) digit is platform-specific and accounts for version differences which do not impact on the Prolog engine -- that is, on the
+      \tuprolog{} behaviour -- but simply on graphical aspects or platform-specific
+      issues or bugs.
+\end{itemize}
 %
-In the same way, sbrodolata .NET di ENRICO ENRICO ENRICO ENRICO
+So, as long as the first two digits are the same, a \tuprolog{} application is guaranteed to behave identically on any supported platform.
 
 
-Interoperability misteriosa: cosa diciamo??? Ancora quanto segue???
-
-Finally, \textit{interoperability} is developed along two main lines:
-Internet standard patterns, and coordination models.
+Finally, \tuprolog{} also supports \textit{interoperability} with both Internet standard patterns (such as TCP/IP, RMI, CORBA) and coordination models and languages.
 %
-So, \tuprolog{} supports interaction via TCP/IP and RMI, and can be
-also provided as a CORBA service.
-%
-In addition, \tuprolog{} supports tuple-based coordination under many
-forms.
-%
-First, components of a \tuprolog{} application can be organised around
-Java-based tuple spaces, logic tuple spaces, and \respect{} tuple
-centres \cite{respect-scico2001}.
-%
-Then, \tuprolog{} applications can exploit Internet infrastructures
-providing tuple-based coordination services, like \luce{}
-\cite{luce-aamas2001} and \tucson{} \cite{tucson-aamas99}.
+The latter aspect, in particular, is currently developed in the context of the \tucson{} coordination infrastructure \cite{tucson-aamas99,respect-scico2001}, which provides logic-based, programmable tuple spaces (called \emph{tuple centres}) as the coordination media for distributed processes and agents.\footnote{An alternative infrastructure, \luce{} \cite{luce-aamas2001}, developed the same approach in a location-unaware fashion: this infrastructure is currently no longer supported.}
 
 

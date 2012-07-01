@@ -1,6 +1,6 @@
 %=======================================================================
 \chapter{Using \tuprolog{} from Java}
-\label{java-api}
+\label{ch:java-api}
 %=======================================================================
 
 \section{Getting started}
@@ -489,7 +489,7 @@ pre-loaded):
             // ?- p(1,X).
             SolveInfo info = engine.solve(goal);
             Term solution = info.getSolution();
- 
+
         } catch (NoSolutionException nse) {
         }
     } catch (InvalidVarNameException ivne) {
@@ -598,4 +598,4 @@ Bindings: Y /[hotel,303,_] X / []
 An other substitution: Y / [303,_]  X / [hotel]
 X / 1
 p(1,1)
-\end{verbatim}}}
+\end{verbatim}}} 
