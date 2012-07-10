@@ -11,6 +11,14 @@
 \documentclass[11pt]{report}
 \usepackage[bookmarks=true,bookmarksopen=true,bookmarksnumbered]{hyperref}
 \usepackage{graphicx}
+\usepackage{fancyvrb}
+\usepackage{wrapfig}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\usepackage{float}
+%\floatstyle{ruled}
+%\newfloat{program}{thp}{lop}
+%\floatname{program}{Program}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newcommand\xa[1]{\appendixname~\ref{app:#1}}
 \newcommand\labelsec[1]{\label{sec:#1}}
@@ -73,11 +81,8 @@
 %******************************************************************************%
 \title{{\huge{\bf{\tuprolog{} Manual\\\mbox{ }\\}}}
         \tuprolog{} version: 2.5\\\mbox{ }\\
-{\small{
-    \lastchangesdate{2012-06-26}\\
-}}
+{\small{\lastchangesdate{2012-06-26}\\}}
 }
-
 \author{ \mbox{ }\\ \textsc{Alma Mater Studiorum}---Universit\`{a} di Bologna, Italy
 }
 

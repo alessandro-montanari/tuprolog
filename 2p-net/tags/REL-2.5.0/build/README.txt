@@ -10,7 +10,7 @@ directory into the privatePath, so the CLR can reach and load them.
 
 
 NOTE ABOUT THE USE OF JAVA TYPES FROM TUPROLOG.NET
-From Prolog is possible to use almost all java types that are present in the OpenJDK
+From Prolog it is possible to use almost all java types that are present in the OpenJDK
 because they are provided by IKVM.NET (rember that those types are implemented in
 .NET by IKVM.NET).
 
