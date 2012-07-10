@@ -5,6 +5,7 @@ public class VersionInfo
 	private static final String ENGINE_VERSION = "2.5";
 	private static final String JAVA_SPECIFIC_VERSION = "0";
 	private static final String NET_SPECIFIC_VERSION = "0";
+	private static final String ANDROID_SPECIFIC_VERSION = "1";
 	
 	public static String getEngineVersion()
 	{
@@ -18,7 +19,9 @@ public class VersionInfo
 			return "Java";
 		else if(vmName.equals("IKVM.NET"))
 			return ".NET";
-		else
+		else if(vmName.equals("Dalvik"))
+			return "Android";
+		else 
 			throw new RuntimeException();
 	}
 	
@@ -29,6 +32,8 @@ public class VersionInfo
 			return JAVA_SPECIFIC_VERSION;
 		else if(vmName.equals("IKVM.NET"))
 			return NET_SPECIFIC_VERSION;
+		else if(vmName.equals("Dalvik"))
+			return ANDROID_SPECIFIC_VERSION;
 		else
 			throw new RuntimeException();
 	}
