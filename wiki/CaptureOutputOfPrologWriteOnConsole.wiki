@@ -1,0 +1,30 @@
+#summary One-sentence summary of this page.
+
+How to capture in Java the output of the Prolog write predicate.
+
+= Introduction =
+
+If a tuProlog engine is used in a Java application, the output performed by Prolog via write predicates (or other predicates writing on the Prolog console) is not available in Java: that is, printed messages are not captured, nor are they retrievable in any way. 
+
+The only way to 'capture' somehow the output performed by the Prolog engine is to write it to a file (or store it in some Prolog term), which are not comfortable solutions.
+
+In this page we provide an elegant workaround which exploits the knowledge of the internal tuProlog structure to add this feature in a non-intrusive way, exploiting tuProlog malleable and extensible architecture to do the job.
+
+= Details =
+
+The workaround, suggested by Josh Guzman, is to override the onOutput method (used internally by the tuProlog engine to react to write requests) so as to capture the output message, and store it conveniently - for instance, into a suitable String of the Java application.
+
+To do so, all you need is to add this line to your java application:
+
+engine.addOutputListener(new OutputListener() {
+
+            @Override
+            public void onOutput(OutputEvent e) {
+                finalResult += e.getMsg();
+
+            }
+        });
+
+where _finalresult_ is the Java string where the output is stored.
+
+This solution does not require any modifications to the tuProlog code: it just exploits the existing architecture to perform one further task, adding a listener to an existing event.
