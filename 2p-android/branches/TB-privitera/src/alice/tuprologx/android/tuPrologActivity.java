@@ -62,16 +62,22 @@ public class tuPrologActivity extends Activity {
       AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
       alert.setTitle("About tuProlog");
-      try {
-        alert
-            .setMessage(""
-                + "- tuProlog for Android - \nApp Version: "
-                + getPackageManager().getPackageInfo(getPackageName(), 0).versionName
-                + "\nEngine Version: " + CUIConsole.engine.getVersion()
-                + "\n\nhttp://tuprolog.alice.unibo.it");
-      } catch (NameNotFoundException e) {
-        e.printStackTrace();
-      }
+		try {
+				alert.setMessage(""
+						+ "- tuProlog for Android - \n Version: "
+						+ alice.util.VersionInfo.getEngineVersion()
+						+ "."
+						+ tuPrologActivity
+								.getContext()
+								.getPackageManager()
+								.getPackageInfo(
+										tuPrologActivity.getContext()
+												.getPackageName(), 0).versionCode
+						+ "\n\nhttp://tuprolog.alice.unibo.it");
+			} catch (NameNotFoundException e) {
+				// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
       alert.show();
       return true;
     default:

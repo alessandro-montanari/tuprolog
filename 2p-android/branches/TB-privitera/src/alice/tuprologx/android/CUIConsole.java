@@ -20,6 +20,7 @@ import alice.tuprolog.event.SpyListener;
 import alice.tuprolog.event.WarningEvent;
 import alice.tuprolog.event.WarningListener;
 import alice.util.Automaton;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -123,8 +124,21 @@ public class CUIConsole extends Automaton implements Serializable,
     } else {
       textView.setText("Selected Theory : " + theory);
     }
-    solution.setText("tuProlog " + Prolog.getVersion() + " " + new Date().toLocaleString() +"\n");
-    // become("goalRequest");
+		try {
+			solution.setText("tuProlog "
+					+ alice.util.VersionInfo.getEngineVersion()
+					+ "."
+					+ tuPrologActivity
+							.getContext()
+							.getPackageManager()
+							.getPackageInfo(
+									tuPrologActivity.getContext()
+											.getPackageName(), 0).versionCode
+					+ " " + new Date().toLocaleString() + "\n");
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
+		// become("goalRequest");
   }
 
   public void goalRequest() {
@@ -180,6 +194,7 @@ public class CUIConsole extends Automaton implements Serializable,
     String str = "";
     try
     {
+      @SuppressWarnings("rawtypes")
       Iterator localIterator = paramSolveInfo.getBindingVars().iterator();
       while (localIterator.hasNext())
       {
