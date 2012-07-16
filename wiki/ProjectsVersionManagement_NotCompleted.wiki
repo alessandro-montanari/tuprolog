@@ -4,8 +4,16 @@
 
 Below are detailed the procedures that have to be followed in order to modify the version number of a project.
 
+The numbering scheme adopted is aimed at providing a clearer cross-platform view of the version being used.
+
+The first two digits represent the engine version. 
+So, as long as you see that the same two digits are the same, you can count that the inner baheviour will be the same, too.
+ 
+The subsequent digits (usually, just the third one, possibly followed by some build indication) is platform specific and will be 
+used to distinguish between different versions of platform-specific items (such as IDEs, plug-in IDEs, Android UIs, etc.)
+
 = Java and .NET=
-Modify the values of the private fields (ENGINE_VERSION, JAVA_SPECIFIC_VERSION and NET_SPECIFIC_VERSION) inside the class [http://code.google.com/p/tuprolog/source/browse/2p/trunk/src/alice/util/VersionInfo.java alice.util.VersionInfo].
+Modify the values of the private fields (`ENGINE_VERSION`, `JAVA_SPECIFIC_VERSION` and `NET_SPECIFIC_VERSION`) inside the class [http://code.google.com/p/tuprolog/source/browse/2p/trunk/src/alice/util/VersionInfo.java alice.util.VersionInfo].
 ----
 
 = Plugin Eclipse =
@@ -13,5 +21,5 @@ http://code.google.com/p/tuprolog/wiki/GuidaPubblicazioneNuoveVersioniPluginEcli
 ----
 
 = Android =
-TODO
+Modify the value of the attribute `android:versionCode` inside the file [http://code.google.com/p/tuprolog/source/browse/2p-android/trunk/AndroidManifest.xml]
 ----
