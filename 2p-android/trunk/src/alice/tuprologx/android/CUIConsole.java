@@ -2,6 +2,7 @@ package alice.tuprologx.android;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 
 import alice.tuprolog.MalformedGoalException;
@@ -19,6 +20,7 @@ import alice.tuprolog.event.SpyListener;
 import alice.tuprolog.event.WarningEvent;
 import alice.tuprolog.event.WarningListener;
 import alice.util.Automaton;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -27,211 +29,209 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class CUIConsole extends Automaton implements Serializable, WarningListener, OutputListener, SpyListener, ExceptionListener {
+public class CUIConsole extends Automaton implements Serializable,
+    WarningListener, OutputListener, SpyListener, ExceptionListener {
 
-	private static final long serialVersionUID = 1L;
-	public static Prolog engine;
-	private SolveInfo info;
+  private static final long serialVersionUID = 1L;
+  public static Prolog engine;
+  private SolveInfo info;
 
-	private static TextView textView;
-	private static AutoCompleteTextView editText;
-	private static Button button;
-	private static Button btnext;
-	private static TextView solution;
-	private static TextView output;
-	private ArrayList<String> arrayList = new ArrayList<String>();
-	private Toast toast;
+  private static TextView textView;
+  private static AutoCompleteTextView editText;
+  private static Button button;
+  private static Button btnext;
+  private static TextView solution;
+  private static TextView output;
+  private ArrayList<String> arrayList = new ArrayList<String>();
+  private Toast toast;
 
-	public CUIConsole(TextView tv, AutoCompleteTextView et, Button btn, TextView sol, TextView out, Button next, Toast t) {
-		engine = new Prolog();
+  public CUIConsole(TextView tv, AutoCompleteTextView et, Button btn,
+      TextView sol, TextView out, Button next, Toast t) {
+    engine = new Prolog();
 
-		engine.addWarningListener(this);
-		engine.addOutputListener(this);
-		engine.addSpyListener(this);
-		engine.addExceptionListener(this);
+    engine.addWarningListener(this);
+    engine.addOutputListener(this);
+    engine.addSpyListener(this);
+    engine.addExceptionListener(this);
 
-		textView = tv;
-		editText = et;
-		button = btn;
-		btnext = next;
-		btnext.setEnabled(false);
-		solution = sol;
-		output = out;
-		toast = t;
+    textView = tv;
+    editText = et;
+    button = btn;
+    btnext = next;
+    btnext.setEnabled(false);
+    solution = sol;
+    output = out;
+    toast = t;
 
-		button.setOnClickListener(new OnClickListener() {
+    button.setOnClickListener(new OnClickListener() {
 
-			public void onClick(View v) {
+      public void onClick(View v) {
 
-				btnext.setEnabled(false);
-				if (editText.getText().toString().equals("")) {
-					toast.show();
+        btnext.setEnabled(false);
+        if (editText.getText().toString().equals("")) {
+          toast.show();
+        } else {
+          ArrayAdapter<String> aa = new ArrayAdapter<String>(tuPrologActivity
+              .getContext(), android.R.layout.simple_dropdown_item_1line,
+              arrayList);
+          if (!arrayList.contains(editText.getText().toString()))
+            arrayList.add(editText.getText().toString());
 
-				} else {
-					ArrayAdapter<String> aa = new ArrayAdapter<String>(tuPrologActivity.getContext(), android.R.layout.simple_dropdown_item_1line, arrayList);
-					if (!arrayList.contains(editText.getText().toString()))
-						arrayList.add(editText.getText().toString());
+          editText.setAdapter(aa);
+          goalRequest();
 
-					editText.setAdapter(aa);
-					goalRequest();
+          if ((engine.hasOpenAlternatives())) {
+            btnext.setEnabled(true);
+          }
+        }
+      }
 
-					if ((engine.hasOpenAlternatives())) {
-						btnext.setEnabled(true);
-					}
-				}
-			}
+    });
 
-		});
+    btnext.setOnClickListener(new OnClickListener() {
 
-		btnext.setOnClickListener(new OnClickListener() {
+      public void onClick(View v) {
 
-			public void onClick(View v) {
+        String choice = "";
+        try {
+          if ((info = engine.solveNext()) != null) {
+            if (!info.isSuccess()) {
+              solution.setText("no.\n");
+              become("goalRequest");
+            } else {
+              choice = solveInfoToString(info) + "\n";
+              solution.setText(choice);
+            }
+          }
+        } catch (NoMoreSolutionException e) {
 
-				String choice = "";
-				try {
-					if ((info = engine.solveNext()) != null) {
-						if (!info.isSuccess()) {
-							solution.setText("no.");
-							Toast toast = Toast.makeText(
-									tuPrologActivity.getContext(),
-									"No more solutions", Toast.LENGTH_SHORT);
-							toast.show();
-							become("goalRequest");
-						} else {
-							choice = solveInfoToString(info) + "\n";
-							solution.setText(choice);
-						}
-					}
-				} catch (NoMoreSolutionException e) {
+          Toast toast = Toast.makeText(tuPrologActivity.getContext(),
+              "No more solutions", Toast.LENGTH_SHORT);
+          toast.show();
+          e.printStackTrace();
+        }
+      }
 
-					Toast toast = Toast.makeText(tuPrologActivity.getContext(), "No more solutions", Toast.LENGTH_SHORT);
-					toast.show();
-					e.printStackTrace();
-				}
-			}
+    });
+  }
 
-		});
-	}
+  @Override
+  public void boot() {
 
-	@Override
-	public void boot() {
-
-		String theory = engine.getTheory().toString();
-		if (theory.equals("")) {
-			textView.setText("No Theory file selected.");
-		} else {
-			textView.setText("Selected Theory : " + theory);
-		}
-		become("goalRequest");
-	}
-
-	public void goalRequest() {
-
-		String goal = "";
-		while (goal.equals("")) {
-			solution.setText("\n "); // ?-
-			goal = editText.getText().toString();
-		}
-		solveGoal(goal);
-	}
-
-	void solveGoal(String goal) {
-		output.setText("");
+    String theory = engine.getTheory().toString();
+    if (theory.equals("")) {
+      textView.setText("No Theory file selected.");
+    } else {
+      textView.setText("Selected Theory : " + theory);
+    }
 		try {
-			info = engine.solve(goal);
-			if (engine.isHalted()) {
-				solution.setText("Engine halted.");
-				become("goalRequest");
-			}
-			else if (!info.isSuccess()) {
-				solution.setText("no.");
-				become("goalRequest");
-			} else if (!engine.hasOpenAlternatives()) {
-				String binds = info.toString();
-				if (binds.equals("")) {
-					solution.setText("yes.");
-
-				} else {
-					solution.setText(solveInfoToString(info) + "\nyes.");
-					String result = solveGetTerm(info);
-					if (result.contains(output.getText())) {
-						output.setText(result);
-					} else {
-						output.setText(solveGetTerm(info) + output.getText());
-					}
-				}
-				become("goalRequest");
-			} else {
-				String choice = "";
-				if (info != null) {
-					if (!info.isSuccess()) {
-						solution.setText("no.");
-						become("goalRequest");
-					} else {
-						choice = (solveInfoToString(info) + "\n");
-						solution.setText(choice);
-						// become("getChoice");
-					}
-				}
-			}
-		} catch (MalformedGoalException ex) {
-			solution.setText("syntax error in goal:\n" + goal);
-			become("goalRequest");
+			solution.setText("tuProlog "
+					+ alice.util.VersionInfo.getEngineVersion()
+					+ "."
+					+ tuPrologActivity
+							.getContext()
+							.getPackageManager()
+							.getPackageInfo(
+									tuPrologActivity.getContext()
+											.getPackageName(), 0).versionCode
+					+ " " + new Date().toLocaleString() + "\n");
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
 		}
-	}
+		// become("goalRequest");
+  }
 
-	private String solveGetTerm(SolveInfo result) {
-		String s = "";
-		try {
+  public void goalRequest() {
 
-			for (@SuppressWarnings("rawtypes")
-			Iterator i = result.getBindingVars().iterator(); i.hasNext();) {
-				Var v = (Var) i.next();
-				if (v != null && !v.isAnonymous() && v.isBound() && (!(v.getTerm() instanceof Var) || (!((Var) (v.getTerm())).getName().startsWith("_")))) {
-					s += v.getTerm() + "";
-				}
-			}
-		} catch (NoSolutionException e) {
-		}
-		return s;
-	}
+    String goal = "";
+    while (goal.equals("")) {
+      goal = editText.getText().toString();
+    }
+    solveGoal(goal);
+  }
 
-	private String solveInfoToString(SolveInfo result) {
-		String s = "";
-		try {
-			for (Iterator<Var> i = result.getBindingVars().iterator(); i
-					.hasNext();) {
-				Var v = (Var) i.next();
-				if (v != null && !v.isAnonymous() && v.isBound() && (!(v.getTerm() instanceof Var) || (!((Var) (v.getTerm())).getName().startsWith("_")))) {
-					s += v.getName() + " / " + v.getTerm();
-					if (i.hasNext())
-						s += "\n";
-				}
-			}
-		} catch (NoSolutionException e) {
-		}
-		return s;
-	}
+  void solveGoal(String goal) {
+    output.setText("\n");
+    try
+    {
+      SolveInfo localSolveInfo = engine.solve(goal);
+      if (!localSolveInfo.isSuccess())
+      {
+        if (localSolveInfo.isHalted())
+          solution.setText("halt.\n");
+        else
+          solution.setText("no.\n");
+        become("goalRequest");
+      }
+      else if (!engine.hasOpenAlternatives())
+      {
+        String str = localSolveInfo.toString();
+        if (str.equals(""))
+          solution.setText("yes.");
+        else
+          solution.setText(solveInfoToString(localSolveInfo) + "\nyes.");
+        become("goalRequest");
+      }
+      else
+      {
+        String str = solveInfoToString(localSolveInfo);
+        if (str.equals("")) {
+          str = "yes.\n";
+        }
+        solution.setText(str + " ? ");
+        become("goalRequest");
+      }
+    }
+    catch (MalformedGoalException localMalformedGoalException)
+    {
+      solution.setText("syntax error in goal:\n" + goal);
+      become("goalRequest");
+    }
+  }
+  
+  private String solveInfoToString(SolveInfo paramSolveInfo)
+  {
+    String str = "";
+    try
+    {
+      @SuppressWarnings("rawtypes")
+      Iterator localIterator = paramSolveInfo.getBindingVars().iterator();
+      while (localIterator.hasNext())
+      {
+        Var localVar = (Var)localIterator.next();
+        if ((!localVar.isAnonymous()) && (localVar.isBound()) && ((!(localVar.getTerm() instanceof Var)) || (!((Var)(Var)localVar.getTerm()).getName().startsWith("_"))))
+          str = str + localVar.getName() + " / " + localVar.getTerm() + "\n";
+      }
+      if (str.length() > 0)
+        str.substring(0, str.length() - 1);
+    }
+    catch (NoSolutionException localNoSolutionException)
+    {
+    }
+    return str;
+  }
 
-	public void onOutput(OutputEvent e) {
-		output.setText(e.getMsg());
-	}
+  public void onOutput(OutputEvent e) {
+    output.setText(e.getMsg());
+  }
 
-	public void onSpy(SpyEvent e) {
-		output.setText(e.getMsg());
-	}
+  public void onSpy(SpyEvent e) {
+    output.setText(e.getMsg());
+  }
 
-	public void onWarning(WarningEvent e) {
-		output.setText(e.getMsg());
-	}
+  public void onWarning(WarningEvent e) {
+    output.setText(e.getMsg());
+  }
 
-	public void onException(ExceptionEvent e) {
-		output.setText(e.getMsg());
-	}
+  public void onException(ExceptionEvent e) {
+    output.setText(e.getMsg());
+  }
 
-	public static void main(TextView tv, AutoCompleteTextView et, Button btn, TextView sol, TextView out, Button next, Toast t) {
+  public static void main(TextView tv, AutoCompleteTextView et, Button btn,
+      TextView sol, TextView out, Button next, Toast t) {
 
-		new Thread(new CUIConsole(tv, et, btn, sol, out, next, t)).start();
+    new Thread(new CUIConsole(tv, et, btn, sol, out, next, t)).start();
 
-	}
+  }
+
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="hello">Hello World, TesiActivity!</string>
-    <string name="app_name">tuProlog Application</string>
+    <string name="app_name">tuProlog</string>
     <string name="menu_select">Select Theory</string>
     <string name="no_theories">There are no Theories yet.\nCreate or import one to start working.</string>
     <string name="menu_insert">Add Theory</string>
