@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-
+
     <ImageView
         android:layout_width="238dp"
         android:layout_height="0dp"
@@ -17,7 +17,7 @@
         android:layout_width="320dp"
         android:layout_height="0dp"
         android:layout_weight="0.32"
-        android:text="tuProlog Application"
+        android:text="tuProlog"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textStyle="bold|italic" android:gravity="center_horizontal"/>
 
