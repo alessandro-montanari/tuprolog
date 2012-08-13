@@ -27,7 +27,9 @@ Libraries provide packages of predicates, functors and operators, and can be loa
 %
 Several standard libraries are included in the \tuprolog{} distribution, and are loaded by default in the standard \tuprolog{} configuration; however, users can easily develop their own libraries either in several ways -- just pure Prolog, just pure Java\footnote{The .NET version of \tuprolog{} supports other languages available on the .NET platform: more on this topic in Section \xch{dotnet}}, or a mix of the two --, as we will discuss in \xch{howto-develop-libraries}.
 
-\textit{Multi-paradigm programming} is another key feature of \tuprolog{}, whose design was intentionally calibrated from the early stages to support a straightforward, pervasive, multi-language/multi-paradigm integration, which enables users to:
+\textit{Multi-paradigm programming} is another key feature of \tuprolog{}.
+%
+In fact, the \tuprolog{} design was intentionally calibrated from the early stages to support a straightforward, pervasive, multi-language/multi-paradigm integration, so as to enable users to:
 \begin{itemize}
   \item using any Java\footnote{For the .NET version: any .NET class, library, object, etc.} class, library, object \emph{directly from the Prolog code}
   (\xch{java-library}) with no need of pre-declarations, awkward syntax, etc., with full support of parameter passing from the two worlds, yet leaving the two languages and computational models totally separate so as to preserve \emph{a priori} their own semantics---thus bringing the power of the object-oriented platform (e.g. Java Swing, JDBC, etc) to the Prolog world for free;
@@ -41,17 +43,17 @@ Several standard libraries are included in the \tuprolog{} distribution, and are
   \item augmenting Java\footnote{This feature is currently available only in the Java version: a suitable extension to the .NET platform is under study.} by defining new Java methods in Prolog (the so-called `P@J' framework---\xch{PJ}), which exploits reflection and type inference to provide the user with an easy-to-use way to implement Java methods declaratively.
 \end{itemize}
 
-Last but not least, \textit{easy deployability} means that the installation requirements are minimal, and that the installation procedure is as simple as copying one archive to the desired folder---that is, no complex setup procedures, no settings placed in the Windows registry, no installers, etc.
+Last but not least, \textit{easy deployability} means that the installation requirements are minimal, and that the installation procedure is in most cases\footnote{Exceptions are the Eclipse plugin and the Android versions, which need to be installed as required by the hosting platforms.} as simple as copying one archive to the desired folder.
 %
 Coherently, a Java-based installation requires only a suitable Java Virtual Machine, and `installing' is just copying a single JAR file somewhere---for as much as 474KB of disk usage (yes, minimality is not just a claim here).
 %
 Of course, other components can be added (documentation, extra libraries, sources..), but are not necessary for a standard everyday use.
 %
-The file size is quite similar for the Android platform -- the single APK archive is 234KB -- although an Android-compliant install is performed for compatibility reasons.
+The file size is quite similar for the Android platform -- the single APK archive is 234KB -- although an Android-compliant install is performed due to Android requirements.
 %
 The install process is also quite the same on the .NET platform, although the files are slightly larger.
 %
-The only platform which requires a different procedure is Eclipse, since plugin installation have to conform to Eclipse requirements to be managed by the Eclipse plugin manager: consequently, an update site was set up, where the \tuprolog{} plugin is available as an Eclipse feature. Due to these constraints, file size increases to 1.5MB.
+The Eclipse platform also requires a different procedure, since plugin installation have to conform to the requirements of the Eclipse plugin manager: consequently, an update site was set up, where the \tuprolog{} plugin is available as an Eclipse feature. Due to these constraints, file size increases to 1.5MB.
 
 
 In order to manage all these platforms in a uniform way, a suitable \emph{version numbering scheme} was recently introduced:

@@ -1,4 +1,4 @@
-\chapter{The IDE}
+\section{The IDE}
 
 The \tuprolog\ system comes with a simple application providing an user friendly integrated development environment to interact with a \tuprolog\ engine, manipulate its knowledge base, make queries and explore solutions.
 %
@@ -30,7 +30,7 @@ a toolbar at the top, providing facilities to manage theories, such as load, sav
 %
 and a status bar at the very bottom, providing status informations for the IDE and the engine.
 
-\section{Editing the theory}
+\subsection{Editing the theory}
 
 The editing area allows multiple theories to be created and modified at the same time, by allocating a tab with a new text area for each theory.
 %
@@ -63,7 +63,7 @@ Informations about the result of the action issued by the control area are provi
 %
 for instance, when setting an invalid theory to the engine because of syntax errors, details about the error are provided.
 
-\section{Solving goals}
+\subsection{Solving goals}
 
 The console at the bottom of the tuProlog IDE's window is subdivided in two logical panes:
 %
@@ -154,7 +154,7 @@ Finally, a \guibutton{Clear} button is provided, with the aim of allowing the us
 %
 The button is enabled only when the proper tabs are selected.
 
-\section{Debug Informations}
+\subsection{Debug Informations}
 
 By pressing the \guibutton{View Debug Information} button, a new window is opened, providing a view on the warnings, produced by events such as the attempt at redefining a library predicate, and the spy information, concerning basic steps of the engine computation and state, possibly supplied by the engine during a goal demonstration:
 %
@@ -180,7 +180,7 @@ Finally, the content of the warnings and spy panes can be cleared using the \gui
 \label{view-debug-information}
 \end{figure}
 
-\section{Dynamic library management}
+\subsection{Dynamic library management}
 
 
 A \tuprolog\ engine can be extended by loading any number of libraries, each provinding a specific set of built-in
@@ -216,4 +216,4 @@ for example, the classname provided does not identify a \tuprolog\ library (i.e.
 \classname{alice.tuprolog.Library} class) or the identified class does not exist, an appropriate message will appear
 in the status bar at the bottom of the dialog. When adding or loading a library, please remember that every class
 needed by that library must be in the classpath in order to have the library correctly added to the manager's list or
-loaded into the engine.
+loaded into the engine. 

@@ -2,12 +2,10 @@
 \chapter{\tuprolog{} Basics}
 \label{ch:engine}
 %=======================================================================
-%
-% General stuff about 2P engine features
-%
-%
 
-\noindent This chapter provides a brief introduction to the basic elements and structure of the \tuprolog{} engine, covering syntax, programming support, and built-in predicates directly provided by the engine.
+This chapter overviews the basic elements and structure of the \tuprolog{} engine, the \tuprolog{} syntax, the programming support, and the built-in predicates directly provided by the engine.
+%
+Additional predicates, provided by libraries, are presented in the next Chapter.
 
 %---------------------------------------------------------------------
 \section{Structure of a \tuprolog{} Engine}
@@ -34,7 +32,7 @@ library containing that predicate.
 \item[theory predicates] |
 Predicates loaded in a \tuprolog{} engine by means of a \tuprolog{} theory are called theory predicates.
 %
-Since theories can be loaded and unloaded in \tuprolog{} engines freely at the system start-up, or dynamically at execution time, the set of the theory predicates of a \tuprolog{} engine is not fixed, and can change from engine to engine, and in the same engine at different times. 
+Since theories can be loaded and unloaded in \tuprolog{} engines freely at the system start-up, or dynamically at execution time, the set of the theory predicates of a \tuprolog{} engine is not fixed, and can change from engine to engine, and in the same engine at different times.
 %
 \tuprolog{} theories are simple collections of Prolog clauses.
 \end{description}
