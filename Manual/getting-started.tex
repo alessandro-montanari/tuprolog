@@ -116,7 +116,7 @@ Undo and Redo actions are supported through the usual \keycap{Ctrl}+\keycap{Z} a
 
 The toolbar contains four buttons: two are used to upload/download a theory to/from the Prolog engine, two support the classical Undo/Redo actions.
 %
-Explicit uploading/downloading of theories to/from the Prolog engine is a consequence of \tuprolog{}'s choice to maintain a clear separation between the engine and the currently-viewed theories: in this way, 
+Explicit uploading/downloading of theories to/from the Prolog engine is a consequence of \tuprolog{}'s choice to maintain a clear separation between the engine and the currently-viewed theories: in this way,
 \begin{itemize}
   \item theories can be edited without affecting the engine content: they can also be in an inconsistent state, since syntax checking is performed only upon loading;
   \item changes in the current database performed by the Prolog program via the \texttt{assert}/\texttt{retract} do not affect the theory shown in the editor, which maintains the original user theory.
@@ -160,7 +160,7 @@ Pressing the \keycap{Enter} key in the textfield has the same effect as pressing
 The subsequent area below contains five panes:
 %
 \begin{itemize}
-\item the \textit{solution pane} shows the query solutions (see Figure \ref{fig:gui-solutions}): proper control buttons are provided to iterate 
+\item the \textit{solution pane} shows the query solutions (see Figure \ref{fig:gui-solutions}): proper control buttons are provided to iterate
     through multiple solutions;
 
 \item the \textit{binding} and the \textit{all bindings} panes show the variable bindings in tabular form, for a single solution or for all solutions, respectively (see Figure \ref{fig:gui-bindings}); here, too, proper control buttons are provided to clear the bindings pane and export the tabular data in a convenient CSV format;
@@ -198,7 +198,7 @@ The \guibutton{Stop} button makes it possible to stop the engine if a computatio
 Debug support in \tuprolog{} is actually limited compared to other professional Prolog systems: however, \textit{warnings} and \textit{spy information} are available.
 
 To this end, the \guibutton{View Debug Information} button opens the Debug window which lists \textit{i)} all the warnings, produced by events such as the attempt of redefining a library predicate, and \textit{ii)} the step-by-step spy information of the engine computation during a goal demonstration.
- 
+
 Warnings are always active, while spy notification has to be explicitly enabled (and disabled) via the built-in \predicate{spy/0} (\predicate{nospy/0}) predicate.
 %
 Figure \ref{fig:gui-debug} shows an example of spy information for a goal: by default, information is presented in a collapsed form, but single nodes (or all the nodes) can be expanded using the toolbar buttons, to access more detailed information.
@@ -216,7 +216,7 @@ Figure \ref{fig:gui-debug} shows an example of spy information for a goal: by de
 %------------------------------------------------------
 
 As anticipated above, \tuprolog{} engines are dynamically extensible via \textit{libraries}: each library can provide its own set of new built-in
-predicates and functors, as well as a related theory. 
+predicates and functors, as well as a related theory.
 %
 By default, the standard set of libraries is loaded into any newly-created engine, but the library set of each engine can be easily modified via the \textit{Library Manager}, which is displayed by pressing the \guibutton{Open Library Manager} button in the toolbar (Figure \ref{fig:gui-library-manager}).
 
@@ -228,10 +228,10 @@ By default, the standard set of libraries is loaded into any newly-created engin
 \end{figure}
 
 This dialog displays the list of the currently loaded libraries---by default,
-\classname{BasicLibrary}, \classname{IOLibrary}, \classname{ISOLibrary}, \classname{JavaLibrary}. 
+\classname{BasicLibrary}, \classname{IOLibrary}, \classname{ISOLibrary}, \classname{JavaLibrary}.
 %
 Other libraries can be added by providing the fully qualified name of the
-library class in the textfield, and pressing the \guibutton{Add} button: the added library will be displayed with an initial \textit{Unloaded} status. 
+library class in the textfield, and pressing the \guibutton{Add} button: the added library will be displayed with an initial \textit{Unloaded} status.
 %
 Please note that any further class needed by a library must be in the system classpath, or the library will not be added to the manager/loaded into the engine.
 
@@ -239,14 +239,23 @@ The library manager takes into account the effects of the \verb|load_library/1| 
 
 If the addition of a library to the manager or its loading into the engine fails (for instance, due to an invalid class name, or a class not extending the
 \classname{alice.tuprolog.Library} class, etc.), an error message will be displayed
-in the status bar.  
+in the status bar.
+
+Finally, the \guibutton{config} button opens the configuration dialog (Figure \ref{fig:gui-configuration}), which provides access to a set of options and tunings.
+
+\begin{figure}
+\centering
+\includegraphics[width=7cm]{images/gui-config}
+\caption{The configuration window.}
+\label{fig:gui-configuration}
+\end{figure}
 
 %=======================================================================
-\section{\tuprolog{} for the Java User}
+\section{\tuprolog{} for the Java Developer}
 \label{sec:java-user-perspective}
 %=======================================================================
 
-As anticipated above, the Java user can include \tuprolog{} in any of his projects, exploiting the \tuprolog{} API to access the Prolog engine(s) from his Java program..
+As anticipated above, the Java developer can include \tuprolog{} in any of his projects, exploiting the \tuprolog{} API to access the Prolog engine(s) from his Java program..
 %
 The easiest way to do so it to exploit the Java plugin available for the Eclipse IDE, which adds a specific \textit{tuprolog perspective} specifically suited for the needs of the Java/Prolog user (Figure \ref{fig:tuprologPluginGUI}).
 
@@ -342,13 +351,13 @@ Moreover, in case of undeclared terms, a direct warning is issued in the plugin 
 \end{figure}
 
 %=======================================================================
-\section{\tuprolog{} for the .NET User}
+\section{\tuprolog{} for the .NET Developer}
 \label{sec:dotnet-user-perspective}
 %=======================================================================
 
 Since \tuprolog{}.NET is the result of an automatic conversion of the Java bytecode via IKVM\cite{ikvm}, everything in the Prolog user experience is identical whether the .NET or the Java GUI is used (see Section \ref{sec:prolog-user-perspective} above).
 
-The .NET user/developer, however, can exploit \tuprolog{} in a .NET project, accessing its API from a program written in potentially any language available in the .NET platform.
+The .NET developer, however, can exploit \tuprolog{} in a .NET project, accessing its API from a program written in potentially any language available in the .NET platform.
 %
 Since no plugin is available for the de-facto standard tool used by most .NET programmers (i.e., Microsoft Visual Studio), there is no immediate way to see \tuprolog{} at work from within Visual Studio; however, the \tuprolog{} libraries can be easily added as external references for exploiting the available APIs, as one would do with any other library or third-party software.
 
@@ -360,7 +369,9 @@ For specific information about multi-paradigm programming in the context of the 
 \label{sec:android-user-perspective}
 %=======================================================================
 
-The \tuprolog{} Android app shares the same core and libraries as the standard Java version: the only difference is that the GUI has been completely redesigned according to the Android feeling and guidelines---with special regard to the interaction with the file system.
+Since \tuprolog{} is written in Java, the Java-Android developer wishing to include \tuprolog{} in an Android project can proceed very similarly to the Java developer, adding \texttt{tuprolog.jar} to the project libraries---though no plugin is available for this platform.
+
+The Prolog-Android user, instead, can take advantage of the \tuprolog{} app, which shares the same core and libraries as the standard Java version, the only difference being the redesigned GUI--with special regard to the interaction with the file system.
 
 Upon the application loading, the splash screen appears, immediately followed in a few seconds by the \textit{Home Activity} (Figure \ref{fig:android12}, left).
 %

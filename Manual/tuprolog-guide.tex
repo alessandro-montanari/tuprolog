@@ -11,6 +11,7 @@
 \documentclass[11pt]{report}
 \usepackage[bookmarks=true,bookmarksopen=true,bookmarksnumbered]{hyperref}
 \usepackage{graphicx}
+\usepackage{color} % ED
 \usepackage{fancyvrb}
 \usepackage{wrapfig}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -47,6 +48,7 @@
 \newcommand\bti[1]{\texttt{\textbf{#1}}}
 \newcommand\bt[1]{\texttt{#1}}
 \newcommand\template[1]{\textit{Template: }\texttt{#1}}
+\newcommand\exception[1]{\textit{Exception: }\texttt{#1}}
 \newcommand\ttit[1]{\texttt{\textit{#1}}}
 %******************************************************************************%
 \newcommand{\LIA}{\mbox{\textsf{LIA}}}
@@ -107,13 +109,11 @@
 %******************************************************************************%
 \include{tuprolog-libraries}
 %******************************************************************************%
-\include{java-library}
-%******************************************************************************%
-\include{using-tuprolog-from-java}
-%******************************************************************************%
-\include{howto-develop-libraries}
-%******************************************************************************%
 \include{exceptions}
+%******************************************************************************%
+\include{mpp-in-java}
+%******************************************************************************%
+\include{mpp-in-dotnet}
 %******************************************************************************%
 \bibliography{bibliography}
 \bibliographystyle{plain}
