@@ -75,14 +75,14 @@ For the sake of concreteness, Table \ref{tab:javalibrary-counter-example} report
 \begin{description}
   \item [Object creation]
         Java objects are created via the predicate
-        
+
         \texttt{~~~~~java\_object(%
                  \textit{ClassName}, \textit{ArgumentList}, \textit{ObjectRef})}
-        
+
         where \texttt{\textit{ClassName}} is a Prolog atom bound to the name of the
         Java class (e.g. \verb|'Counter'|, \verb|'java.io.FileInputStream'|, etc.), \texttt{\textit{ArgumentList}} is a Prolog list supplying the required arguments to the class constructor (the empty list matches the default constructor), and \texttt{\textit{ObjectRef}} holds the reference to the newly-created object.
         In the case of arrays, \texttt{\textit{ClassName}} ends with \texttt{[]}.
-        
+
         The reference to the newly-created object is bound to \texttt{\textit{ObjectRef}},
         which is typically a ground Prolog term; alternatively, an unbound term
         may be used, in which case the term is bound to an automatically-generated
@@ -97,11 +97,12 @@ For the sake of concreteness, Table \ref{tab:javalibrary-counter-example} report
 
         The lifetime of the binding between the Java object and the Prolog term
         is the duration of the demonstration: by default, the binding is maintained in case of backtracking, but this behavior can be changed by setting the flag \texttt{java\_object\_backtrackable} flag to \texttt{true}.
-        
+
         \color{red}
-        There is no way to make such a binding permanent from the Prolog side\footnote{\color{red} There is, however, a way to do so from the Java side, coherently with the side-effect nature of imperative languages: see the \texttt{register} primitive in Section \ref{sec:java-api}}---that is, there is no way to ``keep alive'' a Java object beyond the current query, for retrieving it in a subsequent demonstration, because this would contradict the Prolog approach of avoiding anything like ``global variables''. So, the only way to maintain a Java object available to another predicate (within the same demonstration) is to pass it over as an argument.
-        \textbf{Perch\'{e} non prevedere un predicato in JavaLibrary ??}
+        To make such a binding permanent, that is, to ``keep alive'' the binding between a Java object and a Prolog term beyond the current query, so as to exploit it in another, subsequent demonstration, the \texttt{register} predicate is provided;
         \normalcolor
+        this can also be done on the Java side, via the \tuprolog{} Java API.
+        However, this feature should not be abused: generally speaking, when operating from the Prolog side, objects needed by other predicates (within the same demonstration) should be passed over as arguments, coherently with the Prolog philosophy of avoiding any global side effect (except for \texttt{assert} predicates).
 
   \item [method calling]
         methods can be invoked on Java objects via the \texttt{<-/2} predicate,
@@ -114,42 +115,42 @@ For the sake of concreteness, Table \ref{tab:javalibrary-counter-example} report
 
         where \texttt{\textit{ObjectRef}} is an atom interpreted as a Java object
         reference as above, and \texttt{\textit{MethodName}} is the Java name of the method to be invoked, along with its \texttt{\textit{Arguments}}.
-        
+
         The \texttt{returns} keyword is used to retrieve the value returned from non-void Java methods and bind it to a Prolog term: if the type of the returned value can be mapped onto a primitive Prolog data type (a number or a string), \texttt{\textit{Term}} is unified with the corresponding Prolog value; otherwise, \texttt{\textit{Term}} is handled as an object reference, that is, as a Prolog ground term\footnote{If it is not ground, it is automatically bound to a term like \texttt{\$obj\_N}.} bound to the Java object returned by the method.
 
         Static methods can also be invoked, adopting \texttt{class(\textit{ClassName})} as the target \texttt{\textit{ObjectRef}}.
-        
+
         The call fails if \texttt{\textit{MethodName}} does not identify a valid method for the object (for the class, in the case of static methods), or arguments in \texttt{\textit{ArgumentList}} are invalid because of a wrong signature or because they are not ground.
 
   \item [property selection]
         public object properties can be accessed via the \texttt{.} infix operator, in conjunction with the \texttt{set} / \texttt{get} pseudo-method pair:
-        
+
         \texttt{~~~~~\textit{ObjectRef}.\textit{Field} <- set(\textit{GroundTerm})}
-        
+
         \texttt{~~~~~\textit{ObjectRef}.\textit{Field} <- get(\textit{Term})}
-        
+
         The first construct sets the public field \texttt{\textit{Field}} to the specified \texttt{\textit{GroundTerm}}, which may be either a value of a primitive data type, or a reference to an existing object: if it is not ground, the infix predicate fails.
-        
+
         Analogously, the second construct retrieves the value of the public field
         \texttt{\textit{Field}}, handling the returned \texttt{\textit{Term}} as above.
 
         Again, class properties can be accessed using the  \texttt{class(\textit{ClassName})} form for  \texttt{\textit{ObjectRef}}.
 
-        It is worth to point out that such \texttt{set} / \texttt{get} 
+        It is worth to point out that such \texttt{set} / \texttt{get}
         pseudo-methods are \textit{not} methods of some class, but just
         part of of the property selection operator.
 
   \item [array access]
         Due to the special Java syntax for arrays, ad hoc helper predicates are required to access Java array elements:
-        
+
         \texttt{~~~~~java\_array\_set(\textit{ArrayRef}, \textit{Index}, \textit{Object})}
-        
+
         \texttt{~~~~~java\_array\_set\_\textit{\emph{Basic Type}}(\textit{ArrayRef}, \textit{Index}, \textit{Value})}
-        
+
         \texttt{~~~~~java\_array\_get(\textit{ArrayRef}, \textit{Index}, \textit{Object})}
-        
+
         \texttt{~~~~~java\_array\_get\_\textit{\emph{Basic Type}}(\textit{ArrayRef}, \textit{Index}, \textit{Value})}
-        
+
         \texttt{~~~~~java\_array\_length(\textit{ArrayObject}, \textit{Size})}
 
   \item [type cast]
@@ -159,17 +160,17 @@ For the sake of concreteness, Table \ref{tab:javalibrary-counter-example} report
 
         By writing so, the object represented by \texttt{\textit{ObjectRef}} is
         considered to belong to type \texttt{\textit{Type}}: the latter can be either a class name, as above, or a primitive Java type such as \texttt{int}.
-        
+
   \item [class loading and dynamic compilation]
         The \texttt{java\_class/4} creates, compiles and loads a new Java class from a source text:
-        
+
         \texttt{~~~~~java\_class(\textit{SourceText}, \textit{FullClassName},}\\
         \texttt{\mbox{~~~~~~~~~~~~~~~~}\textit{ClassPathList}, \textit{ObjectRef})}
 
         where \texttt{\textit{SourceText}} is a string representing the text source of the new Java class, \texttt{\textit{FullClassName}} is the full class name, and \texttt{\textit{ClassPathList}} is a (possibly empty) Prolog list of class paths that may be required for a successful dynamic compilation of this class.
         %
         In this case, \texttt{\textit{ObjectRef}} is a reference to an instance of the meta-class \texttt{java.lang.Class} representing the newly-created class.
-        
+
         The predicate fails if \texttt{\textit{SourceText}} leads to compilation errors, or the class cannot be located in the package hierarchy, or \texttt{\textit{ObjectRef}} already identifies another object in the system.
 \end{description}
 
@@ -232,7 +233,7 @@ the returned value (hopefully, 5) is bound to the \texttt{X} Prolog variable, wh
 Of course, the predicate succeeds also if \texttt{X} is already bound to 5, while fails if it is already bound to anything else.
 
 Then, the class (static) method \texttt{getVersion} is called (line 6) and the retrieved version number is printed (line 7).
- 
+
 Now the (public) instance \textit{\texttt{Name}} property is read, and its value printed via the Java \texttt{System.out.println} method: to this end, a reference to the \texttt{java.lang.System} class is first obtained (line 8), then its \texttt{out} (static) field is accessed and its value retrieved and bound to the \texttt{Out} Prolog variable (line 9), which is used as the target for the invocation of the \texttt{println} method (line 10).
 
 Finally, the \texttt{name} property of the \texttt{myCounter} object is changed to the new \texttt{'MyCounter2'} value (line 11).
@@ -264,241 +265,295 @@ test_open_file_dialog(FileName) :-
 \end{table}
 
 %-----------------------------------------------------------------------
-\subsubsection{Registering object bindings}
-\label{sssec:register}
+\color{red}
+\subsubsection{Registering object bindings (to be implemented)}
+\label{sssec:register(prolog)}
 %-----------------------------------------------------------------------
 
-Besides the Prolog predicates, \texttt{JavaLibrary} embeds the \texttt{register} function, which, unlike the previous functionalities, is to be used on the Java side.
-%
-Its purpose is to permanently associate an existing Java object \texttt{\textit{obj}} to a Prolog identifier \texttt{\textit{ObjectRef}}, according to the syntax:\\
+As explained above, the standard lifetime of the binding between Java objects and Prolog atoms is that of the current demonstration, in coherence with the lifetime of Prolog variable bindings.
+However, some multi-paradigm applications may require that a Java object is maintained alive and retrieved later without passing it along as an argument throughout the program: this is what the \texttt{register} predicate is for.
+Its syntax is as follows:\\
 
-\texttt{boolean register(Struct \textit{ObjectRef}, Object \textit{obj})\\
-    \mbox{~~~~~~~~~~~}throws InvalidObjectIdException;}\\
+\texttt{~~~~~register(\textit{ObjectRef})}\\
 
-\noindent where \texttt{\textit{ObjectRef}} is a ground term (otherwise an \texttt{InvalidObjectIdException} exception is raised) representing the Java object
-\texttt{\textit{obj}} in the context of \texttt{JavaLibrary}'s predicates.
-The function returns \texttt{false} if that object is already registered under a different \texttt{\textit{ObjectRef}}.
+\noindent where \texttt{\textit{ObjectRef}} is already bound to some Java object. The effect is to make such binding survive the current demonstration, until the dual \texttt{unregister} predicate is possibly called:\\
 
-As an example of use, let us consider the following case:\footnote{An
-  explicit cast to \texttt{alice.tuprolog.lib.JavaLibrary} is needed because
-  \texttt{loadLibrary} returns a reference to a generic
-  \texttt{Library}, while the \texttt{register} primitive is defined in
-  \texttt{JavaLibrary} only.}
+\texttt{~~~~~unregister(\textit{ObjectRef})}\\
+
+\noindent The requirement that \texttt{\textit{ObjectRef}} is already bound to some Java object inherently excludes pre-existing, non-public Java objects from being registered, since the only ways to establish a binding between a Prolog atom and a Java object from the Prolog side are the \texttt{java\_object} predicate, which creates a new instance, and the property selection operator (\texttt{.},\texttt{<-get(\textit{Name})}), which accesses public properties.
 %
-{\small
-\begin{verbatim}
-Prolog core = new Prolog();
-Library lib = core.loadLibrary("alice.tuprolog.lib.JavaLibrary");
-((alice.tuprolog.lib.JavaLibrary)lib).register(new Struct("stdout"),
-                                               System.out);
-\end{verbatim}}
-%
-\noindent Here, the Java object \texttt{System.out} is registered
-for use in \tuprolog{} under the name \texttt{stdout}.
-%
-So, within the scope of the \texttt{core} engine, a Prolog program
-can now contain
-\begin{verbatim}
-stdout <- println('What a nice message!')
-\end{verbatim}
-as if \texttt{stdout} was a pre-defined \tuprolog{} identifier.
+Public Java objects, including the static ones like \texttt{System.out}, can instead be registered by retrieving a reference to their binding first---as in the example shown in Table \ref{tab:javalibrary-counter-example} above, where a reference to \texttt{System.out} is retrieved to call the \texttt{println} method.
+
+\normalcolor
+Binding registration can be performed also on the Java side, as detailed in Section \ref{sssec:register(Java)}.
 
 %---------------------------------------------------------------------
 \subsection{Predicates}
 \label{ssec:all-javalibrary-predicates}
 %---------------------------------------------------------------------
 
+The following predicate description details all the JavaLibrary predicates: a summary overview is also reported in Table \ref{tab:summary-of-javalibrary-predicates}.
+%
+Throughout this Section, only the exceptions specifically related to the JavaLibrary predicates' behaviors are listed: other exceptions might obviously occur, based on the exceptions possibly raised by the invoked method, which can not be foreseen in any way.
+
+\begin{table}
+    \begin{center}{\scriptsize
+    \begin{tabular}{p{2.3cm}p{6.6cm}p{4.6cm}}\hline\hline
+    \\
+    %--------------------------------------------------------------------------
+    {\small \textbf{Functionality}} &
+    {\small \textbf{Predicate(s)}} &
+    {\small \textbf{Description}}
+    \\\\\hline\\
+    %--------------------------------------------------------------------------
+    Object creation
+    &
+    \texttt{java\_object(+\textit{ClassName}, +\textit{ArgList}, ?\textit{ObjRef})}
+    \newline
+    \newline
+    Examples:\newline
+    \texttt{java\_object(`java.awt.Point', [2,3], P)}\newline
+    \texttt{java\_object(`java.lang.Integer', [303], n)}
+    &
+    Creates a Java object of class \textit{\texttt{ClassName}} by calling the
+    constructor which matches the arguments specified in \textit{\texttt{ArgList}}.
+    If the predicates succeeds, \textit{\texttt{ObjRef}} is bound to a term
+    representing the object. \textit{\texttt{ObjRef}} can be either a variable
+    or a ground term.
+    \\\\\hline\\
+    %--------------------------------------------------------------------------
+    Array creation
+    &
+    \texttt{java\_object(+\textit{ClassName}[], [+\textit{Len}], ?\textit{ObjRef})}
+    \newline
+    \newline
+    Example:\newline
+    \texttt{java\_object(`java.awt.Point'[], [100], V)}
+    &
+    Specialises the \texttt{java\_object/3} predicate for array creation.
+    \\\\\hline\\
+    %--------------------------------------------------------------------------
+    Method\newline invocation
+    &
+    \textit{\texttt{TargetRef}} \verb <- ~\texttt{\textit{MethodName}}\newline
+    \textit{\texttt{TargetRef}} \verb <- ~\texttt{\textit{MethodName}(+\textit{Arg0},+\textit{Arg1},\ldots)}\newline
+    \textit{\texttt{TargetRef}} \verb <- ~\texttt{\textit{MethodName} returns \textit{Res}}\newline
+    \textit{\texttt{TargetRef}} \verb <- ~\texttt{\textit{MethodName}(+\textit{Arg0},+\textit{Arg1},\ldots)\newline
+    \mbox{~~~~~~~~~~~~~~~~~~~~~~~~}returns \textit{Res}}
+    \newline
+    Example 1:\newline
+    \texttt{java\_object(`java.awt.Point', [2,3], P),}\newline
+    \texttt{P} \verb <- ~\texttt{getX returns X}\newline
+    Example 2:\newline
+    \texttt{Intclass = class(`java.lang.Integer')}\newline
+    \texttt{Intclass} \verb <- ~\texttt{parseInt(`200') returns N}
+    &
+    Invokes the method \textit{\texttt{MethodName}} on the object associated
+    to the \textit{\texttt{TargetRef}} term, possibly passing arguments
+    \textit{\texttt{Arg0}}, \textit{\texttt{Arg1}}, etc., and possibly binding
+    the return argument to the \texttt{\textit{Res}} term.
+    \newline
+    To invoke static (class) methods, the compound term \texttt{class(\textit{ClassName})}
+    should be used as \texttt{\textit{TargetRef}}.
+    \\\\\hline\\
+    %--------------------------------------------------------------------------
+    Field access
+    &
+    \texttt{\textit{TargetRef} . \textit{FieldName}} \verb <- ~\texttt{set(+\textit{Arg})}\newline
+    \texttt{\textit{TargetRef} . \textit{FieldName}} \verb <- ~\texttt{get(+\textit{Arg})}\newline
+    \newline
+    &
+    Accesses the public field \texttt{\textit{FieldName}} of object
+    \texttt{\textit{TargetRef}} to set/get its value to the
+    value (or object reference) denoted by \texttt{\textit{Arg}}.
+    %
+    For static fields, the compound term \texttt{class(\textit{ClassName})}
+    should be used as \texttt{\textit{TargetRef}}.
+    \\\\\hline\\
+    %--------------------------------------------------------------------------
+    Array access\newline and management
+    &
+    \texttt{java\_array\_set(+\textit{ArrayRef}, +\textit{Pos}, +\textit{Content})}\newline
+    \texttt{java\_array\_get(+\textit{ArrayRef}, +\textit{Pos}, ?\textit{Content})}\newline
+    \texttt{java\_array\_length(+\textit{ArrayRef}, ?\textit{Length})}\newline
+    \newline
+    Example:\newline
+    \texttt{java\_object(`java.awt.Point'[], [100], V),}\newline
+    \texttt{java\_object(`java.awt.Point', [1,2], Point),}\newline
+    \texttt{java\_array\_set(A, 0, Point)}
+    &
+    Accesses position \texttt{\textit{Pos}} of the array bound to the
+    \texttt{\textit{ArrayRef}} term to set/get the content of that position
+    to the value (or object reference) associated to the \texttt{\textit{Content}} term.
+    \newline
+    The third predicate retrieves the array length and binds it to the
+    \textit{\texttt{Length}} term.
+    \\\\\hline\\
+    %--------------------------------------------------------------------------
+    Cast
+    &
+    \texttt{\textit{Arg} as \textit{TypeName}}\newline
+    &
+    Forces argument \texttt{\textit{Arg}} to be considered of type
+    \texttt{\textit{TypeName}}.
+    \\\\\hline\\
+    %--------------------------------------------------------------------------
+    Dynamic class \newline compilation
+    &
+    \texttt{java\_class(+\textit{Source}, +\textit{ClassName},}\newline
+    \mbox{~~~~~~~~~~~~~~~~}\texttt{+\textit{PathList}, ?\textit{ClassRef})}\newline
+    &
+    Dynamically compiles the source text \texttt{\textit{Source}}
+    to define the new class named \texttt{\textit{ClassName}}.
+    \texttt{\textit{PathList}} denotes the class path to be used
+    for compilation.
+    The compiled class, available as a \texttt{Class} instance,
+    is associated to the \texttt{\textit{ClassRef}} term.
+    \\
+    %--------------------------------------------------------------------------
+    \\
+    \hline\hline
+    \end{tabular}
+    }\end{center}
+    \caption{Summary of \texttt{JavaLibrary} predicates.}
+    \label{tab:summary-of-javalibrary-predicates}
+\end{table}
+
 %---------------------------------------------------------------------
-\subsubsection{Method Invocation, Object and Class Creation}
+\subsubsection{Object creation, class compilation and method invocation}
 %---------------------------------------------------------------------
 
 \begin{itemize}
-%
+
 \item \bti{java\_object/3}\\
-\noindent\bt{java\_object(ClassName, ArgList, ObjId)} is true iff
-\bt{ClassName} is the full class name of a Java class available on
-the local file system, \bt{ArgList} is a list of arguments that
-can be meaningfully used to instantiate an object of the class,
-and \bt{ObjId} can be used to reference such an object;
-%
-as a side effect, the Java object is created and the reference to
-it is unified with \bt{ObjId}.
-%
-It is worth noting that \bt{ObjId} can be a Prolog variable (that
-will be bound to a ground term) as well as a ground term (not a
-number).\\
-\template{java\_object(+full\_class\_name, +list, ?obj\_id)}
-%
+    \noindent\bt{java\_object(ClassName, ArgList, ObjectRef)} instantiates a new instance of class \bt{ClassName} (full class name on the local file system) and initializes it via the Java constructor corresponding to the arguments in \bt{ArgList}; the newly created Java object is bound to the Prolog term \bt{ObjectRef}, which can be any ground term (except for numbers) or a Prolog variable (in which case it is bound to an  automatically-generated ground term).
+    By default, such a binding is \textit{not} undone on backtracking, unless the \texttt{java\_object\_backtrackable} flag is set to \texttt{true} (see Section \ref{ssec:creating-and-accessing-objects}).
+
+    \template{java\_object(+full\_class\_name, +list, ?object\_ref)}
+
+    \exception{java.lang.ClassNotFoundException(Cause, Message, StackTrace)} if \bt{ClassName} does not identify a valid class name on the local file system.
+
+    \exception{java.lang.NoSuchMethodException(Cause, Message, StackTrace)} if the specified constructor could not be found.
+
+    \exception{java.lang.reflect.InvocationTargetException(Cause, Message, StackTrace)} if the constructor arguments are invalid---for instance, because they are not ground.
+
+    \exception{java.lang.Exception(Cause, Message, StackTrace)} if \texttt{ObjectRef} is already bound to another Java object.
+
+
 \item \bti{java\_object\_bt/3}\\
-\noindent\bt{java\_object\_bt(ClassName, ArgList, ObjId)} has the same behaviour of \bt{java\_object/3}, but the binding that is established between the \bt{ObjId} term and the Java object is destroyed with backtracking.\\
-\template{java\_object\_bt(+full\_class\_name, +list, ?obj\_id)}
-%
+    everything as above, but the binding \textit{is} undone on backtracking.
+
 \item \bti{destroy\_object/1}\\
-\noindent\bt{destroy\_object(ObjId)} is true and as a side effect
-the binding between \bt{ObjId} and a Java object,
-possibly established, by previous predicates is destroyed.\\
-\template{destroy\_object(@obj\_id)}
-%
+    \noindent\bt{destroy\_object(ObjectRef)} removes the binding possibly established between \bt{ObjectRef} and an underlying Java object.
+
+    \template{destroy\_object(@object\_ref)}
+
 \item \bti{java\_class/4}\\
-\noindent\bt{java\_class(ClassSourceText, FullClassName, ClassPathList, ObjId)}
-is true iff \bt{ClassSouceText} is a source string describing a
-valid Java class declaration, a class whose full name is
-\bt{FullClassName}, according to the classes found in paths
-listed in \bt{ClassPathList}, and \bt{ObjId} can be used as a
-meaningful reference for a \texttt{java.lang.Class} object
-representing that class;
-%
-as a side effect the described class is (possibly created and)
-loaded and made available to the system.\\
-\template{java\_class(@java\_source, @full\_class\_name, @list, ?obj\_id)}
-%
+    \noindent\bt{java\_class(SourceText, ClassName, PathList, ObjectRef)}
+    creates the new Java class \texttt{ClassName} from the provided \texttt{\textit{SourceText}}, compiles it dynamically using to the classes in the provided \bt{PathList}, and binds the result -- a suitable instance of the meta-class \texttt{Class} -- with the Prolog term \bt{ObjectRef}.
+
+    \template{java\_class(@source, @classname, @path, ?obj\_ref)}
+
+    \exception{java.lang.ClassNotFoundException(Cause, Message, StackTrace)} if \bt{ClassName} does not identify a valid class name in the package hierarchy on the local file system.
+
+    \exception{java.lang.IOException(Cause, Message, StackTrace)} if \texttt{\textit{SourceText}} contains errors that prevent the class from being compiled.
+
+    \exception{java.lang.Exception(Cause, Message, StackTrace)} if \texttt{ObjectRef} is already bound to another Java object.
+
+
 \item \bti{java\_call/3}\\
-\noindent\bt{java\_call(ObjId, MethodInfo, ObjIdResult)} is true iff
-\bt{ObjId} is a ground term currently referencing a Java object,
-which provides a method whose name is the functor name of the term
-\bt{MethodInfo} and possible arguments the arguments of
-\bt{MethodInfo} as a compound, and \bt{ObjIdResult} can be used as
-a meaningful reference for the Java object that the method
-possibly returns.
-%
-As a side effect the method is called on the Java object
-referenced by the \bt{ObjId} and the object possibly returned by
-the method invocation is referenced by the \bt{ObjIdResult} term.
-%
-The anonymous variable used as argument in the \bt{MethodInfo}
-structure is interpreted as the Java \texttt{null} value.\\
-\template{java\_call(@obj\_id, @method\_signature, ?obj\_id)}
-%
-\item \verb|'<-'/2|\\
-\noindent\verb|'<-'(ObjId, MethodInfo)| is true iff \bt{ObjId} is
-a ground term currently referencing a Java object, which provides a
-method whose name is the functor name of the term \bt{MethodInfo}
-and possible arguments the arguments of \bt{MethodInfo} as a
-compound.
-%
-As a side effect the method is called on the Java object
-referenced by the \bt{ObjId}.
-%
-The anonymous variable used as argument in the \bt{MethodInfo}
-structure is interpreted as the Java \texttt{null} value.\\
-\template{'<-'(@obj\_id, @method\_signature)}
-%
-\item \bti{return/2}\\
-\noindent\verb|return('<-'(ObjId, MethodInfo), ObjIdResult)| is true
-iff \bt{ObjId} is a ground term currently referencing a Java object,
-which provides a method whose name is the functor name of the term
-\bt{MethodInfo} and possible arguments the arguments of
-\bt{MethodInfo} as a compound, and \bt{ObjIdResult} can be used as
-a meaningful reference for the Java object that the method
-possibly returns.
-%
-As a side effect the method is called on the Java object
-referenced by the \bt{ObjId} and the object possibly returned by
-the method invocation is referenced by the \bt{ObjIdResult} term.
-%
-The anonymous variable used as argument in the \bt{MethodInfo}
-structure is interpreted as the Java \texttt{null} value.\\
-%
-It is worth noting that this predicate is equivalent to the
-\texttt{java\_call} predicate.\\
-\template{return('<-'(@obj\_id, @method\_signature), ?obj\_id)}
-%
+    \noindent\bt{java\_call(ObjectRef, Method, ResultRef)} is the basic method implementing the infix \verb|<-/2| and (\verb|<-|,\texttt{returns})\texttt{/3} operators below. It is true iff \bt{ObjId} is a ground term bound to a Java object, and this provides a method \bt{Method} (that is, whose name is the functor name and whose arguments are the arguments of the compound term \bt{Method}); \bt{ResultRef} is a Prolog term bound to the returned value.
+
+    If needed, the Prolog anonymous variable \texttt{\_} can be used as an argument for the Java \texttt{null} value.
+
+    \template{java\_call(@obj\_id, @method\_signature, ?ResultRef)}
+
+    \exception{java.lang.NoSuchMethodException(Cause, Message,\\
+    StackTrace)} if the specified method could not be found in the target object/class, or the method arguments are invalid.
+
+\item \verb|<-/2|\\
+    \noindent\verb|ObjectRef <- Method| calls the Java method represented by the \texttt{Method} compound term on the target Java object \bt{ObjectRef}. The same argument specifications of \texttt{java\_call} above apply.
+
+    \template{'<-'(@obj\_id, @method\_signature)}
+
+    \exception{} as above
+
+\item (\verb|<-|,\bti{returns})\texttt{/3}\\
+    \noindent\verb|ObjectRef <- Method returns ResultRef| calls the Java method represented by the \texttt{Method} compound term on the target Java object \bt{ObjectRef}, retrieving the method result into \texttt{ResultRef}. The same argument specifications of \texttt{java\_call} above apply.
+
+    Formally, this operator is defined as the binary \texttt{returns/2} predicate, whose first argument has the form of the above \verb|<-/2| predicate (see Table \ref{tab:javalibrary-operators} below for these operators' priorities).
+
+    \template{returns('<-'(@obj\_id, @method\_signature), ?@obj\_id)}
+
+    \exception{} as above
 \end{itemize}
 
 %---------------------------------------------------------------------
-\subsubsection{Java Array Management}
+\subsubsection{Array management}
 %---------------------------------------------------------------------
 \begin{itemize}
-%
-\item \bti{java\_array\_set/3}\\
-\noindent\bt{java\_array\_set(ObjArrayId, Index, ObjId)} is true iff
-\bt{ObjArrayId} is a ground term currently referencing a Java
-array object, \bt{Index} is a valid index for the array and
-\bt{ObjId} is a ground term currently referencing a Java object
-that could inserted as an element of the array (according to Java
-type rules).
-%
-As side effect, the object referenced by \bt{ObjId} is set in the
-array referenced by \bt{ObjArrayId} in the position (starting from
-0, following the Java convention) specified by \bt{Index}.
-%
-The anonymous variable used as \bt{ObjId} is interpreted as the
-Java \texttt{null} value.
-%
-This predicate can be used for arrays of Java objects:
-%
-for arrays whose elements are Java primitive types (such as
-\texttt{int}, \texttt{float}, etc.) the following predicates can
-be used, with the same semantics of \bt{java\_array\_set} but
-specifying directly the term to be set as a \tuprolog{} term
-(according to the mapping described previously):\\
-%
-\mbox{~~~~}\bt{java\_array\_set\_int(ObjArrayId, Index, Integer)}\\
-\mbox{~~~~}\bt{java\_array\_set\_short(ObjArrayId, Index, ShortInteger)}\\
-\mbox{~~~~}\bt{java\_array\_set\_long(ObjArrayId, Index, LongInteger)}\\
-\mbox{~~~~}\bt{java\_array\_set\_float(ObjArrayId, Index, Float)}\\
-\mbox{~~~~}\bt{java\_array\_set\_double(ObjArrayId, Index, Double)}\\
-\mbox{~~~~}\bt{java\_array\_set\_char(ObjArrayId, Index, Char)}\\
-\mbox{~~~~}\bt{java\_array\_set\_byte(ObjArrayId, Index, Byte)}\\
-\mbox{~~~~}\bt{java\_array\_set\_boolean(ObjArrayId, Index, Boolean)}\\
-%
-\template{java\_array\_set(@obj\_id, @positive\_integer, +obj\_id)}
-%
-%
-%
-\item \bti{java\_array\_get/3}\\
-\noindent\bt{java\_array\_get(ObjArrayId, Index, ObjIdResult)} is
-true iff \bt{ObjArrayId} is a ground term currently referencing a
-Java array object, \bt{Index} is a valid index for the array, and
-\bt{ObjIdResult} can be used as a meaningful reference for a Java
-object contained in the array.
-%
-As a side effect, \bt{ObjIdResult} is unified with the reference to
-the Java object of the array referenced by \bt{ObjArrayId} in the
-\bt{Index} position.
-%
-This predicate can be used for arrays of Java objects:
-%
-for arrays whose elements are Java primitive types (such as
-\texttt{int}, \texttt{float}, etc.) the following predicates can
-be used, with the same semantics of \bt{java\_array\_get} but
-binding directly the array element to a \tuprolog{} term
-(according to the mapping described previously):\\
-%
-\mbox{~~~~}\bt{java\_array\_get\_int(ObjArrayId, Index, Integer)}\\
-\mbox{~~~~}\bt{java\_array\_get\_short(ObjArrayId, Index, ShortInteger)}\\
-\mbox{~~~~}\bt{java\_array\_get\_long(ObjArrayId, Index, LongInteger)}\\
-\mbox{~~~~}\bt{java\_array\_get\_float(ObjArrayId, Index, Float)}\\
-\mbox{~~~~}\bt{java\_array\_get\_double(ObjArrayId, Index, Double)}\\
-\mbox{~~~~}\bt{java\_array\_get\_char(ObjArrayId, Index, Char)}\\
-\mbox{~~~~}\bt{java\_array\_get\_byte(ObjArrayId, Index, Byte)}\\
-\mbox{~~~~}\bt{java\_array\_get\_boolean(ObjArrayId, Index, Boolean)}\\
-%
-\template{java\_array\_get(@obj\_id, @positive\_integer, ?obj\_id)}
-%
-%
+
+\item the \bti{java\_array\_set\_*/3} family\\
+    This family of predicates is composed of one main predicate handling arrays of objects, and a set of helper predicates handling arrays of primitive Java types.
+
+    \bt{java\_array\_set(ArrayRef, Index, ObjectRef)} is the main predicate, setting the \texttt{Index}th cell of the array \texttt{ArrayRef} to \bt{ObjectRef} (i.e., \texttt{ArrayRef[Index]=ObjectRef}).
+    So, \bt{ArrayRef} is a ground term referencing a Java array object, \bt{Index} is a valid 0-based index for that array, and \bt{ObjectRef} is a ground term bound to a Java object (of an assignment-compatible type according to the Java type rules) to be inserted into the array at the given position.
+    As above, the Prolog anonymous variable can be used as \bt{ObjectRef} to denote the Java \texttt{null} value.
+
+    Arrays of primitive Java types are handled analogously by the following set of helper predicates:
+
+    \mbox{~~~~}\bt{java\_array\_set\_int(ArrayRef, Index, Integer)}\\
+    \mbox{~~~~}\bt{java\_array\_set\_short(ArrayRef, Index, ShortInteger)}\\
+    \mbox{~~~~}\bt{java\_array\_set\_long(ArrayRef, Index, LongInteger)}\\
+    \mbox{~~~~}\bt{java\_array\_set\_float(ArrayRef, Index, Float)}\\
+    \mbox{~~~~}\bt{java\_array\_set\_double(ArrayRef, Index, Double)}\\
+    \mbox{~~~~}\bt{java\_array\_set\_char(ArrayRef, Index, Char)}\\
+    \mbox{~~~~}\bt{java\_array\_set\_byte(ArrayRef, Index, Byte)}\\
+    \mbox{~~~~}\bt{java\_array\_set\_boolean(ArrayRef, Index, Boolean)}
+
+    \template{java\_array\_set(@obj\_id, @nonneg\_integer, +obj\_id)}
+
+    \exception{java.lang.IllegalArgumentException(Cause, Message, StackTrace)} if the \texttt{ArrayRef} does not refer to a valid array object, or \texttt{Index} is incorrect, or \texttt{ObjectRef} is not type-assignable to the array.
+
+\item the \bti{java\_array\_get\_*/3} family\\
+    This family of predicates is composed of one main predicate handling arrays of objects, and a set of helper predicates handling arrays of primitive Java types.
+
+    \bt{java\_array\_get(ArrayRef, Index, ObjectRef)} is the main predicate, getting the \texttt{Index}th cell of the array \texttt{ArrayRef} into \bt{ObjectRef} (i.e., \texttt{ObjectRef=ArrayRef[Index]}).
+    So, \bt{ArrayRef} is a ground term referencing a Java array object, \bt{Index} is a valid 0-based index for that array, and \bt{ObjectRef} is a ground term unified with the reference to the Java object (of an assignment-compatible type according to the Java type rules) at the given array position.
+    Again, the Prolog anonymous variable can be used as \bt{ObjectRef} to denote the Java \texttt{null} value.
+
+    Arrays of primitive Java types are handled analogously by the following set of helper predicates:
+
+    \mbox{~~~~}\bt{java\_array\_get\_int(ArrayRef, Index, Integer)}\\
+    \mbox{~~~~}\bt{java\_array\_get\_short(ArrayRef, Index, ShortInteger)}\\
+    \mbox{~~~~}\bt{java\_array\_get\_long(ArrayRef, Index, LongInteger)}\\
+    \mbox{~~~~}\bt{java\_array\_get\_float(ArrayRef, Index, Float)}\\
+    \mbox{~~~~}\bt{java\_array\_get\_double(ArrayRef, Index, Double)}\\
+    \mbox{~~~~}\bt{java\_array\_get\_char(ArrayRef, Index, Char)}\\
+    \mbox{~~~~}\bt{java\_array\_get\_byte(ArrayRef, Index, Byte)}\\
+    \mbox{~~~~}\bt{java\_array\_get\_boolean(ArrayRef, Index, Boolean)}
+
+    \template{java\_array\_get(@obj\_id, @nonneg\_integer, ?obj\_id)}
+
+    \exception{java.lang.IllegalArgumentException(Cause, Message, StackTrace)} if the \texttt{ArrayRef} does not refer to a valid array object, or \texttt{Index} is incorrect.
+
 \item \bti{java\_array\_length/2}\\
-\noindent\bt{java\_array\_length(ObjArrayId, ArrayLength)} is true
-iff \bt{ArrayLength} is the length of the Java array referenced by
-the term \bt{ObjArrayId}.\\
-\template{java\_array\_length(@term, ?integer)}
-%
+    \noindent\bt{java\_array\_length(ArrayRef, ArrayLength)} is true iff \bt{ArrayLength} is the length of the Java array referenced by
+    the term \bt{ArrayRef}.
+
+    \template{java\_array\_length(@term, ?integer)}
 \end{itemize}
 
 %---------------------------------------------------------------------
-\subsubsection{Helper Predicates}
+\subsubsection{Helper predicates}
 %---------------------------------------------------------------------
 
 \begin{itemize}
-%
 \item \bti{java\_object\_string/2}\\
-\noindent\bt{java\_object\_string(ObjId, String)} is true iff
-\bt{ObjId} is a term referencing a Java object and
-\bt{PrologString} is the string representation of the object
-(according to the semantics of the \texttt{toString} method
-provided by the Java object).\\
-\template{java\_object\_string(@obj\_id, ?string)}
-%
+    \noindent\bt{java\_object\_string(ObjectRef, String)} is true if
+    \bt{String} is the string representation of the Java object bound to the term \texttt{ObjectRef}, according to the semantics of the object's own \texttt{toString} method.
+
+    \template{java\_object\_string(@obj\_id, ?string)}
 \end{itemize}
 
 %---------------------------------------------------------------------
@@ -510,6 +565,8 @@ No functors are provided by the \texttt{JavaLibrary} library.
 %---------------------------------------------------------------------
 \subsection{Operators}
 %---------------------------------------------------------------------
+
+The full list of JavaLibrary operators, with their priority and associativity, is reported in Table \ref{tab:javalibrary-operators}.
 
 \begin{table}[h]
     %
@@ -523,6 +580,7 @@ No functors are provided by the \texttt{JavaLibrary} library.
     \hline\hline
     \end{tabular}
     }\end{center}
+    \caption{JavaLibrary operators.}\label{tab:javalibrary-operators}
 \end{table}
 
 %\clearpage
@@ -532,31 +590,35 @@ No functors are provided by the \texttt{JavaLibrary} library.
 \subsection{Examples}
 %-----------------------------------------------------------------------
 
-The following examples are designed to show \texttt{JavaLibrary}'s
-ease of use and flexibility.
+The following examples illustrate \texttt{JavaLibrary}'s ways of use and flexibility.
 
 %-------------------------------
 \subsubsection{RMI Connection to a Remote Object}
 %-------------------------------
 
-Here we connect via RMI to a remote Java object.
-%
-In order to allow the reader to try this example with no need of
-other objects, we connect to the remote Java object identified by
-the name \verb|'prolog'|, which is an RMI server bundled with
-the \tuprolog{} package, and can be spawned by typing:
+This example shoes how to connect to a remote Java object via RMI.
 
-{\small%
-\texttt{java -Djava.security.all=policy.all  alice.tuprologx.runtime.rmi.Daemon}
-}
+To allow the reader to try this example with no need of other objects, we connect to the remote Java object \verb|'prolog'|, an RMI server bundled with the \tuprolog{} package that can be spawned by typing:\\
 
-\noindent Then, we invoke the object method whose signature is
+{\small\texttt{java -Djava.security.all=policy.all\\
+\mbox{~~~~~~~~~~}alice.tuprologx.runtime.rmi.Daemon}}\\
 
-{\small%
-\texttt{SolveInfo solve(String goal);}
-}
-%
-{\small%
+\noindent Table \ref{tab:rmi-example} shows the same code in Java and \tuprolog{}:
+after the RMI (Prolog) server is retrieved, the remote \texttt{solve} method is called to execute a demonstration onto the Prolog server.
+
+\begin{table}
+\textit{Java class:}
+\begin{verbatim}
+        System.setSecurityManager(new RMISecurityManager());
+        PrologRMI core = (PrologRMI) Naming.lookup("prolog");
+        SolveInfo info = core.solve("append([1],[2],X).");
+        boolean ok = info.success();
+        String sub = info.getSubstiturion();
+        System.out.println(sub);
+        String sol = info.getSolution();
+        System.out.println(sol);
+\end{verbatim}
+\textit{Prolog program:}
 \begin{verbatim}
     ?-  java_object('java.rmi.RMISecurityManager', [], Manager),
         class('java.lang.System') <- setSecurityManager(Manager),
@@ -568,62 +630,23 @@ the \tuprolog{} package, and can be spawned by typing:
         SolInfo <- getSolution returns Sol,
         Sol <- toString returns SolStr, write(SolStr), nl.
 \end{verbatim}
-}
-%
-\noindent The Java version of the same code would be:
-%
-{\small%
-\begin{verbatim}
-        System.setSecurityManager(new RMISecurityManager());
-        PrologRMI core = (PrologRMI) Naming.lookup("prolog");
-        SolveInfo info = core.solve("append([1],[2],X).");
-        boolean ok = info.success();
-        String sub = info.getSubstiturion();
-        System.out.println(sub);
-        String sol = info.getSolution();
-        System.out.println(sol);
-\end{verbatim}
-}
 
+\caption{The RMI example in Java and in \tuprolog{} via JavaLibrary.}
+\label{tab:rmi-example}
+\end{table}
 
 %-------------------------------
-\subsubsection{Java Swing GUI from \tuprolog}
+\subsubsection{A Swing GUI}
 %-------------------------------
 
-What about creating Java GUI components from the \tuprolog{}
-environment?
-%
-Here is a little example, where a standard Java Swing open file
-dialog windows is popped up:
-%
-{\small%
-\begin{verbatim}
-    open_file_dialog(FileName):-
-        java_object('javax.swing.JFileChooser', [], Dialog ),
-        Dialog <- showOpenDialog(_) returns Result,
-        write(Result),
-        Dialog <- getSelectedFile returns File,
-        File <- getName returns FileName,
-        class('java.lang.System') . out <- get(Out),
-        Out <- println('you want to open file '),
-        Out <- println(FileName).
-\end{verbatim}
-}
+Please see the example reported in Table \ref{tab:jexamples-swing} above.
 
 %-------------------------------
-\subsubsection{Database access via JDBC from \tuprolog}
+\subsubsection{Database access via JDBC}
 %-------------------------------
 
-This example shows how to access a database via the Java standard
-JDBC interface from \tuprolog{}.
-%
-The program computes the minimum path between two cities, fetching
-the required data from the database called `distances'.
-%
-The entry point of the Prolog program is the \texttt{find\_path}
-predicate.
-%
-{\small%
+\begin{table}
+\footnotesize
 \begin{verbatim}
     find_path(From, To) :-
         init_dbase('jdbc:odbc:distances', Connection, '', ''),
@@ -664,13 +687,26 @@ predicate.
         write(' to '), write(To), write(': '),
         write(From), writeList(MinList),
         write('  - length: '), write(MinLength).
+\end{verbatim}
+\caption{Calculation of the minimum path between two given cities: the required data are fetched from a database via JDBC as shown in Table \ref{tab:jdbc-example-part2}.}
+\label{tab:jdbc-example-part1}
+\end{table}
 
-    % Access to Database
+This example shows how to access a database by connecting \tuprolog{} to the Java JDBC interface.
+%
+The program is logically divided in two parts, one (Table \ref{tab:jdbc-example-part1}) devoted to the computational aspect (calculating the minimum path between two given cities), the other (Table \ref{tab:jdbc-example-part2}) fetching the required data from the database `distances' via JDBC.
 
+The first part is a standard Prolog program, and requires no particular comment; the second deserves some more attention. The first line exploits the \texttt{forName} reflection method of the \texttt{Class} meta-class to obtain a reference to the (static) JDBC/ODBC driver, thus activating the JDBC bridge behind-the-scenes; then the second line opens the connection to the database via the \texttt{DriverManager}'s \texttt{getConnection} factory method: the \texttt{Connection} object is the return argument of the \texttt{init\_dbase/4} predicate.
+Analogously, \texttt{exec\_query/3} creates and executes the query statement, returning the matching data in \texttt{ResultSet}; in its turn, this is iterated over by \texttt{assert\_result/3}, which asserts a \texttt{distance/3} fact for each returned tuple.
+
+\begin{table}
+%\footnotesize
+\small
+\begin{verbatim}
     init_dbase(DBase, Username, Password, Connection) :-
         class('java.lang.Class') <- forName('sun.jdbc.odbc.JdbcOdbcDriver'),
-        class('java.sql.DriverManager') <- getConnection(DBase, Username, Password)
-            returns Connection,
+        class('java.sql.DriverManager')
+          <- getConnection(DBase, Username, Password) returns Connection,
         write('[ Database '), write(DBase), write(' connected ]'), nl.
 
     exec_query(Connection, Query, ResultSet):-
@@ -679,7 +715,7 @@ predicate.
         write('[ query '), write(Query), write(' executed ]'), nl.
 
     assert_result(ResultSet) :-
-        ResultSet <- next returns Valid, Valid == true, !,
+        ResultSet <- next returns true, !,
         ResultSet <- getString('city_from') returns From,
         ResultSet <- getString('city_to') returns To,
         ResultSet <- getInt('distance') returns Dist,
@@ -687,33 +723,20 @@ predicate.
         assert_result(ResultSet).
     assert_result(_).
 \end{verbatim}
-}
+\caption{Accessing JDBC via \tuprolog{}'s JavaLibrary.}
+\label{tab:jdbc-example-part2}
+\end{table}
 
 %-------------------------------
 \subsubsection{Dynamic compilation}
 %-------------------------------
 
-As already said, the \texttt{java\_class} predicate performs
-\textit{dynamic compilation}, creating an instance of a Java
-\texttt{Class} class that represents the public class declared in
-the source text provided as argument.
+As anticipated above, \tuprolog{} supports the dynamic compilation of Java classes via the \texttt{java\_class} predicate. This predicate compiles the source file passed as a string, and represents the newly-created class as a suitable instance of the Java \texttt{Class} meta-class, referenced by a Prolog term.
 %
-The created \texttt{Class} instance, referenced by a Prolog term,
-can be used to create instances via the \texttt{newInstance}
-method, to retrieve specific constructors via the
-\texttt{getConstructor} method, to analyze class methods and
-fields, and for other above-mentioned meta-services: a sketch is
-reported in \xf{dynamic-compilation}.
-%
-The \texttt{java\_class} arguments in the example specify, besides
-the source text and the binding variable, the full class name
-(\texttt{Counter}), which is necessary to locate the class in the
-package hierarchy, and possibly a list of class paths required
-for a successful compilation (if any).
+In its turn, this can be used to create instances via the \texttt{newInstance}
+method, to retrieve constructors via the \texttt{getConstructor} method, to analyze class methods and fields, and for other meta-services.
 
-\begin{figure}
-\caption{Predicate \texttt{java\_class} performing dynamic compilation of Java code in \tuprolog{}.
-\labelfig{dynamic-compilation}}
+\begin{table}
 \begin{verbatim}
     ?- Source = 'public class Counter { ... }',
        java_class(Source, 'Counter', [], counterClass),
@@ -722,27 +745,25 @@ for a successful compilation (if any).
        myCounter <- getValue returns X,
        write(X).
 \end{verbatim}
-\end{figure}
+\caption{Dynamic compilation of a Java source code.}
+\label{tab:dynamic-compilation}
+\end{table}
 
-\xf{jcexamples} shows a more complex example, where a Java source
-is retrieved via FTP and then exploited first to create a new
-(previously unknown) class, and then a new instance of that class.
-(The FTP service is provided by a shareware Java library.)
+Table \ref{tab:dynamic-compilation} shows a simple example of this technique: the string \texttt{Source}, which contains the source of the public class \texttt{Counter}, is passed to the \texttt{java\_class/4} predicate, specifying the \texttt{'Counter'} atom as the new class full name. The path list is empty, since the given class is autonomous from the compilation viewpoint.
 %
-\begin{figure}
-\caption{A new Java class is compiled and used after being retrieved via FTP.
-\labelfig{jcexamples}}
-{\scriptsize
-\begin{verbatim}
-% A user whose name is 'myName' and whose password is 'myPwd' gets the content of the file
-% 'Counter.java' from the server whose IP address is 'srvAddr', creates the corresponding
-% Java class and exploits it to instantiate and deploy an object
+If no errors are detected, the source text is compiled and a reference to the new class is bound to the \texttt{counterClass} atom; in its turn, this is exploited to create an actual Counter object, bound to the \texttt{myCounter} term, via the \texttt{newInstance} factory method.
 
-test :-
-    get_remote_file('alice/tuprolog/test', 'Counter.java', srvAddr, myName, myPwd, Content),
-    % creating the class
+Now, the instance can be used as any other Java object: so, its value is set, incremented, retrieved and printed as usual.
+
+Table \ref{tab:dynamic-compilation-via-FTP} shows a more complex example, where the source text of un unknown class is first retrieved via FTP, and then dynamically compiled and used to instantiate new objects.
+
+\begin{table}
+{\small
+\begin{verbatim}
+go :-
+    get_remote_file('alice/tuprolog/test', 'Counter.java',
+                     srvAddr, myName, myPwd, Content),
     java_class(Content, 'Counter', [], CounterClass),
-    % instantiating (and using) an object of such a class
     CounterClass <- newInstance returns MyCounter,
     MyCounter <- setValue(303),
     MyCounter <- inc,
@@ -759,133 +780,84 @@ test :-
 
 get_remote_file(DirName, FileName, FTPHost, FTPUser, FTPPwd, Content) :-
     java_object('com.enterprisedt.net.ftp.FTPClient', [FTPHost], Client),
-    % get file
     Client <- login(FTPUser, FTPPwd),
     Client <- chdir(DirName),
     Client <- get(FileName) returns Content,
     Client <- quit.
 \end{verbatim}
 }
-\end{figure}
-%
-Though a lot remains to explore, \texttt{java\_class} features
-seem quite interesting: in perspective one might think, for
-instance, of a Prolog intelligent agent that dynamically acquires
-information on a Java resource, and then autonomously builds up,
-at run-time, the proper Java machinery enabling efficient
-interaction with the resource.
+\caption{Another example of dynamic compilation, where the class source is retrieved via FTP: the user \texttt{myName}, whose password is \texttt{myPwd}, gets the content of the \texttt{Counter.java} file from the server whose IP address is \texttt{srvAddr}, dynamically compiles the class and creates a corresponding object. The FTP service is provided here by a shareware Java library, but any other similar library would work.}
+\label{tab:dynamic-compilation-via-FTP}
+\end{table}
 
 %=======================================================================
 \subsection{Handling Java Exceptions}
 \label{ssec:java-exceptions-in-tuprolog}
 %=======================================================================
 
-One peculiar \tuprolog{} aspect concerns the handling of Java exceptions possibly raised during the execution of Java methods on objects accessed from the Prolog world via Javalibrary.
-
-At a first sight, one might think of re-mapping Java exceptions and constructs onto the Prolog one, but this approach would have been unsatisfactory for three reasons:
+The handling of Prolog exceptions, according to the ISO standard, was already presented in Chapter \ref{ch:exceptions}.
 %
+\tuprolog{}'s peculiar support for multi-paradigm programming via Javalibrary, however, opens one extra challenge: the handling of the Java exceptions possibly raised during the execution of Java methods on objects accessed from the Prolog world.
+
+At a first sight, one might think of re-mapping Java exceptions and constructs onto the Prolog one, but this would be an unsatisfactory approach for three main reasons:
+
 \begin{itemize}
   \item the semantics of the Java mechanism should not be mixed with the Prolog one, and vice-versa;
 
   \item the Java construct admits also a \texttt{finally} clause which has no counterpart in ISO Prolog;
 
-  \item the Java catching mechanisms operates hierarchically, while the \texttt{catch/3} predicate operates via pattern matching and unification, allowing for multiple granularities.
+  \item the Java catching mechanisms operates hierarchically, while the ISO Prolog \texttt{catch/3} predicate operates via pattern matching and unification, allowing for multiple granularities.
 \end{itemize}
 
-\noindent Accordingly, Java exceptions in \tuprolog{} programs are handled by means of two further, \textit{ad hoc} predicates, which are clearly not present in ISO Prolog: \texttt{java\_throw/1} and \texttt{java\_catch/3}.
+\noindent Accordingly, Java exceptions are handled in \tuprolog{} via two further, \textit{ad hoc} predicates: \texttt{java\_throw/1} and \texttt{java\_catch/3}.
 
-\medskip
-
-\noindent\textbf{Syntax:}
-
- \texttt{java\_throw(\textit{JavaException}(\textit{Cause}, \textit{Message}, \textit{StackTrace}))}
-
-\medskip
-\noindent where \textit{JavaException} is named after the specific Java exception to be launched
-(e.g., \texttt{'java.io.FileNotFoundException'}, and its three arguments represent the typical
-properties of any Java exception. More precisely, \texttt{\textit{Cause}} is a string representing
-the cause of the exception, or \texttt{0} if the cause is unknown; \texttt{\textit{Message}} is
-the message associated to the error (or, again, \texttt{0} if the message is missing);
-\texttt{\textit{StackTrace}} is a list of strings, each representing a stack frame.
-
-The \texttt{java\_catch/3} predicate takes the form
-\medskip
-
- \texttt{java\_catch(\textit{JGoal}, [(\textit{Catcher1}, \textit{Handler1}),}
-
- \texttt{\mbox{~~~~~~~~~~~~~~~~~~}\ldots},
-
- \texttt{\mbox{~~~~~~~~~~~~~~~~~~}(\textit{CatcherN}, \textit{HandlerN})], \textit{Finally})}
-
-\medskip
-\noindent where \texttt{\textit{JGoal}} is the goal (representing a Java operation in the Java
-world) to be executed under the protection of the handlers specified in the subsequent list, each
-associated to a given type of Java exception and expressed in the form
-\texttt{java\_exception(\textit{Cause}, \textit{Message}, \textit{StackTrace})}, with the same
-argument semantics explained above. The third argument \texttt{\textit{Finally}} expresses the
-homonomous Java clause, and therefore represents the predicate to be executed at the very end
-either of the \texttt{\textit{Goal}} or one of the \texttt{\textit{Handler}}s. If no such a clause
-is actually needed, the conventional atom (\texttt{'0'}) has to be used as a placeholder.
-
-The predicate behaviour can be informally expressed as follows. First, \textit{\texttt{JGoal}} is
-executed. Then, if no exception is raised via \texttt{java\_throw/1}, the
-\texttt{\textit{Finally}} goal is executed. If, instead, an exception is raised, all the
-choicepoints generated by \textit{\texttt{JGoal}} (in the case of a non-deterministic predicate
-like \texttt{java\_object\_bt/3}, of course) are cut: if a matching handler exists, such a handler
-is executed, maintaining the variable substitutions. If, instead, no such a handler is found, the
-resolution tree is backsearched, looking for a matching \texttt{java\_catch/3} clause: if none
-exists, the predicate fails. Upon completion, the \texttt{\textit{Finally}} part is executed
-anyway, then the program flow continues with the subgoal following \texttt{java\_catch/3}. As
-already said above, side effects possibly generated during the execution of
-\textit{\texttt{JGoal}} are \textit{not} undone in case of exception.
-
-So, summing up, \texttt{java\_catch/3} is true if:
 \begin{itemize}
-  \item \texttt{\textit{JGoal}} and \texttt{\textit{Finally}} are both true;\\\\or
-  \item \texttt{call(\textit{JGoal})} is interrupted by a call to \texttt{java\_throw/1} whose
-      argument unifies with one of the \texttt{\textit{Catcher}}s, and both the execution of
-      the catcher and of the \texttt{\textit{Finally}} clause are true.
+
+\item \bti{java\_throw/1}\\
+    \noindent \texttt{java\_throw(\textit{JavaException}(\textit{Cause}, \textit{Message}, \textit{StackTrace}))} throws the specified
+    \texttt{\textit{JavaException}} (e.g. \texttt{'java.io.FileNotFoundException'}): its three arguments represent the typical properties of any Java exception, that is, the \texttt{\textit{Cause}} of the exception (a string, or \texttt{0} if the cause is unknown), the \texttt{\textit{Message}} associated to the error (or, again, \texttt{0} if the message is missing), and the \texttt{\textit{StackTrace}} (a list of strings, each representing a stack frame).
+
+\item \bti{java\_catch/3}\\
+    \noindent \texttt{java\_catch(\textit{JavaGoal}, [(\textit{Catcher1}, \textit{Handler1}),\ldots, (\textit{CatcherN}, \\
+    \textit{HandlerN})], \textit{Finally})}
+    performs a controlled execution of the Java operation \texttt{\textit{JavaGoal}}, like in a Java \texttt{try} block: if a (Java) exception is raised, the best-matching \texttt{\textit{Catcher}} is selected, and its \texttt{\textit{Handler}} is executed.
+    The \texttt{\textit{Finally}} predicate expresses the homonomous Java option---actions be executed at the end of the block, independently of the operation result. If unneeded, the conventional placeholder atom (\texttt{'0'}) has to be used.
+
+    The predicate behaviour can be informally expressed as follows. When \textit{\texttt{JavaGoal}} is executed, if no exception is raised via \texttt{java\_throw/1}, the \texttt{\textit{Finally}} goal is executed.
+    Otherwise, if an exception is raised, all the choicepoints generated by \textit{\texttt{JavaGoal}}\footnote{Of course, this is relevant only in the case of a non-deterministic predicate like \texttt{java\_object\_bt/3}} are cut, and a matching catcher is looked for. If such a matching catcher exists, its handler
+    is executed, maintaining the variable substitutions; otherwise, the resolution tree is back-searched for a matching \texttt{java\_catch/3} clause: if none exists, the predicate fails.
+    Upon completion, the \texttt{\textit{Finally}} part is executed anyway, then the program flow continues with the subgoal following \texttt{java\_catch/3}.
+
+    Any side effects possibly generated during the \textit{\texttt{JavaGoal}} execution are \textit{not} undone in case of exception.
+
+    Moreover, it should be clear that \texttt{java\_catch/3} only protects the execution of \texttt{\textit{JavaGoal}}, \textit{not} of the handler or of the \texttt{\textit{Finally}} predicate.
+    So, even if \texttt{\textit{JavaGoal}} is non-deterministic (like \texttt{java\_object\_bt/3}), and therefore allows for re-execution in backtracking, in case of exception only one handler is executed: then, all the choicepoints generated by \texttt{\textit{JavaGoal}} are removed.
 \end{itemize}
 
-Even if \texttt{\textit{JGoal}} is a non-deterministic predicate, like
-\texttt{java\_object\_bt/3}, and therefore the goal itself can be re-executed in backtracking, in
-case of exception only one handler is executed, then all the choicepoints generated by
-\texttt{\textit{JGoal}} are removed: so, no further handler would ever be executed for that
-exception. In other words, \texttt{java\_catch/3} only protects the execution of
-\texttt{\textit{JGoal}}, \textit{not} the handler execution or the \texttt{\textit{Finally}}
-execution.
+%-----------------------------------------------------------------------
+\subsubsection{Java exception examples}
+\label{ssec:java-exception-examples}
+%-----------------------------------------------------------------------
+As a first example, let us consider the following program:
 
-%-----------------------------------------------------------------------
-\subsubsection{Examples}\label{ssec:jexamples}
-%-----------------------------------------------------------------------
-First, let us consider the following program:
 \begin{verbatim}
- ?- java_catch(java_object('Counter', ['MyCounter'], c),
-       [('java.lang.ClassNotFoundException'(Cause, Msg, StackTrace),
-         write(Msg))],
-       write(+++)).
+ ?- java_catch(
+       java_object('Counter', ['MyCounter'], c),
+       [('java.lang.ClassNotFoundException'(
+          Cause, Msg, StackTrace),write(Msg))],
+       write(+++)
+    ).
 \end{verbatim}
-which tries to allocate an instance of \texttt{Counter}, bind it to the atom \texttt{c}, and -- if
-everything goes well -- print the \texttt{'+++'} message on the standard output.
-%
-Indeed, this is precisely what happens if, at runtime, the class \texttt{Counter} is actually
-available in the file system. However, it might also happen that, for some reason, the required
-class is \textit{not} present in the file system when the above predicate is executed. Then, a
-\texttt{'java.lang.ClassNotFoundException'(Cause, Msg, StackTrace)} exception is raised, no side
-effects occur -- so, no object is actually created -- and the \texttt{\textit{Msg}} is printed on
-the standard output, followed by \texttt{'+++'} as required by the \texttt{\textit{Finally}}
-clause. Since the \texttt{\textit{Msg}} in this exception is the name of the missing class, the
-global message printed on the console is \texttt{Counter+++}.
 
-\smallskip
-In the following we report a small yet complete set of mini-examples, thought to put in evidence
-one single aspect of \tuprolog{} compliance to the ISO standard.
+\noindent This program tries to allocate an instance of \texttt{Counter} (the counter name, \textit{MyCounter}, is irrelevant), bind it to the atom \texttt{c} and, if everything goes well, print the \texttt{'+++'} message.
 
-%----------------
-\medskip
-\textit{\textbf{Example 1:} the handler must be executed maintaining the substitutions made during
-the unification process between the exception and the catcher: then, the \texttt{Finally} part
-must be executed.}
+This is precisely what happens if the class \texttt{Counter} is available in the file system at run time, as expected. If, however, it is \textit{not} present, a \texttt{ClassNotFoundException} exception is raised, and no side effects occur: so, no object is actually created, and the \texttt{\textit{Msg}} is printed on the standard output. Finally, the \texttt{'+++'} is printed as well, according to the \texttt{\textit{Finally}} clause.
+Since the \texttt{\textit{Msg}} message in this case is the name of the missing class, the global message printed on the console is obviously \texttt{Counter+++}.
+
+The following set of mini-examples highlight each an aspect of \tuprolog{} compliance to the ISO standard even when these additional \texttt{java\_catch} and \texttt{java\_throw} predicates are considered.
+
+\medskip\noindent
+\textit{\textbf{Example 1:} the handler must be executed maintaining the substitutions made during the unification process between the exception and the catcher: then, the \texttt{Finally} part must be executed.}
 \begin{verbatim}
  ?- java_catch(java_object('Counter', ['MyCounter'], c),
        [('java.lang.ClassNotFoundException'(Cause, Message, _),
@@ -894,30 +866,22 @@ must be executed.}
 
 Answer: \texttt{ yes.}
 
-Substitutions: \texttt{Cause/0}, \texttt{Message/'Counter'}, \texttt{X/5}, \texttt{Y/7}.
+Substitutions: \texttt{Cause/0}, \texttt{Message/'Counter'}, \texttt{X/5}, \texttt{Y/7}.\\
 
-%----------------
-\medskip
-\textit{\textbf{Example 2:} the selected \texttt{java\_catch/3} must be the nearest in the
-resolution tree whose second argument unifies with the launched exception}
-\begin{verbatim}
- ?- java_catch(java_object('Counter', ['MyCounter'], c),
-       [('java.lang.ClassNotFoundException'(Cause, Message, _),
-         true], true),
-    java_catch(java_object('Counter', ['MyCounter2'], c2),
-       [('java.lang.ClassNotFoundException'(Cause2, Message2, _),
-         X is 2+3], true).
-\end{verbatim}
+\noindent In the \tuprolog{} GUI, the details of the exception are shown in the \textit{exceptions} tab (Figure \ref{fig:exceptions1}, \textit{bottom}), while the solution and the variable bindings (substitutions) are shown in the respective tabs (Figure \ref{fig:exceptions1}, \textit{top}).
 
-Answer: \texttt{ yes.}
+\begin{figure}
+  \centering
+  \includegraphics[width=7cm]{images/exceptions1a}
+  \includegraphics[width=7cm]{images/exceptions1b}
+  \caption{Catching the Java exceptions of Example 1 in the \tuprolog{} GUI.
+  \textit{Top:} the solutions tab.
+  \textit{Bottom:} details of the exception in the exception tab (see the \texttt{Cause} variable bound to \texttt{0} and the \texttt{Msg} variable bound to \texttt{'Counter'}; the other details map onto the anonymous variable \texttt{\_}). }\label{fig:exceptions1}
+\end{figure}
 
-Substitutions: \texttt{Cause/0}, \texttt{Message/'Counter'}, \texttt{X/5}, \texttt{C/0},
-\texttt{Message2/'Counter'}.
 
-%----------------
-\medskip
-\textit{\textbf{Example 3:} execution must fail if an exception is raised during the execution of
-a goal and no matching \texttt{java\_catch/3} can be found}
+\medskip\noindent
+\textit{\textbf{Example 2:} execution must fail if an exception is raised during the execution of a goal and no matching \texttt{java\_catch/3} is found.}
 \begin{verbatim}
  ?- java_catch(java_object('Counter', ['MyCounter'], c),
       [('java.lang.Exception'(Cause, Message, _), true)], true)).
@@ -925,9 +889,18 @@ a goal and no matching \texttt{java\_catch/3} can be found}
 
 Answer: \texttt{ no.}
 
-%----------------
-\medskip
-\textit{\textbf{Example 4:} \texttt{java\_catch/3} must fail if the handler is false}
+\noindent In the \tuprolog{} GUI, a failed exception not only results into a "No" answer as in other Prolog systems (that answer is shown in the status bar at the bottom of the window: it also causes the \textit{halt} message to appear in the Solutions tab (Figure \ref{fig:exceptions2}).
+
+\begin{figure}
+  \centering
+  \includegraphics[width=7cm]{images/exceptions2}
+  \caption{A failed exception in the \tuprolog{} GUI: the \texttt{No} answer in the status bar and the \textit{halt} message in the Solutions tab.}
+  \label{fig:exceptions2}
+\end{figure}
+
+
+\medskip\noindent
+\textit{\textbf{Example 3:} \texttt{java\_catch/3} must fail if the handler is false.}
 \begin{verbatim}
  ?- java_catch(java_object('Counter', ['MyCounter'], c),
       [('java.lang.Exception'(Cause, Message, _), false)], true)).
@@ -935,10 +908,8 @@ Answer: \texttt{ no.}
 
 Answer: \texttt{ no.}
 
-%----------------
-\medskip
-\textit{\textbf{Example 5:} \texttt{java\_catch/3} must fail also if an exception is raised during
-the execution of the handler}
+\medskip\noindent
+\textit{\textbf{Example 4:} \texttt{java\_catch/3} must fail also if an exception is raised during the execution of the handler.}
 \begin{verbatim}
  ?- java_catch(java_object('Counter', ['MyCounter'], c),
       [('java.lang.ClassNotFoundException'(Cause, Message, _),
@@ -947,10 +918,8 @@ the execution of the handler}
 
 Answer: \texttt{ no.}
 
-%----------------
-\medskip
-\textit{\textbf{Example 6:} the \textit{\texttt{Finally}} must be executed also in case of success
-of the goal}
+\medskip\noindent
+\textit{\textbf{Example 5:} the \textit{\texttt{Finally}} must be executed also in case of success of the goal.}
 \begin{verbatim}
  ?- java_catch(java_object('java.util.ArrayList', [], l),
        [E, true], X is 2+3).
@@ -960,10 +929,8 @@ Answer: \texttt{ yes.}
 
 Substitutions: \texttt{X/5}.
 
-%----------------
-\medskip
-\textit{\textbf{Example 7:} the \textit{\texttt{Handler}} to be executed must be the proper one
-among those available in the handlers' list}
+\medskip\noindent
+\textit{\textbf{Example 6:} the \textit{\texttt{Handler}} to be executed must be the proper one among those available in the handlers' list.}
 \begin{verbatim}
  ?- java_catch(java_object('Counter', ['MyCounter'], c),
      [('java.lang.Exception'(Cause, Message, _), X is 2+3),
@@ -975,21 +942,239 @@ Answer: \texttt{ yes.}
 
 Substitutions: \texttt{Cause/0}, \texttt{Message/'Counter'}, \texttt{Y/8}.
 
-
 %-----------------------------------------------------------------------
+\newpage
 \section{Using Prolog from Java: \textit{the Java API}}
 \label{sec:java-api}
 %-----------------------------------------------------------------------
 
-\subsection{Getting started}
+The \tuprolog{} Java API provides a complete support for exploiting Prolog engines from Java: its only requirement is the presence of \texttt{tuprolog.jar} (or the more complete \texttt{2p.jar}) in the Java project's class path.
+The API defines a namespace (\texttt{alice.tuprolog}) and classes to enable the definition in Java of suitable objects representing Prolog entities (terms, atoms, lists, variables, numbers, etc, but also Prolog engines, libraries and theories), and use them to submit queries and get the results back in Java, thus effectively supporting multi-paradigm, multi-language programming.
 
-Let's begin with your first Java program using \tuprolog{}.
+%-----------------------------
+\subsection{A Taxonomy of Prolog types in Java}
+\label{ssec:java-api-types}
+%-----------------------------
+
+Prolog types are mapped onto suitable Java classes, organized into the taxonomy shown in Figure \ref{fig:term-taxonomy} and summarized in Table \ref{tab:prolog-java-type-mapping} on page \pageref{tab:prolog-java-type-mapping}.
+
+\begin{figure}[b]
+    \setlength{\unitlength}{1mm}
+    \begin{picture}(80,27){\scriptsize
+        \put(30,11){\framebox(13,5){Term}}
+        %
+        \put(50, 3){\framebox(13,5){Struct}}
+        \put(50,11){\framebox(13,5){Number}}
+        \put(50,19){\framebox(13,5){Var}}
+        %
+        \put(70, 3){\framebox(13,5){Int}}
+        \put(90, 3){\framebox(13,5){Long}}
+        \put(70,19){\framebox(13,5){Float}}
+        \put(90,19){\framebox(13,5){Double}}
+
+        \put(43,13.5){\line(1,0){6.5}}
+        \put(63,13.5){\line(1,0){24}}
+        %
+        \put(67,21){\line(1,0){3}}
+        \put(67,5.5){\line(1,0){3}}
+        \put(67,21){\line(0,-1){15.5}}
+        %
+        \put(47,21){\line(1,0){3}}
+        \put(47,5.5){\line(1,0){3}}
+        \put(47,21){\line(0,-1){15.5}}
+        %
+        \put(87,21){\line(1,0){3}}
+        \put(87,5.5){\line(1,0){3}}
+        \put(87,21){\line(0,-1){15.5}}
+    }
+    \end{picture}
+    \caption{Prolog entities as a taxonomy of Java classes.}
+    \label{fig:term-taxonomy}
+\end{figure}
+
+\texttt{Term} is the root abstract class, providing common services such as term unification, term parsing, term copying, etc.; its subclasses distinguish among untyped terms (structures), numbers, and variables.
+
+\texttt{Struct} objects are characterized by a functor name (a Java string) and
+a list of arguments, which are \texttt{Term}s themselves and can be
+individually retrieved via the \texttt{getTerm} method.
+
+Atoms are a special case of \texttt{Struct} with no arguments; among these, the \texttt{true} and \texttt{false} atom constants are used to represent the Java boolean values.
+Atoms are also used to map Java Java \texttt{char}s and strings: when converted back to Java, however, atoms are always mapped into Java \texttt{String}s.
+
+Prolog lists are another special case of \texttt{Struct}, built from either
+two \texttt{Term}s (the list head and tail) or an array of \texttt{Term}s; by
+convention, the default constructor builds the empty list.
+
+The \texttt{Number} subtree includes classes for numeric types, and offers methods such as \texttt{intValue}, \texttt{longValue}, etc. to retrieve the number value as the corresponding primitive Java value.
+As discussed above, in the Prolog-to-Java direction, Prolog integers are always mapped onto \texttt{Int} instances and Prolog reals onto \texttt{Double} instances, while in the Java-to-Prolog direction any of the numeric Java types are accepted (including \texttt{short}, \texttt{byte} and \texttt{float}) for mapping onto Prolog numbers.
+In particular, Java \texttt{int} and \texttt{long} values are mapped onto suitable \texttt{Int} and \texttt{Long} instances of the \tuprolog{} taxonomy, respectively, while \texttt{byte} and \texttt{short} Java types are mapped into \texttt{Int} instances.
+Please note that to avoid possible name clashes between \tuprolog{} types and Java wrapper classes (e.g. \texttt{alice.tuprolog.Long} and \texttt{java.lang.Long}), it is often necessary to use the fully qualified class name to denote \tuprolog{} numeric classes.
+
+\texttt{Var} represents Prolog variables, built from a Java string representing the variable name: as prescribed by the Prolog rules, the name must start either with a capital letter, or with an underscore.
+The default constructor builds the anonymous Prolog variable \texttt{\_}, mapped onto the Java \texttt{null} value.
+
+Table \ref{tab:creating-prolog-terms-in-java} on page \pageref{tab:creating-prolog-terms-in-java} shows how to manipulate Prolog entities (variables, terms, structures, lists, atoms..) from a Java program: variable creation (lines 1 and 10), list construction (lines 2--4), term construction for \texttt{p(a,5)} and \texttt{p(X,Y)} (lines 5--6), and term unification (lines 7--14) (the latter requires a Prolog engine as a mediator, to handle execution contexts and inner variables).
+
+It is worth noting that, in general, two different \texttt{Var} objects with the same Java name \textit{do not} refer to the same Prolog variable, unless they occur in the same term.
+So, multiple occurrences of \texttt{new Var("Y")} outside the same term refer to two distinct variables, as if they were renamed \texttt{Y1} and \texttt{Y2}.
 %
+To refer to the same Prolog variable twice, just use the same Java identifier (see \texttt{varY} in lines 1, 3, 12) instead of creating a new variable.
+
+The only exception is the case when the homonymous variables occur in the same term, as in the \texttt{q(Y,Y)} term in line 15: then, they will refer to the same variable, \textit{but only after the term has been resolved}.
+In fact, new terms are always built in an `unresolved' form, that does not analyze the term variables: the proof is the \textit{\texttt{false}} output of line 16.
+Variables are taken into consideration later, when the term is either explicitly resolved via \texttt{resolveTerm} (line 17), or is involved in a \texttt{match} or \texttt{unify}\footnote{\texttt{q(Y,Y)} is unified here with the Prolog anonymous variable, so success is granted.} operation with another term (lines 18-19), as proved by the \textit{\texttt{true}} output of line 20.
+
+\begin{table}[h]
+    \small
+    \begin{center}{\tt
+    \begin{tabular}{p{13cm}}\hline\\
+    \mbox{~~~}import alice.tuprolog.*;\\
+    \mbox{~~~}\ldots\\
+    \mbox{1~~}Var varX = new Var("X"), varY = new Var("Y"); \\
+    \mbox{2~~}Struct atomP = new Struct("p");\\
+    \mbox{3~~}Struct list = new Struct(atomP, varY);~~~~~~~\textit{// should be [p|Y]}\\
+    \mbox{4~~}System.out.println(list);~~~~~~~~~~~~~~\textit{// prints the list [p|Y]}\\
+    \mbox{5~~}Struct fact = new Struct("p", new Struct("a"), new Int(5));\\
+    \mbox{6~~}Struct goal = new Struct("p", varX, new Var("Z"));\\
+    \mbox{7~~}Prolog engine = new Prolog();\\
+    \mbox{8~~}boolean res = goal.unify(engine,fact);~~~~~\textit{// should be X/a, Y/5}\\
+    \mbox{9~~}System.out.println(goal);~~~~~\textit{// prints the unified term p(a,5)}\\
+    \mbox{10~}System.out.println(varX);~~~~~\textit{// prints the variable binding X/a}\\
+    \mbox{11~}Var varW = new Var("W");\\
+    \mbox{12~}res = varW.unify(engine,varY);~~~~~~~~~~~~~~~~~~\textit{// should be Z=Y}\\
+    \mbox{13~}System.out.println(varY);~~\textit{// prints just Y, since it is unbound}\\
+    \mbox{14~}System.out.println(varW);~~\textit{// prints the variable binding W / Y}\\
+    \mbox{15~}Struct st = Struct("q", new Var("Y"), new Var("Y"));~\textit{// unresolved}\\
+    \mbox{16~}System.out.println(st.getArg(0)==st.getArg(1));~~\textit{// prints false}\\
+    \mbox{17~}st.resolveTerm();~~~~~~~~~~~~~~~~~~~\textit{// now the term is resolved}\\
+    \mbox{18~}~~\textit{alternatively:} res = st.match(new Struct());\\
+    \mbox{19~}~~\textit{alternatively:} res = st.unify(engine, new Struct());\\
+    \mbox{20~}System.out.println(st.getArg(0)==st.getArg(1));~~\textit{// prints true}\\
+    \\\hline
+    \end{tabular}}
+    \end{center}
+    \caption{Manipulating Prolog entities from Java.}
+    \label{tab:creating-prolog-terms-in-java}
+\end{table}
+
+\subsubsection{Further notes about \texttt{Term}s}
+
+The \texttt{Term} class is the home of several general-purpose services, used throughout \tuprolog{}; in particular:
+
+\begin{itemize}
+\item the static \texttt{parse} and \texttt{createTerm} methods provides a quick way  to get a term from its string representation;
+
+\item the \texttt{match} and \texttt{unify} methods respectively check for term matching (but performing no actual unification) and unify the given term with the provided one; as anticipated above, the latter requires a \texttt{Prolog} argument, to be used as a mediator during (nested) unification;
+    Instead, the matching test is performed outside any demonstration context.
+
+\item the \texttt{equals} method compares terms with the same semantics of the method \texttt{isEqual}, which follows the Prolog comparison semantics.
+
+\item the \texttt{getTerm} method returns the referred term, following variable bindings---that is, if the target term is a bound variable, the term bound to the variable (not the variable itself) is returned.
+\end{itemize}
+
+
+%-----------------------------
+\subsection{Prolog engines, theories and libraries}
+\label{ssec:java-api-engine-solveinfo}
+%-----------------------------
+
+The \tuprolog{} engine is made accessible in Java via the \texttt{Prolog} class: so, adding intelligence to a Java program is as easy as creating \texttt{Prolog} instance(s), configure it (them) as needed, and perform the desired queries. Query results are expressed as an instance of the \texttt{SolveInfo} helper class.
+Table \ref{tab:engine-interface} reports the public interface of these classes.
+
+\begin{table}
+    \renewcommand\arraystretch{1}
+    \begin{center}{\tt
+    \begin{tabular}{p{14cm}}\hline\\
+    public class Prolog implements Serializable \{\\
+    ~~\ldots\\
+    ~~public void setTheory(Theory t) throws InvalidTheoryException \{\ldots\}\\
+    ~~public void addTheory(Theory t) throws InvalidTheoryException \{\ldots\}\\
+    ~~public Theory getTheory() \{\ldots\}\\
+    ~~public Library loadLibrary(String name)\\
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~throws InvalidLibraryException \{\ldots\}\\
+    ~~public void~unloadLibrary(String name)\\
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~throws InvalidLibraryException \{\ldots\}\\
+    ~~public Library getLibrary(String name) \{\ldots\}\\
+    ~~public SolveInfo solve(Term goal) \{\ldots\}\\
+    ~~public SolveInfo solve(String goalAsString)\\
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~throws MalformedGoalException \{\ldots\}\\
+    ~~public boolean hasOpenAlternatives() \{\ldots\}\\
+    ~~public SolveInfo solveNext()~throws NoMoreSolutionException \{\ldots\}\\
+    ~~public boolean isHalted() \{\ldots\}\\
+    \}\\
+    \\\hline\\
+    public class SolveInfo implements Serializable \{\\
+    ~~public boolean isSuccess() \{\ldots\}\\
+    ~~public Substitution getSubstitution()\\
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~throws NoSolutionException \{\ldots\}\\
+    ~~public Term getTerm() throws UnknownVarException \{\ldots\}\\
+    ~~public Term  getSolution() throws NoSolutionException \{\ldots\}\\
+    \}\\
+    \\\hline
+    \end{tabular}}
+    \end{center}
+    %
+    \caption{Classes for interacting with \tuprolog{} engines.}
+    \label{tab:engine-interface}
+\end{table}
+
+A Prolog engine is built by one of \texttt{Prolog} constructors: the default constructor builds a default engine, with the default set of \tuprolog{} libraries loaded, and no user theory. In most cases, this is all you need to bring the power of Logic programming to Java.
+%
+However, libraries can be loaded and unloaded dynamically at any time after the engine creation, via the \texttt{loadLibrary} and \texttt{unloadLibrary} methods: their argument is the name of the library. If the library is invalid, an exception is raised.
+%
+A reference to a loaded library can be obtained via the \texttt{getLibrary} method, which returns a reference to the abstract \texttt{Library} class.
+%
+Such a reference can be used to operate on the library, as discussed below.
+
+The user theory can either be set from scratch via the \texttt{setTheory} method, which overwrites any previous theory, or be built incrementally, adding new clauses to the existing theory via the \texttt{addTheory} method: both take a \texttt{Theory} as their argument. This theory can be built in several ways---from an input stream, from a string, or from a clause list (represented as a \texttt{Struct} object).
+%
+The current theory can be retrieved via the \texttt{getTheory} method.
+
+Goal resolution is handled via three methods: \texttt{solve}, \texttt{solveNext}, and
+\texttt{hasOpenAlternatives}.
+%
+\texttt{solve} and \texttt{solveNext} take as their argument a \texttt{Struct} representing the goal, and return a \texttt{SolveInfo} which encapsulates the result information (success or failure, solution, variable bindings, etc).
+%
+An overloaded version of \texttt{solve} takes a string argument representing the text of the goal, embedding its parsing.
+%
+Both \texttt{solve} and \texttt{solveNext} raise the proper exceptions when needed.
+
+
+\subsubsection{Further notes about \texttt{Prolog} engines}
+
+The \texttt{Prolog} class is the home of \tuprolog{} engines, so some further information is opportune about its behavior in particular contexts:
+
+\begin{itemize}
+\item engines support natively some \emph{directives}, that can be defined by means of the \texttt{:-/1} predicate in theory specification.
+    Directives are used to specify properties of clauses and engines (\texttt{solve/1}, \texttt{initialization/1}, \texttt{set\_prolog\_flag/1}, \texttt{load\_library/1}, \texttt{consult/1}), format and syntax of read-terms (\texttt{op/3}, \texttt{char\_conversion/2}).
+
+\item engines also support the dynamic definition and management of \emph{flags} (or property), used to describe some aspects of libraries and their built-ins.
+    A flag is identified by a name (an alphanumeric atom), a list of possible values, a default value and a boolean value specifying if the flag value can be modified.
+
+\item engines are thread-safe.
+
+\item engines have no (static) dependencies with each other, can be created  independently on the same Java virtual machine, are very lightweight, and can be serialized.
+    This is true also for engines with the standard libraries pre-loaded: obviously, if other libraries are loaded, these must be serializable, too, for the engine to remain serializable.
+\end{itemize}
+
+%-------------------------------------------------------
+\subsection{Examples}
+\label{ssec:java-api-examples}
+%-------------------------------------------------------
+
+For the sake of concreteness, some examples of use of the \tuprolog{} Java API are now discussed.
+
+%--------------
+\subsubsection{Appending lists}
+%--------------
+
+\begin{table}
+\textit{Basic version:}
 {\small{
 \begin{verbatim}
     import alice.tuprolog.*;
 
-    public class Test2P {
+    public class Example1 {
         public static void main(String[] args) throws Exception {
             Prolog engine = new Prolog();
             SolveInfo info = engine.solve("append([1],[2,3],X).");
@@ -998,792 +1183,543 @@ Let's begin with your first Java program using \tuprolog{}.
     }
 \end{verbatim}
 }}
-\noindent In this first example a \tuprolog{} engine is
-created, and asked to solve a query, provided in a textual form.
-%
-This query in the Java environment is equivalent to the query\\\\
-%
-{\small{\texttt{?- append([1],[2,3],X).\\\\}}}
-%
-\noindent in a classic Prolog environment, and accounts for
-finding the list that is obtained by appending the list
-\texttt{[2,3]} to the list \texttt{[1]} (\texttt{append} is
-included in the theory provided by the
-\texttt{alice.tuprolog.lib.BasicLibrary}, which is downloaded by
-the default when instantiating the engine).
-%
-
-By properly compiling and executing this simple program,\footnote{Save the program in a file called \texttt{Test2P.java}, then compile it with
-%
-\texttt{javac -classpath tuprolog.jar Test2P.java}
-%
-and then execute it with
-%
-\texttt{java -cp .;tuprolog.jar Test2P.java}} the string
-\texttt{append([1],[2,3],[1,2,3])} -- that is the solution of out
-query -- will be displayed on the standard output.
-%
-%
-
-\noindent Then, let's consider a little bit more involved example:
-
+\textit{Variant:}
 {\small{
 \begin{verbatim}
-public class Test2P {
-    public static void main(String[] args) throws Exception {
-        Prolog engine = new Prolog();
-        SolveInfo info = engine.solve("append(X,Y,[1,2]).");
-        while (info.isSuccess()) {
-            System.out.println("solution: " + info.getSolution() +
-                               " - bindings: " + info);
-            if (engine.hasOpenAlternatives()) {
-                info = engine.solveNext();
-            } else {
-                break;
-            }
-        }
-    }
-}
-\end{verbatim}
-}}
-
-In this case, all the solutions of a query are retrieved and
-displayed, with also the variable bindings:
-{\small{\begin{verbatim}
-
-solution: append([],[1,2],[1,2]) - bindings: Y / [1,2]  X / []
-solution: append([1],[2],[1,2]) - bindings: Y / [2]  X / [1]
-solution: append([1,2],[],[1,2]) - bindings: Y / []  X / [1,2]
-
-\end{verbatim}
-}}
-
-%-----------------------------
-\subsection{Basic Data Structures}
-\label{ssec:java-api-types}
-%-----------------------------
-
-\noindent All Prolog data objects are mapped onto Java objects:
-\texttt{Term} is the base class for Prolog untyped terms such as
-atoms and compound terms (represented by the \texttt{Struct} class),
-Prolog variables (\texttt{Var} class) and Prolog typed terms such
-as numbers (\texttt{Int}, \texttt{Long}, \texttt{Float},
-\texttt{Double} classes).
-%
-In particular:
-
-%
-\begin{itemize}
-    %
-    \item \texttt{Term} -- this abstract class represents a generic Prolog term, and it is the
-    root base class of \tuprolog{} data structures, defining the basic common services, such
-    as term comparison, term unification and so on.
-    %
-    It is worth noting that it is an abstract class, so no direct \texttt{Term}
-    objects can be instantiated;
-    %
-    %
-    %
-    \item \texttt{Var} -- this class (derived from \texttt{Term})
-    represents \tuprolog{} variables.
-    %
-    A variable can be anonymous, created by means of the default constructor, with no
-    arguments, or identified by a name, that must starts with an upper case letter or an
-    underscore;
-    %
-    \item \texttt{Struct} -- this class (derived from \texttt{Term})
-    represents un-typed \tuprolog{} terms, such as atoms, lists and compound terms;
-    %
-    \texttt{Struct} objects are characterised by a functor name and a
-    list of arguments (which are \texttt{Term}s themselves), while
-    \texttt{Var} objects are labelled by a string representing the
-    Prolog name.
-    %
-    Atoms are mapped as \texttt{Struct}s with functor with a name and
-    no arguments;
-    %
-    Lists are mapped as \texttt{Struct} objects with functor
-    \verb|'.'|, and two \texttt{Term} arguments (head and tail of the list);
-    %
-    lists can be also built directly by exploiting the 2-arguments constructor, with
-    head and tail terms as arguments.
-    %
-    Empty list is constructed by means of the no-argument constructor of \texttt{Struct}
-    (default constructor).
-    %
-    \item \texttt{Number} -- this abstract class represents typed, numerical Prolog terms,
-        and it is the  base class of \tuprolog{} number classes;
-    %
-    \item \texttt{Int, Long, Double, Float} -- these classes (derived from \texttt{Number})
-    represent  typed numerical \tuprolog{} terms, respectively integer, long, double and
-    float numbers.
-    %
-    Following the Java conventions, the default type for integer number is \texttt{Int}
-    (integer, not long, number), and for \texttt{Double} (and so double), for floating point
-    number.
-\end{itemize}
-
-
-The general mapping between Prolog types and Java types has been summarized in Table \ref{tab:prolog-java-type-mapping} above. 
-
-\textit{Although the Prolog language considers a comprehensive \texttt{number} type for both integer and real values, the two kinds have been considered separately in this table, both for the user's convenience and because \tuprolog{} internally does use different types for this purpose (indeed, the \tuprolog{} internal representation of numbers does distinguish \texttt{Number} into \texttt{Int}, \texttt{Long}, \texttt{Double} and \texttt{Float}, based on the value to be stored---details in Section \ref{ssec:java-api-types}).
-%
-More precisely, in the Prolog-to-Java direction, only the Java \texttt{int}, \texttt{long} and \texttt{double} types are used as target types for the mapping, while in the opposite Java-to-Prolog direction any of the numeric Java types are accepted (including \texttt{short}, \texttt{byte} and \texttt{float}) for mapping onto Prolog numbers.
-}
-
-\begin{enumerate}
-  \item Prolog integers are mapped onto Java \texttt{int} or \texttt{long} types, as appropriate; in the opposite direction, Java \texttt{int} and \texttt{long} values are mapped onto Prolog integers (namely, onto \tuprolog{} inner \texttt{Int} and \texttt{Long} types, respectively);
-  \item \texttt{byte} and \texttt{short} Java types are mapped into \tuprolog{}'s \texttt{Int} instances
-\end{enumerate}
-
-Boolean Java values are mapped into specific \tuprolog{} \texttt{Term} constants.
-%
-Java \texttt{char}s are mapped into Prolog atoms, but atoms are
-mapped into Java \texttt{String}s by default.
-%
-The \emph{any} variable (\_) can be used to specify the Java
-\texttt{null} value.
-
-
-\noindent \textbf{Some examples of term creation} follow:
-%
-{\small{\begin{verbatim}
-
-// constructs the atom vodka
-Struct drink = new Struct("vodka");
-
-// constructs the number 40
-Term degree = new alice.tuprolog.Int(40);
-
-// constructs the compound degree(vodka, 40)
-Term drinkDegree = new Struct("degree",
-                              new Struct("vodka"),
-                              new Int(40));
-// second way to constructs the compound degree(vodka,40)
-Struct drinkDegree2 = new Struct("degree", drink, degree);
-
-// constructs the compound temperature('Rome', 25.5)
-Struct temperature = new Struct("temperature",
-                                new Struct("Rome"),
-                                new alice.tuprolog.Float(25.5));
-
-// constructs the compound equals(X, X)
-Struct t1 = new Struct("equals", new Var("X"), new Var("X"));
-t1.resolveTerm();
-
-// mother(John,Mary)
-Struct father = new Struct(new Struct("John"), new Struct("Mary")));
-
-// father(John, _)
-Term  father = new Struct(new Struct("John"), new Var());
-
-// p(1, _, q(Y, 3.03, 'Hotel'))
-Term  t2 = new Struct("p",
-                      new Int(1),
-                      new Var(),
-                      new Struct("q",
-                                 new Var("Y"),
-                                 new Float(3.03f),
-                                 new Struct("Hotel")));
-
-// The Long number 130373303303
-Term t3 = new alice.tuprolog.Long(130373303303h);
-
-// The double precision number 1.7625465346573
-Term t4 = new alice.tuprolog.Double(1.7625465346573);
-
-// an empty list
-Struct empty = new Struct();
-
-// the list [303]
-Struct l = new Struct(new Int(303), new Struct());
-
-// the list [1,2,apples]
-Struct alist = new Struct(
-                   new Int(1),
-                   new Struct(
-                       new Int(2),
-                       new Struct("apples")));
-
-// fruits([apple, orange | _ ])
-Term list2 = new Struct("fruits", new Struct(
-                                      new Struct("apple",
-                                          new Struct("orange"),
-                                          new Var())));
-
-// complex_compound(1, _, q(Y, 3.03, 'Hotel', k(Y,X)), [303, 13, _, Y])
-Term t5 = Term.parse(
-     "complex_compound(1, _, q(Y, 3.03, 'Hotel', k(Y,X)), [303, 13, _, Y])"
-);
-
-\end{verbatim}}}
-%
-\noindent The name of the \tuprolog{} number classes
-(\texttt{Int}, \texttt{Float}, \texttt{Long}, \texttt{Double})
-follows the name of the primitive Java data type they represents.
-%
-Note that due to class name clashes (for instance between classes
-\texttt{java.lang.Long} and \texttt{alice.tuprolog.Long}), it
-could be necessary to use the full class name to identify
-\tuprolog{} classes.
-%
-
-\subsection{Engine, Theories and Libraries}
-
-\noindent Then, the other main classes that make \tuprolog{} Core
-API concern \tuprolog{} engines, theories and libraries. In
-particular:
-%
-\begin{itemize}
-    \item \texttt{Prolog} -- this class represent \tuprolog{}
-    engines.
-    %
-    This class provides a minimal interface that enables users
-    to: \\
-    %
-    \indent{-- set/get the theory to be used for
-    demonstrations;}\\
-        %
-    \indent{-- load/unload libraries;} \\
-        %
-    \indent{-- solve a goal, represented either by a \texttt{Term} object or by a
-        textual representation (a \texttt{String} object) of a
-        term.}\\
-    %
-    A \tuprolog{} engine can be instantiated either with some standard default
-    libraries loaded, by means of the default constructor, or with
-    a starting set of libraries, which can be empty, provided as
-    argument to the constructor (see JavaDoc documentation for
-    details).
-    %
-    Accordingly, a raw, very lightweight, \tuprolog{} engine can
-    be created by specifying an empty set of library, providing
-    natively a very small set of built-in primitives.
-
-
-    \item \texttt{Theory} -- this class represent \tuprolog{}
-    theories.
-    %
-    A theory is represented by a text, consisting of a series of
-    clauses and/or directives, each followed by a dot and a
-    whitespace character.
-    %
-    Instances of this class are built either from a textual representation,
-    directly provided as a string or taken by any possible input
-    stream, or from a list of terms representing Prolog clauses.
-    %
-    %
-    %
-    %
-    %
-    \item \texttt{Library} -- this class represents \tuprolog{}
-    libraries;
-    %
-    A \texttt{tuprolog} engine can be dynamically extended by loading
-    (and unloading) any number of libraries; each library can provide
-    a specific set of of built-ins predicates, functors and a related
-    theory.
-    %
-    A library can be loaded by means of the built-in by means of the method
-    \texttt{loadLibrary} of the \tuprolog{} engine.
-    %
-    Some standard libraries are provided in the
-    \texttt{alice.tuprolog.lib} package and loaded by the default
-    instantiation of a \tuprolog{} engine:
-    %
-    \texttt{alice.tuprolog.lib.BasicLibrary}, providing basic and
-    well-known Prolog built-ins, \texttt{alice.tuprolog.lib.IOLibrary}
-    providing \textit{de facto} standard Prolog I/O predicates, \texttt{alice.tuprolog.lib.ISOLibrary}
-    providing some ISO predicates/functors not directly provided
-    by \texttt{BasicLibrary} and \texttt{IOLibrary}, and
-    \texttt{alice.tuprolog.lib.JavaLibrary}, which enables the
-    creation and usage of Java objects from \tuprolog{} programs,
-    in particular enabling the reuse of any existing Java resources.
-    %
-    %
-    \item \texttt{SolveInfo} -- this class represents the result of a
-    demonstration and instances of these class are returned by the
-    \texttt{solve} methods the \texttt{Prolog} engines;
-    %
-    in particular \texttt{SolveInfo} objects provide services to test the
-    success of the demonstration (\texttt{isSuccess} method),
-    to access to the term solution of the query
-    (\texttt{getSolution} method)  and to access the list of the
-    variable with their bindings.
-\end{itemize}
-%
-
-Some notes about \tuprolog{} terms and the services they provide:
-\begin{itemize}
-%
-\item the static \texttt{parse} method provides a quick way to get a
-term from its string representation.
-%
-\item \tuprolog{} terms provides directly methods for unification and matching: \\
-%
-{\tt{\small{public boolean unify(Term t)}}}\\
-%
-{\tt{\small{public boolean match(Term t)}}}\\
-%
-Terms that have been subject to unification outside a
-demonstration context (that is invoking directly these methods,
-and not passing through the solving service of an engine) should
-not be used then in queries to engines.
-%
-\item some services are provided to compare terms, according to the
-Prolog rules, and to check their type;
-%
-in particular the standard Java method \texttt{equals} has the
-same semantics of the method \texttt{isEqual} which follows the
-Prolog comparison semantics.
-%
-\item some services makes it possible to copy a term as it is
-or to get a renamed copy of the term (\texttt{copy} and
-\texttt{getRenamedCopy});
-%
-it is worth noting that the design of \tuprolog{} promotes a
-stateless usage of terms; in particular, it is good practice not
-to reuse the same terms in different demonstration contexts, as
-part of different queries.
-%
-\item the method \texttt{getTerm} is useful in the case of
-variables, providing the term linked possibly considering all the
-linking chain in the case of variables referring other variables.
-%
-\item when a term is created by means of the proper constructor,
-consider as example: \\\\
-%
-{\tt{\scriptsize{Struct myTerm = new Struct("p", new Var("X"), new
-Int(1), new Var("X"))}}}\\\\
-%
-it is \emph{not resolved}, in the sense that possible variable
-terms with the same name in the term do not refer each other;
-%
-so in the example the first and the third argument of the compound
-\texttt{myTerm} point to different variable objects.
-%
-A term is resolved the first time it is involved in a matching or
-unification context.
-%
-\end{itemize}
-
-\noindent Some notes about \tuprolog{} engines, theories,
-libraries and the services they provide:
-
-\begin{itemize}
-%
-\item \tuprolog{} engines support natively some
-\emph{directives}, that can be defined by means of the :-/1
-predicate in theory specification.
-%
-Directives are used to specify properties of clauses and of the
-engine (\emph{solve/1}, \emph{initialization/1},
-\emph{set\_prolog\_flag/1}, \emph{load\_library/1},
-\emph{consult/1}), format and syntax of read-terms (\emph{op/3},
-\emph{char\_conversion/2}).
-%
-\item \tuprolog{} engines support natively the dynamic definition
-and management of \emph{flags} (or property), used to describe
-some aspects of libraries and their built-ins.
-%
-A flag is identified by a name (an alphanumeric atom), a list of
-possible values, a default value and a boolean value specifying if
-the flag value can be modified.
-%
-\item \tuprolog{} engines are thread-safe. The methods that could
-create problems in being used in a multi-threaded context are now
-synchronised.
-%
-\item \tuprolog{} engines have no (static) dependencies with each
-other, multiple engines can be created independently as simple
-objects on the same Java virtual machine,  each with its own
-configuration (theory and loaded libraries).
-%
-Moreover, accordingly to the design of \tuprolog{} system in
-general, engines are very lightweight, making suitable the use of
-multiple engines in the same execution context.
-%
-\item \tuprolog{} engines can be serialised and stored as a persistent
-object or sent through the network.
-%
-This is true also for engines with pre-loaded standard libraries:
-%
-in the case that other libraries are loaded, these must be
-serializable in order to have the engine serializable.
-%
-\end{itemize}
-
-
-\subsection{Examples}
-
-\noindent Creation of an engine (with default libraries pre-loaded):
-
-{\tt\scriptsize{
-\begin{verbatim}
     import alice.tuprolog.*;
 
-    ...
-    Prolog engine = new Prolog();
-\end{verbatim} }}
-
-
-\noindent Creation of an engine specifying only the
-\texttt{BasicLibrary} as pre-loaded library:
-
-{\tt\scriptsize{
-\begin{verbatim}
-    import alice.tuprolog.*;
-
-    ...
-    Prolog engine = new Prolog(new String[]{"alice.tuprolog.lib.BasicLibrary"});
-\end{verbatim} }}
-
-\noindent Creation and loading of a theory from a string:
-
-{\tt\scriptsize{\begin{verbatim}
-
-    String theoryText = "my_append([],X,X).\n" +
-                        "my_append([X|L1],L2,[X|L3]) :- my_append(L1,L2,L3).\n";
-
-    Theory theory = new Theory(theoryText);
-    try {
-        engine.setTheory(theory);
-    } catch(InvalidTheoryException e) {
-    }
-\end{verbatim} }}
-
-\noindent Creation and loading of a theory from an input stream:
-
-{\tt\scriptsize{\begin{verbatim}
-
-    Theory theory = new Theory(new FileInputStream("test.pl");
-    try {
-        engine.setTheory(theory);
-    } catch(InvalidTheoryException e) {
-    }
-\end{verbatim} }}
-
-\noindent Goal demonstration (provided as a string):
-
-{\tt\scriptsize{\begin{verbatim}
-
-    // ?- append(X,Y,[1,2,3]).
-    try {
-        SolveInfo info = engine.solve("append(X,Y,[1,2,3]).");
-        Term solution = info.getSolution();
-    } catch(MalformedGoalException mge) {
-        ...
-    } catch(NoSolutionException nse) {
-        ...
-    }
-\end{verbatim} }}
-
-\noindent Goal demonstration (provided as a Term):
-
-{\tt\scriptsize{\begin{verbatim}
-
-    try {
-        Term goal = new Struct("p", new Int(1), new Var("X"));
-        try {
-            // ?- p(1,X).
-            SolveInfo info = engine.solve(goal);
-            Term solution = info.getSolution();
-
-        } catch (NoSolutionException nse) {
-        }
-    } catch (InvalidVarNameException ivne) {
-    }
-\end{verbatim} }}
-
-\noindent Getting another solution:
-
-{\tt\scriptsize{\begin{verbatim}
-    try {
-        SolveInfo info = engine.solve(goal);
-        info = engine.solveNext();
-    } catch(NoMoreSolutionException e)
-\end{verbatim} }}
-
-\noindent Loading a library:
-
-{\tt\scriptsize{\begin{verbatim}
-    try {
-        engine.loadLibrary('alice.tuprologx.lib.TucsonLibrary');
-    } catch(InvalidLibraryException e) {
-    }
-\end{verbatim} }}
-
-\noindent Here, a complete example of interaction with a
-\tuprolog{} engine is shown (refer to the JavaDoc documentation for
-details about interfaces):
-
-{\tt\scriptsize{\begin{verbatim}
-
-import alice.tuprolog.*; import java.io.*;
-
-public class Test2P {
-    public static void main (String args[]) {
-        Prolog engine = new Prolog();
-        try {
-
-            // solving a goal
-            SolveInfo info = engine.solve(new Struct("append",
-                                              new Var("X"),
-                                              new Var("Y"),
-                                              new Struct(new Term[]{new Struct("hotel"),
-                                                                    new Int(303),
-                                                                    new Var()})));
-
-
-            // note we could use strings:
-            // SolveInfo info = engine.solve("append(X, Y, [hotel, 303, _]).");
-
-            // test for demonsration success
-            if (info.isSuccess()) {
-
-                // acquire solution and substitution
-                Term sol = info.getSolution();
-                System.out.println("Solution: " + sol);
-
-                System.out.println("Bindings: " + info);
-
-                // open choice points?
+    public class Example2 {
+        public static void main(String[] args) throws Exception {
+            Prolog engine = new Prolog();
+            SolveInfo info = engine.solve("append(X,Y,[1,2]).");
+            while (info.isSuccess()) {
+                System.out.println("solution: " + info.getSolution() +
+                                   " - bindings: " + info);
                 if (engine.hasOpenAlternatives()) {
-
-                    // ask for another solution
                     info = engine.solveNext();
-
-                    if (info.isSuccess()) {
-                        System.out.println("An other substitution: " + info);
-                    }
+                } else {
+                    break;
                 }
             }
-
-            // other frequent interactions
-
-            // setting a new theory in the engine
-            String theory = "p(X,Y) :- q(X), r(Y).\n" +
-                            "q(1).\n" +
-                            "r(1).\n" +
-                            "r(2).\n";
-            engine.setTheory(new Theory(theory));
-
-            SolveInfo info2 = engine.solve("p(1,X).");
-            System.out.println(info2);
-
-            // retrieving the theory from a file
-            FileOutputStream os=new FileOutputStream("test.pl");
-            os.write(theory.getBytes());
-            os.close();
-            engine.setTheory(new Theory(new FileInputStream("test.pl")));
-            info2 = engine.solve("p(X,X).");
-            System.out.println(info2.getSolution());
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
         }
     }
-}
-\end{verbatim}}}
+\end{verbatim}
+}}
+\caption{The list appending example.}
+\label{tab:java-api-example1}
+\end{table}
 
-With the program execution, the following string are displayed on
-the standard output:
+In this first example (see Table \ref{tab:java-api-example1}, \textit{top}), a \tuprolog{} engine is asked to solve a trivial list append goal, provided in textual form.\footnote{The \texttt{append/3} predicate is included in BasicLibrary, which is part of the engine default configuration.}
+%
+The program must be compiled and executed normally, taking care of including the \tuprolog{} JAR in the classpath:
 
-{\tt\small{
+\texttt{javac -cp tuprolog.jar;. Example1.java}\\
+\texttt{\mbox{~~~}java~ -cp tuprolog.jar;. Example1}
+
+\noindent The string \texttt{append([1],[2,3],[1,2,3])} should be displayed.
+
+\medskip
+
+\noindent Table \ref{tab:java-api-example1}, \textit{bottom} shows a variant where all the solutions are displayed, with their variable bindings. The output should be as follows:
 
 \begin{verbatim}
-Solution: append([],[hotel,303,_],[hotel,303,_])
-Bindings: Y /[hotel,303,_] X / []
-An other substitution: Y / [303,_]  X / [hotel]
-X / 1
-p(1,1)
-\end{verbatim}}} 
+solution: append([],[1,2],[1,2]) - bindings: X/[]    Y/[1,2]
+solution: append([1],[2],[1,2])  - bindings: X/[1]   Y/[2]
+solution: append([1,2],[],[1,2]) - bindings: X/[1,2] Y/[]
+\end{verbatim}
+
+%--------------
+\subsubsection{A console-based Prolog interpreter}
+%--------------
+
+\begin{table}
+    \small
+    \begin{center}{\tt
+    \begin{tabular}{p{14cm}}\hline\\
+    import alice.tuprolog.*;\\
+    import java.io.*;\\
+    \\
+    public class ConsoleInterpreter  \{\\
+    ~public static void main (String args[]) throws Exception \{\\
+    ~~Prolog engine=new Prolog();\\
+    ~~if (args.length>0)\\
+    ~~~~~~engine.setTheory(new Theory(new FileInputStream(args[0])));\\
+    ~~BufferedReader stdin =\\
+    ~~~~~~new BufferedReader(new InputStreamReader(System.in));\\
+    ~~while (true) \{ \textit{~~~~// interpreter main loop} \\
+    ~~~String goal;\\
+    ~~~do \{ System.out.print("?- "); goal=stdin.readLine();\\
+    ~~~\} while (goal.equals(""));\\
+    ~~~try \{\\
+    ~~~~SolveInfo info = engine.solve(goal);\\
+    ~~~~if (engine.isHalted()) break;\\
+    ~~~~else if (!info.isSuccess()) System.out.println("no.");\\
+    ~~~~else if (!engine.hasOpenAlternatives()) \{\\
+    ~~~~~~System.out.println(info);\\
+    ~~~~\} else \{ \textit{// main case}\\
+    ~~~~~~System.out.println(info + " ?");\\
+    ~~~~~~String answer = stdin.readLine();\\
+    ~~~~~~while (answer.equals(";") \&\& engine.hasOpenAlternatives())
+    \{\\
+    ~~~~~~~~info = engine.solveNext();\\
+    ~~~~~~~~if (!info.isSuccess()) \{ System.out.println("no."); break; \}\\
+    ~~~~~~~~else \{\\
+    ~~~~~~~~~~~~~~~System.out.println(info + " ?");\\
+    ~~~~~~~~~~~~~~~answer = stdin.readLine();\\
+    ~~~~~~~~\} \textit{// endif}\\
+    ~~~~~~\} \textit{// endwhile}\\
+    ~~~~~~if (answer.equals(";") \&\& !engine.hasOpenAlternatives())\\
+    ~~~~~~~~~~System.out.println("no.");\\
+    ~~~~\} \textit{// end main case}\\
+    ~~~\} catch (MalformedGoalException ex) \{\\
+    ~~~~~~~~~~System.err.println("syntax error.");\\
+    ~~~\} \textit{// end try}\\
+    ~~\} \textit{// end main loop}\\
+    ~~if (args.length>1) \{\\
+    ~~~Theory curTh = engine.getTheory(); \textit{// save current theory to file}\\
+    ~~~new
+    FileOutputStream(args[1]).write(curTh.toString().getBytes());\\
+    ~~\}\\
+    ~\}\\
+    \}\\
+    \\\hline
+    \end{tabular}}
+    \end{center}
+    \caption{A simple console-based Prolog interpreter.}
+    \label{tab:console-sample}
+\end{table}
+
+As a final example, Table \ref{tab:console-sample} shows a console-based Prolog interpreter: first a \tuprolog{} engine is created and initialized with a theory built from a text file (whose name is taken from the command line), then a classic read/solve loop is started.
+%
+For each goal read from the standard input, the \texttt{solve} method is invoked: if multiple solutions exist, the \texttt{solveNext} makes it possible to explore the open
+alternatives.
+%
+The loop ends when the \texttt{halt} predicate is typed in: the current theory is then saved to file (if any has been specified).
+Figure \ref{fig:console-interpreter} shows a sample session with this interpreter.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=12cm]{images/console-interpreter}
+  \caption{A sample session with the Console-based Interpreter.}
+  \label{fig:console-interpreter}
+\end{figure}
 
 %-----------------------------------------------------------------------
-\section{Augmenting Prolog from Java: \textit{developing new libraries}}
+\subsection{Registering object bindings}
+\label{ssec:register(Java)}
+%-----------------------------------------------------------------------
+
+\color{red}
+The \texttt{register} function, already discussed in Section \ref{sssec:register(prolog)} on page \pageref{sssec:register(prolog)} for what concerns the Prolog side, is also available on the Java side, where its `global' effect is more natural and coherent with the imperative paradigm than it is on the Prolog side.
+\normalcolor
+Its purpose is to permanently associate an existing Java object \texttt{\textit{obj}} to a Prolog identifier \texttt{\textit{ObjectRef}}, as follows:\\
+
+\texttt{boolean register(Struct \textit{ObjectRef}, Object \textit{obj})\\
+    \mbox{~~~~~~~~~~~}throws InvalidObjectIdException;}\\
+
+\noindent where \texttt{\textit{ObjectRef}} is a ground term (otherwise an \texttt{InvalidObjectIdException} exception is raised) representing the Java object
+\texttt{\textit{obj}} in the context of \texttt{JavaLibrary}'s predicates.
+The function returns \texttt{false} if that object is already registered under a different \texttt{\textit{ObjectRef}}.
+
+As an example, let us suppose that we want to permanently bind the Prolog atom \texttt{stdout} to the Java (static) object \texttt{System.out}, so that Java-based printing can be done from the Prolog side without having to retrieve and re-bind the \texttt{out} object every time, as we did in Table \ref{tab:javalibrary-counter-example} on page \pageref{tab:javalibrary-counter-example} (reported again below for convenience):
+
+\begin{verbatim}
+  class('java.lang.System') . out <- get(Out),
+  Out <- println(...),
+\end{verbatim}
+
+\noindent To bind \texttt{System.out} permanently to \texttt{stdout} (within the scope of the \tuprolog{} engine \texttt{engine}), we can register it as follows:
+
+{\small
+\begin{verbatim}
+  Prolog engine = new Prolog();
+  Library lib = engine.getLibrary("alice.tuprolog.lib.JavaLibrary");
+  ((JavaLibrary)lib).register(new Struct("stdout"), System.out);
+\end{verbatim}}
+
+\noindent An explicit downcast to \texttt{JavaLibrary} is needed to convert the returned reference type \texttt{Library}, since \texttt{register} is defined in \texttt{JavaLibrary} only.
+%
+Now, a Prolog theory loaded into this \texttt{engine} can contain a phrase like:
+%
+\begin{verbatim}
+  stdout <- println('What a nice message!')
+\end{verbatim}
+%
+which uses \texttt{stdout} directly as a target for the \texttt{println} method.
+
+A small yet complete sample program is shown in Table \ref{tab:registering-stdout-example}, where the theory loaded into the \texttt{engine} prints the standard greetings message.
+
+\begin{table}[h]
+{\small
+\begin{verbatim}
+  import alice.tuprolog.*;
+  import alice.tuprolog.lib.*;
+
+  public class StdoutExample {
+    public static void main(String[] args) throws Exception {
+    Prolog engine = new Prolog();
+    Library lib = engine.getLibrary("alice.tuprolog.lib.JavaLibrary");
+    ((JavaLibrary)lib).register(new Struct("stdout"), System.out);
+    engine.setTheory(new Theory(
+        ":-solve(go). \n go:- stdout <- println('hello!')."));
+    }
+ }
+\end{verbatim}}
+\caption{A program registering \texttt{stdout} for \texttt{System.out}. As an alternative to \texttt{getLibrary}, \texttt{loadLibrary} could have been used---if the library is already loaded, its behavior is identical to \texttt{getLibrary}'s.
+%
+Also, the fully qualified class name \texttt{"alice.tuprolog.lib.JavaLibrary"} is needed in \texttt{getLibrary} only because \texttt{JavaLibrary} does \textit{not} define a short library name (see Section \ref{ssec:library-name} for details): otherwise, the shorter name could have been used.}
+\label{tab:registering-stdout-example}
+\end{table}
+
+%-------------------------------------------------------
+\subsection{Capturing the Prolog output in Java}
+\label{ssec:capturing-output}
+%-------------------------------------------------------
+
+If a \tuprolog{} engine is used in a Java application, the output performed by Prolog \texttt{write} predicates (more generally, of any predicate writing on the Prolog console) is not available in Java: printed messages are not captured, nor are they retrievable by any of the \tuprolog{} Java API methods.
+%
+The only way to `capture' somehow the output of the Prolog engine is to write it to a file or store it in a Prolog term---just two variants of the same inconvenience.
+
+Yet, this feature can be added in a non-intrusive way, thanks to \tuprolog{}'s extensible architecture, by simply overriding the \texttt{onOutput} method used internally by the engine to handle the write requests.\footnote{This approach was originally suggested by Josh Guzman in the \tuprolog{} users' forum.}
+All is needed is to redefine this method so as to capture the output message and store it conveniently---for instance, into a suitable \texttt{String} of the Java application (here, \texttt{finalResult}), as follows:
+
+\begin{verbatim}
+  engine.addOutputListener(new OutputListener() {
+    @Override
+    public void onOutput(OutputEvent e) {
+      finalResult += e.getMsg();
+    }
+  });
+\end{verbatim}
+
+\noindent This elegant approach does not modify the \tuprolog{} code in any way: it just adds listener to an existing event, extending the service non-intrusively.
+%
+A full example of this technique is reported in Table
+\ref{tab:capturing-output-complete} on page \pageref{tab:capturing-output-complete}, together with the corresponding build process and execution.
+
+\begin{table}[h]
+{\small
+\begin{verbatim}
+  import alice.tuprolog.*;
+  import alice.tuprolog.lib.*;
+  import alice.tuprolog.event.*;
+
+  public class OnOutputExample {
+    static String finalResult = "";
+    public static void main(String[] args) throws Exception {
+      Prolog engine = new Prolog();
+      engine.addOutputListener(new OutputListener() {
+          @Override
+          public void onOutput(OutputEvent e) {
+            finalResult += e.getMsg();
+          }
+      });
+      Term goal = Term.createTerm("write('Hello world!')");
+      SolveInfo res = engine.solve(goal);
+      res = engine.solve("write('Hello everybody!'), nl.");
+      System.out.println("OUTPUT: " + finalResult);
+    }
+  }
+\end{verbatim}}
+  \includegraphics[width=12cm]{images/onOutput}
+\caption{Capturing the Prolog output from Java: a complete example.}
+\label{tab:capturing-output-complete}
+\end{table}
+
+%-----------------------------------------------------------------------
+\section{Augmenting Prolog from Java:\\developing new libraries}
 \label{sec:howto-develop-libraries}
 %-----------------------------------------------------------------------
 
-Libraries are \tuprolog{}'s way to achieve the desired characteristics
-of minimality, dynamic configurability, and straightforward
-Prolog-to-Java integration.
-%
-Libraries are reflection-based, and can be written both in Prolog
-and Java: other languages may be used indirectly, via JNI (Java
-Native Interface).
-%
-At the \tuprolog{} side, exploiting a library written in Java
-requires no pre-declaration of the new built-ins, nor any other
-special mechanism: all is needed is the presence of the
-corresponding \texttt{.class} library file in the proper location
-in the file system.
+So far, the two first dimensions of \tuprolog{}'s support to multi-paradigm, multi-language programming have been explored, that enable a language (and the corresponding paradigm) to be used from the other.
+The two further dimensions concerns \textit{augmenting} the language instead---that is, exploiting a language (and a paradigm) to increase the other.
 
-\subsection{Implementation details}
+In this section the focus is on augmenting Prolog from Java, exploiting the latter\footnote{%
+ Other languages may be used indirectly, via JNI (JavaNative Interface}
+to increase the first by developing new \tuprolog{} libraries; the next Section (\ref{sec:p@j}) will focus on the opposite direction, exploiting Prolog to augment Java via the so-called \textit{P@J} framework.
 
-Syntactically, a library developed in Java must extend the base
-abstract class \texttt{alice.tuprolog.Library}, provided within
-the \tuprolog{} package, and define new \textit{predicates} and/or
-\textit{evaluable functors} and/or \textit{directives} in the form
-of methods, following a simple signature convention.
+Moreover, although \tuprolog{} libraries are expressed in Java, they are not required to
+be fully implemented in this language.
 %
-In particular, new predicates must adhere to the signature:
-%
-\begin{center}
-\small\tt
-    public boolean <\textit{pred name}>\_<\textit{N}>(\textit{T1} arg1,
-\textit{T2} arg2, ...,\textit{Tn} argN)
-\end{center}
-%
-while evaluable functors must follow the form:
-%
-\begin{center}
-    \small\tt
-    public Term <\textit{eval funct name}>\_<\textit{N}>(\textit{T1} arg1,
-\textit{T2} arg2, ...,\textit{Tn} argN)
-\end{center}
-%
-and directives must be provided with the signature:
-%
-\begin{center}
-    \small\tt
-    public void <\textit{dir name}>\_<\textit{N}>(\textit{T1} arg1,
-\textit{T2} arg2, ..., \textit{Tn} argN)
-\end{center}
-%
-where \textit{T1}, \textit{T2}, ... \textit{Tn} are \texttt{Term} or derived
-classes, such as \texttt{Struct}, \texttt{Var}, \texttt{Long}, etc., defined in
-the \tuprolog{} package, constituting  the Java counterparts of
-the corresponding Prolog data types.
-%
-The parameters represent the arguments actually passed to the built-in
-predicate, functor, or directive.
+In fact, Java-only libraries are the simplest case, but hybrid Java + Prolog libraries are also possible, where a Prolog theory is embedded into a Java string so that the
+two parts cooperate to define the overall library behavior.
+This opens further interesting perspectives, that will be discussed below.
 
-%
-A library defines also a new piece of theory, which is collected
-by the Prolog engine through a call to the library method \texttt{String
-getTheory()}.
-%
-By default, this method returns an empty theory: libraries which need to
-add a Prolog theory must override it accordingly.
-%
-Note that only the external representation of a library's theory is
-constrained to be in \texttt{String} form; the internal implementation
-can be freely chosen by the library designer. However, using a Java
-\texttt{String} for wrapping a library's Prolog code guarantees
-self-containment while loading libraries through remote mechanisms such
-as RMI.
+%---------------------------------------------------------------
+\subsection{Syntactic conventions}
+\label{ssec:library-syntax}
+%---------------------------------------------------------------
+Each library must extend the base abstract class \texttt{alice.tuprolog.Library} and define new \textit{predicates} and/or \textit{evaluable functors} and/or \textit{directives} in the form of methods, following a simple signature convention.
 
-\begin{table}[h]
-    %
-    \caption{Predicate and functor definitions in Java and their use
-    in a \tuprolog{} program.\labeltab{java-preds}}
-    %
+\noindent Predicates must adhere to the signature:\\
+
+{\small\tt
+%    public boolean <\textit{pred name}>\_<\textit{N}>(\textit{T1} arg1, \textit{T2} arg2, ...,\textit{Tn} argN)
+    public boolean <\textit{pred name}>\_<\textit{N}>(\\
+    \mbox{~~~~~~~~~~~~}<?~extends~Term> arg1, ..., <?~extends~Term> argN)
+}\\
+
+\noindent while evaluable functors must follow the form:\\
+
+{\small\tt
+%    public Term <\textit{eval funct name}>\_<\textit{N}>(\textit{T1} arg1, \textit{T2} arg2, ...,\textit{Tn} argN)
+    public Term <\textit{eval funct name}>\_<\textit{N}>(\\
+    \mbox{~~~~~~~~~~~~}<?~extends~Term> arg1, ..., <?~extends~Term> argN)
+}\\
+
+\noindent and directives must be provided with the signature:\\
+
+{\small\tt
+%    public void <\textit{dir name}>\_<\textit{N}>(\textit{T1} arg1, \textit{T2} arg2, ..., \textit{Tn} argN)
+    public void <\textit{dir name}>\_<\textit{N}>(\\
+    \mbox{~~~~~~~~~~~~}<?~extends~Term> arg1, ..., <?~extends~Term> argN)
+}\\
+
+\noindent where \textit{arg1}, ... \textit{argN} are \texttt{Term}s\footnote{%
+ Please refer to Table \ref{fig:term-taxonomy} on page \pageref{fig:term-taxonomy} for the full Term taxonomy.}
+that represent the actual arguments passed to the predicate (functor, directive).
+
+\begin{table}
     \begin{center}{\small\tt
-    \begin{tabular}{p{10cm}|p{3.25cm}}
-     \hline
-     & \\
-    \textit{// sample library} & \textit{\% tuProlog test program}\\
-     import alice.tuprolog.*; & \\
-     & \\
-    public class TestLibrary extends Library \{                            &
- test :-\\
-    ~~\textit{// builtin functor sum(A,B)}                          & ~~N is sum(5,6),\\
-    ~~public Term sum\_2(Number arg0, Number arg1)\{    & ~~println(N).\\
-    ~~~~float   arg0 = arg0.floatValue();        & \\
-    ~~~~float   arg1 = arg1.floatValue();        & \\
-    ~~~~return new Float(arg0+arg1);                                & \\
-    ~~\}                                                            & \\
-    ~~\textit{// builtin predicate println(Message)}                & \\
-    ~~public boolean println\_1(Term arg)\{                      & \\
-    ~~~~System.out.println(arg);                                   & \\
-    ~~~~return true;                                                & \\
-    ~~\}                                                            & \\
-    \}                                                              & \\
-     & \\
-     \hline
+    \begin{tabular}{p{12cm}}
+     \hline\\
+    import alice.tuprolog.*;\\
+    public class TestLibrary extends Library \{\\
+    \\
+    ~~\textit{// functor sum(A,B)}\\
+    ~~public Term sum\_2(Number arg0, Number arg1)\{\\
+    ~~~~float  n0 = arg0.floatValue();\\
+    ~~~~float  n1 = arg1.floatValue();\\
+    ~~~~return new Float(n0+n1);\\
+    ~~\}\\
+    \\
+    ~~\textit{// predicate println(Message)}\\
+    ~~public boolean println\_1(Term arg)\{\\
+    ~~~~System.out.println(arg);\\
+    ~~~~return true;\\
+    ~~\}\\
+    \\
+    ~~\textit{// predicate invert(StringIn,StringOut)}\\
+    ~~public boolean invert\_2(Term in, Var out)\{\\
+    ~~~~String s1 = null, s2 = "";\\
+	~~~~if (in instanceof Var) s1 = in.getTerm().toString();\\
+	~~~~else s1 = in.toString();\\
+	~~~~for(int i=0; i<s1.length(); i++)\{\\
+	~~~~~~char ch = s1.charAt(i);\\
+	~~~~~~if (ch=='$\backslash$'') continue;\\
+	~~~~~~if (Character.isUpperCase(ch))\\
+	~~~~~~~~s2 += Character.toLowerCase(ch);\\
+	~~~~~~else\\
+	~~~~~~~~s2 += Character.toUpperCase(ch);\\
+	~~~~\}\\
+	~~~~return out.unify(getEngine(),new Struct(s2));\\
+    ~~\}\\
+    \\\hline
     \end{tabular}
     }\end{center}
+    \caption{Definition of a \tuprolog{} library in Java.}
+    \label{tab:TestLibrary}
 \end{table}
 
-\xt{java-preds} shows a couple of examples about how a predicate
-(such as \texttt{println/1}) and an evaluable functor (such as
-\texttt{sum/2}) can be defined in Java and exploited from
-\tuprolog{}.
+Table \ref{tab:TestLibrary} shows a library defining an evaluable functor (\texttt{sum/2}) and two predicates (\texttt{println/1}, \texttt{invert/2}).
 %
-The Java method \texttt{sum\_2}, which implements the evaluable
-functor \texttt{sum/2}, is passed two \texttt{Number} terms (5 and 6)
-which are then used (via \texttt{getTerm}) to retrieve the two
-(float) arguments to be summed.
+The Java method \texttt{sum\_2}, which implements the evaluable functor \texttt{sum/2}, is passed two \texttt{Number} terms (5 and 6) which are then used (via \texttt{getTerm}) to retrieve the two (float) arguments to be summed.
 %
-In the same way, method \texttt{println\_1}, which implements the
-predicate \texttt{println/1}, receives \texttt{N} as \texttt{arg},
-and retrieves its actual value via \texttt{getTerm}: since this is
-a predicate, a boolean value (\texttt{true} in this case) is returned.
+In the same way, method \texttt{println\_1}, which implements the predicate \texttt{println/1}, receives \texttt{N} as \texttt{arg}, and retrieves its actual value via \texttt{getTerm}: since this is a predicate, a boolean value is returned, representing success or failure (\texttt{true} = success in this case).
 %
+Analogous considerations hold for \texttt{invert/2}, whose input argument is first type-checked to handle variables appropriately (the related bound term must be retrieved), then the input term is scanned to build the output string, which is finally unified with the output variable.
 
-The developer of a library may face two corner case as far as method
-naming is concerned: the first happens when the name of the
-predicate, functor or directive she is defining contains a symbol
-which cannot legally appear in a Java method's name; the second
-occurs when he has to define a predicate and a directive with the
-same Prolog signature, which Java would not be able to tell apart
-because it cannot distinguish signatures of methods differing for
-their return type only.
+A test Java program, which loads this library and tests its predicates, is shown in Table \ref{tab:TestLibrary-Main}.
 %
-To overcome this kind of issues, a {\em synonym map} can be
-constructed under the form of an array of \texttt{String} arrays,
-and returned by the appropriate \texttt{getSynonymMap} method,
-defined as abstract by the \texttt{Library} class. In both the cases
-described above, another name must be chosen for the Prolog
-executable element the library's developer want to define: then, by
-means of the synonym map, that fake name can be associated with the
-real name and the type of the element, be it a predicate, a functor
-or a directive.
+The program creates the Prolog engine, loads \texttt{TestLibrary} (checking that it was actually loaded), defines a theory containing the Prolog test code and sets it into the engine: then, the three test goals are solved in sequence. 
 %
-For example, if a definition for an evaluable functor representing
-addition is needed, but the symbol \texttt{+} cannot appear in a
-Java method's name, a method called \texttt{add} can be defined and
-associated to its original Prolog name and its function by inserting
-the array \texttt{\{"+", "add", "functor"\}} in the synonym map.
+The printed output is reported in the bottom part of the Table.
+The \texttt{\textit{Name} / \textit{Value}} format is the \tuprolog{}'s default for variables, and is \texttt{\textit{Name}} is composed of the Prolog variable name (\texttt{N}, \texttt{S}, etc.) and of a unique internal identifier.
+%
+As expected, \texttt{N} is bound to \texttt{11}, \texttt{S} to \texttt{abcd}, the \texttt{X} and \texttt{Z} pair to \texttt{ab}/\texttt{'AB'}, \texttt{bc}/\texttt{'BC'} and \texttt{uk}/\texttt{'UK'}, respectively.
 
+\begin{table}
+    \begin{center}{\small\tt
+    \begin{tabular}{p{12cm}}
+     \hline\\
+    import alice.tuprolog.*;\\
+    import alice.tuprolog.lib.*;\\
+    \\
+    public class TestLibraryMain \{\\
+    ~~public static void main(String[] args) throws Exception \{\\
+	~~~~Prolog engine = new Prolog();\\
+	~~~~Library lib1 = engine.loadLibrary("TestLibrary");\\
+	~~~~System.out.println(\\
+	~~~~~~~~"Lib1 " + (lib1==null ? "NOT " : " ") + "LOADED");\\
+	~~~~Theory testTheory = new Theory(\\
+	~~~~~~~~"test1 :- N is sum(5,6), println(N).$\backslash$n" +\\
+	~~~~~~~~"test2 :- invert('ABCD',S), println(S).$\backslash$n" +\\
+	~~~~~~~~"test3 :- name(X), println(X)," +\\
+	~~~~~~~~~~~~~~~~~"invert(X,Z), println(Z), fail.$\backslash$n" +\\
+	~~~~~~~~"name(ab).$\backslash$n name(bc).$\backslash$n name(uk).$\backslash$n");\\
+	~~~~engine.setTheory(testTheory);\\
+	~~~~SolveInfo res = engine.solve("test1.");\\
+	~~~~res = engine.solve("test2.");\\
+	~~~~res = engine.solve("test3.");\\
+	~~\}\\
+    \}\\
+    \\
+    \textrm{\textit{OUTPUT PRINTED:}}\\
+    Lib1  LOADED\\
+    N\_e2 / 11.0\\
+    S\_e2 / abcd\\
+    X\_e11 / ab\\
+    Z\_e12 / 'AB'\\
+    X\_e13 / bc\\
+    Z\_e14 / 'BC'\\
+    X\_e15 / uk\\
+    Z\_e17 / 'UK'\\
+    \\\hline
+    \end{tabular}
+    }\end{center}
+    \caption{A test program for the library defined in Table \ref{tab:TestLibrary} \textit{(top)} and the corresponding output \textit{(bottom)}.}
+    \label{tab:TestLibrary-Main}
+\end{table}
+
+When developing libraries, two naming issues may arise:
+\begin{enumerate}
+  \item the name of the predicate, functor or directive should contain a symbol that cannot legally appear in a Java method's name;
+  \item a predicate and a directive with the same Prolog signature should be defined, but Java would not be able to distinguish method signatures differing for the return type only.
+\end{enumerate}
+
+\noindent To overcome these issues, a \textit{synonym map} must be set up, that maps the desired Prolog names onto legal Java method names, bypassing the standard naming convention.
+%
+This map must have the form of an array of \texttt{String} arrays, and be returned by the ad hoc \texttt{getSynonymMap} method (abstract in the base \texttt{Library} class).
+%
+For instance, an evaluable functor \texttt{+}, which cannot appear in a
+Java method name, could be implemented by a defining a Java method with any name (say, \texttt{add}) and then map it onto the Prolog name by adding the array \texttt{\{"+", "add", "functor"\}} to the synonym map.
+
+Libraries can also inherit from each other: a library can well extend a user library instead of the base \texttt{Library}, as in the case of the \texttt{HybridLibrary} discussed in the next Section.
+
+%---------------------------------------------------------------
+\subsection{Hybrid Java+Prolog libraries}
+\label{ssec:hybrid-libraries}
+%---------------------------------------------------------------
+
+\begin{table}
+    \begin{center}{\tt
+    \begin{tabular}{p{12cm}}\hline
+    \\
+    public class HybridLibrary extends TestLibrary \{\\
+    ~public String getTheory()\{\\
+    ~~return "myprint(X) :- println(X).$\backslash$n" +\\
+    ~~~~~~~~~"myprint(X) :- invert(X,Y), myprint(Y).$\backslash$n";\\
+    ~\}\\
+    \} \\
+    \\
+    \hline
+    \\
+    import alice.tuprolog.*;\\
+    import alice.tuprolog.lib.*;\\
+    \\
+    public class HybridLibraryMain \{\\
+    ~~public static void main(String[] args) throws Exception \{\\
+	~~~~Prolog engine = new Prolog();\\
+	~~~~Library lib2 = engine.loadLibrary("HybridLibrary");\\
+	~~~~SolveInfo res = engine.solve("myprint(henry).");
+	~~~~int count=0;
+	~~~~while (engine.hasOpenAlternatives() \&\& count < 5)\{\\
+	~~~~~~~~count++;\\
+	~~~~~~~~res = engine.solveNext();\\
+	~~~~\}\\
+    \\
+    \textrm{\textit{OUTPUT PRINTED:}}\\
+    Lib2  LOADED\\
+	X\_e1 / henry\\
+	X\_e5 / yrneh\\
+	X\_e9 / henry\\
+	X\_e11 / yrneh\\
+	X\_e13 / henry\\
+	X\_e15 / yrneh\\
+    \\\hline
+    \end{tabular}
+    }\end{center}
+    \caption{A hybrid (mixed) Java + Prolog library \textit{(top)} and the corresponding test program \textit{(bottom)}. }
+    \label{tab:HybridLibrary}
+\end{table}
+
+Since Java does not support non-determinism, a Java-only library is inherently
+deterministic: however, non-determinism can be achieved via hybrid Java + Prolog
+libraries, adding a %non-deterministic 
+Prolog layer on top of the %deterministic 
+Java layer.
+
+To this end, a library can include a new piece of Prolog theory, embedded into the \texttt{getTheory} method.
+%
+This method returns a string\footnote{%
+    In principle, only the external representation of this theory is constrained to the \texttt{String} form, the internal implementation being up to the developer; yet, using a Java \texttt{String} for wrapping the Prolog code guarantees self-containment while loading libraries through remote mechanisms such as RMI, and therefore constitutes the suggested form.
+} (empty by default) containing the desired Prolog theory, and is automatically called when the library is loaded, so as to add the theory to the engine's configuration.
+
+Table \ref{tab:HybridLibrary} shows a hybrid library where the theory expressed by \texttt{getTheory} adds to \texttt{TestLibrary} the non-deterministic predicate \texttt{myprint/1}, whose (potentially infinite) solutions alternately print the argument in upper and lowercase.
+
+
+%---------------------------------------------------------------
+\subsection{Library loading issues}
+\label{ssec:library-loading-issues}
+%---------------------------------------------------------------
+
+As shown in the above examples, a library can be loaded (and unloaded) dynamically into a running engine via Java, by means of the \texttt{loadLibrary} (\texttt{unloadLibrary}) methods; but it can also be loaded (unloaded) from Prolog, via the \texttt{load\_library/2} (\texttt{unload\_library/2} ) predicate.
+
+\color{red}
+The two approaches, however, are not completely identical, at least if \texttt{2p.jar} is used to start the \tuprolog{} GUI (or the console-based CUI) from which the loading is performed.
+In fact, library loading from Prolog suffers from some limitations due to the Java reflection mechanism used internally by \tuprolog{} to locate the library,\footnote{%
+  The culprit is the \texttt{Class.forName} method.
+} which does not search outside the JAR. So, only libraries packed into the same \tuprolog{} JAR can be found and loaded from Prolog via the \texttt{load\_library/2} predicate.
+To avoid the problem, the JAR must be unpacked: then, any library can be found and loaded regularly from Prolog, too.
+
+This is why the examples above (\texttt{TestLibrary} and \texttt{HybridLibrary}) have been loaded from the Java side, via two main programs (\texttt{TestLibraryMain} and \texttt{HybridLibraryMain}).
+\normalcolor
+
+%---------------------------------------------------------------
 \subsection{Library Name}
+\label{ssec:library-name}
+%---------------------------------------------------------------
 
-% Lib name
-%
-By default, the name of the library coincides with the full class name of the
-class implementing it.
-%
-However, it is possible to define explicitly the name of a library by
-overriding the \texttt{getName} method, and returning as a string
-the real name.
-%
-For example:
-%
-\begin{verbatim}
-package acme;
-import alice.tuprolog.*;
-public class MyLib_ver00 extents Library {
-    public String getName(){
-        return "MyLibrary";
-    }
-    ...
-}
-\end{verbatim}
+The concept of library name is introduced in \tuprolog{} to separate the physical class name of a library from its logical name, both for clarity -- the library name can be shorter and more meaningful -- and to support multiple versions of the same library, enabling the dynamic upgrade of a library implementation.
 
-This class defines a library called \texttt{MyLibrary}.
+By default, the library name is identical to the class name: however, a library can specify a different name by overriding the \texttt{getName} method.
 %
-It can be loaded into a Prolog engine by using the
-\texttt{loadLibrary} method on the Java side, or a
-\texttt{load\_library} built-in predicate on the Prolog side,
-specifying the full class name (\texttt{acme.MyLib\_{ve00}}).
-%
-It can be unloaded then dynamically using the \texttt{unloadLibrary}
-method (or the corresponding \texttt{unload\_library} built-in),
-specifying instead the \textit{library name} (\texttt{MyLibrary}).
+Obviously, the full class name is always needed when loading the library, while the library name is used by \texttt{getLibrary} (and similar predicates) to return references to already-loaded libraries.
+
+As an example, in Table \ref{tab:StringLibrary-NewStringLibrary} the \texttt{NewStringLibrary} class provides an alternate implementation of \texttt{StringLibrary}: this is why it \texttt{getName} is redefined so as to return \texttt{StringLibrary} as the \texttt{NewStringLibrary} library name.
+
+\begin{table}
+    \begin{center}{\tt
+    \begin{tabular}{p{13.5cm}}\hline
+    \\
+    \mbox{~~~~}public class StringLibrary extends Library \{\\
+    \mbox{~~~~~~~~}public boolean to\_lower\_case\_2(Term source, Term dest)\{\\
+    \mbox{~~~~~~~~~~~~}String st = source.toString().toLowerCase();\\
+    \mbox{~~~~~~~~~~~~}return unify(dest, new Struct(st));\\
+    \mbox{~~~~~~~~}\}\\
+    \mbox{~~~~~~}\ldots\\
+    \mbox{~~~~~~}\textit{// the inherited getName returns "StringLibrary"}\\
+    \mbox{~~~~~~}\ldots\\
+    \mbox{~~~~}\}\\
+    \\
+    \hline
+    \\
+    \mbox{~~~~}public class NewStringLibrary extends Library \{\\
+    \mbox{~~~~~~}public String getName()\{ return "StringLibrary"; \}\\
+    \mbox{~~~~~~}\ldots\\
+    \mbox{~~~~}\}\\
+    \\
+    \hline
+    \end{tabular}
+    }\end{center}
+    \caption{Defining a new library with the same name as another.}
+    \label{tab:StringLibrary-NewStringLibrary}
+\end{table}
+
 
 %-----------------------------------------------------------------------
 \section{Augmenting Java from Prolog: \textit{the P@J framework}}
 \label{sec:p@j}
 %-----------------------------------------------------------------------
 
-to be written (take from DORV-Multiparadigm)
+to be written (take from DORV-Multiparadigm) 
