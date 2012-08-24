@@ -95,10 +95,12 @@
 \contentsline {subsubsection}{A console-based Prolog interpreter}{121}{section*.32}
 \contentsline {subsection}{\numberline {7.2.4}Registering object bindings}{124}{subsection.7.2.4}
 \contentsline {subsection}{\numberline {7.2.5}Capturing the Prolog output in Java}{126}{subsection.7.2.5}
-\contentsline {section}{\numberline {7.3}Augmenting Prolog from Java:\\developing new libraries}{126}{section.7.3}
+\contentsline {section}{\numberline {7.3}Augmenting Prolog via Java:\\developing new libraries}{126}{section.7.3}
 \contentsline {subsection}{\numberline {7.3.1}Syntactic conventions}{128}{subsection.7.3.1}
 \contentsline {subsection}{\numberline {7.3.2}Hybrid Java+Prolog libraries}{130}{subsection.7.3.2}
 \contentsline {subsection}{\numberline {7.3.3}Library loading issues}{133}{subsection.7.3.3}
 \contentsline {subsection}{\numberline {7.3.4}Library Name}{133}{subsection.7.3.4}
-\contentsline {section}{\numberline {7.4}Augmenting Java from Prolog: \textit {the P@J framework}}{134}{section.7.4}
-\contentsline {chapter}{\numberline {8}Multi-paradigm programming in Prolog and .NET}{135}{chapter.8}
+\contentsline {section}{\numberline {7.4}Augmenting Java via Prolog:\\the P@J framework}{134}{section.7.4}
+\contentsline {subsection}{\numberline {7.4.1}Term taxonomy}{135}{subsection.7.4.1}
+\contentsline {subsection}{\numberline {7.4.2}Examples}{137}{subsection.7.4.2}
+\contentsline {chapter}{\numberline {8}Multi-paradigm programming in Prolog and .NET}{142}{chapter.8}
