@@ -8,8 +8,8 @@
 \begin{itemize}
   \item using Java from Prolog: \textit{JavaLibrary}
   \item using Prolog from Java: \textit{the Java API}
-  \item augmenting Prolog from Java: \textit{developing new libraries}
-  \item augmenting Java from Prolog: \textit{the P@J framework}
+  \item augmenting Prolog via Java: \textit{developing new libraries}
+  \item augmenting Java via Prolog: \textit{the P@J framework}
 \end{itemize}
 
 %-----------------------------------------------------------------------
@@ -1427,7 +1427,7 @@ A full example of this technique is reported in Table
 \end{table}
 
 %-----------------------------------------------------------------------
-\section{Augmenting Prolog from Java:\\developing new libraries}
+\section{Augmenting Prolog via Java:\\developing new libraries}
 \label{sec:howto-develop-libraries}
 %-----------------------------------------------------------------------
 
@@ -1531,7 +1531,7 @@ Analogous considerations hold for \texttt{invert/2}, whose input argument is fir
 
 A test Java program, which loads this library and tests its predicates, is shown in Table \ref{tab:TestLibrary-Main}.
 %
-The program creates the Prolog engine, loads \texttt{TestLibrary} (checking that it was actually loaded), defines a theory containing the Prolog test code and sets it into the engine: then, the three test goals are solved in sequence. 
+The program creates the Prolog engine, loads \texttt{TestLibrary} (checking that it was actually loaded), defines a theory containing the Prolog test code and sets it into the engine: then, the three test goals are solved in sequence.
 %
 The printed output is reported in the bottom part of the Table.
 The \texttt{\textit{Name} / \textit{Value}} format is the \tuprolog{}'s default for variables, and is \texttt{\textit{Name}} is composed of the Prolog variable name (\texttt{N}, \texttt{S}, etc.) and of a unique internal identifier.
@@ -1645,8 +1645,8 @@ Libraries can also inherit from each other: a library can well extend a user lib
 
 Since Java does not support non-determinism, a Java-only library is inherently
 deterministic: however, non-determinism can be achieved via hybrid Java + Prolog
-libraries, adding a %non-deterministic 
-Prolog layer on top of the %deterministic 
+libraries, adding a %non-deterministic
+Prolog layer on top of the %deterministic
 Java layer.
 
 To this end, a library can include a new piece of Prolog theory, embedded into the \texttt{getTheory} method.
@@ -1670,7 +1670,8 @@ The two approaches, however, are not completely identical, at least if \texttt{2
 In fact, library loading from Prolog suffers from some limitations due to the Java reflection mechanism used internally by \tuprolog{} to locate the library,\footnote{%
   The culprit is the \texttt{Class.forName} method.
 } which does not search outside the JAR. So, only libraries packed into the same \tuprolog{} JAR can be found and loaded from Prolog via the \texttt{load\_library/2} predicate.
-To avoid the problem, the JAR must be unpacked: then, any library can be found and loaded regularly from Prolog, too.
+To avoid the problem, currently the JAR must be unpacked.
+\textbf{To do: improve implementation using the URLClassLoader which can load classes from external JARs.}
 
 This is why the examples above (\texttt{TestLibrary} and \texttt{HybridLibrary}) have been loaded from the Java side, via two main programs (\texttt{TestLibraryMain} and \texttt{HybridLibraryMain}).
 \normalcolor
@@ -1718,8 +1719,322 @@ As an example, in Table \ref{tab:StringLibrary-NewStringLibrary} the \texttt{New
 
 
 %-----------------------------------------------------------------------
-\section{Augmenting Java from Prolog: \textit{the P@J framework}}
+\section{Augmenting Java via Prolog:\\the P@J framework}
 \label{sec:p@j}
 %-----------------------------------------------------------------------
 
-to be written (take from DORV-Multiparadigm) 
+The last dimensions of \tuprolog{}'s support to multi-paradigm, multi-language programming is still a form of \textit{augmenting} a language (that is, exploiting a language and a paradigm to increase the other)---in this case, augmenting Java from Prolog, exploiting the so-called \textit{P@J} framework \cite{short-patj-sac08}.
+
+This approach makes it possible to ``inline intelligence'' into Java code, enabling Prolog to be used for implementing Java (abstract) methods, via Java reflection and suitable annotations.
+%
+The basic idea is that the methods to be implemented in Prolog are declared
+\texttt{abstract} from the Java syntax viewpoint\footnote{%
+  Of course, the corresponding class must be syntactically qualified \texttt{abstract}, too.
+}, so that the Java compiler does not expect to find any implementation, while annotating them with the Prolog clauses that provide the actual implementations.
+On the user side, the factory method \texttt{PJ.newInstance} will be used to automatically create a Java implementation of this method, which interacts with the Prolog engine in a totally transparent way.
+
+The technique relies on advanced features of Java such generic types, wildcards, and type inference, as well as reflection to ``put things together''; for this reason, some syntax conventions are required for method signatures:
+\begin{itemize}
+  \item the Prolog predicate name must be identical to the Java method name;
+
+  \item the argument types must be explicitly declared each with the corresponding bounding, and their names must start with \texttt{\$};
+
+  \item the argument position in the Java method signature must reflect their role as input or output arguments in the Prolog predicate: the first are to be put in the argument list, and the latter in the return type.
+\end{itemize}
+
+\noindent The last requirement is necessary to bridge between the Prolog predicate syntax, where both input and output arguments are in the argument list (with nothing explicitly qualifying these roles, according to the declarative nature of the language), and the Java method syntax, where the only output argument is not in the argument list, but is ``returned from'' the method.
+
+%---------------------------------------------
+\subsection{Term taxonomy}
+\label{ssec:p@j-term-taxonomy}
+%---------------------------------------------
+
+Here, too, a suitable taxonomy is needed to map the relevant Prolog types (term, atom, number, list, variable, etc) in Java; however, while the domain to represent is the same as above (Section \label{ssec:java-api-types}), the requirements due to type inference and strong type checking made it necessary to define one further, \textit{ad hoc} taxonomy as the base of the annotation layer.
+
+The new hierarchy exploits the basic types in Figure \ref{fig:term-taxonomy} on page \pageref{fig:term-taxonomy} as its building bricks, and builds a new layer on top.
+The new root is the abstract class \texttt{Term<X>}, whose definition exploits a recursive pattern to reify (represent) the type of the actual term content:
+
+\begin{verbatim}
+   abstract class Term<X extends Term<?>> {..}
+\end{verbatim}
+
+\noindent Accordingly, the term subclasses are defined as:
+
+\begin{verbatim}
+ class Atom extends Term<Atom> {..}
+ class Int extends Term<Int> {..}
+ class Double extends Term<Double> {..}
+ class List<X extends Term<?>> extends Term<List<X>> {..}
+ ...
+\end{verbatim}
+
+\noindent where, clearly, \texttt{Term<Int>} is used for a term containing an \texttt{Int}, \texttt{Term<Double>} for a term containing a \texttt{Double}, \texttt{Term<List<Int>>} for a term containing a \texttt{List<Int>}, etc.
+
+Variables are a notable exception, because they must be able to contain values of the above types: for this reason, \texttt{Var<X>} is \textit{not} defined as a subtype of \texttt{Term<Var<X>>}, but directly of \texttt{Term<X>}.
+
+\begin{verbatim}
+ class Var<X extends Term<?>> extends Term<X> {..}
+\end{verbatim}
+
+\noindent As a consequence, both types \texttt{X} and \texttt{Var<X>} derive from the common ancestor Term<X>, which makes it possible to represent method arguments that may be a logical input or output---i.e., that must accept both a value (a term of type \texttt{X}) or a variable (a term of type \texttt{Var(X)}).
+
+Thanks to this approach, a method definition like the following:
+
+\begin{verbatim}
+ boolean length(Term<? extends List<?>> list, Term<Int> size)
+\end{verbatim}
+
+\noindent can be read as follows:
+
+\begin{itemize}
+  \item list is a term containing any list, and size is an integer;
+
+  \item both arguments can be either input or output.
+\end{itemize}
+
+\noindent The term hierarchy is completed by the \texttt{Compound} term family, which enables the definition of compound terms of any arity by means of a list-like approach---that is, starting from the empty compound term \texttt{Nil} and building bigger compounds with the \texttt{Cons} class constructor.
+However, shortcut classes \texttt{Compound1}, \texttt{Compound2} and \texttt{Compound3} are provided for the user convenience to specify the most common terms of 1, 2 or 3 arguments:
+
+\begin{verbatim}
+ public abstract class Compound<X extends Compound<?>>
+   extends Term<X> {..}
+
+ public class Cons<H extends Term<?>, R extends Compound<?>>
+   extends Compound<Cons<H,R>> implements Iterable<Term<?>>{..}
+
+ public class Nil extends Compound<Nil> {..}
+
+ public class Compound1<X1 extends Term<?>>
+   extends Cons<X1,Nil> {..}
+
+ public class Compound2<X1 extends Term<?>, X2 extends Term<?>>
+   extends Cons<X1,Cons<X2,Nil>> {..}
+
+ public class Compound3<X1 extends Term<?>, X2 extends Term<?>,
+                        X3 extends Term<?>>
+   extends Cons<X1,Cons<X2,Cons<X3,Nil>>> {..}
+\end{verbatim}
+
+%---------------------------------------------
+\subsection{Examples}
+\label{ssec:p@j-examples}
+%---------------------------------------------
+
+As an example, Table \ref{tab:pj-example1} shows a Java class \texttt{Perm} with the \texttt{permutation} method implemented in Prolog.
+%
+The Java method declaration specifies that there is one input argument and one output argument: the first (\texttt{\$X}) is a \texttt{List<Int>} (or a covariant type), the second (\texttt{\$Y}) is an \texttt{Iterable} over a \texttt{List<Int>} (or a covariant type).
+The \texttt{Iterable} specification is needed to iterate over all solutions: if only the first solution is needed, \texttt{\$Y} could have been used instead of \texttt{Iterable<\$Y>}.
+
+Moreover, since arguments are declared in the order (\texttt{\$X}), (\texttt{\$Y}) in the Java method signature, they will be mapped in this order on the Prolog predicate arguments: so (\texttt{\$X}) will map onto the first argument of \texttt{permutation/2}, and (\texttt{\$Y}) on the second argument.
+
+In the client program, the \texttt{Perm} instance \texttt{p} is created indirectly via the \texttt{PJ.newInstance} factory method, whose argument is the corresponding \texttt{Class} meta-class, \texttt{Perm.class}.
+Then, the \texttt{p} object can be used normally, like any other Java object: here it computes all the permutations of a given list of integers (built from an array, just to play with types), which is then iterated over by a \textit{for-each} loop that prints every result.
+The actual type for both \texttt{\$X} and \texttt{\$Y}, \texttt{List<Int>}, is inferred automatically by the P@J runtime.
+
+\begin{table}
+{\footnotesize
+\begin{tabular}[-1cm]{p{12cm}}
+\begin{verbatim}
+import alice.tuprologx.pj.annotations.*;
+import alice.tuprologx.pj.engine.*;
+import alice.tuprologx.pj.model.*;
+import alice.tuprologx.pj.meta.*;
+import java.util.List;
+import java.util.ArrayList;
+\end{verbatim}
+\textsf{\emph{A Java class augmented via Prolog}}
+\begin{verbatim}
+abstract class Perm{
+    @PrologMethod ( clauses = {
+        "permutation([],[])." ,
+        "permutation(U,[X|V]):-remove(U,X,Z),permutation(Z,V)." ,
+        "remove([X|T],X,T)." ,
+        "remove([X|U],E,[X|V]):-remove(U,E,V)."
+        }
+    )
+    public abstract < $X extends List<Int>, $Y extends List<Int> >
+                Iterable<$Y> permutation($X list);
+}
+\end{verbatim}
+\textsf{\emph{A sample client class}}
+\begin{verbatim}
+public class PJexample {
+  public static void main(String[] args) throws Exception {
+    java.util.Collection<Integer> v = java.util.Arrays.asList(1,2,3);
+    Perm p=PJ.newInstance(Perm.class);
+    for (List<Int> list : p.permutation(new List<Int>(v))) {
+        System.out.println(list.toJava());
+    }
+  }
+}
+\end{verbatim}
+\textsf{\emph{Output printed:}}
+\begin{verbatim}
+    [1, 2, 3]
+    [1, 3, 2]
+    [2, 1, 3]
+    [2, 3, 1]
+    [3, 1, 2]
+    [3, 2, 1]
+\end{verbatim}
+\end{tabular}
+}\caption{A Java class exploiting Prolog for implementing an abstract method \textit{(top)} and a client using it \textit{(bottom)}. Note that the \texttt{Arrays.asList} method exploits the Java shortcut syntax for varargs.
+To run the example, the \texttt{javassist.jar} library, used by the P@J runtime, must be in the class path: \texttt{E:>java~~-cp .;2p.jar;javassist.jar PJexample}
+}
+\label{tab:pj-example1}
+\end{table}
+
+
+\begin{table}
+{\footnotesize
+\begin{tabular}[-1cm]{p{12cm}}
+\begin{verbatim}
+import alice.tuprologx.pj.annotations.*;
+import alice.tuprologx.pj.engine.*;
+import alice.tuprologx.pj.model.*;
+import alice.tuprologx.pj.meta.*;
+\end{verbatim}
+\textsf{\emph{Another Java class augmented via Prolog}}
+\begin{verbatim}
+@PrologClass(
+	clauses = {"size(X,Y) :- length(X,Y)."}
+)
+public abstract class PJLength {	
+    @PrologMethod abstract <$Ls extends List<?>, $Ln extends Int>
+    Boolean size($Ls expr, $Ln rest);
+    @PrologMethod abstract <$Ls extends List<?>, $Ln extends Int>
+    $Ln size($Ls expr);
+    @PrologMethod abstract <$Ls extends List<?>, $Ln extends Int>
+    $Ls size($Ln expr);
+    @PrologMethod abstract <$Ls extends List<?>, $Ln extends Int>
+    Iterable<Compound2<$Ls,$Ln>> size();
+
+    public static void main(String[] args) throws Exception {
+        PJLength pjl = PJ.newInstance(PJLength.class);
+        java.util.List<?> v = java.util.Arrays.asList(12,"ok",false);
+        List<?> list = new List<Term<?>>(v);
+        Boolean b = pjl.size(list, 3);   // true
+        Int i = pjl.size(list);          // length is 3
+        List<?> l = pjl.size(3);         // produces [_,_,_]
+        int cont = 0;
+        for (Term<?> t : pjl.size()) {   // [],[_],...,[_,_,_,_,_]
+            System.out.println(t);
+            if (cont++ == 5) break;
+        }
+    }
+}\end{verbatim}
+\textsf{\emph{Output printed:}}
+\begin{verbatim}
+    Compound:'size'(List[],Int(0))
+    Compound:'size'(List[Var(_)],Int(1))
+    Compound:'size'(List[Var(_), Var(_)],Int(2))
+    Compound:'size'(List[Var(_), Var(_), Var(_)],Int(3))
+    Compound:'size'(List[Var(_), Var(_), Var(_), Var(_)],Int(4))
+    Compound:'size'(List[Var(_), Var(_), Var(_), Var(_), Var(_)],Int(5))
+\end{verbatim}
+\end{tabular}
+}\caption{Another Java class exploiting Prolog for method implementation. The \texttt{length/2} predicate used in the \texttt{clauses} section on top is part of the standard ISO list management predicates.}
+\label{tab:pj-example2}
+\end{table}
+
+\begin{table}
+{\footnotesize
+\begin{tabular}[-1cm]{p{12cm}}
+\begin{verbatim}
+import alice.tuprologx.pj.annotations.*;
+import alice.tuprologx.pj.engine.*;
+import alice.tuprologx.pj.model.*;
+import alice.tuprologx.pj.meta.*;
+\end{verbatim}
+\textsf{\emph{Another Java class augmented via Prolog}}
+\begin{verbatim}
+@PrologClass (
+  clauses={"arc(a,b)." , "arc(a,d)." , "arc(b,e)." , "arc(d,g).",
+           "arc(g,h)." , "arc(e,f)." , "arc(f,i)." , "arc(e,h)."}
+)
+public abstract class PJPath {
+  @PrologMethod (
+    clauses = {	"path(X,X,[X]).",
+                "path(X,Y,[X|Q]):-arc(X,Z),path(Z,Y,Q)."}
+  )
+  public abstract <$X,$Y,$P> Iterable<$P> path($X from, $Y to);
+
+  public static void main(String[] s) throws Exception {
+    PJPath pjp = PJ.newInstance(PJPath.class);
+    for (Object solution : pjp.path(new Atom("a"), new Var<Atom>("X"))) {
+      System.out.println(solution);
+    }
+  }
+}\end{verbatim}
+\textsf{\emph{Output printed:}}
+\begin{verbatim}
+  List[Atom(a)]
+  List[Atom(a), Atom(b)]
+  List[Atom(a), Atom(b), Atom(e)]
+  List[Atom(a), Atom(b), Atom(e), Atom(f)]
+  List[Atom(a), Atom(b), Atom(e), Atom(f), Atom(i)]
+  List[Atom(a), Atom(b), Atom(e), Atom(h)]
+  List[Atom(a), Atom(d)]
+  List[Atom(a), Atom(d), Atom(g)]
+  List[Atom(a), Atom(d), Atom(g), Atom(h)]
+\end{verbatim}
+\end{tabular}
+}\caption{Another Java class exploiting Prolog for method implementation.}
+\label{tab:pj-example3}
+\end{table}
+
+
+Two further examples are shown in Table \ref{tab:pj-example2} and Table \ref{tab:pj-example3}, respectively.
+The first operates on lists, and finally generates (and prints) five ``lists of anything'' of 1,2,3,4,5 arguments; the second computes the path between two given nodes in a graph. In both cases, Prolog is delegated the reasoning part, while Java is exploited as the front-end to the user.
+Technically, attention is required to distinguish Java lists (i.e., instances of \texttt{java.util.List} and its subclasses) from P@J \texttt{List}, which handles terms like \texttt{Term<X>}; moreover, the example in Table \label{tab:pj-example2} shows the inner structure of compounds.
+
+For completeness, Table Table \ref{tab:pj-example4} shows a last, more complex example, where the Prolog code specifies a parser for arithmetic expressions.
+
+\begin{table}
+{\footnotesize
+\begin{tabular}[-1cm]{p{12cm}}
+\begin{verbatim}
+import alice.tuprologx.pj.annotations.*;
+import alice.tuprologx.pj.engine.*;
+import alice.tuprologx.pj.model.*;
+import alice.tuprologx.pj.meta.*;
+
+@PrologClass
+public abstract class PJParser {
+  @PrologMethod (clauses={"expr(L,R):-term(L,R).",
+                          "expr(L,R):-term(L,['+'|R2]), expr(R2,R).",
+                          "expr(L,R):-term(L,['-'|R2]), expr(R2,R)."})
+  public abstract <$E extends List<?>, $R extends List<?>>
+  Boolean expr($E expr, $R rest);
+
+  @PrologMethod (clauses={"term(L,R):-fact(L,R).",
+                          "term(L,R):-fact(L,['*'|R2]), term(R2,R).",
+                          "term(L,R):-fact(L,['/'|R2]), term(R2,R)."})
+  public abstract <$T extends List<?>, $R extends List<?>>
+  Boolean term($T term, $R rest);
+	
+  @PrologMethod (clauses={"fact(L,R):-num(L,R).",
+                          "fact(['(' | E],R):-expr(E,[')'|R])."})
+  public abstract <$F extends List<?>, $R extends List<?>>
+  Boolean fact($F fact, $R rest);
+	
+  @PrologMethod (clauses={"num([L|R],R):-num_atom(_,L)."})
+  public abstract <$N extends List<?>, $R extends List<?>>
+  Boolean num($N num, $R rest);
+	
+  public static void main(String[] args) throws Exception {
+    PJParser ep = PJ.newInstance(PJParser.class);
+    String tokenizer_regexp =
+      "(?<!^)(\\b|(?=\\()|(?=\\))|(?=\\-)|(?=\\+)|(?=\\/)|(?=\\*))";
+    List<Atom> exp1 = new Atom("12+(3-4)").split(tokenizer_regexp);
+    List<Atom> exp2 = new Atom("(12+(3-4))").split(tokenizer_regexp);
+    System.out.println(ep.expr(exp1, List.NIL)); // 12+(3*4)   expression ?
+    System.out.println(ep.fact(exp1, List.NIL)); // 12+(3*4)   factor ?
+    System.out.println(ep.expr(exp2, List.NIL)); // (12+(3*4)) expression ?
+    System.out.println(ep.fact(exp2, List.NIL)); // (12+(3*4)) factor ?
+  }
+}\end{verbatim}
+\end{tabular}
+}\caption{A parser for arithmetic expressions encoded in Prolog inside an annotated Java program. The output prints \texttt{true}, \texttt{false}, \texttt{true}, \texttt{true} in this order, since 12+(3*4) is an expression but not a factor, while (12+(3*4)) is both an expression and a factor.}
+\label{tab:pj-example4}
+\end{table}
