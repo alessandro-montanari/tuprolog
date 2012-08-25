@@ -13,7 +13,7 @@
         Though you can do so using your preferred IDE, the \tuprolog{} plugin
         for the Eclipse platform is probably the most practical choice for this purpose, as the \tuprolog{} perspective provides all the views over the Prolog world in an Eclipse-compliant, effective way.
   \item as a \textit{.NET user}, analogously, you can add \tuprolog{} to any
-        Visual Studio project (including the related IKVM libraries, as detailed in chapter \ref{ch:dotnet}, or just manually compile your .NET application with the necessary DLL files in the build path. The \tuprolog{} API, which is nearly identical to the Java one, provides for proper data exchange
+        Visual Studio project (including the related IKVM libraries, as detailed in Chapter \ref{ch:mpp-in-dotnet}, or just manually compile your .NET application with the necessary DLL files in the build path. The \tuprolog{} API, which is nearly identical to the Java one, provides for proper data exchange
         between the .NET and the Prolog worlds.
   \item finally, as an \textit{Android user}, you can both enjoy the \tuprolog{} app
         to consult, edit, and run Prolog programs, as you would do with any other Prolog system, and --perhaps more interestingly-- exploit the \tuprolog{} Java API for developing Android applications, adding intelligence to your next Android app.
@@ -166,7 +166,7 @@ The subsequent area below contains five panes:
 \item the \textit{binding} and the \textit{all bindings} panes show the variable bindings in tabular form, for a single solution or for all solutions, respectively (see Figure \ref{fig:gui-bindings}); here, too, proper control buttons are provided to clear the bindings pane and export the tabular data in a convenient CSV format;
 
 \item the \textit{output pane} shows the output performed by the program via \texttt{write} and other console I/O predicates (Figure \ref{fig:gui-output}).
-    Please note that output performed by Java methods -- that is, methods invoked on Java objects via \classname{JavaLibrary} -- are \textit{not} captured and displayed in this view: for further information on this topic, refer to Chapter \ref{ch:java-library}.
+    Please note that output performed by Java methods -- that is, methods invoked on Java objects via \classname{JavaLibrary} -- are \textit{not} captured and displayed in this view: for further information on this topic, refer to Section \ref{sec:java-library}.
     %
     Again, control buttons are provided to clear the output pane.
 
@@ -264,7 +264,7 @@ The easiest way to do so it to exploit the Java plugin available for the Eclipse
   \caption{The \tuprolog{} plugin GUI for Eclipse.}\label{fig:tuprologPluginGUI}
 \end{figure}
 
-This perspective is mainly designed to support the development of multi-language, multi-paradigm applications (see Chapter \ref{ch:java-library}), but can also be used as a standard Prolog console, writing (or loading) the Prolog theory in the editor and writing the query in the proper textfield---although the direct use of the \tuprolog{} GUI is probably faster for this purpose.
+This perspective is mainly designed to support the development of multi-language, multi-paradigm applications (see Chapters \ref{ch:mpp-in-java}, \ref{ch:mpp-in-dotnet}), but can also be used as a standard Prolog console, writing (or loading) the Prolog theory in the editor and writing the query in the proper textfield---although the direct use of the \tuprolog{} GUI is probably faster for this purpose.
 
 To use \tuprolog{} in Eclipse, one first needs to create a new \tuprolog{} project, and add a new theory file (\texttt{*.pl}) to the project.
 %
@@ -355,13 +355,13 @@ Moreover, in case of undeclared terms, a direct warning is issued in the plugin 
 \label{sec:dotnet-user-perspective}
 %=======================================================================
 
-Since \tuprolog{}.NET is the result of an automatic conversion of the Java bytecode via IKVM\cite{ikvm}, everything in the Prolog user experience is identical whether the .NET or the Java GUI is used (see Section \ref{sec:prolog-user-perspective} above).
+Since \tuprolog{}.NET is the result of an automatic conversion of the Java bytecode via IKVM \cite{ikvm}, everything in the Prolog user experience is identical whether the .NET or the Java GUI is used (see Section \ref{sec:prolog-user-perspective} above).
 
 The .NET developer, however, can exploit \tuprolog{} in a .NET project, accessing its API from a program written in potentially any language available in the .NET platform.
 %
 Since no plugin is available for the de-facto standard tool used by most .NET programmers (i.e., Microsoft Visual Studio), there is no immediate way to see \tuprolog{} at work from within Visual Studio; however, the \tuprolog{} libraries can be easily added as external references for exploiting the available APIs, as one would do with any other library or third-party software.
 
-For specific information about multi-paradigm programming in the context of the .NET platform, please refer to Chapter \ref{ch:dotnet}.
+For specific information about multi-paradigm programming in the context of the .NET platform, please refer to Chapter \ref{ch:mpp-in-dotnet}.
 
 
 %=======================================================================
