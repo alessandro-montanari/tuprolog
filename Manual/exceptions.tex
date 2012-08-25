@@ -1,6 +1,6 @@
 %=======================================================================
 \chapter{\tuprolog{} Exceptions}
-\label{ch:exceptions}
+ss\label{ch:exceptions}
 %=======================================================================
 
 %=======================================================================
@@ -9,9 +9,9 @@
 %=======================================================================
 Exception handling was first introduced in the ISO Prolog standard (ISO/IEC 13211-1) in 1995.
 
-The first distinction has to be made between \textit{errors} and \textit{exceptions}. 
+The first distinction has to be made between \textit{errors} and \textit{exceptions}.
 %
-An \textit{error} is a particular circumstance that interrupts the execution of a Prolog program: when a Prolog engine encounters an error, it raises an \textit{exception}. 
+An \textit{error} is a particular circumstance that interrupts the execution of a Prolog program: when a Prolog engine encounters an error, it raises an \textit{exception}.
 %
 The exception handling support is supposed to intercept the exception and transfer the execution flow to a suitable exception handler, with any relevant information. Two basic principles are followed during this operation:
 
@@ -203,7 +203,7 @@ Answer: \texttt{ no.}
 \label{ssec:java-exceptions-in-tuprolog}
 %-----------------------------------------------------------------------
 
-One peculiar aspect of \tuprolog{} is the ability to support multi-paradigm programming, mixing object-oriented (mainly, but not exclusively, Java) and Prolog in several ways---in particular, by enabling Java objects to be accessed and exploited from Prolog world via Javalibrary (see Chapter \ref{ch:java-library}).
+One peculiar aspect of \tuprolog{} is the ability to support multi-paradigm programming, mixing object-oriented (mainly, but not exclusively, Java) and Prolog in several ways---in particular, by enabling Java objects to be accessed and exploited from Prolog world via Javalibrary (see Section \ref{sec:java-library}).
 %
 In this context, the problem arises of properly sensing and handling Java exceptions from the Prolog side.
 
@@ -219,7 +219,7 @@ At a first sight, one might think of re-mapping Java exceptions and constructs o
 
 \noindent Accordingly, Java exceptions in \tuprolog{} programs are handled by means of two further, \textit{ad hoc} predicates: \texttt{java\_throw/1} and \texttt{java\_catch/3}.
 %
-Since their behaviour can be fully understood only in the context of JavaLibrary, we forward the reader to Chapter \ref{ch:java-library} for further information.
+Since their behaviour can be fully understood only in the context of JavaLibrary, we forward the reader to Chapter \ref{ch:mpp-in-java} (Section \ref{sec:java-library}) for further information.
 
 %---------------------------------------------------------------------------------------
 \section{Appendix: Implementation notes}
@@ -235,7 +235,7 @@ This led to intervene with extra Java checks for libraries fully implemented in 
 
 \bigskip
 
-Per quel che riguarda il modo in cui \`{e} stato implementato il meccanismo di controllo degli errori, bisogna distinguere i predicati espressi in Java da quelli espressi in Prolog. 
+Per quel che riguarda il modo in cui \`{e} stato implementato il meccanismo di controllo degli errori, bisogna distinguere i predicati espressi in Java da quelli espressi in Prolog.
 
 Nel primo caso le eccezioni (cio\`{e} le opportune istanze di \texttt{PrologError}) vengono lanciate direttamente dai corrispondenti metodi Java ogniqualvolta si verifica un errore, mentre nel secondo caso sono lanciate da metodi ``guardia" (sempre espressi in Java) invocati per controllare i parametri prima dell'esecuzione del predicato Prolog.
 
@@ -250,7 +250,7 @@ A parte le inevitabili modifiche ai built-in e alle librerie (\textit{BasicLibra
 \begin{itemize}
 
 \item alla classe \texttt{alice.tuprolog.FlagManager} sono stati aggiunti due metodi per ricavare informazioni su un flag:
-    
+
     \begin{itemize}
       \item \texttt{boolean isModifiable(String name)}\\
         che restituisce true se esiste nel motore un flag di nome \texttt{name}, e tale flag \`{e} modificabile;

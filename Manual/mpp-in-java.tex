@@ -99,7 +99,7 @@ For the sake of concreteness, Table \ref{tab:javalibrary-counter-example} report
         is the duration of the demonstration: by default, the binding is maintained in case of backtracking, but this behavior can be changed by setting the flag \texttt{java\_object\_backtrackable} flag to \texttt{true}.
 
         \color{red}
-        To make such a binding permanent, that is, to ``keep alive'' the binding between a Java object and a Prolog term beyond the current query, so as to exploit it in another, subsequent demonstration, the \texttt{register} predicate is provided;
+        To make such a binding permanent, that is, to ``keep alive'' the binding between a Java object and a Prolog term beyond the current query, so as to exploit it in another, subsequent demonstration, the \texttt{register} predicate is provided \textbf{(not yet available in \tuprolog{} 2.5.1 -- expected in version 2.6)};
         \normalcolor
         this can also be done on the Java side, via the \tuprolog{} Java API.
         However, this feature should not be abused: generally speaking, when operating from the Prolog side, objects needed by other predicates (within the same demonstration) should be passed over as arguments, coherently with the Prolog philosophy of avoiding any global side effect (except for \texttt{assert} predicates).
@@ -266,9 +266,11 @@ test_open_file_dialog(FileName) :-
 
 %-----------------------------------------------------------------------
 \color{red}
-\subsubsection{Registering object bindings (to be implemented)}
+\subsubsection{Registering object bindings}
 \label{sssec:register(prolog)}
 %-----------------------------------------------------------------------
+
+\textbf{(not yet available in \tuprolog{} 2.5.1 -- expected in version 2.6)}
 
 As explained above, the standard lifetime of the binding between Java objects and Prolog atoms is that of the current demonstration, in coherence with the lifetime of Prolog variable bindings.
 However, some multi-paradigm applications may require that a Java object is maintained alive and retrieved later without passing it along as an argument throughout the program: this is what the \texttt{register} predicate is for.
@@ -285,7 +287,7 @@ Its syntax is as follows:\\
 Public Java objects, including the static ones like \texttt{System.out}, can instead be registered by retrieving a reference to their binding first---as in the example shown in Table \ref{tab:javalibrary-counter-example} above, where a reference to \texttt{System.out} is retrieved to call the \texttt{println} method.
 
 \normalcolor
-Binding registration can be performed also on the Java side, as detailed in Section \ref{sssec:register(Java)}.
+Binding registration can be performed also on the Java side, as detailed in Section \ref{ssec:register(Java)}.
 
 %---------------------------------------------------------------------
 \subsection{Predicates}
@@ -1666,12 +1668,12 @@ Table \ref{tab:HybridLibrary} shows a hybrid library where the theory expressed 
 As shown in the above examples, a library can be loaded (and unloaded) dynamically into a running engine via Java, by means of the \texttt{loadLibrary} (\texttt{unloadLibrary}) methods; but it can also be loaded (unloaded) from Prolog, via the \texttt{load\_library/2} (\texttt{unload\_library/2} ) predicate.
 
 \color{red}
-The two approaches, however, are not completely identical, at least if \texttt{2p.jar} is used to start the \tuprolog{} GUI (or the console-based CUI) from which the loading is performed.
+\textbf{As of version 2.5.1,} the two approaches are not completely identical, at least if \texttt{2p.jar} is used to start the \tuprolog{} GUI (or the console-based CUI) from which the loading is performed.
 In fact, library loading from Prolog suffers from some limitations due to the Java reflection mechanism used internally by \tuprolog{} to locate the library,\footnote{%
-  The culprit is the \texttt{Class.forName} method.
+  The culprit is the \texttt{Class.forName} method, used instead of \texttt{loadClass} to maintain the compatibility with the .NET platform. This is why the problem was not present in older ($<$2.2) \tuprolog{} versions.
 } which does not search outside the JAR. So, only libraries packed into the same \tuprolog{} JAR can be found and loaded from Prolog via the \texttt{load\_library/2} predicate.
-To avoid the problem, currently the JAR must be unpacked.
-\textbf{To do: improve implementation using the URLClassLoader which can load classes from external JARs.}
+To bypass the problem, currently the only solution is to unpack the JAR archive:
+\textbf{in the near future, the implementation will be improved using the URLClassLoader which can load classes from external JARs, so as to remove the limitation.}
 
 This is why the examples above (\texttt{TestLibrary} and \texttt{HybridLibrary}) have been loaded from the Java side, via two main programs (\texttt{TestLibraryMain} and \texttt{HybridLibraryMain}).
 \normalcolor
