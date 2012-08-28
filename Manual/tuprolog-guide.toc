@@ -114,8 +114,13 @@
 \contentsline {subsection}{\numberline {8.2.3}The other way: writing .NET applications in Java}{148}{subsection.8.2.3}
 \contentsline {section}{\numberline {8.3}\unhbox \voidb@x \hbox {{\sf {tu}}Prolog}.NET now}{150}{section.8.3}
 \contentsline {subsection}{\numberline {8.3.1}Highlights}{150}{subsection.8.3.1}
-\contentsline {section}{\numberline {8.4}Using .NET from Prolog: OOLibrary}{151}{section.8.4}
-\contentsline {section}{\numberline {8.5}Using Prolog from .NET: the API}{151}{section.8.5}
-\contentsline {section}{\numberline {8.6}Augmenting Prolog via .NET: developing new libraries}{151}{section.8.6}
-\contentsline {section}{\numberline {8.7}Augmenting .NET via Prolog: the PJ framework.. revised}{152}{section.8.7}
-\contentsline {section}{\numberline {8.8}Putting everything together}{152}{section.8.8}
+\contentsline {section}{\numberline {8.4}Using .NET from Prolog: OOLibrary}{152}{section.8.4}
+\contentsline {subsubsection}{Motivation}{152}{section*.33}
+\contentsline {subsubsection}{Language Conventions}{153}{section*.34}
+\contentsline {subsubsection}{OOLibrary: predicates}{154}{section*.35}
+\contentsline {subsection}{\numberline {8.4.1}Examples}{155}{subsection.8.4.1}
+\contentsline {section}{\numberline {8.5}Using Prolog from .NET: the API}{158}{section.8.5}
+\contentsline {section}{\numberline {8.6}Augmenting Prolog via .NET: developing new libraries}{158}{section.8.6}
+\contentsline {section}{\numberline {8.7}Augmenting .NET via Prolog:\\the P@J framework.. revised}{162}{section.8.7}
+\contentsline {section}{\numberline {8.8}Putting everything together}{162}{section.8.8}
+\contentsline {subsection}{\numberline {8.8.1}Example: Multi-language TicTacToe}{164}{subsection.8.8.1}
