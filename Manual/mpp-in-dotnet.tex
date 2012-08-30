@@ -6,9 +6,9 @@
 \tuprolog{}.NET now provides the user with the same features as the Java version, extending and specializing the multi-paradigm, multi-language experience to the plethora of languages available onto the Microsoft .NET platform.
 In this Chapter, the impact of such change is discussed, both in terms of specific conceptual concepts (namely, \textit{language conventions} to handle multiple languages) and new/specialized libraries and predicates to be used for language interaction.
 
-Since the current status of \tuprolog{}.NET depends \textit{a)} on its past history and \textit{b)} on the IKVM tool \cite{ik}, the two following Sections summarize its evolution from version 2.1 and the basics of IKVM translation, respectively.
+Since the current status of \tuprolog{}.NET depends \textit{a)} on its past history and \textit{b)} on the IKVM tool \cite{ikvm}, the two following Sections summarize its evolution from version 2.1 and the basics of IKVM translation, respectively.
 
-While their reading is recommended to everyone, the reader wishing only to exploit \tuprolog{}.NET in its current version can safely bypass them and jump directly to Section \ref{sec:dotnet-basics}.
+While their reading is recommended to everyone, the reader wishing only to exploit \tuprolog{}.NET in its current version can safely bypass them and jump directly to Section \ref{sec:dotnet-tuprolog-now}.
 
 %-----------------------------------------------------------------------
 \section{A bit of history}
@@ -180,11 +180,12 @@ In this context, .NET concepts are mapped onto suitable Java concepts by \texttt
 \begin{itemize}
   \item \textit{namespaces} are mapped onto Java packages, pre-pending the \texttt{cli.} prefix to prevent name clashes;
   \item \textit{properties} are mapped onto a pair of Java \texttt{\textit{get}}/\texttt{\textit{set}} methods;
-  \item \textit{enumerations} are mapped onto classes extending \texttt{cli.System.Enum}, with static fields with integer values for each possible value of the .NET enumerative type (\color{red} in the future, Java \texttt{enum}s will be used instead\normalcolor);;
+  \item \textit{enumerations} are mapped onto classes extending \texttt{cli.System.Enum}, with static fields with integer values for each possible value of the .NET enumerative type;
+      % MAYBE IN THE FUTURE THIS WILL CHANGE, AND ENUM WILL BE USED.
   \item \textit{delegates} are mapped onto a Java class and a nested helper \texttt{Method} interface: the class derives from \texttt{System.MulticasDelegate} and has the same name as the original delegate, while the nested interface always declares an \texttt{Invoke} method whose signature matches the delegate: this method is called when an event occurs. This is why, the class constructor takes as its argument an object implementing the \texttt{Method} interface, whose implementation of \texttt{Invoke} does the actual job.
   \item \textit{events} are mapped onto a pair of Java \texttt{\textit{add\_*}}/\texttt{\textit{remove\_*}} methods, whose argument is an object of the class representing the delegate;
-  \item \textit{params} is mapped onto an array of \texttt{Object}s (\color{red} in the future, generics will be used instead of raw Objects\normalcolor);
-
+  \item \textit{params} is mapped onto an array of \texttt{Object}s;
+          % MAYBE IN THE FUTURE THIS WILL CHANGE, AND GENERICS WILL BE USED.
   \item \textit{attributes} are mapped onto a Java class with the same name as the .NET attribute, plus a pair of Java \texttt{\textit{get}}/\texttt{\textit{set}} methods for each property defined by the attribute.\footnote{The java class also includes a nested Java annotation, called \texttt{Annotation}, which defines Java methods homonomous to the .NET attribute properties: any reference to such an annotation in the Java code will be translated into the corresponding .NET attribute when the application is converted to .NET. However, only read properties are supported, even if the original .NET attribute properties were read/write.}
 \end{itemize}
 
@@ -477,7 +478,7 @@ To create a .NET application using \tuprolog{}, do the following:\footnote{The e
 
 
 %-----------------------------------------------------------------------
-\section{Augmenting Prolog via .NET: developing new libraries}
+\section{Augmenting Prolog via .NET:\\developing new libraries}
 \label{sec:dotnet-developing new libraries}
 %-----------------------------------------------------------------------
 
@@ -488,6 +489,18 @@ The approach is the basically same presented in Section \ref{sec:howto-develop-l
 Accordingly, the configuration file \texttt{2p.exe.config} specifies the custom paths where the library probing must take place: currently, the \texttt{lib} folder is included, so as to provide a standard place where to put any third-party library.
 %
 If Java classes are also used (\texttt{.class} or \texttt{.jar}), these must be in the same folder as the \texttt{2p.exe} executable (subdirectories are not acceptable).
+
+For instance, if the TestLibrary shown in Section \ref{tab:TestLibrary} on page \pageref{tab:TestLibrary} is translated via IKVM\footnote{Command: \texttt{ikvmc -r:2p.exe TestLibrary.class}} obtaining \texttt{TestLibrary.dll}, the \tuprolog{}.NET GUI can load it directly either via \texttt{load\_library/2}, using its full name \texttt{'TestLibrary, TestLibrary'}, or via the Library Manager dialog, specifying \texttt{"TestLibrary, TestLibrary"} as the class name (Figure \ref{fig:dotnet-testlibrary}).
+
+\begin{figure}
+  \includegraphics[width=12cm]{images/dotnet-testlibrary}
+  \caption{Loading the translated TestLibrary in the \tuprolog{}.NET GUI.}\label{fig:dotnet-testlibrary}
+\end{figure}
+
+Like the Java case, the output possibly made by the .NET library is \textit{not} captured in the \tuprolog{}.NET GUI (the engine simply replies \texttt{yes}), because a .NET windows application is not connected to any terminal: even when launched by a command prompt, the app releases the terminal immediately, so no standard output is defined.
+This means that, unlike the Java case, any output possibly performed from .NET predicates does not go to the terminal even if there is one---it simply gets lost. So, the only way to perform output is via the Prolog \texttt{write/1} predicate.
+(compare with Figures \ref{fig:testlibrary3} and \ref{fig:testlibrary5} in \Section \ref{ssec:library-syntax}).
+
 
 %-----------------------------------------------------------------------
 \section{Augmenting .NET via Prolog:\\the P@J framework revised}
@@ -501,7 +514,7 @@ However, its support in .NET is currently partial:
   \item a Java application using P@J, translated to .NET via IKVM, works normally in .NET (provided that the proper reference to the translated version of the Javassist library, \texttt{Javassist.dll}, is added to the \texttt{ikvmc} command, as follows:\\
       \texttt{\mbox{~~~}ikvmc -r:2p.exe \textbf{-r:javassist.dll} \textit{App}.class }\\
       whose result, \texttt{App.exe}, is ready to be executed;
-      
+
   \item instead, a .NET application trying to use P@J via .NET attributes (the .NET counterpart of Java annotations) currently fails due to an exception in the Javassist tool.
 \end{itemize}
 
@@ -602,4 +615,4 @@ Interestingly, the Prolog output is captured with the same approach presented in
 \end{verbatim}
 
 \noindent The data exchange issue is evident here in the case of the game status: the array is serialized to a string and converted into the desired Prolog term. The opposite conversion (Prolog back to .NET or Java) is not necessary in this application.
-The other arguments are of primitive types, so no conversions are needed. 
+The other arguments are of primitive types, so no conversions are needed.
