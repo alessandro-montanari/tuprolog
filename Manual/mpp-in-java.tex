@@ -799,7 +799,7 @@ get_remote_file(DirName, FileName, FTPHost, FTPUser, FTPPwd, Content) :-
 
 The handling of Prolog exceptions, according to the ISO standard, was already presented in Chapter \ref{ch:exceptions}.
 %
-\tuprolog{}'s peculiar support for multi-paradigm programming via Javalibrary, however, opens one extra challenge: the handling of the Java exceptions possibly raised during the execution of Java methods on objects accessed from the Prolog world.
+\tuprolog{}'s peculiar support for multi-paradigm programming via JavaLibrary, however, opens one extra challenge: the handling of the Java exceptions possibly raised during the execution of Java methods on objects accessed from the Prolog world.
 
 At a first sight, one might think of re-mapping Java exceptions and constructs onto the Prolog one, but this would be an unsatisfactory approach for three main reasons:
 
@@ -1583,10 +1583,14 @@ As expected, \texttt{N} is bound to \texttt{11}, \texttt{S} to \texttt{abcd}, th
     \label{tab:TestLibrary-Main}
 \end{table}
 
-Alternatively, the same theory can be loaded from the Prolog side, via the \texttt{load\_library} predicate (Figure \ref{fig:testlibrary3}, \textit{top}) or via the library manager tool in the GUI (Figure \ref{fig:testlibrary1}): in these cases, \textit{the Java output is not captured by the \tuprolog{} GUI}, but goes to the Java console---that is, the prompt from which the GUI was launched (Figure \ref{fig:testlibrary3}, \textit{bottom}), because the code in \texttt{println\_2} explicitly states to write to \texttt{System.out}.
-Rather obviously, if the CUIConsole is used instead of the GUI, the output goes to the same terminal, and the ``strange'' effect above does not occur (Figure \ref{fig:testlibrary5}).
+Alternatively, the same theory can be loaded from the Prolog side, via the \texttt{load\_library} predicate (Figure \ref{fig:testlibrary3}, \textit{top}) or via the library manager tool in the GUI (Figure \ref{fig:testlibrary1}).
 
 Please note that library loading from the Prolog side requires a clear understanding of Java loading issues discussed in Section \ref{ssec:library-loading-issues}: \textit{please read that Section carefully, or the example will never work}.
+
+\subsubsection{Capturing the Java output in Prolog}
+
+In these cases, \textit{the Java output is not captured by the \tuprolog{} GUI}, but goes to the Java console---that is, the prompt from which the GUI was launched (Figure \ref{fig:testlibrary3}, \textit{bottom}), because the code in \texttt{println\_2} explicitly states to write to \texttt{System.out}.
+Rather obviously, if the CUIConsole is used instead of the GUI, the output goes to the same terminal, and the ``strange'' effect above does not occur (Figure \ref{fig:testlibrary5}).
 
 \begin{figure}
     \centering
