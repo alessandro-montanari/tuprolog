@@ -8,7 +8,7 @@ In this Chapter, the impact of such change is discussed, both in terms of specif
 
 Since the current status of \tuprolog{}.NET depends \textit{a)} on its past history and \textit{b)} on the IKVM tool \cite{ik}, the two following Sections summarize its evolution from version 2.1 and the basics of IKVM translation, respectively.
 
-While their reading is recommended to everyone, the reader wishing only to exploit \tuprolog{}.NET in its current version can safely bypass them and jump directly yo Section \ref{sec:dotnet-basics}.
+While their reading is recommended to everyone, the reader wishing only to exploit \tuprolog{}.NET in its current version can safely bypass them and jump directly to Section \ref{sec:dotnet-basics}.
 
 %-----------------------------------------------------------------------
 \section{A bit of history}
@@ -153,9 +153,9 @@ To overcome this issue, four alternatives can be followed:
   \item writing an ad-hoc class loader, typically extending \texttt{URLClassLoader}: this is perhaps the most flexible, but also the user-heaviest, solution.
 \end{enumerate}
 
-\noindent One further interesting aspect is that the IKVM implementation of Java's \texttt{Class.forName} method adopts a more general behavior than Java's default implementation, supporting the dynamic loading of classes also \textit{beyond} the current assembly, provided that their \texttt{AssemblyQualifiedName} is specified; otherwise, only the current assembly is checked, as in Java.
+\noindent One further interesting aspect is that the IKVM implementation of Java's \texttt{Class.forName} method adopts a more general behavior than Java's default implementation, supporting the dynamic loading of classes also \textit{beyond} the current assembly even without special options, provided that their \texttt{AssemblyQualifiedName} is specified; otherwise, only the current assembly is checked.
 
-So, a Java application that exploited \texttt{Class.forName} for dynamic class loading, that could originally load only classes in the application JAR, will be able to load .NET\footnote{The reason why this feature is limited to .NET classes is, trivially, that only .NET classes possess the \texttt{AssemblyQualifiedName} property and the other assembly details (version, culture, public key token).} classes beyond the application's own assembly when translated to .NET via IKVM.
+So, a Java application that exploited \texttt{Class.forName} for dynamic class loading, that could originally load only classes in the application JAR unless properly launched (see Section \ref{ssec:library-loading-issues}), will be able to load .NET\footnote{The reason why this feature is limited to .NET classes is, trivially, that only .NET classes possess the \texttt{AssemblyQualifiedName} property and the other assembly details (version, culture, public key token).} classes beyond the application's own assembly when translated to .NET via IKVM.
 
 %--------------------------------------
 \subsection{The other way: writing .NET applications in Java}
@@ -176,17 +176,15 @@ Instead, the resulting ``fake'' Java application is to be translated via \texttt
 
 \medskip
 
-In this context, .NET concepts are mapped onto suitable Java concepts by \texttt{ikvmc} as follows:
+In this context, .NET concepts are mapped onto suitable Java concepts by \texttt{ikvmstub} as follows:
 \begin{itemize}
   \item \textit{namespaces} are mapped onto Java packages, pre-pending the \texttt{cli.} prefix to prevent name clashes;
   \item \textit{properties} are mapped onto a pair of Java \texttt{\textit{get}}/\texttt{\textit{set}} methods;
-    \color{red}
-  \item \textit{enumerations} \textbf{were} mapped onto classes extending \texttt{cli.System.Enum}, with static fields with integer values for each possible value of the .NET enumerative type; \textbf{still true? or using Java Enums now?}
-    \normalcolor
-  \item \textit{delegates} are mapped onto a Java class and a nested helper \texttt{Method} interface: the class derives from \texttt{System.MulticasDelegate} and has the same name as the original delegate, while the nested interface always declares an \texttt{Invoke} method whose signature matches the delegate: this is method called when an event occurs. For this reason, the class constructor takes as its argument an object implementing the \texttt{Method} interface, whose implementation of \texttt{Invoke} does the actual job.
+  \item \textit{enumerations} are mapped onto classes extending \texttt{cli.System.Enum}, with static fields with integer values for each possible value of the .NET enumerative type (\color{red} in the future, Java \texttt{enum}s will be used instead\normalcolor);;
+  \item \textit{delegates} are mapped onto a Java class and a nested helper \texttt{Method} interface: the class derives from \texttt{System.MulticasDelegate} and has the same name as the original delegate, while the nested interface always declares an \texttt{Invoke} method whose signature matches the delegate: this method is called when an event occurs. This is why, the class constructor takes as its argument an object implementing the \texttt{Method} interface, whose implementation of \texttt{Invoke} does the actual job.
   \item \textit{events} are mapped onto a pair of Java \texttt{\textit{add\_*}}/\texttt{\textit{remove\_*}} methods, whose argument is an object of the class representing the delegate;
-  \item \textit{params} is mapped onto an array of \texttt{Object}s;
-    \\\color{red}\textbf{maybe now using generics?}\normalcolor
+  \item \textit{params} is mapped onto an array of \texttt{Object}s (\color{red} in the future, generics will be used instead of raw Objects\normalcolor);
+
   \item \textit{attributes} are mapped onto a Java class with the same name as the .NET attribute, plus a pair of Java \texttt{\textit{get}}/\texttt{\textit{set}} methods for each property defined by the attribute.\footnote{The java class also includes a nested Java annotation, called \texttt{Annotation}, which defines Java methods homonomous to the .NET attribute properties: any reference to such an annotation in the Java code will be translated into the corresponding .NET attribute when the application is converted to .NET. However, only read properties are supported, even if the original .NET attribute properties were read/write.}
 \end{itemize}
 
@@ -235,7 +233,7 @@ This extra value spreads into several directions:
   \caption{Performance comparison between Java and C\# code executed directly or via \tuprolog{}.NET (times in milliseconds).}\label{tab:dotnet-benchmarks}
 \end{table}
 
-From the performance viewpoint, it is already known from the experience of the older \tuprolog{}.NET 2.2 (see Section \ref{ssec:dotnet-tuprolog2.2}) that an overhead is to be expected on Java applications.
+From the performance viewpoint, the experience of the older \tuprolog{}.NET 2.2 (see Section \ref{ssec:dotnet-tuprolog2.2}) showed that an overhead is to be expected on Java applications.
 To quantify it in some common situations, Table \ref{tab:dotnet-benchmarks} shows the average execution times of three micro-benchmarks (\textit{math}, \textit{concat} and \textit{sort}) when written in Java and C\#, executed directly and via \tuprolog{}.NET, respectively: \textit{math} performs algebraic operations on real numbers, \textit{concat} concatenates strings via the \texttt{StringBuilder} class available in both languages, and \textit{sort} sorts an array of integer numbers via quicksort.
 
 Quite clearly, the execution of Java code via IKVM introduces an overhead\footnote{These figures are not very sensitive to the time overhead of class loading, because the classes to be loaded here are few and small: however, the first iterations of the test program do show higher execution times for this reason.} whose weight depends of the specific operation area, and whose cause is mainly the IKVM implementation of Java libraries: in fact, the \textit{sort} test, where IKVM incorporates its own implementation of the Java library instead of using the default one, is not affected in its performance.
@@ -369,7 +367,7 @@ visualbasicWithoutConvention :-
   Obj <- get_Id returns StudentNumber,
   class('VBStudent.Student,VBStudent') <- get_StaticProperty returns Value,
   new_object('VBStudent.Student, VBStudent[]',[10], Array).
-  
+
 visualbasicWithConvention :-
   load_convention('VBConvention.dll','VBConvention.VBDotNet',Conv),
   new_object(Conv,'VBStudent.Student, VBStudent',
@@ -378,7 +376,7 @@ visualbasicWithConvention :-
   Obj.id <- get(StudentNumber),
   class('VBStudent.Student, VBStudent').staticProperty <- get(Value),
   new_object(Conv, 'VBStudent.Student, VBStudent()',[10], Array).
-  
+
 javaWithoutConvention :-
   new_object('javastudent.Student',[123456,'john','smith'], Obj),
   Obj <- printStudent returns Student,
@@ -485,14 +483,14 @@ To create a .NET application using \tuprolog{}, do the following:\footnote{The e
 
 New \tuprolog{}.NET libraries can be written in any of the .NET languages, and then compiled normally via Microsoft Visual Studio; alternatively, libraries written in Java can be used, by translating them in .NET via IKVM (if they are not part of the standard \tuprolog{} distribution, of course).
 
-The approach is the basically same presented in Section \ref{sec:howto-develop-libraries}: the only difference concerns how libraries are located in the file system, which obviously adheres to the .NET conventions\footnote{
+The approach is the basically same presented in Section \ref{sec:howto-develop-libraries} (same method conventions, same need to extend \texttt{alice.tuprolog.Library}), etc.: the only difference concerns how libraries are located in the file system, which obviously adheres to the .NET conventions\footnote{
 \texttt{http://msdn.microsoft.com/en-us/library/yx7xezcf.aspx}}.
 Accordingly, the configuration file \texttt{2p.exe.config} specifies the custom paths where the library probing must take place: currently, the \texttt{lib} folder is included, so as to provide a standard place where to put any third-party library.
- 
+%
 If Java classes are also used (\texttt{.class} or \texttt{.jar}), these must be in the same folder as the \texttt{2p.exe} executable (subdirectories are not acceptable).
 
 %-----------------------------------------------------------------------
-\section{Augmenting .NET via Prolog:\\the P@J framework.. revised}
+\section{Augmenting .NET via Prolog:\\the P@J framework revised}
 \label{sec:dotnet-pj}
 %-----------------------------------------------------------------------
 
@@ -500,8 +498,11 @@ Since \tuprolog{}.NET is automatically generated from the Java sources via IKVM,
 %
 However, its support in .NET is currently partial:
 \begin{itemize}
-  \item a Java application using P@J, translated to .NET via IKVM, works normally in .NET;
-  \item instead, a .NET application trying to use P@J via .NET attributes (the .NET counterpart of Java annotations) currently fails, since the Javassist tool raises exception.
+  \item a Java application using P@J, translated to .NET via IKVM, works normally in .NET (provided that the proper reference to the translated version of the Javassist library, \texttt{Javassist.dll}, is added to the \texttt{ikvmc} command, as follows:\\
+      \texttt{\mbox{~~~}ikvmc -r:2p.exe \textbf{-r:javassist.dll} \textit{App}.class }\\
+      whose result, \texttt{App.exe}, is ready to be executed;
+      
+  \item instead, a .NET application trying to use P@J via .NET attributes (the .NET counterpart of Java annotations) currently fails due to an exception in the Javassist tool.
 \end{itemize}
 
 \noindent A different, more .NET specific, approach is currently under study and will be included in a future \tuprolog{}.NET version.
@@ -549,69 +550,56 @@ The resulting Prolog code would them be something like this:
 \label{ssec:mpp-tictactoe}
 %----------------------------------------------
 
+This example aims to show the data exchange issue between .NET and Prolog in the context of a multi-paradigm application. To this end, the different aspects are assigned to different languages, as follows:
+\begin{itemize}
+  \item C\# is used for the main entry point (\texttt{tictactoe.exe} file, Figure \ref{fig:dotnet-pipolo5});
+  \item a .NET language is used for the data model and I/O handling, i.e. the \texttt{TicTacToe} class: this class is actually implemented in different versions using different languages (C\#, VB.NET, F\# and Java), to test interoperability in different situations (Figure \ref{fig:dotnet-pipolo2});
+  \item Prolog is used to express the game logic, i.e. the move generation: this part is coded in the \texttt{tictac.pl} file (Figure \ref{fig:dotnet-pipolo34}).
+\end{itemize}
 
-Questo esempio di utilizzo è stato realizzato per mostrare:
-"	il problema dello scambio di dati .NET/Prolog;
-"	un possibile refactoring in senso multi-paradigma di una applicazione esistente;
-Per questo è stato realizzato il programma in più parti, partendo da un'applicazione esistente (15) implementata unicamente nel linguaggio Prolog. È stato quindi effettuato un refactoring multi-paradigma dell'applicazione, utilizzando il linguaggio più opportuno per ognuno dei compiti da svolgere: ad esempio, in Prolog è realizzata la logica di generazione delle mosse del computer mentre C\#(o uno degli altri linguaggi .NET) viene usato per la logica di gestione dell'I/O e del modello dei dati.
+\begin{figure}[h]
+   \centering
+  \includegraphics[width=14cm]{images/dotnet-pipolo5}
+  \caption{The \texttt{Main} class in C\#: in this case, the C\# version of the \texttt{TicTacToe} class is loaded (last line), but this argument could easily be taken from the command line. Note the loading of \texttt{OOLibrary} and the capturing of Prolog code with the same technique presented in Section \ref{ssec:capturing-output}.}
+  \label{fig:dotnet-pipolo5}
+\end{figure}
 
-L'applicazione consiste in un eseguibile .NET (file tictactoe.exe) che funziona da punto di ingresso, un sorgente Prolog (file tictac.pl) e una classe (classe TicTacToe), la classe TicTacToe è stata realizzata in più versioni, una per ogni linguaggio supportato (C\#, VB.NET, F\# e Java).
+\begin{figure}
+   \centering
+  \includegraphics[width=9cm]{images/dotnet-pipolo2}
+  \caption{The \texttt{TicTacToe} class: public interface.}\label{fig:dotnet-pipolo2}
+\end{figure}
 
-Il codice Prolog utilizzato è stato quindi modificato in modo da avere solo due responsabilità: la gestione del ciclo principale di esecuzione e la generazione delle mosse del computer.  I predicati che svolgono funzioni ora implementate dalla classe TicTacToe sono stati modificati in modo da far uso dei metodi offerti dalla classe, semplificando così il codice Prolog.
-Classe TicTacToe
-La classe TicTacToe è stata implementata in più versioni, realizzando ciascuna in un linguaggio diverso pur presentando la stessa interfaccia: questo rende le diverse classi intercambiabili. Il codice Prolog può usare in modo trasparente la classe TicTacToe indipendentemente dal linguaggio in cui è stata realizzata.
-La classe ha i seguenti obiettivi:
--	mantenere una rappresentazione del modello dei dati;
--	fornire alcuni metodi per operazioni sul modello;
--	fornire metodi per eseguire I/O.
-In particolare, la classe, implementata nel linguaggio C\#, espone la seguente interfaccia:
+\begin{figure}
+   \centering
+  \includegraphics[width=13cm]{images/dotnet-pipolo3}
+  \includegraphics[width=13cm]{images/dotnet-pipolo4}
+  \caption{The Prolog code implementing the application logic.}\label{fig:dotnet-pipolo34}
+\end{figure}
 
+\noindent In particular, the \texttt{Cells} property returns an array of \texttt{char} that represents the status of the game, each cell being  \texttt{'x'}, \texttt{'o'} or a number in the range 1--9 (the cell number) if it is still free, while the \texttt{Board} property returns the above status in the form of a string interpretable as a Prolog term---namely, something like \texttt{'board(\_,x,o,x,\_,\_,\_,o,x)'}.
+In turn, this format is used by the Prolog logic to generate the computer moves.
 
-Le funzioni di ognuno dei metodi e proprietà esposti sono:
--	proprietà Caselle: restituisce un array di char che rappresenta lo stato attuale della tavola di gioco. Ogni elemento rappresenta una casella, i valori che può assumere durante l'uso sono: 'x', 'o' oppure un numero da 1 a 9 che indica di quale casella si tratti se non è stata occupata da un giocatore;
--	proprietà Remaining: restituisce il numero di caselle libere rimanenti;
--	proprietà Board: restituisce una stringa che rappresenta lo stato attuale della tavola di gioco. Questa proprietà realizza la conversione dell'array rappresentante la tavola di gioco in un termine Prolog, in particolare restituisce una stringa in un formato che è interpretabile da Prolog dopo la sua conversione (attraverso il predicato text\_term/2). Il formato utilizzato per la rappresentazione in Prolog è il seguente: 'board(\_,x,o,x,\_,\_,\_,o,x)'; questa struttura rappresenta la tavola di gioco secondo il formato usato da tictac.pl per generare le mosse del computer, le caselle vuote vengono indicate con la variabile any, per quelle occupate viene invece usato un atomo, x oppure o, che indica il segnalino usato;
-"	metodo Gioca: riceve in ingresso il numero della casella (da 1 a 9) e una stringa contenente un carattere che indica il giocatore ('x' oppure 'o'). Si è scelto di usare una stringa come input poiché gli atomi Prolog, come già visto nel terzo capitolo, vengono mappati da tuProlog in istanze della classe String, anche se questi ultimi hanno la lunghezza di un solo carattere;
-"	metodo CheckWin: questo metodo, una volta invocato, restituisce un numero intero che indica se uno dei due giocatori ha vinto. Viene restituito 1 in caso di vittoria delle 'x', 2 per la vittoria delle 'o', 0 in caso non ci sia una vittoria;
-"	metodo PrintBoard: metodo che stampa su standard output una rappresentazione della tavola di gioco;
-"	metodi InputResponse, InputPlayer, InputMove: metodi usati per ricevere in input dati dall'utente;
-Tutte le versioni della classe TicTacToe implementano questa interfaccia, fa eccezione la versione Java, in cui le proprietà (non supportate dal linguaggio) sono sostituite da dei normali metodi che offrono le stesse funzionalità. Questa differenza viene gestita in Prolog mediante la definizione di predicati multipli; quando un predicato viene invocato, l'interprete eseguirà in sequenza tutte le implementazioni finché una di esse non ha successo. Questo permette di usare oggetti Java e .NET in maniera trasparente da Prolog.
+The \texttt{Play} method receives the cell number and the player (one of \texttt{'x'}, \texttt{'o'} as a string), while \texttt{CheckWin} checks whether some has won (0 meaning no one, 1 meaning that the winner is player \texttt{'x'}, 2 that it is player \texttt{'o'}).
+The other methods are self-explaining.
 
-File tictac.pl
-Il file contenente il codice Prolog dell'applicazione. In seguito al refactoring questa parte ha i seguenti obiettivi:
-"	gestire la classe TicTacToe e utilizzare le funzionalità offerte da essa;
-"	generare le mosse del giocatore controllato dal computer.
-Di seguito è riportata una figura che illustra la struttura del programma originale, suddividendone i predicati in gruppi: a fianco di questi viene indicato come sono stati modificati i predicati nella nuova versione del codice Prolog. Le modifiche sono evidenziate in grassetto.
+In the Java version, the above properties are replaced by suitable methods; this difference is handled by embedding in the Prolog logic two versions of the \texttt{get\_board} and \texttt{get\_remaining} predicates, that differ only for this aspect: in particular, the first predicate converts the input string into a \texttt{board/9} term via the \texttt{text\_term} library predicate.
 
-Per gestire la differenza tra le classi TicTacToe realizzate in linguaggi .NET e quella in Java sono state aggiunte delle coppie di predicati usate per accedere alle proprietà, nel caso di classi .NET, o ai metodi equivalenti, nel caso di Java. Questi predicati sono get\_board e get\_remaining.
-Per ricavare lo stato della tavola di gioco viene usato il predicato get\_board. Il predicato si occupa anche di convertire la stringa ottenuta in un termine Prolog che possa essere interpretato direttamente, questo mediante l'uso del predicato text\_term fornito da tuProlog. Il predicato get\_remaining permette di ricavare il numero di caselle libere.
-Per l'avvio dell'applicazione sono stati realizzati quattro predicati che vengono eseguiti prima del predicato go, originariamente usato per l'avvio del programma.
-loadgameCS, loadgameVB, loadgameFS, loadgameJava.
-Ognuno di questi predicati avvia l'applicazione, con la differenza che viene caricata e utilizzata la classe TicTacToe del relativo linguaggio. Viene quindi caricata la Convenzione relativa al linguaggio scelto e istanziata la classe TicTacToe, contenuta nella variabile Game che viene mantenuta per la durata della partita. Per istanziare la classe TicTacToe viene specificato il nome come 'namespace.nomeClasse, nomeAssembly', viene usato inoltre un costruttore privo di argomenti in ingresso, per cui nel predicato si fornisce una lista Prolog vuota '[]'. Per il linguaggio Java il nome viene specificato diversamente, in questo caso viene indicato solamente come 'nomePackage.nomeClasse'.
-Il programma inizia (predicato go) stampando a schermo le istruzioni del gioco, chiedendo al giocatore quale segnalino vuole utilizzare ('x' oppure 'o') e se vuole essere il primo a compiere la mossa o meno.
+The application is launched by one of the \texttt{loadgameCS}, \texttt{loadgameVB}, \texttt{loadgameFS}, \texttt{loadgameJava} methods, that are identical except for loading the \texttt{TicTacToe} class of the corresponding language.
+%
+Then, the app prompts the user for the preferred placeholder (the preference is stored in the \texttt{Player} variable) and asks whether he/she likes to move first, or not: \texttt{PlayerMoves} contains yes/no depending whether it is the human player's turn to play.
+%
+The actual move logic is embedded in \texttt{oneMove}, which has two alternative implementations---one for the computer, and one for the human player: both use \texttt{get\_board} above to get the game status. The computer move is generated by \texttt{generateMove}.
 
-Il predicato play realizza il ciclo principale dell'applicazione. Le variabili Player e PlayerMoves indicano, rispettivamente, il segnalino scelto dal giocatore "umano" e se è o meno il turno del giocatore "umano" (contiene 'yes' se lo è, 'no' altrimenti).
-Il predicato oneMove è implementato due volte, una nel caso sia il giocatore umano ad effettuare la mossa e l'altra nel caso sia il computer. In questo predicato viene usato get\_board per ottenere la rappresentazione Prolog della tavola di gioco; questo formato viene infatti usato dal predicato generateMove, che valuta la tavola di gioco per decidere la prossima mossa del computer.
-Il predicato makeMove viene usato per effettuare una mossa, fa uso infatti del metodo Gioca esposto dalla classe TicTacToe e quindi stampa lo stato della tavola usando il metodo PrintBoard.
-Il predicato continuePlay, controlla che ci sia stata o meno una vittoria o un pareggio e, in caso negativo, esegue nuovamente il predicato play con il turno del prossimo giocatore.
-Il resto del codice Prolog riguarda principalmente la generazione delle mosse del computer, questa parte è rimasta invariata rispetto all'originale in quanto la struttura dati che viene fornita in ingresso è quella ricavata dalla proprietà Board della classe TicTacToe.
+Interestingly, the Prolog output is captured with the same approach presented in Section \ref{ssec:capturing-output}, defining the \texttt{MyOutputListener} class as follows:
 
+\begin{verbatim}
+   public class MyOutputListener : OutputListener {
+     public void onOutput(OutputEvent e) {
+        System.Console.Write(e.getMsg());
+     }
+   }
+\end{verbatim}
 
-File tictactoe.exe
-L'eseguibile utilizzato come punto di ingresso dell'applicazione è stato realizzato in C\#, espone il seguente metodo Main in cui viene caricato il sorgente Prolog e configurato correttamente il motore Prolog caricando la OOLibrary.
-
-Per visualizzare correttamente l'output effettuato dal codice Prolog viene usato il seguente OutputListener, che ridirige semplicemente tutto l'output sulla Console:
-
-public class MyOutputListener : OutputListener
-{
-public void onOutput(OutputEvent e)
-{
-System.Console.Write(e.getMsg());
-}
-}
-
-In questo esempio si è scelto di includere una proprietà che permettesse il passaggio del dato più complesso da scambiare: l'array contenente lo stato della tavola di gioco. Per il passaggio si è scelto di serializzarlo in una stringa e quindi convertirlo in un termine Prolog; il formato utilizzato, come già detto, è stato scelto poiché era già utilizzato dal codice Prolog per la generazione delle mosse, in questo modo non è stato necessario modificare i predicati che la attuano, che compongono gran parte del codice. Grazie a questo accorgimento, il resto dell'adattamento si è rivelato relativamente semplice e non ha presentato grossi ostacoli. Gli altri dati ottenuti dalla classe .NET sono, infatti, dei tipi primitivi che possono essere utilizzati direttamente da Prolog senza alcuna necessità di effettuare conversioni; ad esempio, il predicato get\_remaining restituisce una variabile Open contente un valore numerico, questo è utilizzabile direttamente da Prolog come si può vedere nell'implementazione del predicato continuePlay.
-
-L'esempio fa uso della conversione dei dati per scambiarle quelli che non sono direttamente compatibili: l'array contenuto nella classe TicTacToe viene infatti convertito in una stringa piuttosto che scambiato come oggetto .NET. Questo approccio si è rivelato essere il migliore in questo caso, poiché si è desiderato utilizzare del codice Prolog preesistente basato su una determinata rappresentazione della tavola da gioco, così facendo si è potuto mantenere gran parte del codice senza doverlo modificare. La conversione avviene solo da .NET (o Java) a Prolog: se fosse necessario restituire lo stato della tavola di gioco dopo averla modificata da Prolog, sarebbe stato sufficiente implementare un ulteriore metodo che convertisse il termine Prolog in un array per .NET o Java.
-Un approccio che in questo caso si sarebbe rivelato più efficiente è quello di realizzare una libreria separata che offra le funzioni di serializzazione e deserializzazione dei dati; in questo modo si eviterebbe di implementare le stesse funzioni più volte.
-
+\noindent The data exchange issue is evident here in the case of the game status: the array is serialized to a string and converted into the desired Prolog term. The opposite conversion (Prolog back to .NET or Java) is not necessary in this application.
+The other arguments are of primitive types, so no conversions are needed. 
