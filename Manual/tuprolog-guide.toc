@@ -96,30 +96,31 @@
 \contentsline {subsection}{\numberline {7.2.5}Capturing the Prolog output in Java}{125}{subsection.7.2.5}
 \contentsline {section}{\numberline {7.3}Augmenting Prolog via Java:\\developing new libraries}{125}{section.7.3}
 \contentsline {subsection}{\numberline {7.3.1}Syntactic conventions}{127}{subsection.7.3.1}
-\contentsline {subsection}{\numberline {7.3.2}Hybrid Java+Prolog libraries}{129}{subsection.7.3.2}
-\contentsline {subsection}{\numberline {7.3.3}Library loading issues}{133}{subsection.7.3.3}
-\contentsline {subsection}{\numberline {7.3.4}Library Name}{134}{subsection.7.3.4}
-\contentsline {section}{\numberline {7.4}Augmenting Java via Prolog:\\the P@J framework}{135}{section.7.4}
-\contentsline {subsection}{\numberline {7.4.1}Term taxonomy}{136}{subsection.7.4.1}
-\contentsline {subsection}{\numberline {7.4.2}Examples}{138}{subsection.7.4.2}
-\contentsline {chapter}{\numberline {8}Multi-paradigm programming in Prolog and .NET}{143}{chapter.8}
-\contentsline {section}{\numberline {8.1}A bit of history}{143}{section.8.1}
-\contentsline {subsection}{\numberline {8.1.1}\unhbox \voidb@x \hbox {{\sf {tu}}Prolog}{} 2.1 and CSharpLibrary}{143}{subsection.8.1.1}
-\contentsline {subsection}{\numberline {8.1.2}\unhbox \voidb@x \hbox {{\sf {tu}}Prolog}{} 2.1.3: CSharpLibrary + exceptions}{144}{subsection.8.1.2}
-\contentsline {subsection}{\numberline {8.1.3}\unhbox \voidb@x \hbox {{\sf {tu}}Prolog}{} 2.2 and CLILibrary}{145}{subsection.8.1.3}
-\contentsline {section}{\numberline {8.2}IKVM Basics}{146}{section.8.2}
-\contentsline {subsection}{\numberline {8.2.1}Dynamic vs. Static modality}{146}{subsection.8.2.1}
-\contentsline {subsection}{\numberline {8.2.2}Class loading issues}{147}{subsection.8.2.2}
-\contentsline {subsection}{\numberline {8.2.3}The other way: writing .NET applications in Java}{148}{subsection.8.2.3}
-\contentsline {section}{\numberline {8.3}\unhbox \voidb@x \hbox {{\sf {tu}}Prolog}.NET now}{150}{section.8.3}
-\contentsline {subsection}{\numberline {8.3.1}Highlights}{150}{subsection.8.3.1}
-\contentsline {section}{\numberline {8.4}Using .NET from Prolog: OOLibrary}{152}{section.8.4}
-\contentsline {subsubsection}{Motivation}{152}{section*.33}
-\contentsline {subsubsection}{Language Conventions}{153}{section*.34}
-\contentsline {subsubsection}{OOLibrary: predicates}{154}{section*.35}
-\contentsline {subsection}{\numberline {8.4.1}Examples}{155}{subsection.8.4.1}
-\contentsline {section}{\numberline {8.5}Using Prolog from .NET: the API}{158}{section.8.5}
-\contentsline {section}{\numberline {8.6}Augmenting Prolog via .NET: developing new libraries}{158}{section.8.6}
-\contentsline {section}{\numberline {8.7}Augmenting .NET via Prolog:\\the P@J framework revised}{162}{section.8.7}
-\contentsline {section}{\numberline {8.8}Putting everything together}{162}{section.8.8}
-\contentsline {subsection}{\numberline {8.8.1}Example: Multi-language TicTacToe}{164}{subsection.8.8.1}
+\contentsline {subsubsection}{Naming issues}{129}{section*.33}
+\contentsline {subsection}{\numberline {7.3.2}Hybrid Java+Prolog libraries}{134}{subsection.7.3.2}
+\contentsline {subsection}{\numberline {7.3.3}Library loading issues}{134}{subsection.7.3.3}
+\contentsline {subsection}{\numberline {7.3.4}Library Name}{135}{subsection.7.3.4}
+\contentsline {section}{\numberline {7.4}Augmenting Java via Prolog:\\the P@J framework}{136}{section.7.4}
+\contentsline {subsection}{\numberline {7.4.1}Term taxonomy}{137}{subsection.7.4.1}
+\contentsline {subsection}{\numberline {7.4.2}Examples}{139}{subsection.7.4.2}
+\contentsline {chapter}{\numberline {8}Multi-paradigm programming in Prolog and .NET}{144}{chapter.8}
+\contentsline {section}{\numberline {8.1}A bit of history}{144}{section.8.1}
+\contentsline {subsection}{\numberline {8.1.1}\unhbox \voidb@x \hbox {{\sf {tu}}Prolog}{} 2.1 and CSharpLibrary}{144}{subsection.8.1.1}
+\contentsline {subsection}{\numberline {8.1.2}\unhbox \voidb@x \hbox {{\sf {tu}}Prolog}{} 2.1.3: CSharpLibrary + exceptions}{145}{subsection.8.1.2}
+\contentsline {subsection}{\numberline {8.1.3}\unhbox \voidb@x \hbox {{\sf {tu}}Prolog}{} 2.2 and CLILibrary}{146}{subsection.8.1.3}
+\contentsline {section}{\numberline {8.2}IKVM Basics}{147}{section.8.2}
+\contentsline {subsection}{\numberline {8.2.1}Dynamic vs. Static modality}{147}{subsection.8.2.1}
+\contentsline {subsection}{\numberline {8.2.2}Class loading issues}{148}{subsection.8.2.2}
+\contentsline {subsection}{\numberline {8.2.3}The other way: writing .NET applications in Java}{149}{subsection.8.2.3}
+\contentsline {section}{\numberline {8.3}\unhbox \voidb@x \hbox {{\sf {tu}}Prolog}.NET now}{151}{section.8.3}
+\contentsline {subsection}{\numberline {8.3.1}Highlights}{151}{subsection.8.3.1}
+\contentsline {section}{\numberline {8.4}Using .NET from Prolog: OOLibrary}{153}{section.8.4}
+\contentsline {subsubsection}{Motivation}{153}{section*.34}
+\contentsline {subsubsection}{Language Conventions}{154}{section*.35}
+\contentsline {subsubsection}{OOLibrary: predicates}{155}{section*.36}
+\contentsline {subsection}{\numberline {8.4.1}Examples}{156}{subsection.8.4.1}
+\contentsline {section}{\numberline {8.5}Using Prolog from .NET: the API}{159}{section.8.5}
+\contentsline {section}{\numberline {8.6}Augmenting Prolog via .NET:\\developing new libraries}{159}{section.8.6}
+\contentsline {section}{\numberline {8.7}Augmenting .NET via Prolog:\\the P@J framework revised}{163}{section.8.7}
+\contentsline {section}{\numberline {8.8}Putting everything together}{164}{section.8.8}
+\contentsline {subsection}{\numberline {8.8.1}Example: Multi-language TicTacToe}{165}{subsection.8.8.1}

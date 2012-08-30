@@ -1583,10 +1583,10 @@ As expected, \texttt{N} is bound to \texttt{11}, \texttt{S} to \texttt{abcd}, th
     \label{tab:TestLibrary-Main}
 \end{table}
 
-Alternatively, the same theory can be loaded from the Prolog side, via the \texttt{load\_library} predicate (Figure \ref{fig:testlibrary3}, \textit{top}): in this case, however, \textit{the Java output is not captured by the \tuprolog{} GUI}, but goes to the Java console---that is, the prompt from which the GUI was launched (Figure \ref{fig:testlibrary3}, \textit{bottom}), because the code in \texttt{println\_2} explicitly states to write to \texttt{System.out}.
-Rather obviously, if the CUIConsole is used instead of the GUI, the output goes to the same terminal, and the ``strange'' effect above does not occur (Figure \ref{fig:testlibrary5}.
+Alternatively, the same theory can be loaded from the Prolog side, via the \texttt{load\_library} predicate (Figure \ref{fig:testlibrary3}, \textit{top}) or via the library manager tool in the GUI (Figure \ref{fig:testlibrary1}): in these cases, \textit{the Java output is not captured by the \tuprolog{} GUI}, but goes to the Java console---that is, the prompt from which the GUI was launched (Figure \ref{fig:testlibrary3}, \textit{bottom}), because the code in \texttt{println\_2} explicitly states to write to \texttt{System.out}.
+Rather obviously, if the CUIConsole is used instead of the GUI, the output goes to the same terminal, and the ``strange'' effect above does not occur (Figure \ref{fig:testlibrary5}).
 
-Also, \textbf{please read the loading issues in Section \ref{ssec:library-loading-issues}} about how to launch the \tuprolog{} GUI (or CUI) to enable dynamic library loading, or the example will never work.
+Please note that library loading from the Prolog side requires a clear understanding of Java loading issues discussed in Section \ref{ssec:library-loading-issues}: \textit{please read that Section carefully, or the example will never work}.
 
 \begin{figure}
     \centering
@@ -1598,12 +1598,21 @@ Also, \textbf{please read the loading issues in Section \ref{ssec:library-loadin
 %
 \begin{figure}
     \centering
+  \includegraphics[width=9cm]{images/TestLibrary1}
+  \includegraphics[width=9cm]{images/TestLibrary2}
+  \caption{Loading a library from the Prolog side via the Library Manager icon in the \tuprolog{} GUI. The loading issues in Section \ref{ssec:library-loading-issues} still apply. Please note that the browse/save buttons in the dialog are \textit{not} to be used to load/save libraries, but only to load/save \textit{\tuprolog{} preferences} in the form of \texttt{.2p} files.}
+  \label{fig:testlibrary1}
+\end{figure}
+%
+\begin{figure}
+    \centering
   \includegraphics[width=12cm]{images/TestLibrary5}
   \caption{Loading a library from the Prolog side on the CUIConsole: the output here is in the same terminal, as expected. Again, be sure to read the loading issues in Section \ref{ssec:library-loading-issues}, or the example will not work.}
   \label{fig:testlibrary5}
 \end{figure}
 
-\medskip
+
+\subsubsection{Naming issues}
 
 \noindent When developing libraries, two naming issues may arise:
 \begin{enumerate}
@@ -1679,7 +1688,7 @@ This method returns a string\footnote{%
     In principle, only the external representation of this theory is constrained to the \texttt{String} form, the internal implementation being up to the developer; yet, using a Java \texttt{String} for wrapping the Prolog code guarantees self-containment while loading libraries through remote mechanisms such as RMI, and therefore constitutes the suggested form.
 } (empty by default) containing the desired Prolog theory, and is automatically called when the library is loaded, so as to add the theory to the engine's configuration.
 
-Table \ref{tab:HybridLibrary} shows a hybrid library where the theory expressed by \texttt{getTheory} adds to \texttt{TestLibrary} the non-deterministic predicate \texttt{myprint/1}, whose (potentially infinite) solutions alternately print the argument in upper and lowercase.
+Table \ref{tab:HybridLibrary} shows a hybrid library where the theory in \texttt{getTheory} adds to \texttt{TestLibrary} the non-deterministic predicate \texttt{myprint/1}, whose (potentially infinite) solutions alternately print the argument in upper and lowercase.
 
 
 %---------------------------------------------------------------
@@ -1689,9 +1698,8 @@ Table \ref{tab:HybridLibrary} shows a hybrid library where the theory expressed 
 
 As shown in the above examples, a library can be loaded (and unloaded) dynamically into a running engine via Java, by means of the \texttt{loadLibrary} (\texttt{unloadLibrary}) methods; but it can also be loaded (unloaded) from Prolog, via the \texttt{load\_library/2} (\texttt{unload\_library/2} ) predicate.
 
-\color{red}
 However, caution is needed when using \texttt{2p.jar} to start the \tuprolog{} GUI (or the console-based CUI) if libraries are to be loaded from the Prolog side, because -- due to the behavior of the Java class loader -- a \textit{runnable} JAR cannot load classes that are not included in the JAR itself.
-So, starting the \tuprolog{} GUI by double-clicking \texttt{2p.jar} (or by the equivalent \texttt{java -jar} command) will prevent libraries from being found and loaded from Prolog via the \texttt{load\_library/2} predicate, except for the standard libraries packed into the \tuprolog{} JAR itself.
+So, starting the \tuprolog{} GUI by double-clicking \texttt{2p.jar} (or by the equivalent \texttt{java -jar} command) will prevent libraries from being found and loaded from Prolog via the \texttt{load\_library/2} predicate or via the Library Manager in the GUI, except for the standard libraries packed into the \tuprolog{} JAR itself.
 
 To bypass the problem, the JAR archive must \textit{not} be used as a \textit{runnable} JAR, but as a library JAR, specifying the main class explicitly:\\
 
@@ -1700,13 +1708,10 @@ To bypass the problem, the JAR archive must \textit{not} be used as a \textit{ru
 \noindent \texttt{~java -cp MyLibrary.jar:2p.jar alice.tuprologx.ide.CUIConsole}\\
 
 \noindent In this way, the \texttt{-cp} option is taken into account by the class loader, making it possible to add a specific reference to the library to be loaded (e.g. \texttt{MyLibrary.jar} above).
-Running the JAR directly (via double click or via \texttt{java -jar}) causes the \texttt{-cp} option to be ignored in favor of the internal manifest properties, leading to a runtime failure.
+On the contrary, running the JAR directly (via double click or via \texttt{java -jar}) causes the \texttt{-cp} option to be ignored in favor of the internal manifest properties, leading to a runtime failure.
 
-This is why the examples above (\texttt{TestLibrary} and \texttt{HybridLibrary}) have been loaded from the Java side, via two main programs (\texttt{TestLibraryMain} and \texttt{HybridLibraryMain}).
+In the future, the implementation will be improved using the URLClassLoader which can load classes from external JARs, so as to remove the limitation.
 
-\textbf{In the near future, the implementation will be improved using the URLClassLoader which can load classes from external JARs, so as to remove the limitation.}
-
-\normalcolor
 
 %---------------------------------------------------------------
 \subsection{Library Name}
