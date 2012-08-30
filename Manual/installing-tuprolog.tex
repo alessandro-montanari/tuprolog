@@ -10,7 +10,7 @@ As a further alternative, users wishing to have a look at \tuprolog{} and trying
 
 \section{Installation in Java}
 
-The Java distribution has the form of a single \texttt{zip} file which contains everything (binaries, sources, documentation, examples, etc.) and unzips into a multi-level directory tree, similar to the following (only first-level sub-dirs are shown):
+The complete Java distribution has the form of a single \texttt{zip} file which contains everything (binaries, sources, documentation, examples, etc.) and unzips into a multi-level directory tree, similar to the following (only first-level sub-dirs are shown):
 
 \begin{Verbatim}[frame=single, framerule=0.5mm, samepage=true, boxwidth=5cm]
     2p
@@ -33,7 +33,8 @@ The Java distribution has the form of a single \texttt{zip} file which contains 
     |---test
 \end{Verbatim}
 
-%
+An alternative distribution, without sources, is also available in the \textit{Download} section of the \tuprolog{} repository: obviously, in this case only a subset of the above folders is present (namely, only \texttt{bin}, \texttt{doc}, \texttt{lib} and \texttt{reports}).
+
 If you are only interested in the Java binaries, just look into the \texttt{build/archives} directory, which contains two JAR files:
 %
 \begin{itemize}
@@ -51,7 +52,7 @@ The other folders contain project-specific files: \texttt{src} contains all the 
 
 \section{Installation in .NET}
 
-The .NET distribution has also the form of a single \texttt{zip} file containing everything; however, due to the automatic generation of \tuprolog{} .NET binaries via IKVM from Java (more on this in Chapter \ref{ch:mpp-in-dotnet}), the unzipped directory tree is much simpler, as there are no sources (and therefore no tests, no ant tasks, etc), except for \texttt{OOLibrary}, which is .NET-specific and therefore is written in C\#.
+The complete .NET distribution has also the form of a single \texttt{zip} file containing everything; however, due to the automatic generation of \tuprolog{} .NET binaries via IKVM from Java (more on this in Chapter \ref{ch:mpp-in-dotnet}), the unzipped directory tree is simpler, as there are no sources (and therefore no tests, no ant tasks, etc), except for \texttt{OOLibrary} and Conventions, which are NET-specific and therefore written in C\#.
 %
 So, the resulting tree is similar to the following:
 %
@@ -66,6 +67,8 @@ So, the resulting tree is similar to the following:
     |   |---OOLibrary
 \end{verbatim}
 %
+Here, too, an alternative distribution, without the OOLibrary and conventions sources, is also available in the \textit{Download} section of the \tuprolog{} repository: again, only a subset of the above folders is present in this case.
+
 The .NET binary, \texttt{2p.exe}, can be found in the \texttt{build} folder.
 
 
@@ -83,7 +86,7 @@ If, however, you like to do so, you will eventually get to a directory tree simi
     |   |---res
     |---doc
     |---gen
-    |---lib
+    |---libs
     |---res
     |---screenshots
     |---src
@@ -91,7 +94,7 @@ If, however, you like to do so, you will eventually get to a directory tree simi
 %
 The APK binary can be found into the \texttt{bin} folder.
 
-As for the Java case, the other folders contain project-specific files: in particular, \texttt{src} contains the sources, \texttt{res} the Android resources automatically generated during the project build process, \texttt{lib} the libraries used by this project---mainly, the \texttt{tuprolog.jar} file of the corresponding Java version, imported here as an external dependency.
+As for the Java case, the other folders contain project-specific files: in particular, \texttt{src} contains the sources, \texttt{res} the Android resources automatically generated during the project build process, \texttt{libs} the libraries used by this project---mainly, the \texttt{tuprolog.jar} file of the corresponding Java version, imported here as an external dependency.
 
 
 \section{Installation in Eclipse}

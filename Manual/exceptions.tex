@@ -219,49 +219,49 @@ At a first sight, one might think of re-mapping Java exceptions and constructs o
 
 \noindent Accordingly, Java exceptions in \tuprolog{} programs are handled by means of two further, \textit{ad hoc} predicates: \texttt{java\_throw/1} and \texttt{java\_catch/3}.
 %
-Since their behaviour can be fully understood only in the context of JavaLibrary, we forward the reader to Chapter \ref{ch:mpp-in-java} (Section \ref{sec:java-library}) for further information.
+Since their behavior can be fully understood only in the context of JavaLibrary, we forward the reader to Chapter \ref{ch:mpp-in-java} (Section \ref{sec:java-library}) for further information.
 
-%---------------------------------------------------------------------------------------
-\section{Appendix: Implementation notes}
-%---------------------------------------------------------------------------------------
-
-Implementing exceptions in \tuprolog{} does not mean just to extend the engine to support the above mechanisms: given its library-based design, and its intrinsic support to multi-paradigm programming, adding exceptions in \tuprolog{} has also meant (1) to revise all the existing libraries, modifying any library predicate so that it raises the appropriate type of exception instead of just failing; and (2) to carefully define and implement a model to make Prolog exceptions not only coexist, but also fruitfully operate with the Java or .NET imperative world, which brings its own concept of exception and its own handling mechanism.
-
-As a preliminary step, the finite-state machine which constitutes the core of the \tuprolog{} engine was extended with a new \textit{Exception} state, between the existing \textit{Goal Evaluation} and \textit{Goal Selection} states \cite{iuliani-masterthesis-2009}.
-
-Then, all the \tuprolog{} libraries were revised, according to clearness and efficiency criteria --- that is, the introduction of the new checks required for proper exception raising should not reduce performance unacceptably. This issue was particularly relevant for runtime checks, such as \texttt{existence\_error}s or \texttt{evaluation\_error}s; moreover, since \tuprolog{} libraries could also be implemented partly in Prolog and partly in Java, careful choices had to be made so as to introduce such checks at the most adequate level in order to intercept all errors while maintaining code readability and overall organisation, while guaranteeing efficiency.
-
-This led to intervene with extra Java checks for libraries fully implemented in Java, and with new ''Java guards'' for predicates implemented in Prolog, keeping the use of Prolog meta-predicates (such as \texttt{integer/1}) to a minimum.
-
-\bigskip
-
-Per quel che riguarda il modo in cui \`{e} stato implementato il meccanismo di controllo degli errori, bisogna distinguere i predicati espressi in Java da quelli espressi in Prolog.
-
-Nel primo caso le eccezioni (cio\`{e} le opportune istanze di \texttt{PrologError}) vengono lanciate direttamente dai corrispondenti metodi Java ogniqualvolta si verifica un errore, mentre nel secondo caso sono lanciate da metodi ``guardia" (sempre espressi in Java) invocati per controllare i parametri prima dell'esecuzione del predicato Prolog.
-
-Nell'implementazione si \`{e} cercato di individuare il maggior numero possibile di condizioni di errore, rispettando per\`{o} sempre il requisito fondamentale di correttezza: se una chiamata a un predicato non falliva prima dell'introduzione del meccanismo delle eccezioni, non deve fallire neanche ora---ovvero, il lancio di una eccezione deve avvenire soltanto in circostanze in cui il motore tuProlog originario falliva.
-
-La correttezza del comportamento del motore \`{e} garantita anche se ci si dimentica di identificare qualche condizione di errore inaspettata: in questo caso infatti il motore non lancia un'eccezione, ma comunque fallisce.
+%%---------------------------------------------------------------------------------------
+%\section*{Appendix: Implementation notes}
+%%---------------------------------------------------------------------------------------
 %
-Ci\`{o} permette ad un utente sia di gestire gli errori che si possono verificare durante l'esecuzione, sia di non gestirli, nel qual caso l'esecuzione fallir\`{a} e dunque l'estensione rester\`{a} trasparente.
-
-A parte le inevitabili modifiche ai built-in e alle librerie (\textit{BasicLibrary}, \textit{ISOLibrary}, \textit{IOLibrary}, \textit{DCGLibrary}), sono state necessarie le seguenti semplici modifiche al motore:
-
-\begin{itemize}
-
-\item alla classe \texttt{alice.tuprolog.FlagManager} sono stati aggiunti due metodi per ricavare informazioni su un flag:
-
-    \begin{itemize}
-      \item \texttt{boolean isModifiable(String name)}\\
-        che restituisce true se esiste nel motore un flag di nome \texttt{name}, e tale flag \`{e} modificabile;
-
-      \item \texttt{boolean isValidValue(String name, Term Value)}\\
-        che restituisce true se esiste nel motore un flag di nome \texttt{name}, e \texttt{Value} \`{e} un valore ammissibile per tale flag.
-    \end{itemize}
-
-  \item il metodo \texttt{getEngineManager} della classe \texttt{alice.tuprolog.Prolog} \`{e} ora pubblico (in precedenza aveva visibilit\`{a} di package) per permettere alle librerie di ricavare dal motore l'informazione sul goal correntemente in esecuzione e inserirla nell'eccezione lanciata;
-
-  \item il metodo \texttt{evalAsFunctor} della classe \texttt{alice.tuprolog.PrimitiveInfo} lancia ora un'istanza di \texttt{Throwable} in caso di errore durante la valutazione del goal, mentre prima ritornava \texttt{null}, per permettere di discriminare il tipo di errore verificatosi durante la valutazione di un funtore;
-
-  \item analogamente, il metodo \texttt{evalExpression} di \texttt{alice.tuprolog.Library} rilancia ora l'istanza di \texttt{Throwable} ricevuta dal metodo \texttt{evalAsFuntor} di \texttt{alice.tuprolog.PrimitiveInfo}.
-\end{itemize}
+%Implementing exceptions in \tuprolog{} does not mean just to extend the engine to support the above mechanisms: given its library-based design, and its intrinsic support to multi-paradigm programming, adding exceptions in \tuprolog{} has also meant (1) to revise all the existing libraries, modifying any library predicate so that it raises the appropriate type of exception instead of just failing; and (2) to carefully define and implement a model to make Prolog exceptions not only coexist, but also fruitfully operate with the Java or .NET imperative world, which brings its own concept of exception and its own handling mechanism.
+%
+%As a preliminary step, the finite-state machine which constitutes the core of the \tuprolog{} engine was extended with a new \textit{Exception} state, between the existing \textit{Goal Evaluation} and \textit{Goal Selection} states \cite{iuliani-masterthesis-2009}.
+%
+%Then, all the \tuprolog{} libraries were revised, according to clearness and efficiency criteria --- that is, the introduction of the new checks required for proper exception raising should not reduce performance unacceptably. This issue was particularly relevant for runtime checks, such as \texttt{existence\_error}s or \texttt{evaluation\_error}s; moreover, since \tuprolog{} libraries could also be implemented partly in Prolog and partly in Java, careful choices had to be made so as to introduce such checks at the most adequate level in order to intercept all errors while maintaining code readability and overall organisation, while guaranteeing efficiency.
+%
+%This led to intervene with extra Java checks for libraries fully implemented in Java, and with new ''Java guards'' for predicates implemented in Prolog, keeping the use of Prolog meta-predicates (such as \texttt{integer/1}) to a minimum.
+%
+%\bigskip
+%
+%Per quel che riguarda il modo in cui \`{e} stato implementato il meccanismo di controllo degli errori, bisogna distinguere i predicati espressi in Java da quelli espressi in Prolog.
+%
+%Nel primo caso le eccezioni (cio\`{e} le opportune istanze di \texttt{PrologError}) vengono lanciate direttamente dai corrispondenti metodi Java ogniqualvolta si verifica un errore, mentre nel secondo caso sono lanciate da metodi ``guardia" (sempre espressi in Java) invocati per controllare i parametri prima dell'esecuzione del predicato Prolog.
+%
+%Nell'implementazione si \`{e} cercato di individuare il maggior numero possibile di condizioni di errore, rispettando per\`{o} sempre il requisito fondamentale di correttezza: se una chiamata a un predicato non falliva prima dell'introduzione del meccanismo delle eccezioni, non deve fallire neanche ora---ovvero, il lancio di una eccezione deve avvenire soltanto in circostanze in cui il motore tuProlog originario falliva.
+%
+%La correttezza del comportamento del motore \`{e} garantita anche se ci si dimentica di identificare qualche condizione di errore inaspettata: in questo caso infatti il motore non lancia un'eccezione, ma comunque fallisce.
+%%
+%Ci\`{o} permette ad un utente sia di gestire gli errori che si possono verificare durante l'esecuzione, sia di non gestirli, nel qual caso l'esecuzione fallir\`{a} e dunque l'estensione rester\`{a} trasparente.
+%
+%A parte le inevitabili modifiche ai built-in e alle librerie (\textit{BasicLibrary}, \textit{ISOLibrary}, \textit{IOLibrary}, \textit{DCGLibrary}), sono state necessarie le seguenti semplici modifiche al motore:
+%
+%\begin{itemize}
+%
+%\item alla classe \texttt{alice.tuprolog.FlagManager} sono stati aggiunti due metodi per ricavare informazioni su un flag:
+%
+%\begin{itemize}
+%\item \texttt{boolean isModifiable(String name)}\\
+%        che restituisce true se esiste nel motore un flag di nome \texttt{name}, e tale flag \`{e} modificabile;
+%
+%\item \texttt{boolean isValidValue(String name, Term Value)}\\
+%        che restituisce true se esiste nel motore un flag di nome \texttt{name}, e \texttt{Value} \`{e} un valore ammissibile per tale flag.
+%\end{itemize}
+%
+%  \item il metodo \texttt{getEngineManager} della classe \texttt{alice.tuprolog.Prolog} \`{e} ora pubblico (in precedenza aveva visibilit\`{a} di package) per permettere alle librerie di ricavare dal motore l'informazione sul goal correntemente in esecuzione e inserirla nell'eccezione lanciata;
+%
+%  \item il metodo \texttt{evalAsFunctor} della classe \texttt{alice.tuprolog.PrimitiveInfo} lancia ora un'istanza di \texttt{Throwable} in caso di errore durante la valutazione del goal, mentre prima ritornava \texttt{null}, per permettere di discriminare il tipo di errore verificatosi durante la valutazione di un funtore;
+%
+%  \item analogamente, il metodo \texttt{evalExpression} di \texttt{alice.tuprolog.Library} rilancia ora l'istanza di \texttt{Throwable} ricevuta dal metodo \texttt{evalAsFuntor} di \texttt{alice.tuprolog.PrimitiveInfo}.
+%\end{itemize}
