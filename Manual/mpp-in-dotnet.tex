@@ -422,14 +422,14 @@ useJavaClassAsIs :-
   new_object('java.util.StringTokenizer', ['This is my string'], Tokenizer),
   Tokenizer <- nextToken returns Token1,
   write(Token1), nl.
-  
+
 dynamicCompilation :-	
   java_class('public class MyClass {
-     public String showFileChooser(String title) { 
+     public String showFileChooser(String title) {
       javax.swing.JFileChooser chooser = new javax.swing.JFileChooser();
-      chooser.setDialogTitle(title); 
-      chooser.showOpenDialog(null); 
-      java.io.File file = chooser.getSelectedFile(); 
+      chooser.setDialogTitle(title);
+      chooser.showOpenDialog(null);
+      java.io.File file = chooser.getSelectedFile();
       return file.getName();
      }
     }',
@@ -494,7 +494,9 @@ This issue is covered more in detail in Section \ref{sec:dotnet-putting-together
 Analogously to the Java case (see Section \ref{ssec:java-exceptions-in-tuprolog}), .NET exceptions possibly raised during the execution of methods on .NET objects accessed from the Prolog world need to be captured and handled, too, yet without any mixing with the Prolog semantics.
 
 \color{red}
-Accordingly, such exceptions are handled in \tuprolog{}.NET via two further, \textit{ad hoc} predicates, \texttt{oo\_throw/1} and \texttt{oo\_catch/3}, which constitute the .NET counterpart of JavaLibrary's \texttt{java\_throw/1} and \texttt{java\_catch/3}.
+Accordingly, such exceptions are handled in \tuprolog{}.NET via one further, \textit{ad hoc} predicate, %\texttt{oo\_throw/1} and 
+\texttt{oo\_catch/3}, which constitute the .NET counterpart of JavaLibrary's %\texttt{java\_throw/1} and 
+\texttt{java\_catch/3}.
 \normalcolor
 %
 Syntax and use are identical to the Java case, and so are the possible examples: thus, we forward the interested reader to Section \ref{ssec:java-exception-examples} on page \pageref{ssec:java-exception-examples}.
@@ -513,7 +515,7 @@ To create a .NET application using \tuprolog{}, do the following:\footnote{The e
 
 \begin{enumerate}
   \item open the IDE of your choice (we refer to Microsoft Visual Studio 2010);
-  \item create a new project (in our case, from the \textit{File} menu, select \textit{New > Project}), select the proper language (in this case, \textit{Visual C\#} from the left panel), the proper application type (here, \textit{Windows Forms Application}), and digit the application name and file position (Figure \ref{fig:dotnet-visualstudio1}, \textit{top});
+  \item create a new project (in our case, from the \textit{File} menu, select \textit{New $>$ Project}), select the proper language (in this case, \textit{Visual C\#} from the left panel), the proper application type (here, \textit{Windows Forms Application}), and digit the application name and file position (Figure \ref{fig:dotnet-visualstudio1}, \textit{top});
   \item add a reference to the \tuprolog{}.NET assembly, \texttt{tuprolog.dll} (in this case, right-click on \textit{References} in the \textit{Solution Explorer} panel, click on \textit{Add References}, browse the file system up to the assembly and select it---Figure \ref{fig:dotnet-visualstudio1}, \textit{bottom});
   \item add a reference to the \texttt{IKVM.OpenJdk.Core.dll} assembly that contains the IKVM implementation of Java packages, following the same procedure;
   \item now write/draw your .NET application (in this case, we draw the user interface shown in Figure \ref{fig:dotnet-visualstudio3} (\textit{top}) and write the implementation of the \textit{OK} button \ref{fig:dotnet-visualstudio4}); the final result (an application for the symbolic derivative of a function, where Prolog takes care of the symbolic calculus and .NET of the GUI) is shown in Figure \ref{fig:dotnet-visualstudio3} (\textit{bottom}).
