@@ -56,74 +56,77 @@
 \contentsline {subsubsection}{\numberline {5.3.1.2}Helper Predicates}{77}{subsubsection.5.3.1.2}
 \contentsline {subsubsection}{\numberline {5.3.1.3}Random Generation of Numbers}{79}{subsubsection.5.3.1.3}
 \contentsline {section}{\numberline {5.4}ISOIOLibrary}{79}{section.5.4}
-\contentsline {section}{\numberline {5.5}DCGLibrary}{81}{section.5.5}
-\contentsline {subsection}{\numberline {5.5.1}Predicates}{82}{subsection.5.5.1}
-\contentsline {subsection}{\numberline {5.5.2}Operators}{84}{subsection.5.5.2}
-\contentsline {chapter}{\numberline {6}\unhbox \voidb@x \hbox {{\sf {tu}}Prolog}{} Exceptions}{85}{chapter.6}
-\contentsline {section}{\numberline {6.1}Exceptions in ISO Prolog}{85}{section.6.1}
-\contentsline {subsection}{\numberline {6.1.1}Error classification}{87}{subsection.6.1.1}
-\contentsline {section}{\numberline {6.2}Exceptions in \unhbox \voidb@x \hbox {{\sf {tu}}Prolog}}{88}{section.6.2}
-\contentsline {subsection}{\numberline {6.2.1}Examples}{88}{subsection.6.2.1}
-\contentsline {subsection}{\numberline {6.2.2}Handling Java/.NET Exceptions from \unhbox \voidb@x \hbox {{\sf {tu}}Prolog}}{90}{subsection.6.2.2}
-\contentsline {chapter}{\numberline {7}Multi-paradigm programming in Prolog and Java}{91}{chapter.7}
-\contentsline {section}{\numberline {7.1}Using Java from Prolog: \textit {JavaLibrary}}{91}{section.7.1}
-\contentsline {subsection}{\numberline {7.1.1}Type mapping}{92}{subsection.7.1.1}
-\contentsline {subsection}{\numberline {7.1.2}Creating and accessing objects: an overview}{93}{subsection.7.1.2}
-\contentsline {subsubsection}{\numberline {7.1.2.1}Examples}{96}{subsubsection.7.1.2.1}
-\contentsline {subsubsection}{\numberline {7.1.2.2}Registering object bindings}{98}{subsubsection.7.1.2.2}
-\contentsline {subsection}{\numberline {7.1.3}Predicates}{99}{subsection.7.1.3}
-\contentsline {subsubsection}{\numberline {7.1.3.1}Object creation, class compilation and method invocation}{99}{subsubsection.7.1.3.1}
-\contentsline {subsubsection}{\numberline {7.1.3.2}Array management}{102}{subsubsection.7.1.3.2}
-\contentsline {subsubsection}{\numberline {7.1.3.3}Helper predicates}{104}{subsubsection.7.1.3.3}
-\contentsline {subsection}{\numberline {7.1.4}Functors}{104}{subsection.7.1.4}
-\contentsline {subsection}{\numberline {7.1.5}Operators}{104}{subsection.7.1.5}
-\contentsline {subsection}{\numberline {7.1.6}Examples}{105}{subsection.7.1.6}
-\contentsline {subsubsection}{\numberline {7.1.6.1}RMI Connection to a Remote Object}{105}{subsubsection.7.1.6.1}
-\contentsline {subsubsection}{\numberline {7.1.6.2}A Swing GUI}{105}{subsubsection.7.1.6.2}
-\contentsline {subsubsection}{\numberline {7.1.6.3}Database access via JDBC}{105}{subsubsection.7.1.6.3}
-\contentsline {subsubsection}{\numberline {7.1.6.4}Dynamic compilation}{108}{subsubsection.7.1.6.4}
-\contentsline {subsection}{\numberline {7.1.7}Handling Java Exceptions}{109}{subsection.7.1.7}
-\contentsline {subsubsection}{\numberline {7.1.7.1}Java exception examples}{111}{subsubsection.7.1.7.1}
-\contentsline {section}{\numberline {7.2}Using Prolog from Java: \textit {the Java API}}{116}{section.7.2}
-\contentsline {subsection}{\numberline {7.2.1}A Taxonomy of Prolog types in Java}{116}{subsection.7.2.1}
-\contentsline {subsubsection}{\numberline {7.2.1.1}Further notes about \texttt {Term}s}{117}{subsubsection.7.2.1.1}
-\contentsline {subsection}{\numberline {7.2.2}Prolog engines, theories and libraries}{119}{subsection.7.2.2}
-\contentsline {subsubsection}{\numberline {7.2.2.1}Further notes about \texttt {Prolog} engines}{119}{subsubsection.7.2.2.1}
-\contentsline {subsection}{\numberline {7.2.3}Examples}{121}{subsection.7.2.3}
-\contentsline {subsubsection}{\numberline {7.2.3.1}Appending lists}{121}{subsubsection.7.2.3.1}
-\contentsline {subsubsection}{\numberline {7.2.3.2}A console-based Prolog interpreter}{121}{subsubsection.7.2.3.2}
-\contentsline {subsection}{\numberline {7.2.4}Registering object bindings}{124}{subsection.7.2.4}
-\contentsline {subsection}{\numberline {7.2.5}Capturing the Prolog output in Java}{126}{subsection.7.2.5}
-\contentsline {section}{\numberline {7.3}Augmenting Prolog via Java:\\developing new libraries}{126}{section.7.3}
-\contentsline {subsection}{\numberline {7.3.1}Syntactic conventions}{128}{subsection.7.3.1}
-\contentsline {subsubsection}{\numberline {7.3.1.1}Capturing the Java output in Prolog}{130}{subsubsection.7.3.1.1}
-\contentsline {subsubsection}{\numberline {7.3.1.2}Naming issues}{130}{subsubsection.7.3.1.2}
-\contentsline {subsection}{\numberline {7.3.2}Hybrid Java+Prolog libraries}{134}{subsection.7.3.2}
-\contentsline {subsection}{\numberline {7.3.3}Library loading issues}{134}{subsection.7.3.3}
-\contentsline {subsection}{\numberline {7.3.4}Library Name}{136}{subsection.7.3.4}
-\contentsline {section}{\numberline {7.4}Augmenting Java via Prolog:\\the P@J framework}{137}{section.7.4}
-\contentsline {subsection}{\numberline {7.4.1}Term taxonomy}{138}{subsection.7.4.1}
-\contentsline {subsection}{\numberline {7.4.2}Examples}{140}{subsection.7.4.2}
-\contentsline {chapter}{\numberline {8}Multi-paradigm programming in Prolog and .NET}{145}{chapter.8}
-\contentsline {section}{\numberline {8.1}A bit of history}{145}{section.8.1}
-\contentsline {subsection}{\numberline {8.1.1}\unhbox \voidb@x \hbox {{\sf {tu}}Prolog}{} 2.1 and CSharpLibrary}{145}{subsection.8.1.1}
-\contentsline {subsection}{\numberline {8.1.2}\unhbox \voidb@x \hbox {{\sf {tu}}Prolog}{} 2.1.3: CSharpLibrary + exceptions}{146}{subsection.8.1.2}
-\contentsline {subsection}{\numberline {8.1.3}\unhbox \voidb@x \hbox {{\sf {tu}}Prolog}{} 2.2 and CLILibrary}{147}{subsection.8.1.3}
-\contentsline {section}{\numberline {8.2}IKVM Basics}{148}{section.8.2}
-\contentsline {subsection}{\numberline {8.2.1}Dynamic vs. Static modality}{148}{subsection.8.2.1}
-\contentsline {subsection}{\numberline {8.2.2}Class loading issues}{149}{subsection.8.2.2}
-\contentsline {subsection}{\numberline {8.2.3}The other way: writing .NET applications in Java}{150}{subsection.8.2.3}
-\contentsline {section}{\numberline {8.3}\unhbox \voidb@x \hbox {{\sf {tu}}Prolog}.NET now}{152}{section.8.3}
-\contentsline {subsection}{\numberline {8.3.1}Highlights}{152}{subsection.8.3.1}
-\contentsline {section}{\numberline {8.4}Using .NET from Prolog: OOLibrary}{154}{section.8.4}
-\contentsline {subsubsection}{\numberline {8.4.0.1}Motivation}{154}{subsubsection.8.4.0.1}
-\contentsline {subsubsection}{\numberline {8.4.0.2}Language Conventions}{155}{subsubsection.8.4.0.2}
-\contentsline {subsubsection}{\numberline {8.4.0.3}OOLibrary: predicates}{156}{subsubsection.8.4.0.3}
-\contentsline {subsection}{\numberline {8.4.1}Examples}{157}{subsection.8.4.1}
-\contentsline {subsection}{\numberline {8.4.2}Handling .NET Exceptions}{161}{subsection.8.4.2}
-\contentsline {section}{\numberline {8.5}Using Prolog from .NET: the API}{162}{section.8.5}
-\contentsline {section}{\numberline {8.6}Augmenting Prolog via .NET:\\developing new libraries}{166}{section.8.6}
-\contentsline {subsection}{\numberline {8.6.1}Capturing the .NET output in Prolog}{166}{subsection.8.6.1}
-\contentsline {section}{\numberline {8.7}Augmenting .NET via Prolog:\\the P@J framework revised}{168}{section.8.7}
-\contentsline {section}{\numberline {8.8}Putting everything together}{168}{section.8.8}
-\contentsline {subsection}{\numberline {8.8.1}Example: Multi-language TicTacToe}{170}{subsection.8.8.1}
+\contentsline {subsection}{\numberline {5.4.1}Options}{82}{subsection.5.4.1}
+\contentsline {subsection}{\numberline {5.4.2}Writing terms}{84}{subsection.5.4.2}
+\contentsline {subsection}{\numberline {5.4.3}Predicates}{85}{subsection.5.4.3}
+\contentsline {section}{\numberline {5.5}DCGLibrary}{90}{section.5.5}
+\contentsline {subsection}{\numberline {5.5.1}Predicates}{91}{subsection.5.5.1}
+\contentsline {subsection}{\numberline {5.5.2}Operators}{93}{subsection.5.5.2}
+\contentsline {chapter}{\numberline {6}\unhbox \voidb@x \hbox {{\sf {tu}}Prolog}{} Exceptions}{94}{chapter.6}
+\contentsline {section}{\numberline {6.1}Exceptions in ISO Prolog}{94}{section.6.1}
+\contentsline {subsection}{\numberline {6.1.1}Error classification}{96}{subsection.6.1.1}
+\contentsline {section}{\numberline {6.2}Exceptions in \unhbox \voidb@x \hbox {{\sf {tu}}Prolog}}{97}{section.6.2}
+\contentsline {subsection}{\numberline {6.2.1}Examples}{97}{subsection.6.2.1}
+\contentsline {subsection}{\numberline {6.2.2}Handling Java/.NET Exceptions from \unhbox \voidb@x \hbox {{\sf {tu}}Prolog}}{99}{subsection.6.2.2}
+\contentsline {chapter}{\numberline {7}Multi-paradigm programming in Prolog and Java}{100}{chapter.7}
+\contentsline {section}{\numberline {7.1}Using Java from Prolog: \textit {JavaLibrary}}{100}{section.7.1}
+\contentsline {subsection}{\numberline {7.1.1}Type mapping}{101}{subsection.7.1.1}
+\contentsline {subsection}{\numberline {7.1.2}Creating and accessing objects: an overview}{102}{subsection.7.1.2}
+\contentsline {subsubsection}{\numberline {7.1.2.1}Examples}{105}{subsubsection.7.1.2.1}
+\contentsline {subsubsection}{\numberline {7.1.2.2}Registering object bindings}{107}{subsubsection.7.1.2.2}
+\contentsline {subsection}{\numberline {7.1.3}Predicates}{108}{subsection.7.1.3}
+\contentsline {subsubsection}{\numberline {7.1.3.1}Object creation, class compilation and method invocation}{108}{subsubsection.7.1.3.1}
+\contentsline {subsubsection}{\numberline {7.1.3.2}Array management}{111}{subsubsection.7.1.3.2}
+\contentsline {subsubsection}{\numberline {7.1.3.3}Helper predicates}{113}{subsubsection.7.1.3.3}
+\contentsline {subsection}{\numberline {7.1.4}Functors}{113}{subsection.7.1.4}
+\contentsline {subsection}{\numberline {7.1.5}Operators}{113}{subsection.7.1.5}
+\contentsline {subsection}{\numberline {7.1.6}Examples}{114}{subsection.7.1.6}
+\contentsline {subsubsection}{\numberline {7.1.6.1}RMI Connection to a Remote Object}{114}{subsubsection.7.1.6.1}
+\contentsline {subsubsection}{\numberline {7.1.6.2}A Swing GUI}{114}{subsubsection.7.1.6.2}
+\contentsline {subsubsection}{\numberline {7.1.6.3}Database access via JDBC}{114}{subsubsection.7.1.6.3}
+\contentsline {subsubsection}{\numberline {7.1.6.4}Dynamic compilation}{117}{subsubsection.7.1.6.4}
+\contentsline {subsection}{\numberline {7.1.7}Handling Java Exceptions}{118}{subsection.7.1.7}
+\contentsline {subsubsection}{\numberline {7.1.7.1}Java exception examples}{120}{subsubsection.7.1.7.1}
+\contentsline {section}{\numberline {7.2}Using Prolog from Java: \textit {the Java API}}{124}{section.7.2}
+\contentsline {subsection}{\numberline {7.2.1}A Taxonomy of Prolog types in Java}{124}{subsection.7.2.1}
+\contentsline {subsubsection}{\numberline {7.2.1.1}Further notes about \texttt {Term}s}{125}{subsubsection.7.2.1.1}
+\contentsline {subsection}{\numberline {7.2.2}Prolog engines, theories and libraries}{127}{subsection.7.2.2}
+\contentsline {subsubsection}{\numberline {7.2.2.1}Further notes about \texttt {Prolog} engines}{127}{subsubsection.7.2.2.1}
+\contentsline {subsection}{\numberline {7.2.3}Examples}{129}{subsection.7.2.3}
+\contentsline {subsubsection}{\numberline {7.2.3.1}Appending lists}{129}{subsubsection.7.2.3.1}
+\contentsline {subsubsection}{\numberline {7.2.3.2}A console-based Prolog interpreter}{129}{subsubsection.7.2.3.2}
+\contentsline {subsection}{\numberline {7.2.4}Registering object bindings}{132}{subsection.7.2.4}
+\contentsline {subsection}{\numberline {7.2.5}Capturing the Prolog output in Java}{134}{subsection.7.2.5}
+\contentsline {section}{\numberline {7.3}Augmenting Prolog via Java:\\developing new libraries}{134}{section.7.3}
+\contentsline {subsection}{\numberline {7.3.1}Syntactic conventions}{136}{subsection.7.3.1}
+\contentsline {subsubsection}{\numberline {7.3.1.1}Capturing the Java output in Prolog}{138}{subsubsection.7.3.1.1}
+\contentsline {subsubsection}{\numberline {7.3.1.2}Naming issues}{138}{subsubsection.7.3.1.2}
+\contentsline {subsection}{\numberline {7.3.2}Hybrid Java+Prolog libraries}{142}{subsection.7.3.2}
+\contentsline {subsection}{\numberline {7.3.3}Library loading issues}{142}{subsection.7.3.3}
+\contentsline {subsection}{\numberline {7.3.4}Library Name}{144}{subsection.7.3.4}
+\contentsline {section}{\numberline {7.4}Augmenting Java via Prolog:\\the P@J framework}{145}{section.7.4}
+\contentsline {subsection}{\numberline {7.4.1}Term taxonomy}{146}{subsection.7.4.1}
+\contentsline {subsection}{\numberline {7.4.2}Examples}{148}{subsection.7.4.2}
+\contentsline {chapter}{\numberline {8}Multi-paradigm programming in Prolog and .NET}{153}{chapter.8}
+\contentsline {section}{\numberline {8.1}A bit of history}{153}{section.8.1}
+\contentsline {subsection}{\numberline {8.1.1}\unhbox \voidb@x \hbox {{\sf {tu}}Prolog}{} 2.1 and CSharpLibrary}{153}{subsection.8.1.1}
+\contentsline {subsection}{\numberline {8.1.2}\unhbox \voidb@x \hbox {{\sf {tu}}Prolog}{} 2.1.3: CSharpLibrary + exceptions}{154}{subsection.8.1.2}
+\contentsline {subsection}{\numberline {8.1.3}\unhbox \voidb@x \hbox {{\sf {tu}}Prolog}{} 2.2 and CLILibrary}{155}{subsection.8.1.3}
+\contentsline {section}{\numberline {8.2}IKVM Basics}{156}{section.8.2}
+\contentsline {subsection}{\numberline {8.2.1}Dynamic vs. Static modality}{156}{subsection.8.2.1}
+\contentsline {subsection}{\numberline {8.2.2}Class loading issues}{157}{subsection.8.2.2}
+\contentsline {subsection}{\numberline {8.2.3}The other way: writing .NET applications in Java}{158}{subsection.8.2.3}
+\contentsline {section}{\numberline {8.3}\unhbox \voidb@x \hbox {{\sf {tu}}Prolog}.NET now}{160}{section.8.3}
+\contentsline {subsection}{\numberline {8.3.1}Highlights}{160}{subsection.8.3.1}
+\contentsline {section}{\numberline {8.4}Using .NET from Prolog: OOLibrary}{162}{section.8.4}
+\contentsline {subsubsection}{\numberline {8.4.0.1}Motivation}{162}{subsubsection.8.4.0.1}
+\contentsline {subsubsection}{\numberline {8.4.0.2}Language Conventions}{163}{subsubsection.8.4.0.2}
+\contentsline {subsubsection}{\numberline {8.4.0.3}OOLibrary: predicates}{164}{subsubsection.8.4.0.3}
+\contentsline {subsection}{\numberline {8.4.1}Examples}{165}{subsection.8.4.1}
+\contentsline {subsection}{\numberline {8.4.2}Handling .NET Exceptions}{169}{subsection.8.4.2}
+\contentsline {section}{\numberline {8.5}Using Prolog from .NET: the API}{170}{section.8.5}
+\contentsline {section}{\numberline {8.6}Augmenting Prolog via .NET:\\developing new libraries}{174}{section.8.6}
+\contentsline {subsection}{\numberline {8.6.1}Capturing the .NET output in Prolog}{174}{subsection.8.6.1}
+\contentsline {section}{\numberline {8.7}Augmenting .NET via Prolog:\\the P@J framework revised}{176}{section.8.7}
+\contentsline {section}{\numberline {8.8}Putting everything together}{176}{section.8.8}
+\contentsline {subsection}{\numberline {8.8.1}Example: Multi-language TicTacToe}{178}{subsection.8.8.1}

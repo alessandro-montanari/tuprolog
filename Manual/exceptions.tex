@@ -217,7 +217,11 @@ At a first sight, one might think of re-mapping such exceptions and constructs o
   \item the Java/.NET catching mechanisms operates hierarchically, while the \texttt{catch/3} predicate operates via pattern matching and unification, allowing for a finer-grain, more flexibly exception filtering.
 \end{itemize}
 
-\noindent Accordingly, Java/.NET exceptions in \tuprolog{} programs are handled by means of two further, \textit{ad hoc} predicates: \texttt{java\_throw/1} and \texttt{java\_catch/3} in the Java case, and \texttt{oo\_throw/1} and \texttt{oo\_catch/3} in the .NET case, respectively.
+%\noindent Accordingly, Java/.NET exceptions in \tuprolog{} programs are handled by means of two further, \textit{ad hoc} predicates: \texttt{java\_throw/1} and \texttt{java\_catch/3} in the Java case, and \texttt{oo\_throw/1} and \texttt{oo\_catch/3} in the .NET case, respectively.
+%%
+%Since their behavior can be fully understood only in the context of JavaLibrary/OOLibrary, we forward the reader to Sections \ref{sec:java-library} and \ref{sec:dotnet-oolibrary}, respectively, for further information.
+%
+\noindent Accordingly, Java/.NET exceptions in \tuprolog{} programs are handled by means of an \textit{ad hoc} predicate, called \texttt{java\_catch/3} in the Java case and \texttt{oo\_catch/3} in the .NET case, respectively.
 %
 Since their behavior can be fully understood only in the context of JavaLibrary/OOLibrary, we forward the reader to Sections \ref{sec:java-library} and \ref{sec:dotnet-oolibrary}, respectively, for further information.
 
@@ -265,3 +269,4 @@ Since their behavior can be fully understood only in the context of JavaLibrary/
 %
 %  \item analogamente, il metodo \texttt{evalExpression} di \texttt{alice.tuprolog.Library} rilancia ora l'istanza di \texttt{Throwable} ricevuta dal metodo \texttt{evalAsFuntor} di \texttt{alice.tuprolog.PrimitiveInfo}.
 %\end{itemize}
+

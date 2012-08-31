@@ -1080,20 +1080,20 @@ I/O.
 The ISO specification requires a lot of I/O predicates---many more than \tuprolog{} IOLibrary supports.
 %
 Table \ref{fig:isoiolibrary-table} summarizes the differences between \tuprolog{} IOLibrary and the ISO specifications.
-
+%
 \begin{figure}
   \centering
-  \includegraphics[width=7cm]{images/isoiolibrary-table}
-  \caption{Comparison between the I/O predicates provided by IOLibrary and the ISO standard specification. Bold style indicates missing predicates, plain style indicates existing functionalities to be refactored, improved, or be provided with a different signature. }\label{fig:isoiolibrary-table}
+  \includegraphics[width=10cm]{images/isoiolibrary-table}
+  \caption{Comparison between the I/O predicates provided by IOLibrary and the ISO standard specification. Bold style indicates missing predicates, plain style indicates existing functionalities to be refactored, improved, or be provided with a different signature to be ISO-compliant.}\label{fig:isoiolibrary-table}
 \end{figure}
-
-The main reason for such a large number of differences lays is that the ISO Prolog standard defines very general concepts for I/O handling, aimed at supporting a wide variety of I/O modes and devices. More precisely:
+%
+The main reason for such a large number of differences is that the ISO Prolog standard defines very general concepts for I/O handling, aimed at supporting a wide variety of I/O modes and devices. More precisely:
 \begin{itemize}
   \item \textbf{Sources} represent the resources from which data are read;
   \item \textbf{Sinks} represent the resources to which data are written.
 \end{itemize}
 %
-Sources and sinks can be file, standard input/output stream, or any other resource supported by the underlying system: the only assumption is that each resource is associated to a sequence of bytes of characters.
+Sources and sinks can be file, standard input/output stream, or any other resource supported by the underlying system: the only assumption is that each resource is associated to a sequence of bytes or characters.
 
 \textit{Stream terms} provide a logical view of sources and sinks, and are used to identify a stream in I/O predicates. A stream term is a term respecting the following constraints:
 \begin{itemize}
@@ -1102,26 +1102,352 @@ Sources and sinks can be file, standard input/output stream, or any other resour
   \item it is not used to identify other streams at the same time.
 \end{itemize}
 %
-The ISO standard does not specify whether the stream terms must result from an explicit source/sink opening by the \texttt{open/4} predicate, nor whether different sources/sinks must be represented by different stream terms at different, subsequent times: these issues are left to the specific implementation.
+The ISO standard does not specify whether the stream terms must result from an explicit source/sink opening by the \texttt{open/4} predicate, nor whether different sources/sinks must be represented by different stream terms at subsequent times: these issues are left to the specific implementation.
 
-Moreover, each stream can be associated to a \textit{stream alias}, that is an atom used to refer to the stream. The association between a stream and its alias is created when the stream is opened, and automatically canceled when the stream is closed.
+Moreover, each stream can be associated to a \textit{stream alias}---an atom used to refer to the stream. The association between a stream and its alias is created when the stream is opened, and automatically canceled when the stream is closed.
 The same stream can be associated to multiple aliases simultaneously.
-
-Two pre-defined streams exist that are always automatically open,
-the standard input (alias \texttt{user\_input}) and the standard output
-(alias \texttt{user\_output}): such streams must never be closed.
+%
+Two pre-defined streams exist that are always automatically open: the standard input (alias \texttt{user\_input}) and the standard output
+(alias \texttt{user\_output}). Such streams must never be closed.
 
 The ISO standard also introduces the concepts of \textit{current input stream} and \textit{current output stream}: initially, they default to the standard input and standard output above, but can be reassigned at any time via the \texttt{set\_input/1} e and \texttt{set\_output/1} predicates.
-However, when such an input/output stream is closed, the current input/output stream must be re-set to their default values (i.e., the standard input/output, respectively).
+However, when such an input/output stream is closed, the current input/output stream must be re-set to its default value (i.e., the standard input/output, respectively).
 
-One further concept is the \textit{stream position}, which defines the point where the next input/output will takes place. The position can be changed via \texttt{set\_stream\_position/2}.
-The stream position is always supported, even by predicates whose operations do not change the position itself.
-Syntactically, the stream position is an implementation-dependent ground term.
+One further concept is the \textit{stream position}, which defines the point where the next input/output will take place; syntactically, it is an implementation-dependent ground term.
+The stream position is always supported, even by predicates whose operations do not change the position itself; to change the current position, the \texttt{set\_stream\_position/2} predicate is used.
+When an output stream is repositioned, any output possibly present in the sink is overwritten; when an input stream is repositioned, instead, the content already available into the stream remains unaltered.
 
-\color{red}
-To be continued...
+A stream that can be repositioned (that is, whose \texttt{reposition} property is true) must support also the \textit{end position} concept: the position of an input stream that has been completely read is represented by the \texttt{end-of-stream} atom, while any attempt to read beyond the end of stream causes the stream position to become \texttt{past-end-of-stream}.
 
-\normalcolor
+On the other hand, output streams can be \textit{flushed} when necessary via the \texttt{flush\_output/1} predicate; a stream is automatically flushed before closing.
+
+
+%---------------------------------------------------------------------
+\subsection{Options}
+%---------------------------------------------------------------------
+
+The ISO standard defines options for stream creation, stream closure, and stream properties.
+
+\noindent When a stream is opened via \texttt{open/4}:
+
+\begin{itemize}
+ \item \texttt{type(\textit{Type})} specifies the stream type---either a binary stream or a text stream (default);
+ \item \texttt{reposition(\textit{Bool})} specifies whether the stream can be repositioned or not (see above);
+ \item \texttt{alias(\textit{Alias})} defines \texttt{\textit{Alias}} as a stream alias for this stream;
+ \item \texttt{eof\_action(\textit{Action})} specifies the value to be returned by a read predicate encountering the end-of-stream; possible values are \texttt{error}, to indicate that no further read is possible, or \texttt{eof\_code} \textit{(default)}, to indicate that the special \texttt{eof} value must be returned, or \texttt{reset}, meaning that the read position must be reset to the start of the stream. This is particulary useful on the console input.
+\end{itemize}
+
+\noindent Conversely, when a stream is closed via \texttt{close/1}-\texttt{/2}:
+
+\begin{itemize}
+ \item \texttt{force(\textit{Bool})} specifies whether the stream must be forcedly closed upon error: the default is \textit{false}. If the value is set to \textit{true}, the stream might remain in an inconsistent state, or data may be lost, when the forced closing occurs.
+\end{itemize}
+
+\noindent Stream properties are expressed via the \texttt{stream\_property(\textit{Stream}, \textit{Property})} predicate, where \texttt{\textit{Property}} is one of the following:
+
+\begin{itemize}
+ \item \texttt{file\_name(\textit{File})} if the stream is connected to a file, returns a unique identifier of the file;
+
+  \item \texttt{mode(\textit{Mode})} is to be specified when the stream is opened: \texttt{\textit{Mode}} can be \texttt{read}, \texttt{write} or \texttt{append};
+
+  \item \texttt{input} if the stream is connected to a source;
+
+  \item \texttt{output} if the stream is connected to a sink;
+
+  \item \texttt{alias(\textit{Alias})} returns the stream alias, if the stream has one;
+
+  \item \texttt{position(\textit{Pos})} returns the current stream position, if the stream can be repositioned;
+
+  \item \texttt{end\_of\_stream(\textit{End})} returns either \texttt{not}, if the stream is not at the end, or \texttt{at}, if the stream is precisely at the end, or \texttt{past} if the stream is past the end of the stream;
+
+  \item \texttt{eof\_action(\textit{Action})} returns the \texttt{\textit{Action}} specified when the stream was opened, if there was one, or an implementation-dependent action associated to the stream, otherwise;
+
+  \item \texttt{reposition(\textit{Bool})} returns whether the stream can be repositioned (\texttt{true} or \texttt{false});
+
+  \item \texttt{type(\textit{Type})} returns whether the stream is a \texttt{binary} stream or a \texttt{text} stream.
+\end{itemize}
+
+\noindent The standard input and output streams are configured as in Table \ref{tab:isoiolibrary-user-streams}.
+
+\begin{table}
+  \centering
+  \begin{tabular}{|p{5cm}|p{5cm}|}
+    \hline
+    \textbf{\texttt{user\_input}} & \textbf{\texttt{user\_output}}\\
+    \hline
+    \texttt{mode(read)} & \texttt{mode(append)} \\
+    \texttt{input} & \texttt{output} \\
+    \texttt{alias(user\_input)} & \texttt{alias(user\_output)}\\
+    \texttt{eof\_action(reset)} & \texttt{eof\_action(reset)}\\
+    \texttt{reposition(false)} & \texttt{reposition(false)}\\
+    \texttt{type(text)} & \texttt{type(text)}\\
+    \hline
+  \end{tabular}
+  \caption{The default configuration of the standard I/O streams.}
+  \label{tab:isoiolibrary-user-streams}
+\end{table}
+
+
+\noindent Read properties can be specified in read predicates like \texttt{read\_term}, and can have the following forms:
+
+\begin{itemize}
+ \item \texttt{variables(\textit{Vars})}: when a term is read, \texttt{\textit{Vars}} is the list of variables found in the term; anonymous variables are included;
+
+ \item \texttt{variable\_names(\textit{VNList})}: when a term is read, \texttt{\textit{VNList}} is unified with a list of \texttt{A=V} pairs, where \texttt{A} is an atom denoting a variable name in term read, and \texttt{V} is the corresponding variable in the term template; anonymous variables are not included in the list;
+
+ \item \texttt{singletons(\textit{VNList})}: when a term is read, \texttt{\textit{VNList}} is unified with a list of \texttt{A=V} pairs, where \texttt{A} is an atom denoting a variable name in term read, and \texttt{V} is the corresponding variable in the term template; anonymous variables are not included in the list.
+\end{itemize}
+
+\noindent For instance, if a query like:
+
+\texttt{?:- read\_term(st, T, [variables(VL),\\
+\mbox{~~~~~~~~~~~~~~~~~~~~~~~~~}variable\_names(VN), singletons(VS)].}
+
+\noindent reads a term such as \texttt{foo(A+Roger, A+\_)}, the result is:
+
+\noindent
+\texttt{T  / foo(Xl+X2, X1+X3)}\\
+\texttt{VL / [Xl, X2, X3]}\\
+\texttt{VN / ['A' = Xl, 'Roger' = X2]}\\
+\texttt{VS / ['Roger' = X2]}
+
+\noindent Basically, the term read is scanned for variables, which are named according to some implementation-dependent template (e.g. \texttt{X1}, \texttt{X2}, \texttt{X3}); these names are used in the lists above, either to list all the variables (including the anonymous ones---see \texttt{X3} in \texttt{VL}), or to list the correspondence between the actual variable names and such placeholders (\texttt{VN} and \texttt{VS}, the latter including singleton variables only).
+
+Analogously, write properties can be specified in write predicates like \texttt{write\_term}, and can have the following forms:
+
+\begin{itemize}
+ \item \texttt{quoted(\textit{Bool})}: specifies whether each atom of functor is quoted (usually because it comes from a previous \texttt{read\_term});
+
+ \item \texttt{ignore\_ops(\textit{Bool})}: if true, each compound term is returned in a function notation. Any other option is ignored.
+
+ \item \texttt{numbervars(\textit{Bool})}: if true, the terms of the form \texttt{'\$VAR'(N)} are replaced by a system-generated variable name that uses the \textit{N}th capital letter\footnote{\texttt{A} is considered the 0th letter.} followed by a the \texttt{N}/26 integer.
+     For instance, \texttt{'\$VAR'(51)} produces \texttt{Z1}, since the 51th letter of the alphabet (mod 26) is \texttt{Z}, and 51/26=1.
+\end{itemize}
+
+
+%---------------------------------------------------------------------
+\subsection{Writing terms}
+%---------------------------------------------------------------------
+
+When a term is written via \texttt{write\_term/3}, the following rules apply:
+
+\begin{itemize}
+  \item if the term is a variable, a character is produced of the form \texttt{\_\textit{string}} where the string following the underscore are implementation-dependent. A variable occurring multiple times in the term is obviously converted into the same \texttt{\_\textit{string}} for each occurrence.
+  \item if the term is an integer number, the corresponding string is produced; negative values starts with \texttt{-}.
+  \item if the term is a real number, the corresponding string is produced; negative values starts with \texttt{-}. If the write option \texttt{quoted} is true, the produced string ensures that a subsequent \texttt{read\_term} can read it back correctly.
+  \item if the term is an atom that could not be read back unless quoted, and the write option \texttt{quoted} is true, the produced string is quoted; otherwise it is not.
+  \item if the term contains a main functor that \textit{is not} an operator, or the write option \texttt{ignore\_ops} is true, the term is written in the \textit{canonical form} (Table \ref{tab:isoiolibrary-write-terms}); otherwise it is not.
+  \item if, instead, the term contains a main that \textit{is} an operator and the write option \texttt{ignore\_ops} is true, the term is written in the operator notation ((Table \ref{tab:isoiolibrary-write-terms}).
+\end{itemize}
+
+\begin{table}
+  \footnotesize\centering
+  \begin{tabular}{|p{6cm}|p{6cm}|}
+    \hline
+    \textit{Canonical form} & \textit{Operator notation}\\
+    \hline
+    For every term other than lists: & - The operator itself is returned either before
+    (for prefix operators), or between (for infix operators) or after (for postfix operators) its arguments;\\
+    - the main functor's atom; &  - a space is always inserted between the operator and its arguments;\\
+    - the open parenthesis \texttt{'('}; & - for each argument, the same rules above are applied recursively; \\
+    - each term argument, built applying the same rules recursively, in a comma-separated list; & - if one of the argument is also an operator, it is enclosed between parentheses. \\
+    - the closed parenthesis \texttt{')'}; & \\
+    \textbf{Example:} \texttt{2+3} becomes \texttt{+(2,3)} & \\
+    \hline
+    For lists (e.g. terms of the form \texttt{‘.’(Head, Tail)}), the list notation is used if the write option \texttt{ignore\_ops} is false: & \\
+    - an open square bracket \texttt{'['}; &  \\
+    - the head argument, built applying the same rules recursively; & \\
+    - the tail argument, built as follows; & \\
+    \mbox{~~}- if the tail has the form \texttt{‘.’(Head, Tail)}), a comma is produced and the above rule is triggered recursively; & \\
+    \mbox{~~}- otherwise, if the tail is empty (e.g. \texttt{[]}), a close bracket is produced \texttt{']'} & \\
+    \mbox{~~}- otherwise, a pipe symbol is produced \texttt{'|'} and these rules are re-applied recursively; at the end, a close bracket is produced \texttt{']'} & \\
+    \hline
+  \end{tabular}
+  \caption{Term writing rules: canonical form and operator notation.}
+  \label{tab:isoiolibrary-write-terms}
+\end{table}
+
+
+%---------------------------------------------------------------------
+\subsection{Predicates}
+%---------------------------------------------------------------------
+
+\noindent ISOIOLibrary defines the following predicates:
+
+\begin{itemize}
+
+\item \bti{set\_input/1}\\
+    \noindent\bt{set\_input} associates the current input to the provided argument, which can be either a stream\_term or an alias.
+    
+    \template{set\_input(@Stream\_or\_alias)}
+
+    \exception{error(instantiation\_error, instantiation\_error)} if \textit{\texttt{Stream\_or\_alias}} is a variable.
+    
+    \exception{error(domain\_error, domain\_error(\texttt{stream\_or\_alias},\\
+    \texttt{\textit{Stream\_or\_alias}}))} if \textit{\texttt{Stream\_or\_alias}} is neither a stream term nor a valid stream alias.
+
+    \exception{error(existence\_error, existence\_error(\texttt{stream},\\
+    \texttt{\textit{Stream\_or\_alias}}))} if \textit{\texttt{Stream\_or\_alias}} is not associated to an open stream.
+
+    \exception{error(permission\_error, permission\_error(\texttt{input},\\
+    \texttt{stream}, \texttt{\textit{Stream\_or\_alias}}))} if \textit{\texttt{Stream\_or\_alias}} is associated to an output stream.
+
+
+\item \bti{set\_output/1}\\
+    \noindent\bt{set\_output} associates the current output to the provided argument, which can be either a stream\_term or an alias.
+
+    \template{set\_output(@Stream\_or\_alias)}
+
+    \exception{error(instantiation\_error, instantiation\_error)} if \textit{\texttt{Stream\_or\_alias}} is a variable.
+
+    \exception{error(domain\_error, domain\_error(\texttt{stream\_or\_alias},\\
+    \texttt{\textit{Stream\_or\_alias}}))} if \textit{\texttt{Stream\_or\_alias}} is neither a stream term nor a valid stream alias.
+
+    \exception{error(existence\_error, existence\_error(\texttt{stream},\\
+    \texttt{\textit{Stream\_or\_alias}}))} if \textit{\texttt{Stream\_or\_alias}} is not associated to an open stream.
+
+    \exception{error(permission\_error, permission\_error(\texttt{output},\\
+    \texttt{stream}, \texttt{\textit{Stream\_or\_alias}}))} if \textit{\texttt{Stream\_or\_alias}} is associated to an input stream.
+
+\item \bti{flush\_output/0} - \bti{flush\_output/1}\\
+    \noindent\bt{flush\_output} flushes the output onto the stream associated to the provided argument, which can be either a stream\_term or an alias; if no argument is provided, the default output stream is flushed.
+
+    \template{flush\_output(@Stream\_or\_alias)}\\
+    \template{flush\_output}
+
+    \exception{error(instantiation\_error, instantiation\_error)} if \textit{\texttt{Stream\_or\_alias}} is a variable.
+
+    \exception{error(domain\_error, domain\_error(\texttt{stream\_or\_alias},\\
+    \texttt{\textit{Stream\_or\_alias}}))} if \textit{\texttt{Stream\_or\_alias}} is not a valid stream term or alias.
+
+    \exception{error(existence\_error, existence\_error(\texttt{stream},\\
+    \texttt{\textit{Stream\_or\_alias}}))} if \textit{\texttt{Stream\_or\_alias}} is not associated to an open stream.
+
+    \exception{error(permission\_error, permission\_error(\texttt{output},\\
+    \texttt{stream}, \texttt{\textit{Stream\_or\_alias}}))} if \textit{\texttt{Stream\_or\_alias}} is associated to an input stream.
+
+
+\item \bti{stream\_property/2}\\
+    \noindent\bt{stream\_property} verifies whether the given stream has the given property, unifying \textit{\texttt{Property}} with the corresponding value.
+
+    \template{stream\_property(?Stream, ?Property)}
+
+    \exception{error(instantiation\_error, instantiation\_error)} if \textit{\texttt{Stream}} is a variable.
+
+    \exception{error(domain\_error, domain\_error(\texttt{stream},\\
+    \texttt{\textit{Stream}}))} if \textit{\texttt{Stream}} is not a stream term.
+
+    \exception{error(domain\_error, domain\_error(\texttt{stream\_property},\\
+    \texttt{\textit{Property}}))} if \textit{\texttt{Property}} is neither a variable nor a stream property.
+
+    \exception{error(existence\_error, existence\_error(\texttt{stream},\\
+    \texttt{\textit{Stream}}))} if \textit{\texttt{Stream}} is not associated to an open stream.
+
+
+\item \bti{at\_end\_of\_stream/0} - \bti{at\_end\_of\_stream/1}\\
+    \noindent\bt{at\_end\_of\_stream} succeeds if the \texttt{end\_of\_stream} property has either the \texttt{end\_of\_stream} or the \texttt{past\_end\_of\_stream} value. The zero-argument version checks the current input stream.
+    
+    \template{at\_end\_of\_stream(@Stream\_or\_alias)}\\
+    \template{at\_end\_of\_stream}
+
+    \exception{error(instantiation\_error, instantiation\_error)} if \textit{\texttt{Stream\_or\_alias}} is a variable.
+
+    \exception{error(domain\_error, domain\_error(\texttt{stream},\\
+    \texttt{\textit{Stream\_or\_alias}}))} if \textit{\texttt{Stream\_or\_alias}} is not a valid stream term or alias.
+
+    \exception{error(existence\_error, existence\_error(\texttt{stream},\\
+    \texttt{\textit{Stream\_or\_alias}}))} if \textit{\texttt{Stream\_or\_alias}} is not associated to an open stream.
+
+
+\item \bti{set\_stream\_position/2}\\
+    \noindent\bt{set\_stream\_position} is true if the stream position can be successfully set to the new \texttt{\textit{Position}} argument.
+
+    \template{set\_stream\_position(@Stream\_or\_alias, @Position)}
+
+    \exception{error(instantiation\_error, instantiation\_error)} if either \textit{\texttt{Stream\_or\_alias}} or \textit{\texttt{Position}} is a variable.
+
+    \exception{error(domain\_error, domain\_error(\texttt{stream},\\
+    \texttt{\textit{Stream\_or\_alias}}))} if \textit{\texttt{Stream\_or\_alias}} is not a valid stream term or alias.
+
+    \exception{error(existence\_error, existence\_error(\texttt{stream},\\
+    \texttt{\textit{Stream\_or\_alias}}))} if \textit{\texttt{Position}} is neither a valid stream position, nor a variable.
+
+    \exception{error(permission\_error, permission\_error(\texttt{reposition},\\
+    \texttt{stream}, \texttt{\textit{Stream\_or\_alias}}))} if the \texttt{reposition} property of this stream is false.
+
+
+\item \bti{open/3} - \bti{open/4}\\
+    \noindent\bt{open} succeeds if the stream can be opened according to the \texttt{mode} and \texttt{options} desired.
+
+    \template{open(@Source\_Sink, @Mode, -Stream)}\\
+    \template{open(@Source\_Sink, @Mode, -Stream, @Options)}
+
+    \exception{error(instantiation\_error, instantiation\_error)} if either \textit{\texttt{Source\_sink}} or \textit{\texttt{Mode}} is a variable, or if \texttt{\textit{Options}} is a partial list or such a list contains a variable.
+
+    \exception{error(type\_error, type\_error(atom, Mode))} if \textit{\texttt{Mode}} is a neither an atom nor a variable.
+
+    \exception{error(type\_error, type\_error(list, Options))} if\\ \texttt{\textit{Options}} is neither a list nor a partial list.
+
+    \exception{error(type\_error, type\_error(variable, Stream))} if \texttt{\textit{Stream}} is not a variable.
+
+    \exception{error(domain\_error, domain\_error(\texttt{stream\_sink},\\
+    \texttt{\textit{Source\_sink}}))} if \textit{\texttt{Source\_sink}} is not a valid stream source or sink.
+
+    \exception{error(domain\_error, domain\_error(\texttt{io\_mode},\\
+    \texttt{\textit{Mode}}))} if \textit{\texttt{Mode}} is an atom other than the prescribed \texttt{input} or \texttt{output}.
+
+    \exception{error(domain\_error, domain\_error(\texttt{stream\_option},\\
+    \texttt{\textit{Element}}))} if an \textit{\texttt{Element}} of the options list is neither a variable nor a valid stream option.
+
+    \exception{error(existence\_error, existence\_error(\texttt{stream},\\
+    \texttt{\textit{Source\_sink}}))} if the source /sink stream \textit{\texttt{Source\_sink}} does not exist.
+
+    \exception{error(permission\_error, permission\_error(\texttt{open},\\
+    \texttt{source\_sink}, \texttt{\textit{Source\_sink}}))} if the specified source/sink stream cannot be opened.
+    
+    \exception{error(permission\_error, permission\_error(\texttt{open},\\
+    \texttt{source\_sink}, \texttt{alias(\textit{A})}))} if \texttt{alias(\textit{A})} is in the options list, and \texttt{\textit{A}} is already bound to another open stream.
+
+    \exception{error(permission\_error, permission\_error(\texttt{open},\\
+    \texttt{source\_sink}, \texttt{reposition(true)}))} if \texttt{reposition(true)} is in the options list, but the stream cannot be repositioned.
+
+
+\item \bti{close/1} - \bti{close/2}\\
+    \noindent\bt{close} closes the given stream, eliminating any associated alias(es).
+    If the \texttt{force(true)} option is specified, the stream is immediately closed, ignoring any data not yet transferred (in the case of output streams); in any other case, the stream is flushed before closing. If the stream to be closed is the current stream, the latter will be associated to the standard input or output, as appropriate.
+    
+    \template{close(@Stream\_or\_alias)}\\
+    \template{close(@Stream\_or\_alias, @Options)}
+
+    \exception{error(instantiation\_error, instantiation\_error)} if either \textit{\texttt{Stream\_or\_alias}} is a variable, or \texttt{\textit{Options}} is a partial list or such a list contains a variable.
+
+    \exception{error(type\_error, type\_error(list, Options))} if\\ \texttt{\textit{Options}} is neither a list nor a partial list.
+
+    \exception{error(domain\_error, domain\_error(\texttt{stream\_or\_alias},\\
+    \texttt{\textit{Stream\_or\_alias}}))} if \textit{\texttt{Stream\_or\_alias}} is not a valid stream term or alias.
+
+    \exception{error(domain\_error, domain\_error(\texttt{close\_option},\\
+    \texttt{\textit{Element}}))} if an \textit{\texttt{Element}} of the options list is neither a variable nor a valid close option.
+
+    \exception{error(existence\_error, existence\_error(\texttt{stream},\\
+    \texttt{\textit{Stream\_or\_alias}}))} if the stream \textit{\texttt{Stream\_or\_alias}} is not associated to an open stream.
+
+    \exception{error(permission\_error, permission\_error(\texttt{open},\\
+    \texttt{source\_sink}, \texttt{\textit{Source\_sink}}))} if the specified source/sink stream cannot be opened.
+
+    \exception{error(permission\_error, permission\_error(\texttt{open},\\
+    \texttt{source\_sink}, \texttt{alias(\textit{A})}))} if \texttt{alias(\textit{A})} is in the options list, and \texttt{\textit{A}} is already bound to another open stream.
+
+    \exception{error(permission\_error, permission\_error(\texttt{open},\\
+    \texttt{source\_sink}, \texttt{reposition(true)}))} if \texttt{reposition(true)} is in the options list, but the stream cannot be repositioned.
+
+    \textbf{continuare con la \texttt{get\_char} a pag 40}
+
+\end{itemize}
+
+
+
+
 
 %---------------------------------------------------------------------
 \section{DCGLibrary}
