@@ -1276,13 +1276,27 @@ When a term is written via \texttt{write\_term/3}, the following rules apply:
 
 \begin{itemize}
 
+\color{red}
+
+\item \bti{current\_input/1}\\
+    \noindent\bt{current\_input} unifies the current input stream with the given argument.
+
+    \template{current\_input(@Stream\_or\_alias)}
+
+\item \bti{current\_output/1}\\
+    \noindent\bt{current\_output} unifies the current output stream with the given argument.
+
+    \template{current\_output(@Stream\_or\_alias)}
+
+\normalcolor
+
 \item \bti{set\_input/1}\\
     \noindent\bt{set\_input} associates the current input to the provided argument, which can be either a stream\_term or an alias.
-    
+
     \template{set\_input(@Stream\_or\_alias)}
 
     \exception{error(instantiation\_error, instantiation\_error)} if \textit{\texttt{Stream\_or\_alias}} is a variable.
-    
+
     \exception{error(domain\_error, domain\_error(\texttt{stream\_or\_alias},\\
     \texttt{\textit{Stream\_or\_alias}}))} if \textit{\texttt{Stream\_or\_alias}} is neither a stream term nor a valid stream alias.
 
@@ -1346,7 +1360,7 @@ When a term is written via \texttt{write\_term/3}, the following rules apply:
 
 \item \bti{at\_end\_of\_stream/0} - \bti{at\_end\_of\_stream/1}\\
     \noindent\bt{at\_end\_of\_stream} succeeds if the \texttt{end\_of\_stream} property has either the \texttt{end\_of\_stream} or the \texttt{past\_end\_of\_stream} value. The zero-argument version checks the current input stream.
-    
+
     \template{at\_end\_of\_stream(@Stream\_or\_alias)}\\
     \template{at\_end\_of\_stream}
 
@@ -1404,7 +1418,7 @@ When a term is written via \texttt{write\_term/3}, the following rules apply:
 
     \exception{error(permission\_error, permission\_error(\texttt{open},\\
     \texttt{source\_sink}, \texttt{\textit{Source\_sink}}))} if the specified source/sink stream cannot be opened.
-    
+
     \exception{error(permission\_error, permission\_error(\texttt{open},\\
     \texttt{source\_sink}, \texttt{alias(\textit{A})}))} if \texttt{alias(\textit{A})} is in the options list, and \texttt{\textit{A}} is already bound to another open stream.
 
@@ -1415,7 +1429,7 @@ When a term is written via \texttt{write\_term/3}, the following rules apply:
 \item \bti{close/1} - \bti{close/2}\\
     \noindent\bt{close} closes the given stream, eliminating any associated alias(es).
     If the \texttt{force(true)} option is specified, the stream is immediately closed, ignoring any data not yet transferred (in the case of output streams); in any other case, the stream is flushed before closing. If the stream to be closed is the current stream, the latter will be associated to the standard input or output, as appropriate.
-    
+
     \template{close(@Stream\_or\_alias)}\\
     \template{close(@Stream\_or\_alias, @Options)}
 
@@ -1441,7 +1455,143 @@ When a term is written via \texttt{write\_term/3}, the following rules apply:
     \exception{error(permission\_error, permission\_error(\texttt{open},\\
     \texttt{source\_sink}, \texttt{reposition(true)}))} if \texttt{reposition(true)} is in the options list, but the stream cannot be repositioned.
 
-    \textbf{continuare con la \texttt{get\_char} a pag 40}
+
+\item \bti{get\_char/2} - \bti{get\_char/1} - \bti{get\_code/2} - \bti{get\_code/1}\\
+    \noindent\bt{get\_char} and \bt{get\_code} read the next char from the given stream, and unify it with the second argument---a character or an integer representing the character code, respectively; the single-argument version of these predicates read from the current input stream. Special cases are treated as follows:
+    \begin{itemize}
+      \item if the stream position is \texttt{past\_end\_of\_stream}, the action to be performed depends on the stream options specified when the stream was opened---namely, \texttt{eof\_action(\textit{Action})}(see above);
+      \item if the stream position is \texttt{end\_of\_stream}, the EOF character is returned, and the stream position becomes \texttt{past\_end\_of\_stream}.
+    \end{itemize}    
+    
+    \template{get\_char(@Stream\_or\_alias, ?Character)}\\
+    \template{get\_char(?Character)}\\
+    \template{get\_code(@Stream\_or\_alias, ?Character\_code)}\\
+    \template{get\_code(?Character\_code)}
+
+    \exception{error(instantiation\_error, instantiation\_error)} if either \textit{\texttt{Stream\_or\_alias}} is a variable.
+
+    \exception{error(type\_error, type\_error(in\_character, \textit{Character}))} if \texttt{\textit{Character}} is neither a variable nor a character.
+
+    \exception{error(type\_error, type\_error(integer, \textit{Character\_code}))} if \texttt{\textit{Character\_code}} is neither a variable nor an integer.
+
+    \exception{error(domain\_error, domain\_error(\texttt{stream\_or\_alias},\\
+    \texttt{\textit{Stream\_or\_alias}}))} if \textit{\texttt{Stream\_or\_alias}} is not a valid stream term or alias.
+
+    \exception{error(existence\_error, existence\_error(\texttt{stream},\\
+    \texttt{\textit{Stream\_or\_alias}}))} if the stream \textit{\texttt{Stream\_or\_alias}} is not associated to an open stream.
+
+    \exception{error(permission\_error, permission\_error(\texttt{input},\\
+    \texttt{stream}, \texttt{\textit{Stream\_or\_alias}}))} if the stream in not an input stream.
+
+    \exception{error(permission\_error, permission\_error(\texttt{input},\\
+    \texttt{binary\_stream}, \texttt{\textit{Stream\_or\_alias}}))} if the stream in not a text stream.
+
+    \exception{error(permission\_error, permission\_error(\texttt{input},\\
+    \texttt{past\_end\_of\_stream}, \texttt{\textit{Stream\_or\_alias}}))} if the stream status is\\
+    \texttt{end\_of\_stream(past)} and the option \texttt{eof\_action(true)} is active.
+
+    \exception{error(representation\_error,  representation\_error(\texttt{\textit{\\
+    Character}}))} if the entity read from the stream is not a character.
+
+    \exception{error(representation\_error,  representation\_error(\texttt{\textit{\\
+    Character\_code}}))} if the entity read from the input stream is an integer, but does not represent a character.
+
+
+\item \bti{peek\_char/2} - \bti{peek\_char/1} - \bti{peek\_code/2} - \bti{peek\_code/1}\\
+    \noindent\bt{peek\_char} and \bt{peek\_code} work identically to the \texttt{get\_char} and \texttt{get\_code} above, but leave the stream position unaltered after reading, so that a subsequent read operation returns the same character.
+
+    \template{peek\_char(@Stream\_or\_alias, ?Character)}\\
+    \template{peek\_char(?Character)}\\
+    \template{peek\_code(@Stream\_or\_alias, ?Character\_code)}\\
+    \template{peek\_code(?Character\_code)}
+
+    \exception{}: the same as above.
+    
+
+\item \bti{put\_char/2} - \bti{put\_char/1} - \bti{put\_code/2} - \bti{put\_code/1}\\
+    \noindent\bt{put\_char} and \bt{put\_code} are the writing counterparts of the \texttt{get\_char} and \texttt{get\_code} above; syntax and exceptions raised are basically identical, but the \texttt{Character} or \texttt{Character\_code} must be ground in this case---otherwise, an \texttt{instantiation\_error} occurs.
+
+    \template{put\_char(@Stream\_or\_alias, +Character)}\\
+    \template{put\_char(+Character)}\\
+    \template{put\_code(@Stream\_or\_alias, +Character\_code)}\\
+    \template{put\_code(+Character\_code)}
+
+    \exception{}: the same as above, plus an \texttt{error(instantiation\_error, instantiation\_error)} if \texttt{Character} or \texttt{Character\_code} is a variable.
+
+\item \bti{nl/0} - \bti{nl/1}\\
+    \noindent\bt{nl} inserts a newline in the given stream.
+
+    \template{nl(@Stream\_or\_alias)}\\
+    \template{nl}
+
+    \exception{error(instantiation\_error, instantiation\_error)} if either \textit{\texttt{Stream\_or\_alias}} is a variable.
+
+
+\item \bti{read\_term/2} - \bti{read\_term/3} - \bti{read/1} - \bti{read/2}\\
+    \noindent\bt{read\_term} succeeds if a term can be read from the given stream that can be unified with the \texttt{\textit{Term}} argument: \texttt{\textit{Options}} are considered only if the above unification succeeds. The \texttt{read} predicate works analogously, but no options can be specified. As usual, the no-stream versions (\bti{read\_term/2} and \bti{read/1}) operate on the current input stream.
+
+    \template{read\_term(@Stream\_or\_alias, ?Term, +Options)}\\
+    \template{read\_term(?Term, +Options)}\\
+    \template{read(@Stream\_or\_alias, ?Term)}\\
+    \template{read(?Term)}
+    
+    \exception{error(instantiation\_error, instantiation\_error)} if either \textit{\texttt{Stream\_or\_alias}} is a variable.
+
+    \exception{error(instantiation\_error, instantiation\_error)} if \texttt{\textit{Options}} is either a partial list, or an element in the list is a variable.
+
+    \exception{error(type\_error, type\_error(list, \textit{Options}))} if\\ \texttt{\textit{Options}} is neither a list nor a partial list.
+
+    \exception{error(domain\_error, domain\_error(\texttt{stream\_or\_alias},\\
+    \texttt{\textit{Stream\_or\_alias}}))} if \textit{\texttt{Stream\_or\_alias}} is not a valid stream term or alias.
+
+    \exception{error(existence\_error, existence\_error(\texttt{stream},\\
+    \texttt{\textit{Stream\_or\_alias}}))} if the stream \textit{\texttt{Stream\_or\_alias}} is not associated to an open stream.
+
+    \exception{error(domain\_error, domain\_error(\texttt{read\_option},\\
+    \texttt{\textit{Element}}))} if an element in the option list is neither a variable nor a valid read option.
+
+    \exception{error(existence\_error, existence\_error(\texttt{stream},\\
+    \texttt{\textit{Stream\_or\_alias}}))} if \textit{\texttt{Stream\_or\_alias}} is not associated to an open stream.
+
+    \exception{error(permission\_error, permission\_error(\texttt{input},\\
+    \texttt{stream}, \texttt{\textit{Stream\_or\_alias}}))} if the stream in not an input stream.
+
+    \exception{error(permission\_error, permission\_error(\texttt{input},\\
+    \texttt{binary\_stream}, \texttt{\textit{Stream\_or\_alias}}))} if the stream in not a text stream.
+
+    \exception{error(permission\_error, permission\_error(\texttt{input},\\
+    \texttt{past\_end\_of\_stream}, \texttt{\textit{Stream\_or\_alias}}))} if the stream status is\\
+    \texttt{end\_of\_stream(past)} and the option \texttt{eof\_action(true)} is active.
+
+    \exception{error(representation\_error,  representation\_error(\texttt{\textit{\\
+    Flag}}))} if the entity read from the stream does not comply with the rules expressed by \texttt{\textit{Flag}}, which can be \texttt{max\_arity}, \texttt{max\_integer}, \texttt{min\_integer}.
+
+    \exception{error(representation\_error,  representation\_error(\texttt{
+    imp\_dep\_atom}))} if one or more characters in the input stream cannot form a valid token, or the character sequence cannot be transformed into a valid atom according to the current operator notation.
+
+\item \bti{write\_term/2} - \bti{write\_term/3} - \bti{write/1} - \bti{write/2} - \bti{writeq/1} - \bti{writeq/2} - \bti{write\_canonical/1} - \bti{write\_canonical/2}\\
+    These predicates are the writing counterparts of the \texttt{read\_term} and \texttt{read} predicates above: the given term is written on the given stream according to the specified write options, or following the default values\footnote{Namely: \texttt{quoted(false)}, \texttt{ignore\_ops(false)}, \texttt{numbervars(true)} for \texttt{write}, \texttt{quoted(true)}, \texttt{ignore\_ops(false)}, \texttt{numbervars(true)} for \texttt{writeq}, \texttt{quoted(true)}, \texttt{ignore\_ops(true)}, \texttt{numbervars(true)} for \texttt{write\_canonical}.} in the \texttt{write}, \texttt{writeq} and \texttt{write\_canonical} cases. Basically, the same considerations and exceptions above still apply.
+
+    \template{write\_term(@Stream\_or\_alias, @Term, +Options)}\\
+    \template{write\_term(@Term, +Options)}\\
+    \template{write(@Stream\_or\_alias, @Term)}\\
+    \template{write(@Term)}
+    \template{writeq(@Stream\_or\_alias, @Term)}\\
+    \template{writeq(@Term)}
+
+    \exception{}: the same as above
+
+\item \bti{get\_byte/2} - \bti{get\_byte/1} - \bti{peek\_byte/2} - \bti{peek\_byte/1} - \bti{put\_byte/2} - \bti{put\_byte/1}\\
+    \noindent\bt{get\_byte}, \bt{peek\_byte} and \bt{put\_byte} are the binary counterparts of the \texttt{get\_char}, \texttt{peek\_char} and \texttt{put\_char} above; syntax and exceptions raised are basically identical, with obvious changes (i.e., the wrong type of stream here is \texttt{text} instead of \texttt{binary}).
+
+    \template{get\_byte(@Stream\_or\_alias, ?Byte)}\\
+    \template{get\_byte(?Byte)}\\
+    \template{peek\_byte(@Stream\_or\_alias, ?Byte)}\\
+    \template{peek\_byte(?Byte)}\\
+    \template{put\_byte(@Stream\_or\_alias, +Byte)}\\
+    \template{put\_byte(+Byte)}
+
+    \exception{}: see description above.
 
 \end{itemize}
 
