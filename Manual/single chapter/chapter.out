@@ -1,7 +1,0 @@
-\BOOKMARK [0][]{chapter.7}{7 Exceptions}{}
-\BOOKMARK [1][]{section.7.1}{7.1 Exceptions in ISO Prolog}{chapter.7}
-\BOOKMARK [2][]{subsection.7.1.1}{7.1.1 Examples}{section.7.1}
-\BOOKMARK [2][]{subsection.7.1.2}{7.1.2 Error classification}{section.7.1}
-\BOOKMARK [1][]{section.7.2}{7.2 Implementing Exceptions in tuProlog}{chapter.7}
-\BOOKMARK [2][]{subsection.7.2.1}{7.2.1 Java exceptions from tuProlog}{section.7.2}
-\BOOKMARK [2][]{subsection.7.2.2}{7.2.2 Examples}{section.7.2}
