@@ -489,20 +489,18 @@ This issue is covered more in detail in Section \ref{sec:dotnet-putting-together
 
 %-------------------------------------
 \subsection{Handling .NET Exceptions}
+\label{ssec:dotnet-oolibrary-exceptions}
 %-------------------------------------
 
-Analogously to the Java case (see Section \ref{ssec:java-exceptions-in-tuprolog}), .NET exceptions possibly raised during the execution of methods on .NET objects accessed from the Prolog world need to be captured and handled, too, yet without any mixing with the Prolog semantics.
+Since OOLibrary is rooted on JavaLibrary, exceptions raised during the execution of methods on .NET objects accessed from Prolog behave exactly as in the Java case (see Section \ref{ssec:java-exceptions-in-tuprolog})---that is, .NET exceptions are never perceived as such: rather, they are encapsulated in some Java exception.
 
-\color{red}
-Accordingly, such exceptions are handled in \tuprolog{}.NET via one further, \textit{ad hoc} predicate, %\texttt{oo\_throw/1} and 
-\texttt{oo\_catch/3}, which constitute the .NET counterpart of JavaLibrary's %\texttt{java\_throw/1} and 
-\texttt{java\_catch/3}.
-\normalcolor
+Accordingly, these exceptions are handled in \tuprolog{}.NET via the same \texttt{java\_catch/3} predicate defined in Section \ref{ssec:java-exceptions-in-tuprolog} for the Java version.
 %
 Syntax and use are identical to the Java case, and so are the possible examples: thus, we forward the interested reader to Section \ref{ssec:java-exception-examples} on page \pageref{ssec:java-exception-examples}.
 
-%EXAMPLE + FIGURE
-
+\color{red}
+Please be aware that the \texttt{java\_catch/3} predicate may be renamed in some future \tuprolog{} version in order to make it more ``language neutral'' (a likely name might be \texttt{oo\_catch/3}: stay tuned for news\ldots).
+\normalcolor
 
 %-----------------------------------------------------------------------
 \section{Using Prolog from .NET: the API}
@@ -560,6 +558,11 @@ For instance, if the TestLibrary shown in Section \ref{tab:TestLibrary} on page 
   \includegraphics[width=8cm]{images/dotnet-testlibrary2}
   \caption{Loading the translated TestLibrary in the \tuprolog{}.NET GUI either via the \texttt{load\_library} predicate \textit{(top)} or via the library manager \textit{(bottom)}. (Compare with Figures \ref{fig:testlibrary3} and \ref{fig:testlibrary5} on page \pageref{fig:testlibrary5}.)}\label{fig:dotnet-testlibrary}
 \end{figure}
+
+\subsection{Capturing exceptions raised in .NET libraries}
+
+Unlike the OOLibrary (and JavaLibrary) case, where the exceptions possibly raised during a call to some method call can be perceived and caught via the \texttt{java\_catch/3} (or any future renamed version) predicate (Section \ref{ssec:dotnet-oolibrary-exceptions}), the exceptions possibly raised inside a library (in this case, written in .NET) cannot be caught at all, since they have nothing to do with the OOLIbrary/JavaLibrary filter.
+So, if any such exception occurs inside a library, the corresponding predicate simply fails.
 
 \subsection{Capturing the .NET output in Prolog}
 
