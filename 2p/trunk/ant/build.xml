@@ -123,7 +123,6 @@
 	    	      	<attribute name="Implementation-Title" value="tuProlog Engine"/>
 	    	      	<attribute name="Implementation-Version" value="${engine.version}"/>
 	    	      	<!-- details -->
-	    	    	
 	    	    </manifest>
 	    	 </jar>
 	    	
@@ -463,7 +462,7 @@
  		            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Core.dll" />
 	 				<arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.SwingAWT.dll" />
 	 				<arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Tools.dll" />
-	 				<arg value="-debug"/>
+	 				<!-- <arg value="-debug"/> -->
  		            <arg value="-target:library" />
  		            <arg value="-compressresources" />
  		            <arg value="-out:${build.archives.net.dir}/archives/javassist.dll" />
@@ -472,14 +471,14 @@
 	        
 	        <echo>Building 2p...</echo>
 	 		<exec executable="${ikvmc}">
+	 			 <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Core.dll" />
 	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Beans.dll" />
 	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Corba.dll" />
 	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Remoting.dll" />
-	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Core.dll" />
 	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Misc.dll" />
 	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.SwingAWT.dll" />
 	            <arg value="-reference:${build.archives.net.dir}/archives/javassist.dll" />
-				<arg value="-debug"/>
+				<!-- <arg value="-debug"/> -->
 		 		<arg value="-classloader:ikvm.runtime.ClassPathAssemblyClassLoader"/>
 	            <arg value="-target:winexe" />
 	            <arg value="-compressresources" />
@@ -487,24 +486,19 @@
 	            <arg value="-out:${build.archives.net.dir}/archives/2p.exe" />
 	            <arg value="${build.archives.dir}/2p.jar" />
 	        </exec>
-	 	
-	 		<!--
+	
 	 		<echo>Building tuprolog...</echo>
 	 		<exec executable="${ikvmc}">
-					<arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Beans.dll" />
-		            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Corba.dll" />
-		            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Remoting.dll" />
-		            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Core.dll" />
-		            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Misc.dll" />
-		            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.SwingAWT.dll" />
-		            <arg value="-reference:${build.archives.net.dir}/archives/javassist.dll" />
+	 			  	<arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Core.dll" />
+	 				<arg value="-classloader:ikvm.runtime.ClassPathAssemblyClassLoader"/>
  		            <arg value="-target:library" />
  		            <arg value="-compressresources" />
- 		            <arg value="-version:${project.version}" />
+ 		            <arg value="-version:${engine.version}.${NETSpecific.version}" />
  		            <arg value="-out:${build.archives.net.dir}/archives/tuprolog.dll" />
  		            <arg value="${build.archives.dir}/tuprolog.jar" />
 	 		</exec>
 	 	
+	 	<!--
 	 		<echo>Building tuprolog extensions...</echo>
 	 		<exec executable="${ikvmc}">
 					<arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Beans.dll" />

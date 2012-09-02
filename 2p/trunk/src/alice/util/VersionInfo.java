@@ -4,7 +4,7 @@ public class VersionInfo
 {
 	private static final String ENGINE_VERSION = "2.5";
 	private static final String JAVA_SPECIFIC_VERSION = "1";
-	private static final String NET_SPECIFIC_VERSION = "0";
+	private static final String NET_SPECIFIC_VERSION = "1";
 	
 	public static String getEngineVersion()
 	{
