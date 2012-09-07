@@ -1,5 +1,5 @@
 %=======================================================================
-\chapter{Multi-paradigm programming in Prolog and .NET}
+\chapter[Multi-paradigm programming in Prolog and .NET]{Multi-paradigm program-\\ming in Prolog and .NET}
 \label{ch:mpp-in-dotnet}
 %=======================================================================
 
@@ -254,7 +254,7 @@ So, while .NET objects could be loaded and exploited via JavaLibrary ``as is'' (
 \begin{itemize}
   \item the lack of support for some .NET language constructs;
   \item the different Java naming convention for methods w.r.t. Java;
-  \item the code reorganization performed behind-the-scenes by the .NET compilers, which sometimes change the names of syntactic elements---for instance, properties are compiled by adding a pair of getter/setter methods.
+  \item the code reorganisation performed behind-the-scenes by the .NET compilers, which sometimes change the names of syntactic elements---for instance, properties are compiled by adding a pair of getter/setter methods.
 \end{itemize}
 
 \noindent These aspects are put well in evidence by the example below, which refers to a class \texttt{Student} (written in C\#) defining a ``standard'' student with some ``obvious'' properties:
@@ -356,8 +356,7 @@ For instance, if the target object is written in C\#, OOLibrary:
 \label{sec:dotnet-oolibrary-examples}
 %-------------------------------------
 
-To show OOLibrary at work, it is first necessary to start \tuprolog{}.NET and \textit{manually remove JavaLibrary} (loaded by default as a side effect of the translation from Java) via the Library Manager, and then and \textit{manually add OOLibrary} by typing the string \texttt{OOLibrary.OOLibrary, OOLibrary} in the Library Manager's textfield, and pressing the \textit{Add} button.
-A confirmation message should appear, confirming that OOLibrary is now loaded.
+%To show OOLibrary at work, it is first necessary to start \tuprolog{}.NET and \textit{manually remove JavaLibrary} (loaded by default as a side effect of the translation from Java) via the Library Manager, and then and \textit{manually add OOLibrary} by typing the string \texttt{OOLibrary.OOLibrary, OOLibrary} in the Library Manager's textfield, and pressing the \textit{Add} button. A confirmation message should appear, confirming that OOLibrary is now loaded.
 
 The \texttt{Student} class (already cited in Section \ref{sec:dotnet-oolibrary}) has been rewritten in all the four supported languages:
 Tables \ref{tab:dotnet-oolibrary-examples1} shows how it can be exploited from \tuprolog{}.NET in Visual Basic (top two examples) and Java (bottom two examples), with and without conventions, while Table \ref{tab:dotnet-oolibrary-examples2} shows a comprehensive example where all the four supported .NET languages are used at the same time by the same \tuprolog{} program.
@@ -365,10 +364,6 @@ Tables \ref{tab:dotnet-oolibrary-examples1} shows how it can be exploited from \
 \begin{table}
 {\small
 \begin{verbatim}
-% REMEMBER:
-%	1) remove (or unload) the JavaLibrary
-%	2) load the OOLibrary using this string "OOLibrary.OOLibrary, OOLibrary"
-
 visualbasicWithoutConvention :-
   new_object('VBStudent.Student',[123456, john, smith], Obj),
   Obj <- 'PrintStudent' returns Student,
@@ -401,7 +396,7 @@ javaWithConvention :-
   new_object('javastudent.Student[]',[10], Array).
 \end{verbatim}
 }
-  \caption{Using the \texttt{Student} class in Visual Basic and Java without / with conventions. Remember to manually remove JavaLibrary and load OOLibrary first.}
+  \caption{Using the \texttt{Student} class in Visual Basic and Java without / with conventions.}
   \label{tab:dotnet-oolibrary-examples1}
 \end{table}
 

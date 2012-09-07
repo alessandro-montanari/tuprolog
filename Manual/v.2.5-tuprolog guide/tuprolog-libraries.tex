@@ -75,13 +75,15 @@ The fundamental libraries, loaded by default, are the following:
 
 \begin{description}
 
-\item[ISOIOLibrary] (class \texttt{alice.tuprolog.lib.ISOIOLibrary}) |
-    extends the above IOLibrary by adding ISO-compliant I/O predicates.
-
 \item[DCGLibrary] (class \texttt{alice.tuprolog.lib.DCGLibrary}) |
     provides support for Definite Clause Grammar, an extension of context
     free grammars used for describing natural and formal languages.
 
+\color{red}
+\item[ISOIOLibrary] (class \texttt{alice.tuprolog.lib.ISOIOLibrary}) |
+    extends the above IOLibrary by adding ISO-compliant I/O predicates
+    (expected in \tuprolog{} 2.6).
+\normalcolor
 \end{description}
 
 \noindent Further libraries exist that are \textit{not} included in the standard \tuprolog{} distribution, because of their very specific domain: they can be downloaded from the \tuprolog{} site, along with their documentation.
@@ -1071,15 +1073,115 @@ I/O.
     \template{rand\_int(?integer, @integer)}
 \end{itemize}
 
+%---------------------------------------------------------------------
+\section{DCGLibrary}
+\label{sec:dgc-library}
+%---------------------------------------------------------------------
+
+\noindent \emph{Library Dependencies}: BasicLibrary.
+
+This library provides support for Definite Clause Grammars (DCGs) \cite{bra00}, an extension of context free grammars that have proven useful for describing natural and formal languages, and that may be conveniently expressed and executed in Prolog.
+%
+Note that this library is not loaded by default when a \tuprolog{} engine is created: it must be explicitly loaded by the user, or via a \texttt{load\_library} directive inside any theory using DCGs.
+
+A DCG rule has the general form \verb|Head --> Body|: to distinguish terminal from nonterminal symbols, a phrase (that is, a sequence of terminal symbols) must be written as a Prolog list, with the empty sequence written as the empty list \verb|[]|.
+%
+The body can contain also executable blocks in parentheses, which are interpreted as normal Prolog rules.
+
+Here is a simple example (see also Figure \ref{fig:dcg-example}):
+%
+\begin{verbatim}
+    sentence --> noun_phrase, verb_phrase.
+    verb_phrase --> verb, noun_phrase.
+    noun_phrase --> [charles].
+    noun_phrase --> [linda].
+    verb --> [loves].
+\end{verbatim}
+%
+To verify whether a phrase is correct according to the given grammar, the \texttt{phrase/2} or \texttt{phrase/3} predicates are used---the latter form providing an extra argument for the `remainder' of the input string not recognised as being part of the phrase.
+%
+Some examples follow:\\
+
+\verb|?- phrase(sentence, [charles, loves, linda])|
+
+\texttt{\textit{yes}}\\
+
+\verb|?- phrase(sentence, [Who, loves, linda])|
+
+\texttt{\textit{Who/charles}}
+
+\texttt{\textit{Who/linda}}\\
+
+\verb|?- phrase(sentence, [charles, loves, linda, but, hates, laura], R)|
+
+\texttt{\textit{R/[but, hates, laura]}}\\
+
+\begin{figure}
+\centering
+\includegraphics[width=7cm]{images/dcg-example}
+\caption{The DCG Library example in the \tuprolog{} GUI (note the explicit library loading directive).}
+\label{fig:dcg-example}
+\end{figure}
 
 %---------------------------------------------------------------------
-\section{ISOIOLibrary}
+\subsection{Predicates}
+%---------------------------------------------------------------------
+
+\noindent The classic built-in predicates provided for parsing DCG
+sentences are:
+
+\begin{itemize}
+%
+\item \bti{phrase/2}\\
+    \noindent\bt{phrase(Category, List)} is true iff the list \bt{List} can be parsed as a phrase (i.e. sequence of terminals) of type \bt{Category}.
+    \bt{Category} can be any term which would be accepted as a nonterminal of the grammar (or in general, it can be any grammar rule body), and must be instantiated to a non-variable term at the time of the call.
+    This predicate is the usual way to commence execution of grammar rules.
+    If \bt{List} is bound to a list of terminals by the time of the call, the goal corresponds to parsing \bt{List} as a phrase of type \bt{Category}; otherwise if \bt{List} is unbound, then the grammar is being used for generation.
+
+    \template{phrase(+term, ?list)}
+
+    \exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} if \texttt{Category} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).
+
+\item \bti{phrase/3}\\
+    \noindent\bt{phrase(Category, List, Rest)} is true iff the segment between the start of list \bt{List} and the start of list \bt{Rest} can be parsed as a phrase (i.e. sequence of terminals) of type \bt{Category}.
+    In other words, if the search for phrase Phrase is started at the beginning of list \bt{List}, then \bt{Rest} is what remains unparsed after \bt{Category} has been found.
+    Again, \bt{Category} can be any term which would be accepted as a nonterminal of the grammar (or in general, any grammar rule body), and must be instantiated to a non variable term at the time of the call.
+
+    \template{phrase(+term, ?list, ?rest)}
+
+    \exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} if \texttt{Category} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).
+
+\end{itemize}
+
+%---------------------------------------------------------------------
+\subsection{Operators}
+%---------------------------------------------------------------------
+
+The full list of DCGLibrary operators, with their priority and associativity, is reported in Table \ref{tab:dcglibrary-operators}.
+
+\begin{table}[h]
+    \begin{center}{\small\tt
+    \begin{tabular}{p{2cm}|p{3cm}|p{3cm}}\hline\hline
+    Operator & Associativity & Priority \\ \hline
+    --> & xfx & 1200\\
+    \hline\hline
+    \end{tabular}
+    }\end{center}
+    \caption{DCGLibrary operators.}\label{tab:dcglibrary-operators}
+\end{table}
+
+
+%---------------------------------------------------------------------
+\color{red}
+\section{ISOIOLibrary \textit{(expected in tuProlog 2.6)}}
 \label{sec:isoio-library}
 %---------------------------------------------------------------------
 
 The ISO specification requires a lot of I/O predicates---many more than \tuprolog{} IOLibrary supports.
 %
-Table \ref{fig:isoiolibrary-table} summarizes the differences between \tuprolog{} IOLibrary and the ISO specifications.
+Table \ref{fig:isoiolibrary-table} summarises the differences between \tuprolog{} IOLibrary and the ISO specifications.
 %
 \begin{figure}
   \centering
@@ -1276,8 +1378,6 @@ When a term is written via \texttt{write\_term/3}, the following rules apply:
 
 \begin{itemize}
 
-\color{red}
-
 \item \bti{current\_input/1}\\
     \noindent\bt{current\_input} unifies the current input stream with the given argument.
 
@@ -1288,7 +1388,6 @@ When a term is written via \texttt{write\_term/3}, the following rules apply:
 
     \template{current\_output(@Stream\_or\_alias)}
 
-\normalcolor
 
 \item \bti{set\_input/1}\\
     \noindent\bt{set\_input} associates the current input to the provided argument, which can be either a stream\_term or an alias.
@@ -1461,8 +1560,8 @@ When a term is written via \texttt{write\_term/3}, the following rules apply:
     \begin{itemize}
       \item if the stream position is \texttt{past\_end\_of\_stream}, the action to be performed depends on the stream options specified when the stream was opened---namely, \texttt{eof\_action(\textit{Action})}(see above);
       \item if the stream position is \texttt{end\_of\_stream}, the EOF character is returned, and the stream position becomes \texttt{past\_end\_of\_stream}.
-    \end{itemize}    
-    
+    \end{itemize}
+
     \template{get\_char(@Stream\_or\_alias, ?Character)}\\
     \template{get\_char(?Character)}\\
     \template{get\_code(@Stream\_or\_alias, ?Character\_code)}\\
@@ -1506,7 +1605,7 @@ When a term is written via \texttt{write\_term/3}, the following rules apply:
     \template{peek\_code(?Character\_code)}
 
     \exception{}: the same as above.
-    
+
 
 \item \bti{put\_char/2} - \bti{put\_char/1} - \bti{put\_code/2} - \bti{put\_code/1}\\
     \noindent\bt{put\_char} and \bt{put\_code} are the writing counterparts of the \texttt{get\_char} and \texttt{get\_code} above; syntax and exceptions raised are basically identical, but the \texttt{Character} or \texttt{Character\_code} must be ground in this case---otherwise, an \texttt{instantiation\_error} occurs.
@@ -1534,7 +1633,7 @@ When a term is written via \texttt{write\_term/3}, the following rules apply:
     \template{read\_term(?Term, +Options)}\\
     \template{read(@Stream\_or\_alias, ?Term)}\\
     \template{read(?Term)}
-    
+
     \exception{error(instantiation\_error, instantiation\_error)} if either \textit{\texttt{Stream\_or\_alias}} is a variable.
 
     \exception{error(instantiation\_error, instantiation\_error)} if \texttt{\textit{Options}} is either a partial list, or an element in the list is a variable.
@@ -1595,106 +1694,5 @@ When a term is written via \texttt{write\_term/3}, the following rules apply:
 
 \end{itemize}
 
-
-
-
-
-%---------------------------------------------------------------------
-\section{DCGLibrary}
-\label{sec:dgc-library}
-%---------------------------------------------------------------------
-
-\noindent \emph{Library Dependencies}: BasicLibrary.
-
-This library provides support for Definite Clause Grammars (DCGs) \cite{bra00}, an extension of context free grammars that have proven useful for describing natural and formal languages, and that may be conveniently expressed and executed in Prolog.
-%
-Note that this library is not loaded by default when a \tuprolog{} engine is created: it must be explicitly loaded by the user, or via a \texttt{load\_library} directive inside any theory using DCGs.
-
-A DCG rule has the general form \verb|Head --> Body|: to distinguish terminal from nonterminal symbols, a phrase (that is, a sequence of terminal symbols) must be written as a Prolog list, with the empty sequence written as the empty list \verb|[]|.
-%
-The body can contain also executable blocks in parentheses, which are interpreted as normal Prolog rules.
-
-Here is a simple example (see also Figure \ref{fig:dcg-example}):
-%
-\begin{verbatim}
-    sentence --> noun_phrase, verb_phrase.
-    verb_phrase --> verb, noun_phrase.
-    noun_phrase --> [charles].
-    noun_phrase --> [linda].
-    verb --> [loves].
-\end{verbatim}
-%
-To verify whether a phrase is correct according to the given grammar, the \texttt{phrase/2} or \texttt{phrase/3} predicates are used---the latter form providing an extra argument for the `remainder' of the input string not recognised as being part of the phrase.
-%
-Some examples follow:\\
-
-\verb|?- phrase(sentence, [charles, loves, linda])|
-
-\texttt{\textit{yes}}\\
-
-\verb|?- phrase(sentence, [Who, loves, linda])|
-
-\texttt{\textit{Who/charles}}
-
-\texttt{\textit{Who/linda}}\\
-
-\verb|?- phrase(sentence, [charles, loves, linda, but, hates, laura], R)|
-
-\texttt{\textit{R/[but, hates, laura]}}\\
-
-\begin{figure}
-\centering
-\includegraphics[width=7cm]{images/dcg-example}
-\caption{The DCG Library example in the \tuprolog{} GUI (note the explicit library loading directive).}
-\label{fig:dcg-example}
-\end{figure}
-
-%---------------------------------------------------------------------
-\subsection{Predicates}
-%---------------------------------------------------------------------
-
-\noindent The classic built-in predicates provided for parsing DCG
-sentences are:
-
-\begin{itemize}
-%
-\item \bti{phrase/2}\\
-    \noindent\bt{phrase(Category, List)} is true iff the list \bt{List} can be parsed as a phrase (i.e. sequence of terminals) of type \bt{Category}.
-    \bt{Category} can be any term which would be accepted as a nonterminal of the grammar (or in general, it can be any grammar rule body), and must be instantiated to a non-variable term at the time of the call.
-    This predicate is the usual way to commence execution of grammar rules.
-    If \bt{List} is bound to a list of terminals by the time of the call, the goal corresponds to parsing \bt{List} as a phrase of type \bt{Category}; otherwise if \bt{List} is unbound, then the grammar is being used for generation.
-
-    \template{phrase(+term, ?list)}
-
-    \exception{error(instantiation\_error, instantiation\_error(\\
-    Goal, ArgNo))} if \texttt{Category} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).
-
-\item \bti{phrase/3}\\
-    \noindent\bt{phrase(Category, List, Rest)} is true iff the segment between the start of list \bt{List} and the start of list \bt{Rest} can be parsed as a phrase (i.e. sequence of terminals) of type \bt{Category}.
-    In other words, if the search for phrase Phrase is started at the beginning of list \bt{List}, then \bt{Rest} is what remains unparsed after \bt{Category} has been found.
-    Again, \bt{Category} can be any term which would be accepted as a nonterminal of the grammar (or in general, any grammar rule body), and must be instantiated to a non variable term at the time of the call.
-
-    \template{phrase(+term, ?list, ?rest)}
-
-    \exception{error(instantiation\_error, instantiation\_error(\\
-    Goal, ArgNo))} if \texttt{Category} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).
-
-\end{itemize}
-
-%---------------------------------------------------------------------
-\subsection{Operators}
-%---------------------------------------------------------------------
-
-The full list of DCGLibrary operators, with their priority and associativity, is reported in Table \ref{tab:dcglibrary-operators}.
-
-\begin{table}[h]
-    \begin{center}{\small\tt
-    \begin{tabular}{p{2cm}|p{3cm}|p{3cm}}\hline\hline
-    Operator & Associativity & Priority \\ \hline
-    --> & xfx & 1200\\
-    \hline\hline
-    \end{tabular}
-    }\end{center}
-    \caption{DCGLibrary operators.}\label{tab:dcglibrary-operators}
-\end{table}
+\normalcolor
 
