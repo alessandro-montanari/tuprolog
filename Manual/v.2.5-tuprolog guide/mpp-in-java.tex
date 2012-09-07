@@ -1,5 +1,5 @@
 %=======================================================================
-\chapter{Multi-paradigm programming in Prolog and Java}
+\chapter[Multi-paradigm programming in Prolog and Java]{Multi-paradigm program-\\ming in Prolog and Java}
 \label{ch:mpp-in-java}
 %=======================================================================
 
@@ -1317,9 +1317,8 @@ Figure \ref{fig:console-interpreter} shows a sample session with this interprete
 \label{ssec:register(Java)}
 %-----------------------------------------------------------------------
 
-\color{red}
 The \texttt{register} function, already discussed in Section \ref{sssec:register(prolog)} on page \pageref{sssec:register(prolog)} for what concerns the Prolog side, is also available on the Java side, where its `global' effect is more natural and coherent with the imperative paradigm than it is on the Prolog side.
-\normalcolor
+
 Its purpose is to permanently associate an existing Java object \texttt{\textit{obj}} to a Prolog identifier \texttt{\textit{ObjectRef}}, as follows:\\
 
 \texttt{boolean register(Struct \textit{ObjectRef}, Object \textit{obj})\\
