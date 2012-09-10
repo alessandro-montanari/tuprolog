@@ -206,7 +206,7 @@ public class Counter {
         myCounter <- setValue(5),
         myCounter <- inc,
         myCounter <- getValue returns Value,
-        write(X), nl,
+        write(Value), nl,
 
         class('Counter') <- getVersion return Version,
         write(Version), nl,
@@ -1007,7 +1007,7 @@ a list of arguments, which are \texttt{Term}s themselves and can be
 individually retrieved via the \texttt{getTerm} method.
 
 Atoms are a special case of \texttt{Struct} with no arguments; among these, the \texttt{true} and \texttt{false} atom constants are used to represent the Java boolean values.
-Atoms are also used to map Java Java \texttt{char}s and strings: when converted back to Java, however, atoms are always mapped into Java \texttt{String}s.
+Atoms are also used to map Java \texttt{char}s and strings: when converted back to Java, however, atoms are always mapped into Java \texttt{String}s.
 
 Prolog lists are another special case of \texttt{Struct}, built from either
 two \texttt{Term}s (the list head and tail) or an array of \texttt{Term}s; by
