@@ -545,7 +545,7 @@ Accordingly, the configuration file \texttt{2p.exe.config} specifies the custom 
 %
 If Java classes are also used (\texttt{.class} or \texttt{.jar}), these must be in the same folder as the \texttt{2p.exe} executable (subdirectories are not acceptable).
 
-For instance, if the TestLibrary shown in Section \ref{tab:TestLibrary} on page \pageref{tab:TestLibrary} is translated via IKVM\footnote{Command: \texttt{ikvmc -r:2p.exe TestLibrary.class}} obtaining \texttt{TestLibrary.dll}, the \tuprolog{}.NET GUI can load it directly either via \texttt{load\_library/2}, using its full name \texttt{'TestLibrary, TestLibrary'}, or via the Library Manager dialog, specifying \texttt{TestLibrary, TestLibrary} (without quotes) as the class name (Figure \ref{fig:dotnet-testlibrary}), provided that \texttt{TestLibrary.dll} is in one of the folders where \tuprolog{} is instructed to search---e.g. the \texttt{lib} subfolder.
+For instance, if the TestLibrary shown in Section \ref{tab:TestLibrary} on page \pageref{tab:TestLibrary} is translated via IKVM\footnote{Command: \texttt{ikvmc -r:2p.exe TestLibrary.class}} obtaining \texttt{TestLibrary.dll}, the \tuprolog{}.NET GUI can load it directly either via \texttt{load\_library/1}, using its full name \texttt{'TestLibrary, TestLibrary'}, or via the Library Manager dialog, specifying \texttt{TestLibrary, TestLibrary} (without quotes) as the class name (Figure \ref{fig:dotnet-testlibrary}), provided that \texttt{TestLibrary.dll} is in one of the folders where \tuprolog{} is instructed to search---e.g. the \texttt{lib} subfolder.
 
 \begin{figure}
     \centering

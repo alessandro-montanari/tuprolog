@@ -1710,10 +1710,10 @@ Table \ref{tab:HybridLibrary} shows a hybrid library where the theory in \texttt
 \label{ssec:library-loading-issues}
 %---------------------------------------------------------------
 
-As shown in the above examples, a library can be loaded (and unloaded) dynamically into a running engine via Java, by means of the \texttt{loadLibrary} (\texttt{unloadLibrary}) methods; but it can also be loaded (unloaded) from Prolog, via the \texttt{load\_library/2} (\texttt{unload\_library/2} ) predicate.
+As shown in the above examples, a library can be loaded (and unloaded) dynamically into a running engine via Java, by means of the \texttt{loadLibrary} (\texttt{unloadLibrary}) methods; but it can also be loaded (unloaded) from Prolog, via the \texttt{load\_library/1} (\texttt{unload\_library/1} ) predicate.
 
 However, caution is needed when using \texttt{2p.jar} to start the \tuprolog{} GUI (or the console-based CUI) if libraries are to be loaded from the Prolog side, because -- due to the behavior of the Java class loader -- a \textit{runnable} JAR cannot load classes that are not included in the JAR itself.
-So, starting the \tuprolog{} GUI by double-clicking \texttt{2p.jar} (or by the equivalent \texttt{java -jar} command) will prevent libraries from being found and loaded from Prolog via the \texttt{load\_library/2} predicate or via the Library Manager in the GUI, except for the standard libraries packed into the \tuprolog{} JAR itself.
+So, starting the \tuprolog{} GUI by double-clicking \texttt{2p.jar} (or by the equivalent \texttt{java -jar} command) will prevent libraries from being found and loaded from Prolog via the \texttt{load\_library/1} predicate or via the Library Manager in the GUI, except for the standard libraries packed into the \tuprolog{} JAR itself.
 
 To bypass the problem, the JAR archive must \textit{not} be used as a \textit{runnable} JAR, but as a library JAR, specifying the main class explicitly:\\
 
