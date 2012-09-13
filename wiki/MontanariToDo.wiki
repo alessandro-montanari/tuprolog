@@ -12,5 +12,8 @@ ikvm branch
 bug
   * alice.tuprologx.ide.ConsoleDialog problema di tab "AllSolutions" (vedi mail).
 
+note
+ * Da inserire in un wiki la discussione in merito al bug ID: 2892689 (vedi anche mail). 
+
 da rivedere
   * sezione download sul repo e aggiunta download automatica (ant? http://code.google.com/p/ant-googlecode/) (vedi mail "meditazione").
