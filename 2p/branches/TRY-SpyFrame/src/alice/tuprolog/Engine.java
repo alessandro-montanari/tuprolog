@@ -85,6 +85,11 @@ public class Engine /*Castagna 06/2011*/implements IEngine/**/{
 	 * Methods for spyListeners
 	 */
 
+	public String getNextStateName(){
+		return nextState.stateName;
+	}
+
+
 	public Term getQuery() {
 		return query;
 	}
@@ -114,8 +119,8 @@ public class Engine /*Castagna 06/2011*/implements IEngine/**/{
 	}
 
 	//    void cut() {
-		//        choicePointSelector.cut(currentContext.depth -1);
-		//    }
+	//        choicePointSelector.cut(currentContext.depth -1);
+	//    }
 
 	void initialize(ExecutionContext eCtx) {
 		currentContext = eCtx;
