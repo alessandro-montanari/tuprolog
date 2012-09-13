@@ -5,9 +5,6 @@
 package alice.tuprolog;
 
 import java.util.*;
-import java.io.File;
-import java.net.URL;
-import java.net.URLClassLoader;
 
 import alice.tuprolog.event.LibraryEvent;
 import alice.tuprolog.event.WarningEvent;
@@ -54,24 +51,7 @@ class LibraryManager {
 	public synchronized Library loadLibrary(String className) throws InvalidLibraryException {
 		Library lib = null;
 		try {
-			URL[] urls = new URL[2];
-			urls[0] = LibraryManager.class.getProtectionDomain().getCodeSource().getLocation();
-			
-			File currentDir = new File(LibraryManager.class.getProtectionDomain().getCodeSource().getLocation().getFile());
-			File parentDir = new File(currentDir.getParent());
-			if(parentDir.exists() && parentDir.isDirectory())
-			{
-				urls[1] = parentDir.toURI().toURL();
-				System.out.println("parentURL: " + urls[1].toString());
-			}
-
-			System.out.println("currentURL: "+ urls[0].toString());
-			ClassLoader loader = URLClassLoader.newInstance(
-					urls,
-					getClass().getClassLoader()
-					);
-			
-			lib = (Library) Class.forName(className, true, loader).newInstance();
+			lib = (Library) Class.forName(className).newInstance();
 			String name = lib.getName();
 			Library alib = getLibrary(name);
 			if (alib != null) {
