@@ -1,4 +1,4 @@
-#tuprolog performs occurs check systematically.
+#summary tuprolog performs occurs check systematically.
 
 = Introduction =
 
