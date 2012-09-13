@@ -230,20 +230,13 @@ Throughout this chapter, \texttt{string} means a single-quoted or double-quoted 
 \end{itemize}
 
 %---------------------------------------------------------------------
-\subsubsection{Occur Check}
+\subsubsection{Occurs Check}
 %---------------------------------------------------------------------
 
-\noindent When the process of unification takes place between a
-variable $S$ and a term $T$, the first thing a Prolog engine should do
-before proceeding is to check that $T$ does not contain any occurences
-of $S$. This test is known as \emph{occur check} \cite{ss94} and is
-necessary to prevent the unification of terms such as $s(X)$ and $X$,
-for which no finite common instance exists. Most Prolog
-implementations omit the occurs check from their unification algorithm
-for reasons related to speed and efficiency: \tuprolog{} is no
-exception. However, they provide a predicate for occurs check
-augmented unification, to be used when the programmer wants to never
-incur on an error or an undefined result during the process.
+\noindent When the process of unification takes place between a variable $S$ and a term $T$, the first thing a Prolog engine should do before proceeding is to check that $T$ does not contain any occurrences of $S$. 
+This test is known as \emph{occurs check} \cite{ss94} and is conceptually necessary to prevent the unification of terms such as $s(X)$ and $X$, for which no finite common instance exists; yet, the test implies a performance drawback that impacts on the speed and efficiency of the resolution process.
+
+For this reason, most Prolog implementations omit the occur check from their unification algorithm, providing a specific predicate for ``augmented unification'' (that is, unification including the occurs check), to be used when the programmer wants to stay on the safer side:
 
 \begin{itemize}
 \item \bti{unify\_with\_occurs\_check/2}\\
@@ -252,6 +245,11 @@ incur on an error or an undefined result during the process.
     \template{unify\_with\_occurs\_check(?term, ?term)}
 
 \end{itemize}
+
+\noindent \tuprolog{} is an exception in this panorama, because its unification algorithm \textit{always performs the occurs check}: the \bti{unify\_with\_occurs\_check/2} is supported, but is merely a renaming of the standard \texttt{=/2} unification operator.
+
+As a consequence, goals like \texttt{X=f(X)}, that may loop or be solved in an ``infinite'' form in other Prolog systems\footnote{SICStus Prolog, for instance, succeeds returning a solution like \texttt{X=f(f(f(f(f(f(f(f(f(f(...))))))))))}, where the inner dots ``hide'' the infinite self-substitution.}, are occurs-checked in \tuprolog, leading to a failure.
+
 
 %---------------------------------------------------------------------
 \subsubsection{Expression and Term Comparison}
@@ -416,10 +414,15 @@ knowledge base of a \tuprolog{} engine during execution.
 \subsubsection{Flag Management}
 %---------------------------------------------------------------------
 \begin{itemize}
-\item \bti{current\_prolog\_flag/3}\\
+\item \bti{current\_prolog\_flag/2}\\
     \noindent\bt{current\_prolog\_flag(Flag,Value)} is true if the value of the flag \bt{Flag} is \bt{Value}
 
     \template{current\_prolog\_flag(?atom,?term)}
+
+\item \bti{flag\_list/1}\\
+    \noindent\bt{flag\_list(FlagList)} unifies \bt{FlagList} with the list of currently active flags.
+
+    \template{flag\_list(?term)}
 \end{itemize}
 
 %---------------------------------------------------------------------

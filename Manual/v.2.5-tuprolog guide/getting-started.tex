@@ -188,7 +188,10 @@ The subsequent area below contains five panes:
 \end{figure}
 Query and answers are stored in chronological order, and can be explored by means of \keycap{Up} and \keycap{Down} arrow keys from the query input textfield.
 
-The \guibutton{Stop} button makes it possible to stop the engine if a computation takes too long or a bug in the theory is causing an infinite loop. (Note: like most Prolog systems, \tuprolog{} does not normally perform \textit{occur check}, for performance reasons; this check can be enabled via the proper built-in predicate---see Section \ref{sec:basic-library} for details.)
+The \guibutton{Stop} button makes it possible to stop the engine if a computation takes too long or a bug in the theory is causing an infinite loop. 
+%(Note: like most Prolog systems, \tuprolog{} does not normally perform \textit{occur check}, for performance reasons; this check can be enabled via the proper built-in predicate---see Section \ref{sec:basic-library} for details.)
+
+With respect to this issue, it is worth noting that, unlike most Prolog systems, \tuprolog{} performs the so-called \textit{occur check} systematically: so, \texttt{unify\_with\_occurs\_check/2} and \texttt{=/2} behave identically (see Section \ref{sec:basic-library}).
 
 %------------------------------------------------------
 \subsection{Debugging support}
