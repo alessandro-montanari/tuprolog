@@ -42,7 +42,7 @@
 	    	<replace file="${src.dir}/alice/util/NetVersionInfo.java" token="@NETSpecific.version@" value="${NETSpecific.version}"/> -->
 			
 			<javac destdir="${build.classes.dir}" debug="@{debug}"
-			deprecation="false" optimize="@{optimize}" failonerror="true">
+			deprecation="false" optimize="@{optimize}" failonerror="true" includeantruntime="false">
 	            <src path="${src.dir}"/>
 	            <classpath refid="ant-classpath"/>
 	        </javac>
@@ -75,7 +75,7 @@
     			<mkdir dir="${build.tests.dir}/fixtures"/>
     			
     			<javac destdir="${build.tests.dir}/unit" debug="@{debug}" 
-    				deprecation="false" optimize="@{optimize}" failonerror="true">
+    				deprecation="false" optimize="@{optimize}" failonerror="true" includeantruntime="false">
     	            <src path="${test.dir}/unit"/>
     	            <classpath refid="ant-classpath"/>
     	        	<classpath location="${build.classes.dir}"/>
