@@ -89,11 +89,11 @@ class LibraryManager {
 		URL[] urls = null;
 		try {
 			urls = new URL[paths.length];
+			
 			for (int i = 0; i < paths.length; i++) 
 			{
 				File directory = new File(paths[i]);
 				urls[i] = (directory.toURI().toURL());
-				System.out.println(i + " : " + urls[i].toString());
 			}
 			ClassLoader loader = URLClassLoader.newInstance(
 				    urls ,
