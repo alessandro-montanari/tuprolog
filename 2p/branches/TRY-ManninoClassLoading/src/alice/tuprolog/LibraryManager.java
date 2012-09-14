@@ -4,6 +4,9 @@
  */
 package alice.tuprolog;
 
+import java.io.File;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.*;
 
 import alice.tuprolog.event.LibraryEvent;
@@ -70,6 +73,50 @@ class LibraryManager {
 		return lib;
 	}   
 
+	/**
+	 * Loads a library.
+	 *
+	 * If a library with the same name is already present,
+	 * a warning event is notified and the request is ignored.
+	 *
+	 * @param the name of the Java class containing the library to be loaded
+	 * @param the list of the paths where the library may be contained
+	 * @return the reference to the Library just loaded
+	 * @throws InvalidLibraryException if name is not a valid library
+	 */
+	public synchronized Library loadLibrary(String className, String[] paths) throws InvalidLibraryException {
+		Library lib = null;
+		URL[] urls = null;
+		try {
+			urls = new URL[paths.length];
+			for (int i = 0; i < paths.length; i++) 
+			{
+				File directory = new File(paths[i]);
+				urls[i] = (directory.toURI().toURL());
+				System.out.println(i + " : " + urls[i].toString());
+			}
+			ClassLoader loader = URLClassLoader.newInstance(
+				    urls ,
+				    getClass().getClassLoader()
+				);
+			lib = (Library) Class.forName(className, true, loader).newInstance();
+			String name = lib.getName();
+			Library alib = getLibrary(name);
+			if (alib != null) {
+				if (prolog.isWarning()) {
+					String msg = "library " + alib.getName() + " already loaded.";
+					prolog.notifyWarning(new WarningEvent(prolog, msg));
+				}
+				return alib;
+			}
+		} catch (Exception ex){
+			throw new InvalidLibraryException(className, -1, -1);
+		}
+		bindLibrary(lib);
+		LibraryEvent ev = new LibraryEvent(prolog, lib.getName());
+		prolog.notifyLoadedLibrary(ev);
+		return lib;
+	}
 	/**
 	 * Loads a specific instance of a library.
 	 *
