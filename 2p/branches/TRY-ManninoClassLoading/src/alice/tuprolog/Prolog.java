@@ -298,6 +298,21 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	public synchronized Library loadLibrary(String className) throws InvalidLibraryException {
 		return libraryManager.loadLibrary(className);
 	}
+	
+	/**
+	 * Loads a library.
+	 *
+	 * If a library with the same name is already present,
+	 * a warning event is notified and the request is ignored.
+	 *
+	 * @param className name of the Java class containing the library to be loaded
+	 * @param paths The path where is contained the library.
+	 * @return the reference to the Library just loaded
+	 * @throws InvalidLibraryException if name is not a valid library
+	 */
+	public synchronized Library loadLibrary(String className, String[] paths) throws InvalidLibraryException {
+		return libraryManager.loadLibrary(className, paths);
+	}
 
 
 	/**
