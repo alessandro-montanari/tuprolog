@@ -17,6 +17,7 @@
  */
 package alice.tuprolog.lib;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
@@ -25,6 +26,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.EventListener;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
@@ -238,7 +241,116 @@ public class JavaLibrary extends Library {
             throw new JavaException(ex);
         }
     }
+    
+ // ----------------------------------------------------------------------------
 
+    /**
+     * Creates of a java object - not backtrackable case
+     * @param className The name of the class 
+     * @oaram path The list of the paths where the class may be contained
+     * @param argl The list of the arguments used by the constructor
+     * @param id The name of the prolog term
+     * @throws JavaException
+     */
+    public boolean java_object_4(Term className, Term paths, Term argl, Term id)
+            throws JavaException {
+        className = className.getTerm();
+        Struct arg = (Struct) argl.getTerm();
+        id = id.getTerm();
+        paths = paths.getTerm();
+        try {
+            if (!className.isAtom()) {
+                throw new JavaException(new ClassNotFoundException(
+                        "Java class not found: " + className));
+            }
+            if(!paths.isList())
+            	throw new IllegalArgumentException(
+                        "Illegal constructor arguments  " + paths);
+            String clName = ((Struct) className).getName();
+            // check for array type
+            if (clName.endsWith("[]")) {
+                Object[] list = getArrayFromList(arg);
+                int nargs = ((Number) list[0]).intValue();
+                if (java_array(clName, nargs, id))
+                    return true;
+                else
+                    throw new JavaException(new Exception());
+            }
+            Signature args = parseArg(getArrayFromList(arg));
+            if (args == null) {
+                throw new IllegalArgumentException(
+                        "Illegal constructor arguments  " + arg);
+            }
+            // object creation with argument described in args
+            try {
+            	String[] listOfpaths = getStringArrayFromStruct((Struct) paths);
+                Class<?> cl = getClassFromPaths(clName, listOfpaths);
+                Object[] args_value = args.getValues();
+                //
+                // Constructor co=cl.getConstructor(args.getTypes());
+                Constructor<?> co = lookupConstructor(cl, args.getTypes(),
+                        args_value);
+                //
+                //
+                if (co == null) {
+                    getEngine().warn("Constructor not found: class " + clName);
+                    throw new JavaException(new NoSuchMethodException(
+                            "Constructor not found: class " + clName));
+                }
+
+                Object obj = co.newInstance(args_value);
+                if (bindDynamicObject(id, obj))
+                    return true;
+                else
+                    throw new JavaException(new Exception());
+            } catch (ClassNotFoundException ex) {
+                getEngine().warn("Java class not found: " + clName);
+                throw new JavaException(ex);
+            } catch (InvocationTargetException ex) {
+                getEngine().warn("Invalid constructor arguments.");
+                throw new JavaException(ex);
+            } catch (NoSuchMethodException ex) {
+                getEngine().warn("Constructor not found: " + args.getTypes());
+                throw new JavaException(ex);
+            } catch (InstantiationException ex) {
+                getEngine().warn(
+                        "Objects of class " + clName
+                                + " cannot be instantiated");
+                throw new JavaException(ex);
+            } catch (IllegalArgumentException ex) {
+                getEngine().warn("Illegal constructor arguments  " + args);
+                throw new JavaException(ex);
+            }
+        } catch (Exception ex) {
+            // ex.printStackTrace();
+            throw new JavaException(ex);
+        }
+    }
+
+    private Class<?> getClassFromPaths(String className, String[] paths) throws ClassNotFoundException
+    {
+    	URL[] urls = null;
+    	try
+    	{
+    		urls = new URL[paths.length];
+    		
+    		for (int i = 0; i < paths.length; i++) 
+    		{
+    			File directory = new File(paths[i]);
+    			urls[i] = (directory.toURI().toURL());
+    		}
+    		java.lang.ClassLoader loader = URLClassLoader.newInstance(
+    			    urls ,
+    			    getClass().getClassLoader()
+    			);
+    		return Class.forName(className, true, loader);
+    	}catch(Exception ex)
+    	{
+    		throw new ClassNotFoundException();
+    	}
+    	
+    }
+    
     /**
      * Destroy the link to a java object - called not directly, but from
      * predicate java_object (as second choice, for backtracking)
@@ -485,6 +597,159 @@ public class JavaLibrary extends Library {
         }
     }
 
+    /**
+     * 
+     * Calls a method of a Java object
+     * 
+     * @throws JavaException
+     * 
+     */
+    public boolean java_call_4(Term objId, Term paths, Term method_name, Term idResult)
+            throws JavaException {
+        objId = objId.getTerm();
+        idResult = idResult.getTerm();
+        Struct method = (Struct) method_name.getTerm();
+        paths = paths.getTerm();
+        Object obj = null;
+        Signature args = null;
+        String methodName = null;
+        try {
+            methodName = method.getName();
+            // check for accessing field Obj.Field <- set/get(X)
+            // in that case: objId is '.'(Obj, Field)
+
+            if (!objId.isAtom()) {
+                if (objId instanceof Var) {
+                    throw new JavaException(new IllegalArgumentException(objId
+                            .toString()));
+                }
+                Struct sel = (Struct) objId;
+                if (sel.getName().equals(".") && sel.getArity() == 2
+                        && method.getArity() == 1) {
+                    if (methodName.equals("set")) {
+                        return java_set(sel.getTerm(0), sel.getTerm(1), method
+                                .getTerm(0));
+                    } else if (methodName.equals("get")) {
+                        return java_get(sel.getTerm(0), sel.getTerm(1), method
+                                .getTerm(0));
+                    }
+                }
+            }
+            args = parseArg(method);
+            // object and argument must be instantiated
+            if(!paths.isList())
+            	throw new JavaException(new IllegalArgumentException(paths
+                        .toString()));
+            if (objId instanceof Var)
+                throw new JavaException(new IllegalArgumentException(objId
+                        .toString()));
+            if (args == null) {
+                throw new JavaException(new IllegalArgumentException());
+            }
+            // System.out.println(args);
+            String objName = alice.util.Tools.removeApices(objId.toString());
+            obj = currentObjects.get(objName);
+            Object res = null;
+
+            if (obj != null) {
+                Class<?> cl = obj.getClass();
+                //
+                //
+                Object[] args_values = args.getValues();
+                Method m = lookupMethod(cl, methodName, args.getTypes(),
+                        args_values);
+                //
+                //
+                if (m != null) {
+                    try {
+                        // works only with JDK 1.2, NOT in Sun Application
+                        // Server!
+                        // m.setAccessible(true);
+
+                        res = m.invoke(obj, args_values);
+
+                    } catch (IllegalAccessException ex) {
+                        getEngine().warn(
+                                "Method invocation failed: " + methodName
+                                        + "( signature: " + args + " )");
+                        // ex.printStackTrace();
+                        throw new JavaException(ex);
+                    }
+                } else {
+                    getEngine().warn(
+                            "Method not found: " + methodName + "( signature: "
+                                    + args + " )");
+                    throw new JavaException(new NoSuchMethodException(
+                            "Method not found: " + methodName + "( signature: "
+                                    + args + " )"));
+                }
+            } else {
+                if (objId.isCompound()) {
+                    Struct id = (Struct) objId;
+                    if (id.getArity() == 1 && id.getName().equals("class")) {
+                        try {
+                        	String[] listOfPaths = getStringArrayFromStruct((Struct) paths);
+                            Class<?> cl = getClassFromPaths(alice.util.Tools
+                                    .removeApices(id.getArg(0).toString()), listOfPaths);
+                            Method m = cl
+                                    .getMethod(methodName, args.getTypes());
+                            m.setAccessible(true);
+                            res = m.invoke(null, args.getValues());
+                        } catch (ClassNotFoundException ex) {
+                            // if not found even as a class id -> consider as a
+                            // String object value
+                            getEngine().warn("Unknown class.");
+                            // ex.printStackTrace();
+                            throw new JavaException(ex);
+                        }
+                    } else {
+                        // the object is the string itself
+                        Method m = java.lang.String.class.getMethod(methodName,
+                                args.getTypes());
+                        m.setAccessible(true);
+                        res = m.invoke(objName, args.getValues());
+                    }
+                } else {
+                    // the object is the string itself
+                    Method m = java.lang.String.class.getMethod(methodName,
+                            args.getTypes());
+                    m.setAccessible(true);
+                    res = m.invoke(objName, args.getValues());
+                }
+            }
+            if (parseResult(idResult, res))
+                return true;
+            else
+                throw new JavaException(new Exception());
+        } catch (InvocationTargetException ex) {
+            getEngine().warn(
+                    "Method failed: " + methodName + " - ( signature: " + args
+                            + " ) - Original Exception: "
+                            + ex.getTargetException());
+            // ex.printStackTrace();
+            throw new JavaException(new IllegalArgumentException());
+        } catch (NoSuchMethodException ex) {
+            // ex.printStackTrace();
+            getEngine().warn(
+                    "Method not found: " + methodName + " - ( signature: "
+                            + args + " )");
+            throw new JavaException(ex);
+        } catch (IllegalArgumentException ex) {
+            // ex.printStackTrace();
+            getEngine().warn(
+                    "Invalid arguments " + args + " - ( method: " + methodName
+                            + " )");
+            // ex.printStackTrace();
+            throw new JavaException(ex);
+        } catch (Exception ex) {
+            // ex.printStackTrace();
+            getEngine()
+                    .warn("Generic error in method invocation " + methodName);
+            throw new JavaException(ex);
+        }
+    }
+
+    
     /*
      * set the field value of an object
      */
@@ -565,6 +830,90 @@ public class JavaLibrary extends Library {
     }
 
     /*
+     * set the field value of an object
+     */
+    private boolean java_set(Term objId, Term paths, Term fieldTerm, Term what) {
+        what = what.getTerm();
+        paths = paths.getTerm();
+        if (!fieldTerm.isAtom() || what instanceof Var)
+            return false;
+        if(!paths.isList())
+        	return false;
+        String fieldName = ((Struct) fieldTerm).getName();
+        Object obj = null;
+       
+        try {
+            Class<?> cl = null;
+            if (objId.isCompound() && ((Struct) objId).getArity() == 1
+                    && ((Struct) objId).getName().equals("class")) {
+                String clName = alice.util.Tools.removeApices(((Struct) objId)
+                        .getArg(0).toString());
+                try {
+                	String[] listOfpaths = getStringArrayFromStruct((Struct) paths);
+                    cl = getClassFromPaths(clName, listOfpaths);
+                } catch (ClassNotFoundException ex) {
+                    getEngine().warn("Java class not found: " + clName);
+                    return false;
+                } catch (Exception ex) {
+                    getEngine().warn(
+                            "Static field "
+                                    + fieldName
+                                    + " not found in class "
+                                    + alice.util.Tools
+                                            .removeApices(((Struct) objId)
+                                                    .getArg(0).toString()));
+                    return false;
+                }
+            } else {
+                String objName = alice.util.Tools
+                        .removeApices(objId.toString());
+                obj = currentObjects.get(objName);
+                if (obj != null) {
+                    cl = obj.getClass();
+                } else {
+                    return false;
+                }
+            }
+
+            // first check for primitive data field
+            Field field = cl.getField(fieldName);
+            if (what instanceof Number) {
+                Number wn = (Number) what;
+                if (wn instanceof Int) {
+                    field.setInt(obj, wn.intValue());
+                } else if (wn instanceof alice.tuprolog.Double) {
+                    field.setDouble(obj, wn.doubleValue());
+                } else if (wn instanceof alice.tuprolog.Long) {
+                    field.setLong(obj, wn.longValue());
+                } else if (wn instanceof alice.tuprolog.Float) {
+                    field.setFloat(obj, wn.floatValue());
+                } else {
+                    return false;
+                }
+            } else {
+                String what_name = alice.util.Tools.removeApices(what
+                        .toString());
+                Object obj2 = currentObjects.get(what_name);
+                if (obj2 != null) {
+                    field.set(obj, obj2);
+                } else {
+                    // consider value as a simple string
+                    field.set(obj, what_name);
+                }
+            }
+            return true;
+        } catch (NoSuchFieldException ex) {
+            getEngine().warn(
+                    "Field " + fieldName + " not found in class " + objId);
+            return false;
+        } catch (Exception ex) {
+            // ex.printStackTrace();
+            return false;
+        }
+    }
+
+    
+    /*
      * get the value of the field
      */
     private boolean java_get(Term objId, Term fieldTerm, Term what) {
@@ -643,6 +992,89 @@ public class JavaLibrary extends Library {
         }
     }
 
+    /*
+     * get the value of the field
+     */
+    private boolean java_get(Term objId, Term paths, Term fieldTerm, Term what) {
+        // System.out.println("GET "+objId+" "+fieldTerm+" "+what);
+    	paths.getTerm();
+        if (!fieldTerm.isAtom()) {
+            return false;
+        }
+        if(!paths.isList())
+        	return false;
+        String fieldName = ((Struct) fieldTerm).getName();
+        Object obj = null;
+        try {
+            Class<?> cl = null;
+            if (objId.isCompound() && ((Struct) objId).getArity() == 1
+                    && ((Struct) objId).getName().equals("class")) {
+                String clName = alice.util.Tools.removeApices(((Struct) objId)
+                        .getArg(0).toString());
+                try {
+                	String[] listOfpaths = getStringArrayFromStruct((Struct) paths);
+                    cl = getClassFromPaths(clName, listOfpaths);
+                } catch (ClassNotFoundException ex) {
+                    getEngine().warn("Java class not found: " + clName);
+                    return false;
+                } catch (Exception ex) {
+                    getEngine().warn(
+                            "Static field "
+                                    + fieldName
+                                    + " not found in class "
+                                    + alice.util.Tools
+                                            .removeApices(((Struct) objId)
+                                                    .getArg(0).toString()));
+                    return false;
+                }
+            } else {
+                String objName = alice.util.Tools
+                        .removeApices(objId.toString());
+                obj = currentObjects.get(objName);
+                if (obj == null) {
+                    return false;
+                }
+                cl = obj.getClass();
+            }
+
+            Field field = cl.getField(fieldName);
+            Class<?> fc = field.getType();
+            // work only with JDK 1.2
+            field.setAccessible(true);
+
+            // first check for primitive types
+            if (fc.equals(Integer.TYPE) || fc.equals(Byte.TYPE)) {
+                int value = field.getInt(obj);
+                return unify(what, new alice.tuprolog.Int(value));
+            } else if (fc.equals(java.lang.Long.TYPE)) {
+                long value = field.getLong(obj);
+                return unify(what, new alice.tuprolog.Long(value));
+            } else if (fc.equals(java.lang.Float.TYPE)) {
+                float value = field.getFloat(obj);
+                return unify(what, new alice.tuprolog.Float(value));
+            } else if (fc.equals(java.lang.Double.TYPE)) {
+                double value = field.getDouble(obj);
+                return unify(what, new alice.tuprolog.Double(value));
+            } else {
+                // the field value is an object
+                Object res = field.get(obj);
+                return bindDynamicObject(what, res);
+            }
+            // } catch (ClassNotFoundException ex){
+            // getEngine().warn("object of unknown class "+objId);
+            // ex.printStackTrace();
+            // return false;
+        } catch (NoSuchFieldException ex) {
+            getEngine().warn(
+                    "Field " + fieldName + " not found in class " + objId);
+            return false;
+        } catch (Exception ex) {
+            getEngine().warn("Generic error in accessing the field");
+            // ex.printStackTrace();
+            return false;
+        }
+    }
+    
     public boolean java_array_set_primitive_3(Term obj_id, Term i, Term what)
             throws JavaException {
         Struct objId = (Struct) obj_id.getTerm();
@@ -1400,6 +1832,17 @@ public class JavaLibrary extends Library {
         return new Struct("$obj_" + id++);
     }
 
+    
+    private String[] getStringArrayFromStruct(Struct list) {
+        String args[] = new String[list.listSize()];
+        Iterator<? extends Term> it = list.listIterator();
+        int count = 0;
+        while (it.hasNext()) {
+        	String path = alice.util.Tools.removeApices(it.next().toString());
+            args[count++] = path;
+        }
+        return args;
+    }
     /**
      * handling writeObject method is necessary in order to make the library
      * serializable, 'nullyfing' eventually objects registered in maps
