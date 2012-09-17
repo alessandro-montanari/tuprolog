@@ -513,10 +513,9 @@ public class JavaLibrary extends Library {
                     Struct id = (Struct) objId;
                     if (id.getArity() == 1 && id.getName().equals("class")) {
                         try {
-                            Class<?> cl = Class.forName(alice.util.Tools
-                                    .removeApices(id.getArg(0).toString()));
-                            Method m = cl
-                                    .getMethod(methodName, args.getTypes());
+                        	String clName = alice.util.Tools.removeApices(id.getArg(0).toString());
+                        	Class<?> cl = Class.forName(clName,true, classLoader);
+                            Method m = cl.getMethod(methodName, args.getTypes());
                             m.setAccessible(true);
                             res = m.invoke(null, args.getValues());
                         } catch (ClassNotFoundException ex) {
@@ -580,149 +579,34 @@ public class JavaLibrary extends Library {
      * @throws JavaException
      * 
      */
-    public boolean java_call_4(Term objId, Term paths, Term method_name, Term idResult)
+    public boolean java_call_4(Term paths, Term objId, Term method_name, Term idResult)
             throws JavaException {
-        objId = objId.getTerm();
-        idResult = idResult.getTerm();
-        Struct method = (Struct) method_name.getTerm();
         paths = paths.getTerm();
-        Object obj = null;
-        Signature args = null;
-        String methodName = null;
-        try {
-            methodName = method.getName();
-            // check for accessing field Obj.Field <- set/get(X)
-            // in that case: objId is '.'(Obj, Field)
-
-            if (!objId.isAtom()) {
-                if (objId instanceof Var) {
-                    throw new JavaException(new IllegalArgumentException(objId
-                            .toString()));
-                }
-                Struct sel = (Struct) objId;
-                if (sel.getName().equals(".") && sel.getArity() == 2
-                        && method.getArity() == 1) {
-                    if (methodName.equals("set")) {
-                        return java_set(sel.getTerm(0), sel.getTerm(1), method
-                                .getTerm(0));
-                    } else if (methodName.equals("get")) {
-                        return java_get(sel.getTerm(0), sel.getTerm(1), method
-                                .getTerm(0));
-                    }
-                }
-            }
-            args = parseArg(method);
-            // object and argument must be instantiated
-            if(!paths.isList())
-            	throw new JavaException(new IllegalArgumentException(paths
-                        .toString()));
-            if (objId instanceof Var)
-                throw new JavaException(new IllegalArgumentException(objId
-                        .toString()));
-            if (args == null) {
-                throw new JavaException(new IllegalArgumentException());
-            }
-            // System.out.println(args);
-            String objName = alice.util.Tools.removeApices(objId.toString());
-            obj = currentObjects.get(objName);
-            Object res = null;
-
-            if (obj != null) {
-                Class<?> cl = obj.getClass();
-                //
-                //
-                Object[] args_values = args.getValues();
-                Method m = lookupMethod(cl, methodName, args.getTypes(),
-                        args_values);
-                //
-                //
-                if (m != null) {
-                    try {
-                        // works only with JDK 1.2, NOT in Sun Application
-                        // Server!
-                        // m.setAccessible(true);
-
-                        res = m.invoke(obj, args_values);
-
-                    } catch (IllegalAccessException ex) {
-                        getEngine().warn(
-                                "Method invocation failed: " + methodName
-                                        + "( signature: " + args + " )");
-                        // ex.printStackTrace();
-                        throw new JavaException(ex);
-                    }
-                } else {
-                    getEngine().warn(
-                            "Method not found: " + methodName + "( signature: "
-                                    + args + " )");
-                    throw new JavaException(new NoSuchMethodException(
-                            "Method not found: " + methodName + "( signature: "
-                                    + args + " )"));
-                }
-            } else {
-                if (objId.isCompound()) {
-                    Struct id = (Struct) objId;
-                    if (id.getArity() == 1 && id.getName().equals("class")) {
-                        try {
-                        	String[] listOfPaths = getStringArrayFromStruct((Struct) paths);
-                            Class<?> cl = getClassFromPaths(alice.util.Tools
-                                    .removeApices(id.getArg(0).toString()), listOfPaths);
-                            Method m = cl
-                                    .getMethod(methodName, args.getTypes());
-                            m.setAccessible(true);
-                            res = m.invoke(null, args.getValues());
-                        } catch (ClassNotFoundException ex) {
-                            // if not found even as a class id -> consider as a
-                            // String object value
-                            getEngine().warn("Unknown class.");
-                            // ex.printStackTrace();
-                            throw new JavaException(ex);
-                        }
-                    } else {
-                        // the object is the string itself
-                        Method m = java.lang.String.class.getMethod(methodName,
-                                args.getTypes());
-                        m.setAccessible(true);
-                        res = m.invoke(objName, args.getValues());
-                    }
-                } else {
-                    // the object is the string itself
-                    Method m = java.lang.String.class.getMethod(methodName,
-                            args.getTypes());
-                    m.setAccessible(true);
-                    res = m.invoke(objName, args.getValues());
-                }
-            }
-            if (parseResult(idResult, res))
-                return true;
-            else
-                throw new JavaException(new Exception());
-        } catch (InvocationTargetException ex) {
-            getEngine().warn(
-                    "Method failed: " + methodName + " - ( signature: " + args
-                            + " ) - Original Exception: "
-                            + ex.getTargetException());
-            // ex.printStackTrace();
-            throw new JavaException(new IllegalArgumentException());
-        } catch (NoSuchMethodException ex) {
-            // ex.printStackTrace();
-            getEngine().warn(
-                    "Method not found: " + methodName + " - ( signature: "
-                            + args + " )");
-            throw new JavaException(ex);
-        } catch (IllegalArgumentException ex) {
-            // ex.printStackTrace();
-            getEngine().warn(
-                    "Invalid arguments " + args + " - ( method: " + methodName
-                            + " )");
-            // ex.printStackTrace();
-            throw new JavaException(ex);
-        } catch (Exception ex) {
-            // ex.printStackTrace();
-            getEngine()
-                    .warn("Generic error in method invocation " + methodName);
-            throw new JavaException(ex);
+        try
+        {
+        	if(!paths.isList())
+        		throw new IllegalArgumentException();
+        	String[] listOfPaths = getStringArrayFromStruct((Struct) paths);
+        	
+        	// Update the list of paths of the URLClassLoader 
+        	classLoader = new URLClassLoader(getURLsFromStringArray(listOfPaths), this.getClass().getClassLoader());
+        	
+        	// Delegation to java_call_3 method used to load the class
+        	boolean result = java_call_3(objId, method_name, idResult);
+        	
+        	// Reset the URLClassLoader at default configuration
+        	classLoader =  new URLClassLoader(new URL[]{}, this.getClass().getClassLoader());
+        	
+        	return result;
+        }catch(IllegalArgumentException e)
+        {
+        	getEngine().warn("Illegal list of paths " + paths);
+            throw new JavaException(e);
         }
+        catch (Exception e) {
+        	throw new JavaException(e);
+		}
+        	
     }
 
     
@@ -743,7 +627,7 @@ public class JavaLibrary extends Library {
                 String clName = alice.util.Tools.removeApices(((Struct) objId)
                         .getArg(0).toString());
                 try {
-                    cl = Class.forName(clName);
+                    cl = Class.forName(clName,true, classLoader);
                 } catch (ClassNotFoundException ex) {
                     getEngine().warn("Java class not found: " + clName);
                     return false;
@@ -822,7 +706,7 @@ public class JavaLibrary extends Library {
                 String clName = alice.util.Tools.removeApices(((Struct) objId)
                         .getArg(0).toString());
                 try {
-                    cl = Class.forName(clName);
+                	cl = Class.forName(clName,true, classLoader);
                 } catch (ClassNotFoundException ex) {
                     getEngine().warn("Java class not found: " + clName);
                     return false;
