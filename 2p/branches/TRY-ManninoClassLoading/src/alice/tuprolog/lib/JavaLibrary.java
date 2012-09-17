@@ -114,20 +114,18 @@ public class JavaLibrary extends Library {
 
                 "java_object_bt(ClassName,Args,Id):- java_object(ClassName,Args,Id).\n"
                 + "java_object_bt(ClassName,Args,Id):- destroy_object(Id).\n"
+                + "class(Path,Class) <- What :- !, java_call(Path, Class, What, Res), Res \\== false.\n"
+                + "class(Path,Class) <- What returns Res :- !,  java_call(Path, Class, What, Res).\n"
                 + "Obj <- What :- java_call(Obj,What,Res), Res \\== false.\n"
-                + "Obj <- What returns Res :- java_call(Obj,What,Res).\n"
-                
-                + "class(Path,Class) <- What :- java_call(Path, Class, What, Res), Res \\== false.\n"
-                + "class(Path,Class) <- What returns Res :- java_call(Path, Class, What, Res).\n"
-                
+                                              
                 + "java_array_set(Array,Index,Object):- class('java.lang.reflect.Array') <- set(Array as 'java.lang.Object',Index,Object as 'java.lang.Object'), !.\n"
                 + "java_array_set(Array,Index,Object):- java_array_set_primitive(Array,Index,Object).\n"
                 + "java_array_get(Array,Index,Object):- class('java.lang.reflect.Array') <- get(Array as 'java.lang.Object',Index) returns Object,!.\n"
                 + "java_array_get(Array,Index,Object):- java_array_get_primitive(Array,Index,Object).\n"
                 +
 
-                "java_array_length(Array,Length):-              class('java.lang.reflect.Array') <- getLength(Array as 'java.lang.Object') returns Length.\n"
-                + "java_object_string(Object,String):-    Object <- toString returns String.    \n"
+                "java_array_length(Array,Length):- class('java.lang.reflect.Array') <- getLength(Array as 'java.lang.Object') returns Length.\n"
+                + "java_object_string(Object,String):- Object <- toString returns String.    \n"
                 +
                 // java_catch/3
                 "java_catch(JavaGoal, List, Finally) :- call(JavaGoal), call(Finally).\n";
@@ -592,7 +590,7 @@ public class JavaLibrary extends Library {
         	classLoader = new URLClassLoader(getURLsFromStringArray(listOfPaths), this.getClass().getClassLoader());
         	
         	// Delegation to java_call_3 method used to load the class
-        	boolean result = java_call_3(objId, method_name, idResult);
+        	boolean result = java_call_3(new Struct("class", objId), method_name, idResult);
         	
         	// Reset the URLClassLoader at default configuration
         	classLoader =  new URLClassLoader(new URL[]{}, this.getClass().getClassLoader());
