@@ -117,8 +117,8 @@ public class JavaLibrary extends Library {
                 + "Obj <- What :- java_call(Obj,What,Res), Res \\== false.\n"
                 + "Obj <- What returns Res :- java_call(Obj,What,Res).\n"
                 
-                + "class(Path,Class) <- What :- java_call(Path, Obj, What, Res), Res \\== false."
-                + "class(Path,Class) <- What returns Res :- java_call(Path, Class, What, Res)."
+                + "class(Path,Class) <- What :- java_call(Path, Class, What, Res), Res \\== false.\n"
+                + "class(Path,Class) <- What returns Res :- java_call(Path, Class, What, Res).\n"
                 
                 + "java_array_set(Array,Index,Object):- class('java.lang.reflect.Array') <- set(Array as 'java.lang.Object',Index,Object as 'java.lang.Object'), !.\n"
                 + "java_array_set(Array,Index,Object):- java_array_set_primitive(Array,Index,Object).\n"
@@ -263,7 +263,7 @@ public class JavaLibrary extends Library {
      * @param id The name of the prolog term
      * @throws JavaException
      */
-    public boolean java_object_4(Term className, Term paths, Term argl, Term id)
+    public boolean java_object_4(Term paths, Term className, Term argl, Term id)
             throws JavaException {
         paths = paths.getTerm();
         try
