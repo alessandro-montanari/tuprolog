@@ -26,6 +26,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.EventListener;
@@ -79,6 +80,12 @@ public class JavaLibrary extends Library {
 	 * progressive conter used to identify registered objects
 	 */
     private int id = 0;
+    
+    /**
+	 * ClassLoader at default configuration without URLs loaded.
+	 */
+    
+    private URLClassLoader classLoader = new URLClassLoader(new URL[]{}, this.getClass().getClassLoader());
 
     /**
      * library theory
@@ -109,6 +116,10 @@ public class JavaLibrary extends Library {
                 + "java_object_bt(ClassName,Args,Id):- destroy_object(Id).\n"
                 + "Obj <- What :- java_call(Obj,What,Res), Res \\== false.\n"
                 + "Obj <- What returns Res :- java_call(Obj,What,Res).\n"
+                
+                + "class(Path,Class) <- What :- java_call(Path, Obj, What, Res), Res \\== false."
+                + "class(Path,Class) <- What returns Res :- java_call(Path, Class, What, Res)."
+                
                 + "java_array_set(Array,Index,Object):- class('java.lang.reflect.Array') <- set(Array as 'java.lang.Object',Index,Object as 'java.lang.Object'), !.\n"
                 + "java_array_set(Array,Index,Object):- java_array_set_primitive(Array,Index,Object).\n"
                 + "java_array_get(Array,Index,Object):- class('java.lang.reflect.Array') <- get(Array as 'java.lang.Object',Index) returns Object,!.\n"
@@ -199,7 +210,7 @@ public class JavaLibrary extends Library {
             }
             // object creation with argument described in args
             try {
-                Class<?> cl = Class.forName(clName);
+                Class<?> cl = Class.forName(clName,true, classLoader);
                 Object[] args_value = args.getValues();
                 //
                 // Constructor co=cl.getConstructor(args.getTypes());
@@ -254,77 +265,31 @@ public class JavaLibrary extends Library {
      */
     public boolean java_object_4(Term className, Term paths, Term argl, Term id)
             throws JavaException {
-        className = className.getTerm();
-        Struct arg = (Struct) argl.getTerm();
-        id = id.getTerm();
         paths = paths.getTerm();
-        try {
-            if (!className.isAtom()) {
-                throw new JavaException(new ClassNotFoundException(
-                        "Java class not found: " + className));
-            }
-            if(!paths.isList())
-            	throw new IllegalArgumentException(
-                        "Illegal constructor arguments  " + paths);
-            String clName = ((Struct) className).getName();
-            // check for array type
-            if (clName.endsWith("[]")) {
-                Object[] list = getArrayFromList(arg);
-                int nargs = ((Number) list[0]).intValue();
-                if (java_array(clName, nargs, id))
-                    return true;
-                else
-                    throw new JavaException(new Exception());
-            }
-            Signature args = parseArg(getArrayFromList(arg));
-            if (args == null) {
-                throw new IllegalArgumentException(
-                        "Illegal constructor arguments  " + arg);
-            }
-            // object creation with argument described in args
-            try {
-            	String[] listOfpaths = getStringArrayFromStruct((Struct) paths);
-                Class<?> cl = getClassFromPaths(clName, listOfpaths);
-                Object[] args_value = args.getValues();
-                //
-                // Constructor co=cl.getConstructor(args.getTypes());
-                Constructor<?> co = lookupConstructor(cl, args.getTypes(),
-                        args_value);
-                //
-                //
-                if (co == null) {
-                    getEngine().warn("Constructor not found: class " + clName);
-                    throw new JavaException(new NoSuchMethodException(
-                            "Constructor not found: class " + clName));
-                }
-
-                Object obj = co.newInstance(args_value);
-                if (bindDynamicObject(id, obj))
-                    return true;
-                else
-                    throw new JavaException(new Exception());
-            } catch (ClassNotFoundException ex) {
-                getEngine().warn("Java class not found: " + clName);
-                throw new JavaException(ex);
-            } catch (InvocationTargetException ex) {
-                getEngine().warn("Invalid constructor arguments.");
-                throw new JavaException(ex);
-            } catch (NoSuchMethodException ex) {
-                getEngine().warn("Constructor not found: " + args.getTypes());
-                throw new JavaException(ex);
-            } catch (InstantiationException ex) {
-                getEngine().warn(
-                        "Objects of class " + clName
-                                + " cannot be instantiated");
-                throw new JavaException(ex);
-            } catch (IllegalArgumentException ex) {
-                getEngine().warn("Illegal constructor arguments  " + args);
-                throw new JavaException(ex);
-            }
-        } catch (Exception ex) {
-            // ex.printStackTrace();
-            throw new JavaException(ex);
+        try
+        {
+        	if(!paths.isList())
+        		throw new IllegalArgumentException();
+        	String[] listOfPaths = getStringArrayFromStruct((Struct) paths);
+        	
+        	// Update the list of paths of the URLClassLoader 
+        	classLoader = new URLClassLoader(getURLsFromStringArray(listOfPaths), this.getClass().getClassLoader());
+        	
+        	// Delegation to java_object_3 method used to load the class
+        	boolean result = java_object_3(className, argl, id);
+        	
+        	// Reset the URLClassLoader at default configuration
+        	classLoader =  new URLClassLoader(new URL[]{}, this.getClass().getClassLoader());
+        	
+        	return result;
+        }catch(IllegalArgumentException e)
+        {
+        	getEngine().warn("Illegal list of paths " + paths);
+            throw new JavaException(e);
         }
+        catch (Exception e) {
+        	throw new JavaException(e);
+		}
     }
 
     private Class<?> getClassFromPaths(String className, String[] paths) throws ClassNotFoundException
@@ -351,6 +316,17 @@ public class JavaLibrary extends Library {
     	
     }
     
+    public URL[] getURLsFromStringArray(String[] paths) throws MalformedURLException  
+    {
+    	URL[] urls = new URL[paths.length];
+		
+		for (int i = 0; i < paths.length; i++) 
+		{
+			File directory = new File(paths[i]);
+			urls[i] = (directory.toURI().toURL());
+		}
+		return urls;
+    }
     /**
      * Destroy the link to a java object - called not directly, but from
      * predicate java_object (as second choice, for backtracking)
@@ -830,90 +806,6 @@ public class JavaLibrary extends Library {
     }
 
     /*
-     * set the field value of an object
-     */
-    private boolean java_set(Term objId, Term paths, Term fieldTerm, Term what) {
-        what = what.getTerm();
-        paths = paths.getTerm();
-        if (!fieldTerm.isAtom() || what instanceof Var)
-            return false;
-        if(!paths.isList())
-        	return false;
-        String fieldName = ((Struct) fieldTerm).getName();
-        Object obj = null;
-       
-        try {
-            Class<?> cl = null;
-            if (objId.isCompound() && ((Struct) objId).getArity() == 1
-                    && ((Struct) objId).getName().equals("class")) {
-                String clName = alice.util.Tools.removeApices(((Struct) objId)
-                        .getArg(0).toString());
-                try {
-                	String[] listOfpaths = getStringArrayFromStruct((Struct) paths);
-                    cl = getClassFromPaths(clName, listOfpaths);
-                } catch (ClassNotFoundException ex) {
-                    getEngine().warn("Java class not found: " + clName);
-                    return false;
-                } catch (Exception ex) {
-                    getEngine().warn(
-                            "Static field "
-                                    + fieldName
-                                    + " not found in class "
-                                    + alice.util.Tools
-                                            .removeApices(((Struct) objId)
-                                                    .getArg(0).toString()));
-                    return false;
-                }
-            } else {
-                String objName = alice.util.Tools
-                        .removeApices(objId.toString());
-                obj = currentObjects.get(objName);
-                if (obj != null) {
-                    cl = obj.getClass();
-                } else {
-                    return false;
-                }
-            }
-
-            // first check for primitive data field
-            Field field = cl.getField(fieldName);
-            if (what instanceof Number) {
-                Number wn = (Number) what;
-                if (wn instanceof Int) {
-                    field.setInt(obj, wn.intValue());
-                } else if (wn instanceof alice.tuprolog.Double) {
-                    field.setDouble(obj, wn.doubleValue());
-                } else if (wn instanceof alice.tuprolog.Long) {
-                    field.setLong(obj, wn.longValue());
-                } else if (wn instanceof alice.tuprolog.Float) {
-                    field.setFloat(obj, wn.floatValue());
-                } else {
-                    return false;
-                }
-            } else {
-                String what_name = alice.util.Tools.removeApices(what
-                        .toString());
-                Object obj2 = currentObjects.get(what_name);
-                if (obj2 != null) {
-                    field.set(obj, obj2);
-                } else {
-                    // consider value as a simple string
-                    field.set(obj, what_name);
-                }
-            }
-            return true;
-        } catch (NoSuchFieldException ex) {
-            getEngine().warn(
-                    "Field " + fieldName + " not found in class " + objId);
-            return false;
-        } catch (Exception ex) {
-            // ex.printStackTrace();
-            return false;
-        }
-    }
-
-    
-    /*
      * get the value of the field
      */
     private boolean java_get(Term objId, Term fieldTerm, Term what) {
@@ -931,89 +823,6 @@ public class JavaLibrary extends Library {
                         .getArg(0).toString());
                 try {
                     cl = Class.forName(clName);
-                } catch (ClassNotFoundException ex) {
-                    getEngine().warn("Java class not found: " + clName);
-                    return false;
-                } catch (Exception ex) {
-                    getEngine().warn(
-                            "Static field "
-                                    + fieldName
-                                    + " not found in class "
-                                    + alice.util.Tools
-                                            .removeApices(((Struct) objId)
-                                                    .getArg(0).toString()));
-                    return false;
-                }
-            } else {
-                String objName = alice.util.Tools
-                        .removeApices(objId.toString());
-                obj = currentObjects.get(objName);
-                if (obj == null) {
-                    return false;
-                }
-                cl = obj.getClass();
-            }
-
-            Field field = cl.getField(fieldName);
-            Class<?> fc = field.getType();
-            // work only with JDK 1.2
-            field.setAccessible(true);
-
-            // first check for primitive types
-            if (fc.equals(Integer.TYPE) || fc.equals(Byte.TYPE)) {
-                int value = field.getInt(obj);
-                return unify(what, new alice.tuprolog.Int(value));
-            } else if (fc.equals(java.lang.Long.TYPE)) {
-                long value = field.getLong(obj);
-                return unify(what, new alice.tuprolog.Long(value));
-            } else if (fc.equals(java.lang.Float.TYPE)) {
-                float value = field.getFloat(obj);
-                return unify(what, new alice.tuprolog.Float(value));
-            } else if (fc.equals(java.lang.Double.TYPE)) {
-                double value = field.getDouble(obj);
-                return unify(what, new alice.tuprolog.Double(value));
-            } else {
-                // the field value is an object
-                Object res = field.get(obj);
-                return bindDynamicObject(what, res);
-            }
-            // } catch (ClassNotFoundException ex){
-            // getEngine().warn("object of unknown class "+objId);
-            // ex.printStackTrace();
-            // return false;
-        } catch (NoSuchFieldException ex) {
-            getEngine().warn(
-                    "Field " + fieldName + " not found in class " + objId);
-            return false;
-        } catch (Exception ex) {
-            getEngine().warn("Generic error in accessing the field");
-            // ex.printStackTrace();
-            return false;
-        }
-    }
-
-    /*
-     * get the value of the field
-     */
-    private boolean java_get(Term objId, Term paths, Term fieldTerm, Term what) {
-        // System.out.println("GET "+objId+" "+fieldTerm+" "+what);
-    	paths.getTerm();
-        if (!fieldTerm.isAtom()) {
-            return false;
-        }
-        if(!paths.isList())
-        	return false;
-        String fieldName = ((Struct) fieldTerm).getName();
-        Object obj = null;
-        try {
-            Class<?> cl = null;
-            if (objId.isCompound() && ((Struct) objId).getArity() == 1
-                    && ((Struct) objId).getName().equals("class")) {
-                String clName = alice.util.Tools.removeApices(((Struct) objId)
-                        .getArg(0).toString());
-                try {
-                	String[] listOfpaths = getStringArrayFromStruct((Struct) paths);
-                    cl = getClassFromPaths(clName, listOfpaths);
                 } catch (ClassNotFoundException ex) {
                     getEngine().warn("Java class not found: " + clName);
                     return false;
