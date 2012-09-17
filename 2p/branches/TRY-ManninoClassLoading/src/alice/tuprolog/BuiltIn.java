@@ -244,8 +244,11 @@ public class BuiltIn extends Library {
 		 
 		 try {
 			 String[] paths = getStringArrayFromStruct((Struct) arg1);
+			 if(paths == null || paths.length == 0)
+				 throw PrologError.existence_error(engineManager, 2, "paths", arg1, new Struct("Invalid paths' list."));
 			 libraryManager.loadLibrary(((Struct) arg0).getName(), paths);
 			 return true;
+			
 		 } catch (Exception ex) {
 			 throw PrologError.existence_error(engineManager, 1, "class", arg0,
 					 new Struct(ex.getMessage()));
