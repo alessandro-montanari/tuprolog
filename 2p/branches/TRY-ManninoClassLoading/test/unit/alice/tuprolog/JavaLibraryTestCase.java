@@ -47,5 +47,29 @@ public class JavaLibraryTestCase extends TestCase {
 		TestCounter counter = (TestCounter) lib.getRegisteredDynamicObject(id);
 		assertEquals(2, counter.getValue());
 	}
-
+	
+	public void testURLClassLoader() throws PrologException
+	{
+		Prolog engine = new Prolog();
+		String paths = 	"'C:\\', " +
+						"'..\\..\\'";
+		String theory = "demo(C) :- \n" +
+                		"java_object([" + paths +"], 'Counter', [], Obj), \n" +
+                		"Obj <- inc, \n" +
+                		"Obj <- inc, \n" +
+                		"Obj <- getValue returns C.";
+		engine.setTheory(new Theory(theory));
+		SolveInfo info = engine.solve("demo(Value).");
+		alice.tuprolog.Number result = (alice.tuprolog.Number) info.getVarValue("Value");
+		assertEquals(2, result.intValue());
+	
+		String theory2 = "demo_string(S) :- \n" +
+        		"java_object('java.lang.String', ['MyString'], Obj_str), \n" +
+        		"Obj_str <- toString returns S.";
+		engine.setTheory(new Theory(theory2));
+		SolveInfo info2 = engine.solve("demo_string(StringValue).");
+		String result2 = info2.getVarValue("StringValue").toString().replace("'", "");
+		assertEquals("MyString", result2);
+		
+	}
 }
