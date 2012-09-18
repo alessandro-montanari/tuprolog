@@ -1,6 +1,7 @@
 package alice.tuprolog;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -53,97 +54,84 @@ public class JavaLibraryTestCase extends TestCase {
 		assertEquals(2, counter.getValue());
 	}
 	
-	public void testJavaObject4() throws PrologException{
-		try {
-			
-			File file = new File(".");
-			paths = "'" + file.getCanonicalPath() + "', " +
-					"'" +file.getCanonicalPath() + "\\test\\unit\\TestURLClassLoader.jar'";
+	public void testJavaObject4() throws PrologException, IOException
+	{
+		File file = new File(".");
+		paths = "'" + file.getCanonicalPath() + "', " +
+				"'" +file.getCanonicalPath() + "\\test\\unit\\TestURLClassLoader.jar'";
 
-			// Testing URLClassLoader with a paths' array
-			theory = "demo(C) :- \n" +
-	                		"java_object([" + paths +"], 'Counter', [], Obj), \n" +
-	                		"Obj <- inc, \n" +
-	                		"Obj <- inc, \n" +
-	                		"Obj <- getValue returns C.";
-			engine.setTheory(new Theory(theory));
-			info = engine.solve("demo(Value).");
-			alice.tuprolog.Number result2 = (alice.tuprolog.Number) info.getVarValue("Value");
-			assertEquals(2, result2.intValue());
+		// Testing URLClassLoader with a paths' array
+		theory = "demo(C) :- \n" +
+				"java_object([" + paths +"], 'Counter', [], Obj), \n" +
+				"Obj <- inc, \n" +
+				"Obj <- inc, \n" +
+				"Obj <- getValue returns C.";
+		engine.setTheory(new Theory(theory));
+		info = engine.solve("demo(Value).");
+		assertEquals(true, info.isSuccess());
+		alice.tuprolog.Number result2 = (alice.tuprolog.Number) info.getVarValue("Value");
+		assertEquals(2, result2.intValue());
+
+		// Testing URLClassLoader with java.lang.String class
+		theory = 	"demo_string(S) :- \n" +
+				"java_object('java.lang.String', ['MyString'], Obj_str), \n" +
+				"Obj_str <- toString returns S.";
+		engine.setTheory(new Theory(theory));
+		info = engine.solve("demo_string(StringValue).");
+		assertEquals(true, info.isSuccess());
+		result = info.getVarValue("StringValue").toString().replace("'", "");
+		assertEquals("MyString", result);
+
+		//Testing incorrect path
+		paths = "'" + file.getCanonicalPath() + "'";
+		theory = "demo(Res) :- \n" +
+				"java_object([" + paths +"], 'Counter', [], Obj_inc), \n" +
+				"Obj_inc <- inc, \n" +
+				"Obj_inc <- inc, \n" +
+				"Obj_inc <- getValue returns Res.";
+		engine.setTheory(new Theory(theory));
+		info = engine.solve("demo(Value).");
+		assertEquals(true, info.isHalted());
+	}
+	
+	public void testJavaCall4() throws PrologException, IOException
+	{
+		//Testing java_call_4 using URLClassLoader 
+		File file = new File(".");
+		paths = "'" + file.getCanonicalPath() + "', " +
+				"'" +file.getCanonicalPath() + "\\test\\unit\\TestURLClassLoader.jar'";
+		theory = "demo(Value) :- class([" + paths + "], 'TestStaticClass') <- echo('Message') returns Value.";
+		engine.setTheory(new Theory(theory));
+		info = engine.solve("demo(StringValue).");
+		assertEquals(true, info.isSuccess());
+		result = info.getVarValue("StringValue").toString().replace("'", "");
+		assertEquals("Message", result);
+
+		//Testing java_call_4 with invalid path
+		paths = "'" + file.getCanonicalPath() + "'";
+		theory = "demo(Value) :- class([" + paths + "], 'TestStaticClass') <- echo('Message') returns Value.";
+		engine.setTheory(new Theory(theory));
+		info = engine.solve("demo(StringValue).");
+		assertEquals(true, info.isHalted());
+	}
+	
+	public void testJavaArray() throws PrologException, IOException
+	{
 		
-			// Testing URLClassLoader with java.lang.String class
-			theory = 	"demo_string(S) :- \n" +
-	        					"java_object('java.lang.String', ['MyString'], Obj_str), \n" +
-	        					"Obj_str <- toString returns S.";
-			engine.setTheory(new Theory(theory));
-			info = engine.solve("demo_string(StringValue).");
-			result = info.getVarValue("StringValue").toString().replace("'", "");
-			assertEquals("MyString", result);
-			
-			//Testing incorrect path
-			paths = "'" + file.getCanonicalPath() + "'";
-			theory = "demo(Res) :- \n" +
-            		"java_object([" + paths +"], 'Counter', [], Obj_inc), \n" +
-            		"Obj_inc <- inc, \n" +
-            		"Obj_inc <- inc, \n" +
-            		"Obj_inc <- getValue returns Res.";
-			engine.setTheory(new Theory(theory));
-			info = engine.solve("demo(Value).");
-			assertEquals(true, info.isHalted());
-		} catch (Exception e) {
-			System.out.println(e.getCause());
-		}
-	}
-	
-	public void testJavaCall4() throws PrologException
-	{
-		try
-		{
-			//Testing java_call_4 using URLClassLoader 
-			File file = new File(".");
-			paths = "'" + file.getCanonicalPath() + "', " +
-					"'" +file.getCanonicalPath() + "\\test\\unit\\TestURLClassLoader.jar'";
-			theory = "demo(Value) :- class([" + paths + "], 'TestStaticClass') <- echo('Message') returns Value.";
-			engine.setTheory(new Theory(theory));
-			info = engine.solve("demo(StringValue).");
-			result = info.getVarValue("StringValue").toString().replace("'", "");
-			assertEquals("Message", result);
-			
-			//Testing java_call_4 with invalid path
-			paths = "'" + file.getCanonicalPath() + "'";
-			theory = "demo(Value) :- class([" + paths + "], 'TestStaticClass') <- echo('Message') returns Value.";
-			engine.setTheory(new Theory(theory));
-			info = engine.solve("demo(StringValue).");
-			assertEquals(true, info.isHalted());
+		//Testing java_array using URLClassLoader 
+		File file = new File(".");
+		paths = "'" + file.getCanonicalPath() + "', " +
+				"'" +file.getCanonicalPath() + "\\test\\unit\\TestURLClassLoader.jar'";
+		theory =  "demo(Res) :- java_object([" + paths + "], 'Counter', [], MyCounter), \n"
+				+ "MyCounter <- inc, \n"
+				+ "java_object([" + paths + "], 'Counter[]', [10], ArrayCounters), \n"
+				+ "java_array_set(ArrayCounters, 0, MyCounter), \n"
+				+ "java_array_length(ArrayCounters, Res).";
 
-		}catch(Exception e)
-		{
-			System.out.println(e.getCause());
-		}
-	}
-	
-	public void testJavaArray() throws PrologException
-	{
-		try
-		{
-			//Testing java_array using URLClassLoader 
-			File file = new File(".");
-			paths = "'" + file.getCanonicalPath() + "', " +
-					"'" +file.getCanonicalPath() + "\\test\\unit\\TestURLClassLoader.jar'";
-			theory =  "demo(Res) :- java_object([" + paths + "], 'Counter', [], MyCounter), \n"
-					+ "MyCounter <- inc, \n"
-					+ "java_object([" + paths + "], 'Counter[]', [10], ArrayCounters), \n"
-					+ "java_array_set(ArrayCounters, 0, MyCounter), \n"
-					+ "java_array_length(ArrayCounters, Res).";
-			
-			engine.setTheory(new Theory(theory));
-			info = engine.solve("demo(Value).");
-			alice.tuprolog.Number resultInt = (alice.tuprolog.Number) info.getVarValue("Value");
-			assertEquals(10, resultInt.intValue());
-
-		}catch(Exception e)
-		{
-			System.out.println(e.getCause());
-		}
+		engine.setTheory(new Theory(theory));
+		info = engine.solve("demo(Value).");
+		assertEquals(true, info.isSuccess());
+		alice.tuprolog.Number resultInt = (alice.tuprolog.Number) info.getVarValue("Value");
+		assertEquals(10, resultInt.intValue());
 	}
 }
