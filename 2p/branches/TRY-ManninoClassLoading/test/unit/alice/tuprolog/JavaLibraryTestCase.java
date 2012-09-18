@@ -1,7 +1,6 @@
 package alice.tuprolog;
 
 import java.io.File;
-import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +9,9 @@ import alice.tuprolog.lib.JavaLibrary;
 import junit.framework.TestCase;
 
 public class JavaLibraryTestCase extends TestCase {
+	String theory = null;
+	Prolog engine = null;
+	SolveInfo info = null;
 	
 	public void testGetPrimitives() {
 		Library library = new JavaLibrary();
@@ -21,7 +23,7 @@ public class JavaLibraryTestCase extends TestCase {
 	}
 	
 	public void testAnonymousObjectRegistration() throws InvalidTheoryException, InvalidObjectIdException {
-		Prolog engine = new Prolog();		
+		engine = new Prolog();		
 		JavaLibrary lib = (JavaLibrary) engine.getLibrary("alice.tuprolog.lib.JavaLibrary");
 		String theory = "demo(X) :- X <- update. \n";
 		engine.setTheory(new Theory(theory));
@@ -50,45 +52,52 @@ public class JavaLibraryTestCase extends TestCase {
 		assertEquals(2, counter.getValue());
 	}
 	
-	public void testURLClassLoader() throws PrologException
-	{
+	public void testJavaObject4() throws PrologException{
 		try {
-			Prolog engine = new Prolog();
+			engine = new Prolog();
 			File file = new File(".");
 			String paths = null;
 			paths = "'" + file.getCanonicalPath() + "', " +
-					"'" +file.getCanonicalPath() + "\\test\\unit'";
+					"'" +file.getCanonicalPath() + "\\test\\unit\\TestURLClassLoader.jar'";
 
 			// Testing URLClassLoader with a paths' array
-			String theory = "demo(C) :- \n" +
+			theory = "demo(C) :- \n" +
 	                		"java_object([" + paths +"], 'Counter', [], Obj), \n" +
 	                		"Obj <- inc, \n" +
 	                		"Obj <- inc, \n" +
 	                		"Obj <- getValue returns C.";
 			engine.setTheory(new Theory(theory));
-			SolveInfo info = engine.solve("demo(Value).");
+			info = engine.solve("demo(Value).");
 			alice.tuprolog.Number result = (alice.tuprolog.Number) info.getVarValue("Value");
 			assertEquals(2, result.intValue());
 		
 			// Testing URLClassLoader with java.lang.String class
-			String theory2 = 	"demo_string(S) :- \n" +
+			theory = 	"demo_string(S) :- \n" +
 	        					"java_object('java.lang.String', ['MyString'], Obj_str), \n" +
 	        					"Obj_str <- toString returns S.";
-			engine.setTheory(new Theory(theory2));
-			SolveInfo info2 = engine.solve("demo_string(StringValue).");
-			String result2 = info2.getVarValue("StringValue").toString().replace("'", "");
+			engine.setTheory(new Theory(theory));
+			info = engine.solve("demo_string(StringValue).");
+			String result2 = info.getVarValue("StringValue").toString().replace("'", "");
 			assertEquals("MyString", result2);
 			
-//			String theory3 = 	"demo_call(CL) :- \n" +
-//			"java_call([" + paths + "], ['Counter'], Obj_cl), \n" +
-//			"Obj_cl <- toString returns CL.";
-			
+			//Testing incorrect path
+			paths = "'" + file.getCanonicalPath() + "'";
+			theory = "demo(Res) :- \n" +
+            		"java_object([" + paths +"], 'Counter', [], Obj_inc), \n" +
+            		"Obj_inc <- inc, \n" +
+            		"Obj_inc <- inc, \n" +
+            		"Obj_inc <- getValue returns Res.";
+			engine.setTheory(new Theory(theory));
+			info = engine.solve("demo(Value).");
+			assertEquals(true, info.isHalted());
 		} catch (Exception e) {
 			System.out.println(e.getCause());
 		}
-		
+	}
+	
+	public void testJavaCall4() throws PrologException
+	{
 		
 
-		
 	}
 }
