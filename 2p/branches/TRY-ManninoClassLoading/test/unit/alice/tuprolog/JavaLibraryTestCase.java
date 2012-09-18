@@ -10,8 +10,10 @@ import junit.framework.TestCase;
 
 public class JavaLibraryTestCase extends TestCase {
 	String theory = null;
-	Prolog engine = null;
+	Prolog engine = new Prolog();
 	SolveInfo info = null;
+	String result = null;
+	String paths = null;
 	
 	public void testGetPrimitives() {
 		Library library = new JavaLibrary();
@@ -22,8 +24,7 @@ public class JavaLibraryTestCase extends TestCase {
 		assertEquals(0, primitives.get(PrimitiveInfo.FUNCTOR).size());
 	}
 	
-	public void testAnonymousObjectRegistration() throws InvalidTheoryException, InvalidObjectIdException {
-		engine = new Prolog();		
+	public void testAnonymousObjectRegistration() throws InvalidTheoryException, InvalidObjectIdException {	
 		JavaLibrary lib = (JavaLibrary) engine.getLibrary("alice.tuprolog.lib.JavaLibrary");
 		String theory = "demo(X) :- X <- update. \n";
 		engine.setTheory(new Theory(theory));
@@ -54,9 +55,8 @@ public class JavaLibraryTestCase extends TestCase {
 	
 	public void testJavaObject4() throws PrologException{
 		try {
-			engine = new Prolog();
+			
 			File file = new File(".");
-			String paths = null;
 			paths = "'" + file.getCanonicalPath() + "', " +
 					"'" +file.getCanonicalPath() + "\\test\\unit\\TestURLClassLoader.jar'";
 
@@ -68,8 +68,8 @@ public class JavaLibraryTestCase extends TestCase {
 	                		"Obj <- getValue returns C.";
 			engine.setTheory(new Theory(theory));
 			info = engine.solve("demo(Value).");
-			alice.tuprolog.Number result = (alice.tuprolog.Number) info.getVarValue("Value");
-			assertEquals(2, result.intValue());
+			alice.tuprolog.Number result2 = (alice.tuprolog.Number) info.getVarValue("Value");
+			assertEquals(2, result2.intValue());
 		
 			// Testing URLClassLoader with java.lang.String class
 			theory = 	"demo_string(S) :- \n" +
@@ -77,8 +77,8 @@ public class JavaLibraryTestCase extends TestCase {
 	        					"Obj_str <- toString returns S.";
 			engine.setTheory(new Theory(theory));
 			info = engine.solve("demo_string(StringValue).");
-			String result2 = info.getVarValue("StringValue").toString().replace("'", "");
-			assertEquals("MyString", result2);
+			result = info.getVarValue("StringValue").toString().replace("'", "");
+			assertEquals("MyString", result);
 			
 			//Testing incorrect path
 			paths = "'" + file.getCanonicalPath() + "'";
@@ -97,7 +97,53 @@ public class JavaLibraryTestCase extends TestCase {
 	
 	public void testJavaCall4() throws PrologException
 	{
-		
+		try
+		{
+			//Testing java_call_4 using URLClassLoader 
+			File file = new File(".");
+			paths = "'" + file.getCanonicalPath() + "', " +
+					"'" +file.getCanonicalPath() + "\\test\\unit\\TestURLClassLoader.jar'";
+			theory = "demo(Value) :- class([" + paths + "], 'TestStaticClass') <- echo('Message') returns Value.";
+			engine.setTheory(new Theory(theory));
+			info = engine.solve("demo(StringValue).");
+			result = info.getVarValue("StringValue").toString().replace("'", "");
+			assertEquals("Message", result);
+			
+			//Testing java_call_4 with invalid path
+			paths = "'" + file.getCanonicalPath() + "'";
+			theory = "demo(Value) :- class([" + paths + "], 'TestStaticClass') <- echo('Message') returns Value.";
+			engine.setTheory(new Theory(theory));
+			info = engine.solve("demo(StringValue).");
+			assertEquals(true, info.isHalted());
 
+		}catch(Exception e)
+		{
+			System.out.println(e.getCause());
+		}
+	}
+	
+	public void testJavaArray() throws PrologException
+	{
+		try
+		{
+			//Testing java_array using URLClassLoader 
+			File file = new File(".");
+			paths = "'" + file.getCanonicalPath() + "', " +
+					"'" +file.getCanonicalPath() + "\\test\\unit\\TestURLClassLoader.jar'";
+			theory =  "demo(Res) :- java_object([" + paths + "], 'Counter', [], MyCounter), \n"
+					+ "MyCounter <- inc, \n"
+					+ "java_object([" + paths + "], 'Counter[]', [10], ArrayCounters), \n"
+					+ "java_array_set(ArrayCounters, 0, MyCounter), \n"
+					+ "java_array_length(ArrayCounters, Res).";
+			
+			engine.setTheory(new Theory(theory));
+			info = engine.solve("demo(Value).");
+			alice.tuprolog.Number resultInt = (alice.tuprolog.Number) info.getVarValue("Value");
+			assertEquals(10, resultInt.intValue());
+
+		}catch(Exception e)
+		{
+			System.out.println(e.getCause());
+		}
 	}
 }
