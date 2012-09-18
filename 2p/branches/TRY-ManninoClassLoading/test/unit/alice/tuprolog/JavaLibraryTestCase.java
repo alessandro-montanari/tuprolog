@@ -56,11 +56,8 @@ public class JavaLibraryTestCase extends TestCase {
 	
 	public void testJavaObject4() throws PrologException, IOException
 	{
-		File file = new File(".");
-		paths = "'" + file.getCanonicalPath() + "', " +
-				"'" +file.getCanonicalPath() + "\\test\\unit\\TestURLClassLoader.jar'";
-
 		// Testing URLClassLoader with a paths' array
+		setPath(true);
 		theory = "demo(C) :- \n" +
 				"java_object([" + paths +"], 'Counter', [], Obj), \n" +
 				"Obj <- inc, \n" +
@@ -83,7 +80,7 @@ public class JavaLibraryTestCase extends TestCase {
 		assertEquals("MyString", result);
 
 		//Testing incorrect path
-		paths = "'" + file.getCanonicalPath() + "'";
+		setPath(false);
 		theory = "demo(Res) :- \n" +
 				"java_object([" + paths +"], 'Counter', [], Obj_inc), \n" +
 				"Obj_inc <- inc, \n" +
@@ -97,9 +94,7 @@ public class JavaLibraryTestCase extends TestCase {
 	public void testJavaCall4() throws PrologException, IOException
 	{
 		//Testing java_call_4 using URLClassLoader 
-		File file = new File(".");
-		paths = "'" + file.getCanonicalPath() + "', " +
-				"'" +file.getCanonicalPath() + "\\test\\unit\\TestURLClassLoader.jar'";
+		setPath(true);
 		theory = "demo(Value) :- class([" + paths + "], 'TestStaticClass') <- echo('Message') returns Value.";
 		engine.setTheory(new Theory(theory));
 		info = engine.solve("demo(StringValue).");
@@ -108,7 +103,7 @@ public class JavaLibraryTestCase extends TestCase {
 		assertEquals("Message", result);
 
 		//Testing java_call_4 with invalid path
-		paths = "'" + file.getCanonicalPath() + "'";
+		setPath(false);
 		theory = "demo(Value) :- class([" + paths + "], 'TestStaticClass') <- echo('Message') returns Value.";
 		engine.setTheory(new Theory(theory));
 		info = engine.solve("demo(StringValue).");
@@ -117,11 +112,8 @@ public class JavaLibraryTestCase extends TestCase {
 	
 	public void testJavaArray() throws PrologException, IOException
 	{
-		
 		//Testing java_array using URLClassLoader 
-		File file = new File(".");
-		paths = "'" + file.getCanonicalPath() + "', " +
-				"'" +file.getCanonicalPath() + "\\test\\unit\\TestURLClassLoader.jar'";
+		setPath(true);
 		theory =  "demo(Res) :- java_object([" + paths + "], 'Counter', [], MyCounter), \n"
 				+ "MyCounter <- inc, \n"
 				+ "java_object([" + paths + "], 'Counter[]', [10], ArrayCounters), \n"
@@ -133,5 +125,25 @@ public class JavaLibraryTestCase extends TestCase {
 		assertEquals(true, info.isSuccess());
 		alice.tuprolog.Number resultInt = (alice.tuprolog.Number) info.getVarValue("Value");
 		assertEquals(10, resultInt.intValue());
+	}
+	
+	/*
+	 * param valid: used to change a valid/invalid array of paths
+	 */
+	private void setPath(boolean valid) throws IOException
+	{
+		File file = new File(".");
+		// Array paths contains a valid path
+		if(valid)
+		{
+			paths = "'" + file.getCanonicalPath() + "', " +
+				"'" + file.getCanonicalPath() 
+				+ File.separator + "test"
+				+ File.separator + "unit" 
+				+ File.separator + "TestURLClassLoader.jar'";
+		}
+		// Array paths does not contain a valid path
+		else
+			paths = "'" + file.getCanonicalPath() + "'";
 	}
 }
