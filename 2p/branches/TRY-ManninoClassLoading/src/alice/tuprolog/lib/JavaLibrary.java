@@ -65,20 +65,20 @@ import alice.tuprolog.Var;
 public class JavaLibrary extends Library {
 
     /**
-	 * java objects referenced by prolog terms (keys)
-	 */
+         * java objects referenced by prolog terms (keys)
+         */
     private HashMap<String,Object> currentObjects = new HashMap<String, Object>();
     /**
-	 * inverse map useful for implementation issue
-	 */
+         * inverse map useful for implementation issue
+         */
     private IdentityHashMap<Object,Struct> currentObjects_inverse = new IdentityHashMap<Object, Struct>();
 
     private HashMap<String,Object> staticObjects = new HashMap<String, Object>();
     private IdentityHashMap<Object,Struct> staticObjects_inverse = new IdentityHashMap<Object, Struct>();
 
     /**
-	 * progressive conter used to identify registered objects
-	 */
+         * progressive conter used to identify registered objects
+         */
     private int id = 0;
     
     /**
@@ -115,17 +115,17 @@ public class JavaLibrary extends Library {
                 "java_object_bt(ClassName,Args,Id):- java_object(ClassName,Args,Id).\n"
                 + "java_object_bt(ClassName,Args,Id):- destroy_object(Id).\n"
                 + "class(Path,Class) <- What :- !, java_call(Path, Class, What, Res), Res \\== false.\n"
-                + "class(Path,Class) <- What returns Res :- !,  java_call(Path, Class, What, Res).\n"
+				+ "class(Path,Class) <- What returns Res :- !,  java_call(Path, Class, What, Res).\n"
                 + "Obj <- What :- java_call(Obj,What,Res), Res \\== false.\n"
-                                              
+                + "Obj <- What returns Res :- java_call(Obj,What,Res).\n"
                 + "java_array_set(Array,Index,Object):- class('java.lang.reflect.Array') <- set(Array as 'java.lang.Object',Index,Object as 'java.lang.Object'), !.\n"
                 + "java_array_set(Array,Index,Object):- java_array_set_primitive(Array,Index,Object).\n"
                 + "java_array_get(Array,Index,Object):- class('java.lang.reflect.Array') <- get(Array as 'java.lang.Object',Index) returns Object,!.\n"
                 + "java_array_get(Array,Index,Object):- java_array_get_primitive(Array,Index,Object).\n"
                 +
 
-                "java_array_length(Array,Length):- class('java.lang.reflect.Array') <- getLength(Array as 'java.lang.Object') returns Length.\n"
-                + "java_object_string(Object,String):- Object <- toString returns String.    \n"
+                "java_array_length(Array,Length):-              class('java.lang.reflect.Array') <- getLength(Array as 'java.lang.Object') returns Length.\n"
+                + "java_object_string(Object,String):-    Object <- toString returns String.    \n"
                 +
                 // java_catch/3
                 "java_catch(JavaGoal, List, Finally) :- call(JavaGoal), call(Finally).\n";
@@ -208,7 +208,8 @@ public class JavaLibrary extends Library {
             }
             // object creation with argument described in args
             try {
-                Class<?> cl = Class.forName(clName,true, classLoader);
+                //Class<?> cl = Class.forName(clName);
+            	Class<?> cl = Class.forName(clName, true, classLoader);
                 Object[] args_value = args.getValues();
                 //
                 // Constructor co=cl.getConstructor(args.getTypes());
@@ -251,8 +252,6 @@ public class JavaLibrary extends Library {
         }
     }
     
- // ----------------------------------------------------------------------------
-
     /**
      * Creates of a java object - not backtrackable case
      * @param className The name of the class 
@@ -272,7 +271,7 @@ public class JavaLibrary extends Library {
         	
         	// Update the list of paths of the URLClassLoader 
         	classLoader = new URLClassLoader(getURLsFromStringArray(listOfPaths), this.getClass().getClassLoader());
-        	
+
         	// Delegation to java_object_3 method used to load the class
         	boolean result = java_object_3(className, argl, id);
         	
@@ -289,7 +288,14 @@ public class JavaLibrary extends Library {
         	throw new JavaException(e);
 		}
     }
+    
+    
 
+    /**
+     * Returns the class from a list of paths
+     * 
+     * @throws JavaException
+     */
     private Class<?> getClassFromPaths(String className, String[] paths) throws ClassNotFoundException
     {
     	URL[] urls = null;
@@ -314,17 +320,7 @@ public class JavaLibrary extends Library {
     	
     }
     
-    public URL[] getURLsFromStringArray(String[] paths) throws MalformedURLException  
-    {
-    	URL[] urls = new URL[paths.length];
-		
-		for (int i = 0; i < paths.length; i++) 
-		{
-			File directory = new File(paths[i]);
-			urls[i] = (directory.toURI().toURL());
-		}
-		return urls;
-    }
+    
     /**
      * Destroy the link to a java object - called not directly, but from
      * predicate java_object (as second choice, for backtracking)
@@ -511,9 +507,11 @@ public class JavaLibrary extends Library {
                     Struct id = (Struct) objId;
                     if (id.getArity() == 1 && id.getName().equals("class")) {
                         try {
-                        	String clName = alice.util.Tools.removeApices(id.getArg(0).toString());
-                        	Class<?> cl = Class.forName(clName,true, classLoader);
-                            Method m = cl.getMethod(methodName, args.getTypes());
+                        	String clName = alice.util.Tools
+                                    .removeApices(id.getArg(0).toString());
+                            Class<?> cl = Class.forName(clName, true, classLoader);
+                            Method m = cl
+                                    .getMethod(methodName, args.getTypes());
                             m.setAccessible(true);
                             res = m.invoke(null, args.getValues());
                         } catch (ClassNotFoundException ex) {
@@ -606,7 +604,6 @@ public class JavaLibrary extends Library {
 		}
         	
     }
-
     
     /*
      * set the field value of an object
@@ -625,7 +622,7 @@ public class JavaLibrary extends Library {
                 String clName = alice.util.Tools.removeApices(((Struct) objId)
                         .getArg(0).toString());
                 try {
-                    cl = Class.forName(clName,true, classLoader);
+                    cl = Class.forName(clName);
                 } catch (ClassNotFoundException ex) {
                     getEngine().warn("Java class not found: " + clName);
                     return false;
@@ -704,7 +701,7 @@ public class JavaLibrary extends Library {
                 String clName = alice.util.Tools.removeApices(((Struct) objId)
                         .getArg(0).toString());
                 try {
-                	cl = Class.forName(clName,true, classLoader);
+                    cl = Class.forName(clName);
                 } catch (ClassNotFoundException ex) {
                     getEngine().warn("Java class not found: " + clName);
                     return false;
@@ -765,7 +762,7 @@ public class JavaLibrary extends Library {
             return false;
         }
     }
-    
+
     public boolean java_array_set_primitive_3(Term obj_id, Term i, Term what)
             throws JavaException {
         Struct objId = (Struct) obj_id.getTerm();
@@ -987,7 +984,7 @@ public class JavaLibrary extends Library {
             } else if (obtype.equals("double")) {
                 array = new double[nargs];
             } else {
-                Class<?> cl = Class.forName(obtype);
+                Class<?> cl = Class.forName(obtype, true, classLoader);
                 array = Array.newInstance(cl, nargs);
             }
             return bindDynamicObject(id, array);
@@ -997,6 +994,41 @@ public class JavaLibrary extends Library {
         }
     }
 
+    /**
+     * Returns an URL array from a String array
+     *
+     * @throws JavaException
+     */
+    private URL[] getURLsFromStringArray(String[] paths) throws MalformedURLException  
+    {
+    	URL[] urls = new URL[paths.length];
+		
+		for (int i = 0; i < paths.length; i++) 
+		{
+			File directory = new File(paths[i]);
+			urls[i] = (directory.toURI().toURL());
+		}
+		return urls;
+    }
+    
+    /**
+     * Returns a String array from a Struct contains a list
+     *
+     * @throws JavaException
+     */
+    
+    private String[] getStringArrayFromStruct(Struct list) {
+        String args[] = new String[list.listSize()];
+        Iterator<? extends Term> it = list.listIterator();
+        int count = 0;
+        while (it.hasNext()) {
+        	String path = alice.util.Tools.removeApices(it.next().toString());
+            args[count++] = path;
+        }
+        return args;
+    }
+    
+    
     /**
      * creation of method signature from prolog data
      */
@@ -1523,17 +1555,6 @@ public class JavaLibrary extends Library {
         return new Struct("$obj_" + id++);
     }
 
-    
-    private String[] getStringArrayFromStruct(Struct list) {
-        String args[] = new String[list.listSize()];
-        Iterator<? extends Term> it = list.listIterator();
-        int count = 0;
-        while (it.hasNext()) {
-        	String path = alice.util.Tools.removeApices(it.next().toString());
-            args[count++] = path;
-        }
-        return args;
-    }
     /**
      * handling writeObject method is necessary in order to make the library
      * serializable, 'nullyfing' eventually objects registered in maps
