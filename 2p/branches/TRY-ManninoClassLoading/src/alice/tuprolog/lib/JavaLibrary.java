@@ -124,8 +124,8 @@ public class JavaLibrary extends Library {
                 + "java_array_get(Array,Index,Object):- java_array_get_primitive(Array,Index,Object).\n"
                 +
 
-                "java_array_length(Array,Length):-              class('java.lang.reflect.Array') <- getLength(Array as 'java.lang.Object') returns Length.\n"
-                + "java_object_string(Object,String):-    Object <- toString returns String.    \n"
+                "java_array_length(Array,Length):- class('java.lang.reflect.Array') <- getLength(Array as 'java.lang.Object') returns Length.\n"
+                + "java_object_string(Object,String):- Object <- toString returns String.    \n"
                 +
                 // java_catch/3
                 "java_catch(JavaGoal, List, Finally) :- call(JavaGoal), call(Finally).\n";
@@ -588,7 +588,7 @@ public class JavaLibrary extends Library {
         	classLoader = new URLClassLoader(getURLsFromStringArray(listOfPaths), this.getClass().getClassLoader());
         	
         	// Delegation to java_call_3 method used to load the class
-        	boolean result = java_call_3(new Struct("class", objId), method_name, idResult);
+        	boolean result = java_call_3(new Struct("class", objId.getTerm()), method_name, idResult);
         	
         	// Reset the URLClassLoader at default configuration
         	classLoader =  new URLClassLoader(new URL[]{}, this.getClass().getClassLoader());
