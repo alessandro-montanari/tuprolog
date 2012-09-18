@@ -1,5 +1,7 @@
 package alice.tuprolog;
 
+import java.io.File;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
@@ -50,26 +52,43 @@ public class JavaLibraryTestCase extends TestCase {
 	
 	public void testURLClassLoader() throws PrologException
 	{
-		Prolog engine = new Prolog();
-		String paths = 	"'C:\\', " +
-						"'..\\..\\'";
-		String theory = "demo(C) :- \n" +
-                		"java_object([" + paths +"], 'Counter', [], Obj), \n" +
-                		"Obj <- inc, \n" +
-                		"Obj <- inc, \n" +
-                		"Obj <- getValue returns C.";
-		engine.setTheory(new Theory(theory));
-		SolveInfo info = engine.solve("demo(Value).");
-		alice.tuprolog.Number result = (alice.tuprolog.Number) info.getVarValue("Value");
-		assertEquals(2, result.intValue());
-	
-		String theory2 = "demo_string(S) :- \n" +
-        		"java_object('java.lang.String', ['MyString'], Obj_str), \n" +
-        		"Obj_str <- toString returns S.";
-		engine.setTheory(new Theory(theory2));
-		SolveInfo info2 = engine.solve("demo_string(StringValue).");
-		String result2 = info2.getVarValue("StringValue").toString().replace("'", "");
-		assertEquals("MyString", result2);
+		try {
+			Prolog engine = new Prolog();
+			File file = new File(".");
+			String paths = null;
+			paths = "'" + file.getCanonicalPath() + "', " +
+					"'" +file.getCanonicalPath() + "\\test\\unit'";
+
+			// Testing URLClassLoader with a paths' array
+			String theory = "demo(C) :- \n" +
+	                		"java_object([" + paths +"], 'Counter', [], Obj), \n" +
+	                		"Obj <- inc, \n" +
+	                		"Obj <- inc, \n" +
+	                		"Obj <- getValue returns C.";
+			engine.setTheory(new Theory(theory));
+			SolveInfo info = engine.solve("demo(Value).");
+			alice.tuprolog.Number result = (alice.tuprolog.Number) info.getVarValue("Value");
+			assertEquals(2, result.intValue());
+		
+			// Testing URLClassLoader with java.lang.String class
+			String theory2 = 	"demo_string(S) :- \n" +
+	        					"java_object('java.lang.String', ['MyString'], Obj_str), \n" +
+	        					"Obj_str <- toString returns S.";
+			engine.setTheory(new Theory(theory2));
+			SolveInfo info2 = engine.solve("demo_string(StringValue).");
+			String result2 = info2.getVarValue("StringValue").toString().replace("'", "");
+			assertEquals("MyString", result2);
+			
+//			String theory3 = 	"demo_call(CL) :- \n" +
+//			"java_call([" + paths + "], ['Counter'], Obj_cl), \n" +
+//			"Obj_cl <- toString returns CL.";
+			
+		} catch (Exception e) {
+			System.out.println(e.getCause());
+		}
+		
+		
+
 		
 	}
 }
