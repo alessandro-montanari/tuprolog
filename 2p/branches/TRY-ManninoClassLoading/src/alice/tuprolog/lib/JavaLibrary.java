@@ -122,9 +122,9 @@ public class JavaLibrary extends Library {
                 + "java_array_set(Array,Index,Object):- java_array_set_primitive(Array,Index,Object).\n"
                 + "java_array_get(Array,Index,Object):- class('java.lang.reflect.Array') <- get(Array as 'java.lang.Object',Index) returns Object,!.\n"
                 + "java_array_get(Array,Index,Object):- java_array_get_primitive(Array,Index,Object).\n"
-                +
+                
 
-                "java_array_length(Array,Length):- class('java.lang.reflect.Array') <- getLength(Array as 'java.lang.Object') returns Length.\n"
+                + "java_array_length(Array,Length):- class('java.lang.reflect.Array') <- getLength(Array as 'java.lang.Object') returns Length.\n"
                 + "java_object_string(Object,String):- Object <- toString returns String.    \n"
                 +
                 // java_catch/3
@@ -288,38 +288,6 @@ public class JavaLibrary extends Library {
         	throw new JavaException(e);
 		}
     }
-    
-    
-
-    /**
-     * Returns the class from a list of paths
-     * 
-     * @throws JavaException
-     */
-    private Class<?> getClassFromPaths(String className, String[] paths) throws ClassNotFoundException
-    {
-    	URL[] urls = null;
-    	try
-    	{
-    		urls = new URL[paths.length];
-    		
-    		for (int i = 0; i < paths.length; i++) 
-    		{
-    			File directory = new File(paths[i]);
-    			urls[i] = (directory.toURI().toURL());
-    		}
-    		java.lang.ClassLoader loader = URLClassLoader.newInstance(
-    			    urls ,
-    			    getClass().getClassLoader()
-    			);
-    		return Class.forName(className, true, loader);
-    	}catch(Exception ex)
-    	{
-    		throw new ClassNotFoundException();
-    	}
-    	
-    }
-    
     
     /**
      * Destroy the link to a java object - called not directly, but from

@@ -112,19 +112,33 @@ public class JavaLibraryTestCase extends TestCase {
 	
 	public void testJavaArray() throws PrologException, IOException
 	{
-		//Testing java_array using URLClassLoader 
+		//Testing java_array_length using URLClassLoader 
 		setPath(true);
 		theory =  "demo(Res) :- java_object([" + paths + "], 'Counter', [], MyCounter), \n"
-				+ "MyCounter <- inc, \n"
 				+ "java_object([" + paths + "], 'Counter[]', [10], ArrayCounters), \n"
 				+ "java_array_set(ArrayCounters, 0, MyCounter), \n"
-				+ "java_array_length(ArrayCounters, Res).";
-
+				+ "java_array_get(ArrayCounters, 0, C), \n"
+				+ "C <- getValue returns Res.";
+		
 		engine.setTheory(new Theory(theory));
 		info = engine.solve("demo(Value).");
 		assertEquals(true, info.isSuccess());
 		alice.tuprolog.Number resultInt = (alice.tuprolog.Number) info.getVarValue("Value");
 		assertEquals(10, resultInt.intValue());
+		
+		// Testing java_array_set using URLClassLoader
+		theory =  "demo(Res) :- java_object([" + paths + "], 'Counter', [], MyCounter), \n"
+				+ "MyCounter <- inc, \n"
+				+ "java_object([" + paths + "], 'Counter[]', [10], ArrayCounters), \n"
+				+ "java_array_set(ArrayCounters, 0, MyCounter), \n"
+				+ "java_array_get(ArrayCounters, 0, C), \n"
+				+ "C <- getValue returns Res.";
+		
+		engine.setTheory(new Theory(theory));
+		info = engine.solve("demo(Value).");
+		assertEquals(true, info.isSuccess());
+		alice.tuprolog.Number resultInt2 = (alice.tuprolog.Number) info.getVarValue("Value");
+		assertEquals(1, resultInt2.intValue());
 	}
 	
 	/*
