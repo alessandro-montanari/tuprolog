@@ -5,7 +5,7 @@
 
 
 \begin{table}[h]
-  \centering\small 
+  \centering\small
  \begin{tabular}{|p{1.5cm}|p{1cm}|p{1cm}|p{1.5cm}|p{1.5cm}|p{6cm}|}
    \hline
    Version & IDE & Exceptions & Core size & JAR size & Notes\\
@@ -69,9 +69,9 @@ Released on 30th October 2006:
 Released on 30th January 2007
 
 \begin{itemize}
-  \item Eliminated loop in solving conjunctions of goals. (Alex Benini) [SourceForge bug 1600617] 
+  \item Eliminated loop in solving conjunctions of goals. (Alex Benini) [SourceForge bug 1600617]
 
-  \item No more ClassCastException throwing when a library is loaded in an engine already containing a theory. (Alex Benini) [SourceForge bug 1601045] 
+  \item No more ClassCastException throwing when a library is loaded in an engine already containing a theory. (Alex Benini) [SourceForge bug 1601045]
 
  \item \texttt{assert/1} does no more throw an exception on backtracking. (Alex Benini, Giulio Piancastelli) [SourceForge bug 1589823]
 
@@ -97,7 +97,7 @@ Released on 30th January 2007
 
  \item  \texttt{list/1} (and \texttt{Term\#isList}) now correctly identify lists as terms with another list as their tail. (Giulio Piancastelli) [SourceForge bug 1622783]
 
- \item assert/1 does not lose variable bindings when called multiple times with a clause containing variables. (Alex Benini) [SourceForge bug 1601871] 
+ \item assert/1 does not lose variable bindings when called multiple times with a clause containing variables. (Alex Benini) [SourceForge bug 1601871]
 
  \item Prolog clauses contained in a library's theory are no more retractable. (Alex Benini)
 
@@ -132,7 +132,7 @@ Released on 20th April 2007
 
  \item A warning is issued when the demonstration process encounter an unknown predicate. (Giulio Piancastelli)
 
- \item The interaction between goal disjunction, if-then-else, and cut now properly follows ISO standard. (Alex Benini, Giulio Piancastelli, Nathan Finley) [SourceForge bugs 1648665, 1675798] 
+ \item The interaction between goal disjunction, if-then-else, and cut now properly follows ISO standard. (Alex Benini, Giulio Piancastelli, Nathan Finley) [SourceForge bugs 1648665, 1675798]
 
  \item Cut now always cuts at the right level. (Alex Benini, Giulio Piancastelli, Nathan Finley) [SourceForge bug 1659422]
 
@@ -276,7 +276,7 @@ Version 2.3 added a brand new GUI based on Swing instead of the previous Thinlet
 
 \subsection{From Version 2.3.0 to Version 2.3.1}
 
-Version 2.3 added indexing to improve performance. An overall code refactoring was also made, adding further interfaces to better separate the inner engine classes and the outside view -- also in the perspective of a better support to the Eclipse plugin. Several bugs were also corrected. 
+Version 2.3 added indexing to improve performance. An overall code refactoring was also made, adding further interfaces to better separate the inner engine classes and the outside view -- also in the perspective of a better support to the Eclipse plugin. Several bugs were also corrected.
 An improved GUI support from exceptions was added, providing a new Exceptions tab; the plugin GUI was also updated accordingly.
 
 \subsection{From Version 2.3.1 to Version 2.4}
@@ -289,6 +289,8 @@ Minor changes and bugfixes were also added.
 The following people deserve a big thanks for their help and support in \tuprolog{} development:
 
 \begin{itemize}
+  \item Previous manuals: Andrea Omicini, Alessandro Ricci
+  \item Original 1.x versions: Vladimiro Toschi, Andrea Omicini
   \item Original 2.0, 2.1: Alessandro Ricci, Alex Benini, Giulio Piancastelli, Ivar Orstavik
   \item Original 2.1.1: Alex Benini, Giulio Piancastelli, Ivar Orstavik
   \item Exceptions support in 2.2: Matteo Iuliani
@@ -304,4 +306,4 @@ The following people deserve a big thanks for their help and support in \tuprolo
 \end{itemize}
 
 \noindent \textit{The \tuprolog{} development team}: \\
-Alessandro Ricci, Enrico Denti, Andrea Omicini
+Enrico Denti, Andrea Omicini, Alessandro Ricci, Mirko Viroli
