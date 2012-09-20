@@ -85,11 +85,16 @@ public class JavaLibrary extends Library {
 	 * ClassLoader at default configuration without URLs loaded.
 	 */
     
-    private URLClassLoader classLoader = new URLClassLoader(new URL[]{}, this.getClass().getClassLoader());
-
+    private URLClassLoader classLoader = null;
     /**
      * library theory
      */
+    
+    public JavaLibrary()
+    {
+    	classLoader = new URLClassLoader(new URL[]{}, this.getClass().getClassLoader());
+    }
+    
     public String getTheory() {
         return
         //
@@ -208,7 +213,6 @@ public class JavaLibrary extends Library {
             }
             // object creation with argument described in args
             try {
-                //Class<?> cl = Class.forName(clName);
             	Class<?> cl = Class.forName(clName, true, classLoader);
                 Object[] args_value = args.getValues();
                 //
@@ -269,13 +273,14 @@ public class JavaLibrary extends Library {
         		throw new IllegalArgumentException();
         	String[] listOfPaths = getStringArrayFromStruct((Struct) paths);
         	
-        	// Update the list of paths of the URLClassLoader 
+        	// Update the list of paths of the URLClassLoader
         	classLoader = new URLClassLoader(getURLsFromStringArray(listOfPaths), this.getClass().getClassLoader());
-
+        	
         	// Delegation to java_object_3 method used to load the class
         	boolean result = java_object_3(className, argl, id);
         	
         	// Reset the URLClassLoader at default configuration
+        	classLoader.close();
         	classLoader =  new URLClassLoader(new URL[]{}, this.getClass().getClassLoader());
         	
         	return result;
@@ -478,6 +483,7 @@ public class JavaLibrary extends Library {
                         	String clName = alice.util.Tools
                                     .removeApices(id.getArg(0).toString());
                             Class<?> cl = Class.forName(clName, true, classLoader);
+                        	
                             Method m = cl
                                     .getMethod(methodName, args.getTypes());
                             m.setAccessible(true);
@@ -552,13 +558,14 @@ public class JavaLibrary extends Library {
         		throw new IllegalArgumentException();
         	String[] listOfPaths = getStringArrayFromStruct((Struct) paths);
         	
-        	// Update the list of paths of the URLClassLoader 
+//        	// Update the list of paths of the URLClassLoader 
         	classLoader = new URLClassLoader(getURLsFromStringArray(listOfPaths), this.getClass().getClassLoader());
-        	
+
         	// Delegation to java_call_3 method used to load the class
         	boolean result = java_call_3(new Struct("class", objId.getTerm()), method_name, idResult);
-        	
+
         	// Reset the URLClassLoader at default configuration
+        	classLoader.close();
         	classLoader =  new URLClassLoader(new URL[]{}, this.getClass().getClassLoader());
         	
         	return result;
