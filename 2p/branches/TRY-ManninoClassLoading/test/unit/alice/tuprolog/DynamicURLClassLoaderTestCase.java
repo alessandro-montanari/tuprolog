@@ -104,7 +104,12 @@ public class DynamicURLClassLoaderTestCase {
 			+ File.separator + "TestURLClassLoaderNestedPackage.jar";
 		URL[] urls = getURLsFromStringArray(new String[]{tempPath});
 		loader = new DynamicURLClassLoader(urls, this.getClass().getClassLoader());
-		Class<?> cl = loader.loadClass("acme.Counter");
+		Class<?> cl = loader.loadClass("acme.corp.Counter");
+		assertNotNull(cl);
+		cl = loader.loadClass("java.lang.String");
+		assertNotNull(cl);
+		loader.removeAllURLs();
+		cl = loader.loadClass("Counter");
 		assertNotNull(cl);
 	}
 	
