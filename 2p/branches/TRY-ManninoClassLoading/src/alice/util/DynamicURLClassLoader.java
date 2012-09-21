@@ -6,11 +6,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 /**
@@ -74,7 +74,8 @@ public class DynamicURLClassLoader extends ClassLoader{
 
 	public Class<?> findClass(String className) throws ClassNotFoundException {  
         Class<?> result = null;  
-  
+        String name = null;
+        
         result = (Class<?>) classCache.get(className);  
         if (result != null)  
             return result;  
@@ -83,46 +84,31 @@ public class DynamicURLClassLoader extends ClassLoader{
 		} catch (ClassNotFoundException e) {
 			
 		} 
-        className = className.replace(".", File.separator);
+        className = className.replace(".", "/");
         for (URL aURL : listURLs) {
         	try {
         		InputStream is = null;
         		byte[] classByte = null;
-        		JarFile jar = null;
-        		JarEntry jarEntry = null;
+        		
         		if(aURL.toString().indexOf("/", aURL.toString().length() - 1) != -1)
         		{
         			aURL = new URL(aURL.toString() + className + ".class");
         			is = aURL.openConnection().getInputStream();
-        			File file = new File(aURL.toURI());
-        			String fileName = file.getName();
-        			className = fileName;
         		}
         		if(aURL.toString().endsWith(".jar"))
         		{
-        			jar = new JarFile(new File(aURL.toURI()));
-        			if(!className.contains(File.separator))
-        				jarEntry = jar.getJarEntry(className + ".class");
-        			else
-        			{
-        				jarEntry = getJarEntryByClassName(jar, className);
-        				if(jarEntry == null)
-        					throw new ClassNotFoundException("Class " + className + " not in jar " + jar.getName());
-        				className = jarEntry.getName().substring(0, jarEntry.getName().length() - 6);
-        			}
-    
-            		is = jar.getInputStream(jarEntry);
+        			aURL = new URL("jar:" + aURL.toString() +"!/" + className + ".class");
+        			is = aURL.openConnection().getInputStream();
         		}
         		classByte = getClassData(is);
+        		name = Paths.get(aURL.toURI()).getFileName().toString();
                 try {
                 	result = defineClass(className, classByte, 0, classByte.length, null);  
-            		classCache.put(className, result);
+            		classCache.put(name, result);
             		
 				} catch (SecurityException e) {
 					result = super.loadClass(className);
 				}
-                if(aURL.toString().endsWith(".jar"))
-                	jar.close();                	
                 return result;  
         	} catch (Exception e) {
 
@@ -145,22 +131,22 @@ public class DynamicURLClassLoader extends ClassLoader{
         
 	}
 	
-	private JarEntry getJarEntryByClassName(JarFile jar, String className)
-	{
-		// TODO: modificare className perché contiene acme\Counter
-		for(Enumeration<JarEntry> list = jar.entries(); list.hasMoreElements(); )
-		{
-			JarEntry entry = list.nextElement();
-			if(entry.isDirectory() || !entry.getName().endsWith(".class"))
-				continue;
-			String entryName = entry.getName().substring(0, entry.getName().length() - 6);
-			if(entryName == className)
-			{
-				return entry;
-			}
-		}
-		return null;
-	}
+//	private JarEntry getJarEntryByClassName(JarFile jar, String className)
+//	{
+//		// TODO: modificare className perché contiene acme\Counter
+//		for(Enumeration<JarEntry> list = jar.entries(); list.hasMoreElements(); )
+//		{
+//			JarEntry entry = list.nextElement();
+//			if(entry.isDirectory() || !entry.getName().endsWith(".class"))
+//				continue;
+//			String entryName = entry.getName().substring(0, entry.getName().length() - 6);
+//			if(entryName == className)
+//			{
+//				return entry;
+//			}
+//		}
+//		return null;
+//	}
 	
 //	private static String bytesToHex(byte[] bytes) {
 //	    final char[] hexArray = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
