@@ -67,7 +67,7 @@ public class DynamicURLClassLoader extends ClassLoader{
             		is = jar.getInputStream(jarEntry);
         		}
         		classByte = getClassData(is);
-                System.out.println(bytesToHex(classByte));
+//                System.out.println(bytesToHex(classByte));
                 try {
                 	result = defineClass(className, classByte, 0, classByte.length, null);  
             		classCache.put(className, result);
