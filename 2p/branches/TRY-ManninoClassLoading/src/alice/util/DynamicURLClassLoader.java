@@ -1,17 +1,13 @@
 package alice.util;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Hashtable;
-import java.util.jar.JarFile;
 
 /**
  * Custom Dynamic URLCLassLoader used to add/remove dynamically URLs from it
@@ -74,7 +70,7 @@ public class DynamicURLClassLoader extends ClassLoader{
 
 	public Class<?> findClass(String className) throws ClassNotFoundException {  
         Class<?> result = null;  
-        String name = null;
+        String classNameReplaced = className.replace(".", "/");
         
         result = (Class<?>) classCache.get(className);  
         if (result != null)  
@@ -84,7 +80,6 @@ public class DynamicURLClassLoader extends ClassLoader{
 		} catch (ClassNotFoundException e) {
 			
 		} 
-        className = className.replace(".", "/");
         for (URL aURL : listURLs) {
         	try {
         		InputStream is = null;
@@ -92,19 +87,21 @@ public class DynamicURLClassLoader extends ClassLoader{
         		
         		if(aURL.toString().indexOf("/", aURL.toString().length() - 1) != -1)
         		{
-        			aURL = new URL(aURL.toString() + className + ".class");
+        			aURL = new URL(aURL.toString() + classNameReplaced + ".class");
         			is = aURL.openConnection().getInputStream();
         		}
+        		
         		if(aURL.toString().endsWith(".jar"))
         		{
-        			aURL = new URL("jar:" + aURL.toString() +"!/" + className + ".class");
+        			aURL = new URL("jar:" + aURL.toString() +"!/" + classNameReplaced + ".class");
         			is = aURL.openConnection().getInputStream();
         		}
+        		
         		classByte = getClassData(is);
-        		name = Paths.get(aURL.toURI()).getFileName().toString();
+        		
                 try {
                 	result = defineClass(className, classByte, 0, classByte.length, null);  
-            		classCache.put(name, result);
+            		classCache.put(className, result);
             		
 				} catch (SecurityException e) {
 					result = super.loadClass(className);
@@ -131,22 +128,21 @@ public class DynamicURLClassLoader extends ClassLoader{
         
 	}
 	
-//	private JarEntry getJarEntryByClassName(JarFile jar, String className)
-//	{
-//		// TODO: modificare className perché contiene acme\Counter
-//		for(Enumeration<JarEntry> list = jar.entries(); list.hasMoreElements(); )
-//		{
-//			JarEntry entry = list.nextElement();
-//			if(entry.isDirectory() || !entry.getName().endsWith(".class"))
-//				continue;
-//			String entryName = entry.getName().substring(0, entry.getName().length() - 6);
-//			if(entryName == className)
-//			{
-//				return entry;
-//			}
-//		}
-//		return null;
-//	}
+	private String getFileName(String className)
+	{
+		int slashIndex = className.lastIndexOf('/');
+		int dotIndex = className.lastIndexOf('.', slashIndex);
+		String filenameWithoutExtension;
+		if (dotIndex == -1)
+		{
+		  filenameWithoutExtension = className.substring(slashIndex + 1);
+		}
+		else
+		{
+		  filenameWithoutExtension = className.substring(slashIndex + 1, dotIndex);
+		}
+		return filenameWithoutExtension;
+	}
 	
 //	private static String bytesToHex(byte[] bytes) {
 //	    final char[] hexArray = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
@@ -159,7 +155,7 @@ public class DynamicURLClassLoader extends ClassLoader{
 //	    }
 //	    return new String(hexChars);
 //	}
-	
+//	
 	/**
 	 * Add array URLs method.
 	 * @param urls - URLs array.
