@@ -111,7 +111,7 @@ public class DynamicURLClassLoader extends ClassLoader{
 
         	}
         }
-        throw new ClassNotFoundException();
+        throw new ClassNotFoundException(className);
     }  
 	
 	private byte[] getClassData(InputStream is) throws IOException
@@ -126,22 +126,6 @@ public class DynamicURLClassLoader extends ClassLoader{
         return byteStream.toByteArray();
         
         
-	}
-	
-	private String getFileName(String className)
-	{
-		int slashIndex = className.lastIndexOf('/');
-		int dotIndex = className.lastIndexOf('.', slashIndex);
-		String filenameWithoutExtension;
-		if (dotIndex == -1)
-		{
-		  filenameWithoutExtension = className.substring(slashIndex + 1);
-		}
-		else
-		{
-		  filenameWithoutExtension = className.substring(slashIndex + 1, dotIndex);
-		}
-		return filenameWithoutExtension;
 	}
 	
 //	private static String bytesToHex(byte[] bytes) {

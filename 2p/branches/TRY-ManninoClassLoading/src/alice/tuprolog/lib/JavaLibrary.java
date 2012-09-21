@@ -28,7 +28,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.EventListener;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
@@ -43,6 +42,7 @@ import alice.tuprolog.Number;
 import alice.tuprolog.Struct;
 import alice.tuprolog.Term;
 import alice.tuprolog.Var;
+import alice.util.DynamicURLClassLoader;
 
 /**
  * 
@@ -85,14 +85,14 @@ public class JavaLibrary extends Library {
 	 * ClassLoader at default configuration without URLs loaded.
 	 */
     
-    private URLClassLoader classLoader = null;
+    private DynamicURLClassLoader classLoader = null;
     /**
      * library theory
      */
     
     public JavaLibrary()
     {
-    	classLoader = new URLClassLoader(new URL[]{}, this.getClass().getClassLoader());
+    	classLoader = new DynamicURLClassLoader(new URL[]{}, this.getClass().getClassLoader());
     }
     
     public String getTheory() {
@@ -274,14 +274,13 @@ public class JavaLibrary extends Library {
         	String[] listOfPaths = getStringArrayFromStruct((Struct) paths);
         	
         	// Update the list of paths of the URLClassLoader
-        	classLoader = new URLClassLoader(getURLsFromStringArray(listOfPaths), this.getClass().getClassLoader());
+        	classLoader.addURLs(getURLsFromStringArray(listOfPaths));
         	
         	// Delegation to java_object_3 method used to load the class
         	boolean result = java_object_3(className, argl, id);
         	
         	// Reset the URLClassLoader at default configuration
-        	classLoader.close();
-        	classLoader =  new URLClassLoader(new URL[]{}, this.getClass().getClassLoader());
+        	classLoader.removeAllURLs();
         	
         	return result;
         }catch(IllegalArgumentException e)
@@ -558,15 +557,14 @@ public class JavaLibrary extends Library {
         		throw new IllegalArgumentException();
         	String[] listOfPaths = getStringArrayFromStruct((Struct) paths);
         	
-//        	// Update the list of paths of the URLClassLoader 
-        	classLoader = new URLClassLoader(getURLsFromStringArray(listOfPaths), this.getClass().getClassLoader());
-
+        	// Update the list of paths of the URLClassLoader
+        	classLoader.addURLs(getURLsFromStringArray(listOfPaths));
+        	
         	// Delegation to java_call_3 method used to load the class
         	boolean result = java_call_3(new Struct("class", objId.getTerm()), method_name, idResult);
 
         	// Reset the URLClassLoader at default configuration
-        	classLoader.close();
-        	classLoader =  new URLClassLoader(new URL[]{}, this.getClass().getClassLoader());
+        	classLoader.removeAllURLs();
         	
         	return result;
         }catch(IllegalArgumentException e)
