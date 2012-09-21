@@ -8,35 +8,70 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+
+/**
+ * Custom Dynamic URLCLassLoader used to add/remove dynamically URLs from it
+ * needed by JavaLibrary.
+ * 
+ * @author Michele Mannino
+ * 
+ */
 
 public class DynamicURLClassLoader extends ClassLoader{
 	private ArrayList<URL> listURLs = null;
 	private Hashtable<String, Class<?>> classCache = new Hashtable<String, Class<?>>();
 	
+    /**
+	 * DynamicURLClassLoader default constructor. It uses the default SystemClassLoader.
+	 */
+
 	public DynamicURLClassLoader()
 	{
 		super(DynamicURLClassLoader.class.getClassLoader());
 	}
 	
+    /**
+     * Constructor that specifies the URLs array.
+	 * @param URL[] urls - Used to load a directory a URL ends with "/" or "\"
+	 * otherwise it loads a class contained into a .jar
+	 */
+
 	public DynamicURLClassLoader(URL[] urls)
 	{
 		super(DynamicURLClassLoader.class.getClassLoader());
 		listURLs = new ArrayList<URL>(Arrays.asList(urls));
 	}
 	
+    /**
+     * DynamicURLClassLoader constructor specifies the URLs array and the parent ClassLoader.
+	 * @param urls - The URLs array.
+	 * @param parent - ClassLoader parent.
+	 */
+
 	public DynamicURLClassLoader(URL[] urls, ClassLoader parent)
 	{
 		super(parent);
 		listURLs = new ArrayList<URL>(Arrays.asList(urls));
 	}
 	
+    /**
+	 * Load class method specified by className parameter.
+	 * @param className - The class name used to load the class needed.
+	 */
+
 	public Class<?> loadClass(String className) throws ClassNotFoundException {  
         return findClass(className);  
 	}
 	
+	/**
+	 * Find class method specified by className parameter.
+	 * @param className - The class name used to find the class needed.
+	 */
+
 	public Class<?> findClass(String className) throws ClassNotFoundException {  
         Class<?> result = null;  
   
@@ -59,15 +94,26 @@ public class DynamicURLClassLoader extends ClassLoader{
         		{
         			aURL = new URL(aURL.toString() + className + ".class");
         			is = aURL.openConnection().getInputStream();
+        			File file = new File(aURL.toURI());
+        			String fileName = file.getName();
+        			className = fileName;
         		}
         		if(aURL.toString().endsWith(".jar"))
         		{
         			jar = new JarFile(new File(aURL.toURI()));
-            		jarEntry = jar.getJarEntry(className + ".class");
+        			if(!className.contains(File.separator))
+        				jarEntry = jar.getJarEntry(className + ".class");
+        			else
+        			{
+        				jarEntry = getJarEntryByClassName(jar, className);
+        				if(jarEntry == null)
+        					throw new ClassNotFoundException("Class " + className + " not in jar " + jar.getName());
+        				className = jarEntry.getName().substring(0, jarEntry.getName().length() - 6);
+        			}
+    
             		is = jar.getInputStream(jarEntry);
         		}
         		classByte = getClassData(is);
-//                System.out.println(bytesToHex(classByte));
                 try {
                 	result = defineClass(className, classByte, 0, classByte.length, null);  
             		classCache.put(className, result);
@@ -98,18 +144,41 @@ public class DynamicURLClassLoader extends ClassLoader{
         
         
 	}
-	private static String bytesToHex(byte[] bytes) {
-	    final char[] hexArray = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
-	    char[] hexChars = new char[bytes.length * 2];
-	    int v;
-	    for ( int j = 0; j < bytes.length; j++ ) {
-	        v = bytes[j] & 0xFF;
-	        hexChars[j * 2] = hexArray[v >>> 4];
-	        hexChars[j * 2 + 1] = hexArray[v & 0x0F];
-	    }
-	    return new String(hexChars);
+	
+	private JarEntry getJarEntryByClassName(JarFile jar, String className)
+	{
+		// TODO: modificare className perché contiene acme\Counter
+		for(Enumeration<JarEntry> list = jar.entries(); list.hasMoreElements(); )
+		{
+			JarEntry entry = list.nextElement();
+			if(entry.isDirectory() || !entry.getName().endsWith(".class"))
+				continue;
+			String entryName = entry.getName().substring(0, entry.getName().length() - 6);
+			if(entryName == className)
+			{
+				return entry;
+			}
+		}
+		return null;
 	}
 	
+//	private static String bytesToHex(byte[] bytes) {
+//	    final char[] hexArray = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
+//	    char[] hexChars = new char[bytes.length * 2];
+//	    int v;
+//	    for ( int j = 0; j < bytes.length; j++ ) {
+//	        v = bytes[j] & 0xFF;
+//	        hexChars[j * 2] = hexArray[v >>> 4];
+//	        hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+//	    }
+//	    return new String(hexChars);
+//	}
+	
+	/**
+	 * Add array URLs method.
+	 * @param urls - URLs array.
+	 */
+
 	public void addURLs(URL[] urls) throws MalformedURLException
 	{
 		for (URL url : urls) {
@@ -118,6 +187,11 @@ public class DynamicURLClassLoader extends ClassLoader{
 		}
 	}
 	
+	/**
+	 * Remove array URLs method.
+	 * @param urls - URL to be removed.
+	 */
+
 	public void removeURL(URL url) throws IllegalArgumentException
 	{
 		if(!listURLs.contains(url))
@@ -125,12 +199,20 @@ public class DynamicURLClassLoader extends ClassLoader{
 		listURLs.remove(url);
 	}
 	
+	/**
+	 * Remove all URLs cached.
+	 */
+	
 	public void removeAllURLs()
 	{
 		if(!listURLs.isEmpty())
 			listURLs.clear();
 	}
 	
+	/**
+	 * Get all URLs cached.
+	 */
+
 	public URL[] getURLs()
 	{
 		URL[] result = new URL[listURLs.size()];
@@ -138,6 +220,10 @@ public class DynamicURLClassLoader extends ClassLoader{
 		return result;
 	}
 	
+	/**
+	 * Get all loaded class stored into the class cache.
+	 */
+
 	public Class<?>[] getLoadedClasses()
 	{
 		Class<?>[] result = new Class<?>[classCache.size()];
@@ -148,16 +234,32 @@ public class DynamicURLClassLoader extends ClassLoader{
 		return result;
 	}
 	
+	/**
+	 * Clear all class cached.
+	 */
+
 	public void clearCache()
 	{
 		classCache.clear();
 	}
 	
+	/**
+	 * Remove a Class from the cache named className.
+	 * It does not unload the class, but it only remove it from the cache.
+	 * @param className - Class name.
+	 */
+
 	public void removeClassCacheEntry(String className)
 	{
 		classCache.remove(className);
+		
 	}
 	
+	/**
+	 * Add class into cache.
+	 * @param cls - Class instance.
+	 */
+
 	public void setClassCacheEntry(Class<?> cls)
 	{
 		if(classCache.contains(cls))
