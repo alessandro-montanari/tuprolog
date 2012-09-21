@@ -78,7 +78,10 @@ public class JavaLibraryTestCase extends TestCase {
 		assertEquals(true, info.isSuccess());
 		result = info.getVarValue("StringValue").toString().replace("'", "");
 		assertEquals("MyString", result);
-
+	}
+	
+	public void testInvalidPathJavaObject4() throws PrologException, IOException
+	{
 		//Testing incorrect path
 		setPath(false);
 		theory = "demo(Res) :- \n" +
@@ -101,7 +104,10 @@ public class JavaLibraryTestCase extends TestCase {
 		assertEquals(true, info.isSuccess());
 		result = info.getVarValue("StringValue").toString().replace("'", "");
 		assertEquals("Message", result);
-
+	}
+	
+	public void testInvalidPathJavaCall4() throws PrologException, IOException
+	{
 		//Testing java_call_4 with invalid path
 		setPath(false);
 		theory = "demo(Value) :- class([" + paths + "], 'TestStaticClass') <- echo('Message') returns Value.";
