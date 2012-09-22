@@ -84,7 +84,7 @@ public class JavaLibraryTestCase extends TestCase {
 	{
 		setPath(true);
 		theory = "demo_hierarchy(Gear) :- \n"
-					+ "java_set_classpath([" + paths + "]), \n" 
+					+ "set_classpath([" + paths + "]), \n" 
 					+ "java_object('Bicycle', [3, 4, 5], MyBicycle), \n"
 					+ "java_object('MountainBike', [5, 6, 7, 8], MyMountainBike), \n"
 					+ "MyMountainBike <- getGear returns Gear.";
@@ -161,12 +161,12 @@ public class JavaLibraryTestCase extends TestCase {
 		assertEquals(1, resultInt2.intValue());
 	}
 
-	public void test_java_set_classpath() throws PrologException, IOException
+	public void test_set_classpath() throws PrologException, IOException
 	{
 		//Testing java_array_length using URLClassLoader 
 		setPath(true);
 		
-		theory =  "demo(Size) :- java_set_classpath([" + paths + "]), \n "
+		theory =  "demo(Size) :- set_classpath([" + paths + "]), \n "
 				+ "java_object('Counter', [], MyCounter), \n"
 				+ "java_object('Counter[]', [10], ArrayCounters), \n"
 				+ "java_array_length(ArrayCounters, Size).";
@@ -178,24 +178,71 @@ public class JavaLibraryTestCase extends TestCase {
 		assertEquals(10, resultInt.intValue());
 	}
 	
-	public void test_java_get_classpath() throws PrologException, IOException
+	public void test_get_classpath() throws PrologException, IOException
 	{
-		//Testing java_get_classpath using DynamicURLClassLoader with not URLs added
-		theory =  "demo(P) :- java_get_classpath(P).";
+		//Testing get_classpath using DynamicURLClassLoader with not URLs added
+		theory =  "demo(P) :- get_classpath(P).";
 		engine.setTheory(new Theory(theory));
 		info = engine.solve("demo(Value).");
 		assertEquals(true, info.isSuccess());
 		assertEquals(true, info.getTerm("Value").isList());
 
-		//Testing java_get_classpath using DynamicURLClassLoader with not URLs added
+		//Testing get_classpath using DynamicURLClassLoader with not URLs added
 		setPath(true);
 
-		theory =  "demo(P) :- java_set_classpath([" + paths + "]), java_get_classpath(P).";
+		theory =  "demo(P) :- set_classpath([" + paths + "]), get_classpath(P).";
 
 		engine.setTheory(new Theory(theory));
 		info = engine.solve("demo(Value).");
 		assertEquals(true, info.isSuccess());
 		assertEquals(true, info.getTerm("Value").isList());
+	}
+	
+	public void test_register_1() throws PrologException, IOException
+	{
+		setPath(true);
+		theory = "demo(Obj) :- \n" +
+				"java_object([" + paths +"], 'Counter', [], Obj), \n" +
+				"Obj <- inc, \n" +
+				"Obj <- inc, \n" +
+				"register(Obj).";
+		engine.setTheory(new Theory(theory));
+		info = engine.solve("demo(Res).");
+		assertEquals(true, info.isSuccess());
+		JavaLibrary lib = (JavaLibrary) engine.getLibrary("alice.tuprolog.lib.JavaLibrary");
+		Struct id = (Struct) info.getTerm("Res");
+		Object obj = lib.getRegisteredObject(id);
+		assertNotNull(obj);
+		
+		// Test invalid object_id registration
+		theory = "demo(Obj1) :- register(Obj1).";
+		engine.setTheory(new Theory(theory));
+		info = engine.solve("demo(Res).");
+		assertEquals(true, info.isHalted());		
+	}
+	
+	
+	public void test_unregister_1() throws PrologException, IOException
+	{
+		// Test invalid object_id unregistration
+		theory = "demo(Obj1) :- unregister(Obj1).";
+		engine.setTheory(new Theory(theory));
+		info = engine.solve("demo(Res).");
+		assertEquals(true, info.isHalted());	
+		
+		setPath(true);
+		theory = "demo(Obj) :- \n" +
+				"java_object([" + paths +"], 'Counter', [], Obj), \n" +
+				"Obj <- inc, \n" +
+				"Obj <- inc, \n" +
+				"register(Obj), unregister(Obj).";
+		engine.setTheory(new Theory(theory));
+		info = engine.solve("demo(Res).");
+		assertEquals(true, info.isSuccess());
+		JavaLibrary lib = (JavaLibrary) engine.getLibrary("alice.tuprolog.lib.JavaLibrary");
+		Struct id = (Struct) info.getTerm("Res");
+		Object obj = lib.getRegisteredObject(id);
+		assertNull(obj);
 	}
 	
 	
