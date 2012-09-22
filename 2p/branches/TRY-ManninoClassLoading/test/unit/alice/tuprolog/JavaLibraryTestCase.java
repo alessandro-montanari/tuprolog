@@ -207,13 +207,19 @@ public class JavaLibraryTestCase extends TestCase {
 				"Obj <- inc, \n" +
 				"register(Obj).";
 		engine.setTheory(new Theory(theory));
-		info = engine.solve("demo(Res).");
+		info = engine.solve("demo(R).");
 		assertEquals(true, info.isSuccess());
-		JavaLibrary lib = (JavaLibrary) engine.getLibrary("alice.tuprolog.lib.JavaLibrary");
-		Struct id = (Struct) info.getTerm("Res");
-		Object obj = lib.getRegisteredObject(id);
-		assertNotNull(obj);
 		
+		theory = "demo2(Obj, Val) :- \n"
+				+ "Obj <- inc, \n"
+				+ "Obj <- getValue returns Val.";
+		engine.addTheory(new Theory(theory));
+		System.out.println(engine.getTheory().toString());
+		String obj =  info.getTerm("R").toString();
+		SolveInfo info2 = engine.solve("demo2(" + obj + ", V).");
+		assertEquals(true, info2.isSuccess());
+		assertEquals(3, Integer.parseInt(info2.getVarValue("V").toString()));
+	
 		// Test invalid object_id registration
 		theory = "demo(Obj1) :- register(Obj1).";
 		engine.setTheory(new Theory(theory));
