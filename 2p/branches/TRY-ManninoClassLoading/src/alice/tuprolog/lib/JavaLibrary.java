@@ -579,7 +579,13 @@ public class JavaLibrary extends Library {
         	
     }
     
-    public boolean java_set_classpath_1(Term paths) throws JavaException
+    /**
+     * Set global classpath
+     * 
+     * @throws JavaException
+     * 
+     */
+    public boolean set_classpath_1(Term paths) throws JavaException
     {
     	try {
     		paths = paths.getTerm();
@@ -598,7 +604,13 @@ public class JavaLibrary extends Library {
 		}
     }
     
-    public boolean java_get_classpath_1(Term paths) throws JavaException
+    /**
+     * Get global classpath
+     * 
+     * @throws JavaException
+     * 
+     */
+    public boolean get_classpath_1(Term paths) throws JavaException
     {
     	try {
     		paths = paths.getTerm();
@@ -1370,7 +1382,60 @@ public class JavaLibrary extends Library {
             }
         }
     }
-
+    
+    /**
+     * Register an object with the specified id. The life-time of the link to
+     * the object is engine life-time, available besides the individual query.
+     * 
+     * The identifier must be a ground object.
+     * 
+     * @param id
+     *            object identifier
+     *            
+     * @return true if the operation is successful
+     * @throws JavaException
+     *             if the object id is not valid
+     */
+    public boolean register_1(Term id) throws JavaException
+    {
+    	id = id.getTerm();
+    	Object obj =  null; 
+    	try
+        {
+        	obj = getRegisteredDynamicObject((Struct) id);
+        	return register((Struct)id, obj);
+        }catch(InvalidObjectIdException e)
+        {
+        	getEngine().warn("Illegal object id " + id.toString());
+            throw new JavaException(e);
+        }
+    }
+    
+    /**
+     * Unregister an object with the specified id.
+     * 
+     * The identifier must be a ground object.
+     * 
+     * @param id
+     *            object identifier
+     *            
+     * @return true if the operation is successful
+     * @throws JavaException
+     *             if the object id is not valid
+     */
+    public boolean unregister_1(Term id) throws JavaException
+    {
+    	id = id.getTerm(); 
+    	try
+        {
+        	return unregister((Struct)id);
+        }catch(InvalidObjectIdException e)
+        {
+        	getEngine().warn("Illegal object id " + id.toString());
+            throw new JavaException(e);
+        }
+    }
+    
     /**
      * Registers an object, with automatic creation of the identifier.
      * 
