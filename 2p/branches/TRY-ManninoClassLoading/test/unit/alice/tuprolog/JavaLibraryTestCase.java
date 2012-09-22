@@ -129,6 +129,21 @@ public class JavaLibraryTestCase extends TestCase {
 		assertEquals(true, info.isSuccess());
 		alice.tuprolog.Number resultInt = (alice.tuprolog.Number) info.getVarValue("Value");
 		assertEquals(10, resultInt.intValue());
+		
+		//Testing java_array_set and java_array_get
+		setPath(true);
+		theory =  "demo(Res) :- java_object([" + paths + "], 'Counter', [], MyCounter), \n"
+				+ "java_object([" + paths + "], 'Counter[]', [10], ArrayCounters), \n"
+				+ "MyCounter <- inc, \n"
+				+ "java_array_set(ArrayCounters, 0, MyCounter), \n"
+				+ "java_array_get(ArrayCounters, 0, C), \n"
+				+ "C <- getValue returns Res.";
+		
+		engine.setTheory(new Theory(theory));
+		info = engine.solve("demo(Value).");
+		assertEquals(true, info.isSuccess());
+		alice.tuprolog.Number resultInt2 = (alice.tuprolog.Number) info.getVarValue("Value");
+		assertEquals(1, resultInt2.intValue());
 	}
 	
 	/*
