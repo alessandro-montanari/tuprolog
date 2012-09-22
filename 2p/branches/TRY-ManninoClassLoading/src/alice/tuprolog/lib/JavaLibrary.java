@@ -35,6 +35,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
 
+
 import alice.tuprolog.Int;
 import alice.tuprolog.JavaException;
 import alice.tuprolog.Library;
@@ -578,7 +579,58 @@ public class JavaLibrary extends Library {
         	
     }
     
-    /*
+    public boolean java_set_classpath_1(Term paths) throws JavaException
+    {
+    	try {
+    		paths = paths.getTerm();
+        	if(!paths.isList())
+        		throw new IllegalArgumentException();
+        	String[] listOfPaths = getStringArrayFromStruct((Struct) paths);
+        	classLoader.addURLs(getURLsFromStringArray(listOfPaths));
+        	return true;
+    	}catch(IllegalArgumentException e)
+        {
+        	getEngine().warn("Illegal list of paths " + paths);
+            throw new JavaException(e);
+        }
+        catch (Exception e) {
+        	throw new JavaException(e);
+		}
+    }
+    
+    public boolean java_get_classpath_1(Term paths) throws JavaException
+    {
+    	try {
+    		paths = paths.getTerm();
+        	if(!(paths instanceof Var))
+        		throw new IllegalArgumentException();
+        	URL[] urls = classLoader.getURLs();
+        	String stringURLs = null;
+        	if(urls.length > 0)
+        	{
+	        	stringURLs = "[";
+	     
+	        	for (URL url : urls) {
+					stringURLs = stringURLs + "'" + url.toString().replace("%20", " ") + "',";
+				}
+	        	
+	        	stringURLs = stringURLs.substring(0, stringURLs.length() - 1);
+	        	stringURLs = stringURLs + "]";
+        	}
+        	else
+        		stringURLs = "[]";
+        	return unify(paths, Term.createTerm(stringURLs));
+    	}catch(IllegalArgumentException e)
+        {
+        	getEngine().warn("Illegal list of paths " + paths);
+            throw new JavaException(e);
+        }
+        catch (Exception e) {
+        	throw new JavaException(e);
+		}
+    }
+    
+    /**
      * set the field value of an object
      */
     private boolean java_set(Term objId, Term fieldTerm, Term what) {
