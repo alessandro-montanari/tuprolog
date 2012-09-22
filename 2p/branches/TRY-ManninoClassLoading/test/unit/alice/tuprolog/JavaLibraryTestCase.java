@@ -15,7 +15,7 @@ public class JavaLibraryTestCase extends TestCase {
 	SolveInfo info = null;
 	String result = null;
 	String paths = null;
-	
+
 	public void testGetPrimitives() {
 		Library library = new JavaLibrary();
 		Map<Integer, List<PrimitiveInfo>> primitives = library.getPrimitives();
@@ -24,7 +24,7 @@ public class JavaLibraryTestCase extends TestCase {
 		assertTrue(primitives.get(PrimitiveInfo.PREDICATE).size() > 0);
 		assertEquals(0, primitives.get(PrimitiveInfo.FUNCTOR).size());
 	}
-	
+
 	public void testAnonymousObjectRegistration() throws InvalidTheoryException, InvalidObjectIdException {	
 		JavaLibrary lib = (JavaLibrary) engine.getLibrary("alice.tuprolog.lib.JavaLibrary");
 		String theory = "demo(X) :- X <- update. \n";
@@ -39,22 +39,22 @@ public class JavaLibraryTestCase extends TestCase {
 		SolveInfo goal = engine.solve(new Struct("demo", t));
 		assertFalse(goal.isSuccess());
 	}
-	
+
 	public void testDynamicObjectsRetrival() throws PrologException {
 		Prolog engine = new Prolog();
 		JavaLibrary lib = (JavaLibrary) engine.getLibrary("alice.tuprolog.lib.JavaLibrary");
 		String theory = "demo(C) :- \n" +
-		                "java_object('alice.tuprolog.TestCounter', [], C), \n" +
-		                "C <- update, \n" +
-		                "C <- update. \n";			
+				"java_object('alice.tuprolog.TestCounter', [], C), \n" +
+				"C <- update, \n" +
+				"C <- update. \n";			
 		engine.setTheory(new Theory(theory));
 		SolveInfo info = engine.solve("demo(Obj).");
 		Struct id = (Struct) info.getVarValue("Obj");
 		TestCounter counter = (TestCounter) lib.getRegisteredDynamicObject(id);
 		assertEquals(2, counter.getValue());
 	}
-	
-	public void testJavaObject4() throws PrologException, IOException
+
+	public void test_java_object_4() throws PrologException, IOException
 	{
 		// Testing URLClassLoader with a paths' array
 		setPath(true);
@@ -79,8 +79,23 @@ public class JavaLibraryTestCase extends TestCase {
 		result = info.getVarValue("StringValue").toString().replace("'", "");
 		assertEquals("MyString", result);
 	}
+
+	public void test_java_object_4_2() throws PrologException, IOException
+	{
+		setPath(true);
+		theory = "demo_hierarchy(Gear) :- \n"
+					+ "java_set_classpath([" + paths + "]), \n" 
+					+ "java_object('Bicycle', [3, 4, 5], MyBicycle), \n"
+					+ "java_object('MountainBike', [5, 6, 7, 8], MyMountainBike), \n"
+					+ "MyMountainBike <- getGear returns Gear.";
+		engine.setTheory(new Theory(theory));
+		info = engine.solve("demo_hierarchy(Res).");
+		assertEquals(false, info.isHalted());
+		alice.tuprolog.Number result2 = (alice.tuprolog.Number) info.getVarValue("Res");
+		assertEquals(8, result2.intValue());
+	}
 	
-	public void testInvalidPathJavaObject4() throws PrologException, IOException
+	public void test_invalid_path_java_object_4() throws PrologException, IOException
 	{
 		//Testing incorrect path
 		setPath(false);
@@ -93,8 +108,8 @@ public class JavaLibraryTestCase extends TestCase {
 		info = engine.solve("demo(Value).");
 		assertEquals(true, info.isHalted());
 	}
-	
-	public void testJavaCall4() throws PrologException, IOException
+
+	public void test_java_call_4() throws PrologException, IOException
 	{
 		//Testing java_call_4 using URLClassLoader 
 		setPath(true);
@@ -105,8 +120,8 @@ public class JavaLibraryTestCase extends TestCase {
 		result = info.getVarValue("StringValue").toString().replace("'", "");
 		assertEquals("Message", result);
 	}
-	
-	public void testInvalidPathJavaCall4() throws PrologException, IOException
+
+	public void test_invalid_path_java_call_4() throws PrologException, IOException
 	{
 		//Testing java_call_4 with invalid path
 		setPath(false);
@@ -115,21 +130,21 @@ public class JavaLibraryTestCase extends TestCase {
 		info = engine.solve("demo(StringValue).");
 		assertEquals(true, info.isHalted());
 	}
-	
-	public void testJavaArray() throws PrologException, IOException
+
+	public void test_java_array() throws PrologException, IOException
 	{
 		//Testing java_array_length using URLClassLoader 
 		setPath(true);
 		theory =  "demo(Size) :- java_object([" + paths + "], 'Counter', [], MyCounter), \n"
 				+ "java_object([" + paths + "], 'Counter[]', [10], ArrayCounters), \n"
 				+ "java_array_length(ArrayCounters, Size).";
-		
+
 		engine.setTheory(new Theory(theory));
 		info = engine.solve("demo(Value).");
 		assertEquals(true, info.isSuccess());
 		alice.tuprolog.Number resultInt = (alice.tuprolog.Number) info.getVarValue("Value");
 		assertEquals(10, resultInt.intValue());
-		
+
 		//Testing java_array_set and java_array_get
 		setPath(true);
 		theory =  "demo(Res) :- java_object([" + paths + "], 'Counter', [], MyCounter), \n"
@@ -138,16 +153,55 @@ public class JavaLibraryTestCase extends TestCase {
 				+ "java_array_set(ArrayCounters, 0, MyCounter), \n"
 				+ "java_array_get(ArrayCounters, 0, C), \n"
 				+ "C <- getValue returns Res.";
-		
+
 		engine.setTheory(new Theory(theory));
 		info = engine.solve("demo(Value).");
 		assertEquals(true, info.isSuccess());
 		alice.tuprolog.Number resultInt2 = (alice.tuprolog.Number) info.getVarValue("Value");
 		assertEquals(1, resultInt2.intValue());
 	}
+
+	public void test_java_set_classpath() throws PrologException, IOException
+	{
+		//Testing java_array_length using URLClassLoader 
+		setPath(true);
+		
+		theory =  "demo(Size) :- java_set_classpath([" + paths + "]), \n "
+				+ "java_object('Counter', [], MyCounter), \n"
+				+ "java_object('Counter[]', [10], ArrayCounters), \n"
+				+ "java_array_length(ArrayCounters, Size).";
+
+		engine.setTheory(new Theory(theory));
+		info = engine.solve("demo(Value).");
+		assertEquals(true, info.isSuccess());
+		alice.tuprolog.Number resultInt = (alice.tuprolog.Number) info.getVarValue("Value");
+		assertEquals(10, resultInt.intValue());
+	}
 	
-	/*
-	 * param valid: used to change a valid/invalid array of paths
+	public void test_java_get_classpath() throws PrologException, IOException
+	{
+		//Testing java_get_classpath using DynamicURLClassLoader with not URLs added
+		theory =  "demo(P) :- java_get_classpath(P).";
+		engine.setTheory(new Theory(theory));
+		info = engine.solve("demo(Value).");
+		assertEquals(true, info.isSuccess());
+		assertEquals(true, info.getTerm("Value").isList());
+
+		//Testing java_get_classpath using DynamicURLClassLoader with not URLs added
+		setPath(true);
+
+		theory =  "demo(P) :- java_set_classpath([" + paths + "]), java_get_classpath(P).";
+
+		engine.setTheory(new Theory(theory));
+		info = engine.solve("demo(Value).");
+		assertEquals(true, info.isSuccess());
+		assertEquals(true, info.getTerm("Value").isList());
+	}
+	
+	
+	
+	/**
+	 * @param valid: used to change a valid/invalid array of paths
 	 */
 	private void setPath(boolean valid) throws IOException
 	{
@@ -156,10 +210,10 @@ public class JavaLibraryTestCase extends TestCase {
 		if(valid)
 		{
 			paths = "'" + file.getCanonicalPath() + "', " +
-				"'" + file.getCanonicalPath() 
-				+ File.separator + "test"
-				+ File.separator + "unit" 
-				+ File.separator + "TestURLClassLoader.jar'";
+					"'" + file.getCanonicalPath() 
+					+ File.separator + "test"
+					+ File.separator + "unit" 
+					+ File.separator + "TestURLClassLoader.jar'";
 		}
 		// Array paths does not contain a valid path
 		else
