@@ -15,7 +15,8 @@ public class JavaLibraryTestCase extends TestCase {
 	SolveInfo info = null;
 	String result = null;
 	String paths = null;
-
+	String checkString = null;
+	
 	public void testGetPrimitives() {
 		Library library = new JavaLibrary();
 		Map<Integer, List<PrimitiveInfo>> primitives = library.getPrimitives();
@@ -112,13 +113,29 @@ public class JavaLibraryTestCase extends TestCase {
 	public void test_java_call_4() throws PrologException, IOException
 	{
 		//Testing java_call_4 using URLClassLoader 
-		setPath(true);
+		setPath(true); 
 		theory = "demo(Value) :- class([" + paths + "], 'TestStaticClass') <- echo('Message') returns Value.";
 		engine.setTheory(new Theory(theory));
 		info = engine.solve("demo(StringValue).");
 		assertEquals(true, info.isSuccess());
 		result = info.getVarValue("StringValue").toString().replace("'", "");
 		assertEquals("Message", result);
+
+		//Testing get/set static Field 
+		setPath(true);
+		theory = "demo_2(Value) :- class([" + paths + "], 'TestStaticClass').'id' <- get(Value).";
+		engine.setTheory(new Theory(theory));
+		info = engine.solve("demo_2(Res).");
+		assertEquals(true, info.isSuccess());		
+		assertEquals(0, Integer.parseInt(info.getVarValue("Res").toString()));
+		
+		theory = "demo_2(Value, NewValue) :- class([" + paths + "], 'TestStaticClass').'id' <- set(Value), \n" +
+				"class([" + paths + "], 'TestStaticClass').'id' <- get(NewValue).";
+		engine.setTheory(new Theory(theory));
+		info = engine.solve("demo_2(5, Val).");
+		assertEquals(true, info.isSuccess());		
+		assertEquals(5, Integer.parseInt(info.getVarValue("Val").toString()));
+		
 	}
 
 	public void test_invalid_path_java_call_4() throws PrologException, IOException
@@ -186,6 +203,7 @@ public class JavaLibraryTestCase extends TestCase {
 		info = engine.solve("demo(Value).");
 		assertEquals(true, info.isSuccess());
 		assertEquals(true, info.getTerm("Value").isList());
+		assertEquals("[]", info.getTerm("Value").toString());
 
 		//Testing get_classpath using DynamicURLClassLoader with not URLs added
 		setPath(true);
@@ -196,6 +214,7 @@ public class JavaLibraryTestCase extends TestCase {
 		info = engine.solve("demo(Value).");
 		assertEquals(true, info.isSuccess());
 		assertEquals(true, info.getTerm("Value").isList());
+		assertEquals(checkString, info.getTerm("Value").toString());
 	}
 	
 	public void test_register_1() throws PrologException, IOException
@@ -214,7 +233,6 @@ public class JavaLibraryTestCase extends TestCase {
 				+ "Obj <- inc, \n"
 				+ "Obj <- getValue returns Val.";
 		engine.addTheory(new Theory(theory));
-		System.out.println(engine.getTheory().toString());
 		String obj =  info.getTerm("R").toString();
 		SolveInfo info2 = engine.solve("demo2(" + obj + ", V).");
 		assertEquals(true, info2.isSuccess());
@@ -251,14 +269,13 @@ public class JavaLibraryTestCase extends TestCase {
 		assertNull(obj);
 	}
 	
-	
-	
 	/**
 	 * @param valid: used to change a valid/invalid array of paths
 	 */
 	private void setPath(boolean valid) throws IOException
 	{
 		File file = new File(".");
+		
 		// Array paths contains a valid path
 		if(valid)
 		{
@@ -267,9 +284,19 @@ public class JavaLibraryTestCase extends TestCase {
 					+ File.separator + "test"
 					+ File.separator + "unit" 
 					+ File.separator + "TestURLClassLoader.jar'";
+			
+			File aFile = new File(file.getCanonicalPath() + File.separator + "test" 
+					+ File.separator + "unit" + File.separator
+					+ "TestURLClassLoader.jar");
+			
+			checkString = "['" + new File(new File(".").getCanonicalPath()).toURI().toURL() + "','"
+							+ aFile.toURI().toURL() + "']";
 		}
 		// Array paths does not contain a valid path
 		else
+		{
 			paths = "'" + file.getCanonicalPath() + "'";
+			checkString = "['" + new File(file.getCanonicalPath()).toURI().toURL() + "']";
+		}
 	}
 }
