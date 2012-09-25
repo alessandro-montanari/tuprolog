@@ -476,7 +476,7 @@ public class JavaLibrary extends Library {
                                     + args + " )"));
                 }
             } else {
-                if (objId.isCompound()) {
+            	if (objId.isCompound()) {
                     Struct id = (Struct) objId;
                     if (id.getArity() == 1 && id.getName().equals("class")) {
                         try {
@@ -659,7 +659,7 @@ public class JavaLibrary extends Library {
                 String clName = alice.util.Tools.removeApices(((Struct) objId)
                         .getArg(0).toString());
                 try {
-                    cl = Class.forName(clName);
+                    cl = Class.forName(clName, true, classLoader);
                 } catch (ClassNotFoundException ex) {
                     getEngine().warn("Java class not found: " + clName);
                     return false;
@@ -673,7 +673,36 @@ public class JavaLibrary extends Library {
                                                     .getArg(0).toString()));
                     return false;
                 }
-            } else {
+            }
+            // CASE: class(['....'], 'TestStaticClass').'id' <- set(Value).
+            if (objId.isCompound() && ((Struct) objId).getArity() == 2
+                    && ((Struct) objId).getName().equals("class")) {
+            	
+            	String clName = alice.util.Tools.removeApices(((Struct) objId)
+                        .getArg(1).toString());
+            	Struct paths = (Struct) ((Struct) objId).getArg(0);
+            	
+            	String[] listOfPaths = getStringArrayFromStruct((Struct) paths);
+            	
+            	classLoader.addURLs(getURLsFromStringArray(listOfPaths));
+            	
+            	try {
+                    cl = Class.forName(clName, true, classLoader);
+                } catch (ClassNotFoundException ex) {
+                    getEngine().warn("Java class not found: " + clName);
+                    return false;
+                } catch (Exception ex) {
+                    getEngine().warn(
+                            "Static field "
+                                    + fieldName
+                                    + " not found in class "
+                                    + alice.util.Tools
+                                            .removeApices(((Struct) objId)
+                                                    .getArg(0).toString()));
+                    return false;
+                }
+            }
+            else {
                 String objName = alice.util.Tools
                         .removeApices(objId.toString());
                 obj = currentObjects.get(objName);
@@ -738,7 +767,7 @@ public class JavaLibrary extends Library {
                 String clName = alice.util.Tools.removeApices(((Struct) objId)
                         .getArg(0).toString());
                 try {
-                    cl = Class.forName(clName);
+                    cl = Class.forName(clName, true, classLoader);
                 } catch (ClassNotFoundException ex) {
                     getEngine().warn("Java class not found: " + clName);
                     return false;
@@ -752,7 +781,36 @@ public class JavaLibrary extends Library {
                                                     .getArg(0).toString()));
                     return false;
                 }
-            } else {
+            } 
+            // CASE: class(['....'], 'TestStaticClass').'id' <- get(Value).
+            if (objId.isCompound() && ((Struct) objId).getArity() == 2
+                    && ((Struct) objId).getName().equals("class")) {
+            	String clName = alice.util.Tools.removeApices(((Struct) objId)
+                        .getArg(1).toString());
+            	Struct paths = (Struct) ((Struct) objId).getArg(0);
+            	
+            	String[] listOfPaths = getStringArrayFromStruct((Struct) paths);
+            	
+            	classLoader.addURLs(getURLsFromStringArray(listOfPaths));
+            	
+            	try {
+                    cl = Class.forName(clName, true, classLoader);
+                } catch (ClassNotFoundException ex) {
+                    getEngine().warn("Java class not found: " + clName);
+                    return false;
+                } catch (Exception ex) {
+                    getEngine().warn(
+                            "Static field "
+                                    + fieldName
+                                    + " not found in class "
+                                    + alice.util.Tools
+                                            .removeApices(((Struct) objId)
+                                                    .getArg(0).toString()));
+                    return false;
+                }
+            }
+            
+            else {
                 String objName = alice.util.Tools
                         .removeApices(objId.toString());
                 obj = currentObjects.get(objName);
@@ -789,6 +847,8 @@ public class JavaLibrary extends Library {
             // getEngine().warn("object of unknown class "+objId);
             // ex.printStackTrace();
             // return false;
+            
+            
         } catch (NoSuchFieldException ex) {
             getEngine().warn(
                     "Field " + fieldName + " not found in class " + objId);
@@ -1042,6 +1102,8 @@ public class JavaLibrary extends Library {
 		
 		for (int i = 0; i < paths.length; i++) 
 		{
+			if(paths[i] == null)
+				continue;
 			File directory = new File(paths[i]);
 			urls[i] = (directory.toURI().toURL());
 		}
