@@ -166,6 +166,22 @@ public class DynamicURLClassLoader extends ClassLoader{
 	}
 	
 	/**
+	 * Remove all URLs contained into URLs array param.
+	 * 
+	 * @param urls - Array urls to be deleted.
+	 */
+	public void removeURLs(URL[] urls) throws IllegalArgumentException
+	{
+		if(urls == null)
+			throw new IllegalArgumentException("Array URLs must not be null.");
+		for (URL url : urls) {
+			if(!listURLs.contains(url))
+				throw new IllegalArgumentException("URL: " + url + "not found.");
+			listURLs.remove(url);
+		}
+	}
+	
+	/**
 	 * Remove all URLs cached.
 	 */
 	
