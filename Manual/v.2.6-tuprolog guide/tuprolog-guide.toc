@@ -80,13 +80,13 @@
 \contentsline {subsubsection}{\numberline {7.1.3.3}Helper predicates}{120}{subsubsection.7.1.3.3}
 \contentsline {subsection}{\numberline {7.1.4}Functors}{120}{subsection.7.1.4}
 \contentsline {subsection}{\numberline {7.1.5}Operators}{120}{subsection.7.1.5}
-\contentsline {subsection}{\numberline {7.1.6}Examples}{120}{subsection.7.1.6}
-\contentsline {subsubsection}{\numberline {7.1.6.1}RMI Connection to a Remote Object}{120}{subsubsection.7.1.6.1}
+\contentsline {subsection}{\numberline {7.1.6}Examples}{121}{subsection.7.1.6}
+\contentsline {subsubsection}{\numberline {7.1.6.1}RMI Connection to a Remote Object}{121}{subsubsection.7.1.6.1}
 \contentsline {subsubsection}{\numberline {7.1.6.2}A Swing GUI}{121}{subsubsection.7.1.6.2}
 \contentsline {subsubsection}{\numberline {7.1.6.3}Database access via JDBC}{121}{subsubsection.7.1.6.3}
-\contentsline {subsubsection}{\numberline {7.1.6.4}Dynamic compilation}{123}{subsubsection.7.1.6.4}
-\contentsline {subsection}{\numberline {7.1.7}Handling Java Exceptions}{124}{subsection.7.1.7}
-\contentsline {subsubsection}{\numberline {7.1.7.1}Java exception examples}{126}{subsubsection.7.1.7.1}
+\contentsline {subsubsection}{\numberline {7.1.6.4}Dynamic compilation}{124}{subsubsection.7.1.6.4}
+\contentsline {subsection}{\numberline {7.1.7}Handling Java Exceptions}{125}{subsection.7.1.7}
+\contentsline {subsubsection}{\numberline {7.1.7.1}Java exception examples}{127}{subsubsection.7.1.7.1}
 \contentsline {section}{\numberline {7.2}Using Prolog from Java: \textit {the Java API}}{131}{section.7.2}
 \contentsline {subsection}{\numberline {7.2.1}A Taxonomy of Prolog types in Java}{131}{subsection.7.2.1}
 \contentsline {subsubsection}{\numberline {7.2.1.1}Further notes about \texttt {Term}s}{132}{subsubsection.7.2.1.1}
