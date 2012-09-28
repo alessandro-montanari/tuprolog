@@ -570,44 +570,6 @@ public class JavaLibrary extends Library {
 		}
 	}
 
-
-//    /**
-//     * 
-//     * Calls a method of a Java object
-//     * 
-//     * @throws JavaException
-//     * 
-//     */
-//    public boolean java_call_4(Term paths, Term objId, Term method_name, Term idResult)
-//            throws JavaException {
-//        paths = paths.getTerm();
-//        try
-//        {
-//        	if(!paths.isList())
-//        		throw new IllegalArgumentException();
-//        	String[] listOfPaths = getStringArrayFromStruct((Struct) paths);
-//        	URL[] urls = getURLsFromStringArray(listOfPaths);
-//        	// Update the list of paths of the URLClassLoader
-//        	classLoader.addURLs(urls);
-//        	
-//        	// Delegation to java_call_3 method used to load the class
-//        	boolean result = java_call_3(new Struct("class", objId.getTerm()), method_name, idResult);
-//
-//        	// Reset the URLClassLoader at default configuration
-//        	classLoader.removeURLs(urls);
-//        	
-//        	return result;
-//        }catch(IllegalArgumentException e)
-//        {
-//        	getEngine().warn("Illegal list of paths " + paths);
-//            throw new JavaException(e);
-//        }
-//        catch (Exception e) {
-//        	throw new JavaException(e);
-//		}
-//        	
-//    }
-//    
     /**
      * Set global classpath
      * 
