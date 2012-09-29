@@ -440,7 +440,7 @@ public class JavaLibrary extends Library {
 			}
 			// System.out.println(args);
 			String objName = alice.util.Tools.removeApices(objId.toString());
-			obj = currentObjects.get(objName);
+			obj = staticObjects.containsKey(objName) ? staticObjects.get(objName) : currentObjects.get(objName);
 			Object res = null;
 
 			if (obj != null) {
