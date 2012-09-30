@@ -274,54 +274,83 @@ public class JavaLibraryTestCase extends TestCase {
 	public void test_java_catch() throws PrologException, IOException
 	{
 		setPath(true);
-//		theory =  "load(Obj) :- set_classpath([" + paths + "]), java_object('TestStaticClass', [], Obj), register(Obj).\n"
-//				+ "demo(Obj, Msg) :- java_catch(Obj <- testMyException, [('java.lang.JavaException'( \n"
-//						+ "Cause, Msg, StackTrace),write(Msg))], \n"
-//						+ "true).";
+//		// Test example n. 7.0
+//		theory = "demo(Msg) :- java_catch(java_object('Counter', ['MyCounter'], c)," +
+//				"[('java.lang.ClassNotFoundException'(Cause, Msg, StackTrace)," +
+//				"write(Msg))]," +
+//				"write('Finally done!')).";
+//		
+//		engine.setTheory(new Theory(theory));
+//		info = engine.solve("demo(M).");
+//		assertEquals(true, info.isSuccess());
+//		assertEquals("Counter", alice.util.Tools.removeApices(info.getVarValue("M").toString()));
+//		
+//		// Test example n. 7.1
+//		theory = "goal(X, Y) :- java_catch(java_object('Counter', ['MyCounter'], c)," +
+//				"[('java.lang.ClassNotFoundException'(Cause, Message, _)," +
+//						"X is 2+3)], Y is 2+5).";
+//
+//		engine.setTheory(new Theory(theory));
+//		info = engine.solve("goal(X, Y).");
+//		assertEquals(true, info.isSuccess());
+//		assertEquals(5, Integer.parseInt(info.getVarValue("X").toString()));
+//		assertEquals(7, Integer.parseInt(info.getVarValue("Y").toString()));
+//		
+//		// Test example n. 7.2
+//		theory = "goal :- java_catch(java_object('Counter', ['MyCounter'], c)," +
+//				"[('java.lang.Exception'(Cause, Message, _), true)], true).";
+//
+//		engine.setTheory(new Theory(theory));
+//		info = engine.solve("goal.");
+//		assertEquals(true, info.isHalted());
+//		
+//		// Test example 7.3
+//		theory = "goal :- java_catch(java_object('Counter', ['MyCounter'], c)," +
+//				"[('java.lang.Exception'(Cause, Message, _), false)], true).";
+//
+//		engine.setTheory(new Theory(theory));
+//		info = engine.solve("goal.");
+//		assertEquals(true, info.isHalted());
+//		
+//		// Test example 7.4
+//		theory = "goal :- java_catch(java_object('Counter', ['MyCounter'], c)," +
+//				"[('java.lang.ClassNotFoundException'(Cause, Message, _)," +
+//				"java_object('Counter', ['MyCounter'], c))], true).";
+//
+//		engine.setTheory(new Theory(theory));
+//		info = engine.solve("goal.");
+//		assertEquals(true, info.isHalted());
+//		
+//		// Test example 7.5
+//		theory = "goal(X) :- java_catch(java_object('java.util.ArrayList', [], l),"+
+//				"[E, true], X is 2+3).";
+//
+//		engine.setTheory(new Theory(theory));
+//		info = engine.solve("goal(X).");
+//		assertEquals(false, info.isHalted());
+//		assertEquals(5, Integer.parseInt(info.getVarValue("X").toString()));
+//		
+//		// Test example 7.6
+//		theory = "goal(X, Y) :- java_catch(java_object('Counter', ['MyCounter'], c),"+
+//				"[('java.lang.Exception'(Cause, Message, _), X is 2+3)," +
+//				"('java.lang.ClassNotFoundException'(Cause, Message, _), Y is 3+5)],true).";
+//				
+//		engine.setTheory(new Theory(theory));
+//		info = engine.solve("goal(X, Y).");
+//		assertEquals(false, info.isHalted());
+//		assertEquals(8, Integer.parseInt(info.getVarValue("Y").toString()));
 		
-//		theory = "goal :- set_classpath([" + paths + "]), java_object('TestStaticClass', [], Obj), Obj <- testMyException. \n"
-//				+"demo(Msg) :- java_catch(goal, [('java.lang.JavaException'( \n"
-//						+ "Cause, Msg, StackTrace),write(Msg))], \n"
-//						+ "true).";
-		// Test example n. 7.0
-		theory = "demo(Msg) :- java_catch(java_object('Counter', ['MyCounter'], c)," +
-				"[('java.lang.ClassNotFoundException'(Cause, Msg, StackTrace)," +
-				"write(Msg))]," +
-				"write('Finally done!')).";
+		theory = "goal :- set_classpath([" + paths + "]), java_object('TestStaticClass', [], Obj), Obj <- testMyException. \n"
+				+"demo(StackTrace) :- java_catch(goal, [('java.lang.IllegalArgumentException'( \n"
+						+ "Cause, Msg, StackTrace),write(Msg))], \n"
+						+ "true).";
 		
 		engine.setTheory(new Theory(theory));
-		info = engine.solve("demo(M).");
+		info = engine.solve("demo(S).");
 		assertEquals(true, info.isSuccess());
-		assertEquals("Counter", alice.util.Tools.removeApices(info.getVarValue("M").toString()));
-		
-		// Test example n. 7.1
-		theory = "goal(X, Y) :- java_catch(java_object('Counter', ['MyCounter'], c)," +
-				"[('java.lang.ClassNotFoundException'(Cause, Message, _)," +
-						"X is 2+3)], Y is 2+5).";
-
-		engine.setTheory(new Theory(theory));
-		info = engine.solve("goal(X, Y).");
-		assertEquals(true, info.isSuccess());
-		assertEquals(5, Integer.parseInt(info.getVarValue("X").toString()));
-		assertEquals(7, Integer.parseInt(info.getVarValue("Y").toString()));
-		
-		// Test example n. 7.2
-		theory = "goal :- java_catch(java_object('Counter', ['MyCounter'], c)," +
-				"[('java.lang.Exception'(Cause, Message, _), true)], true).";
-
-		engine.setTheory(new Theory(theory));
-		info = engine.solve("goal.");
-		assertEquals(true, info.isHalted());
-		
-		// Test example 7.3
-		theory = "goal :- java_catch(java_object('Counter', ['MyCounter'], c)," +
-				"[('java.lang.Exception'(Cause, Message, _), false)], true).";
-
-		engine.setTheory(new Theory(theory));
-		info = engine.solve("goal.");
-		assertEquals(true, info.isHalted());
 		
 	}
+	
 	/**
 	 * @param valid: used to change a valid/invalid array of paths
 	 */
