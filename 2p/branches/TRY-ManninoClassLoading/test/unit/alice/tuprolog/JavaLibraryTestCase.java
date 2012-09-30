@@ -270,7 +270,7 @@ public class JavaLibraryTestCase extends TestCase {
 //	}
 //	
 //
-//	
+
 	public void test_java_catch() throws PrologException, IOException
 	{
 		setPath(true);
@@ -342,8 +342,8 @@ public class JavaLibraryTestCase extends TestCase {
 					+ File.separator + "unit" + File.separator
 					+ "TestURLClassLoader.jar");
 			
-			checkString = "['" + new File(new File(".").getCanonicalPath()).toURI().toURL() + "','"
-							+ aFile.toURI().toURL() + "']";
+			checkString = "['" + new File(new File(".").getCanonicalPath()).toURI().toURL().toString().replace("%20", " ") + "','"
+							+ aFile.toURI().toURL().toString().replace("%20", " ") + "']";
 		}
 		// Array paths does not contain a valid path
 		else
