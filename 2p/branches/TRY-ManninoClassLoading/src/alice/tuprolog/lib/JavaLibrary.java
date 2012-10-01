@@ -601,12 +601,11 @@ public class JavaLibrary extends Library {
      * @throws JavaException
      * 
      */
-    public boolean get_classpath_1(Term paths) throws JavaException
+    
+	public boolean get_classpath_1(Term paths) throws JavaException
     {
     	try {
     		paths = paths.getTerm();
-        	if(!(paths instanceof Var))
-        		throw new IllegalArgumentException();
         	URL[] urls = classLoader.getURLs();
         	String stringURLs = null;
         	if(urls.length > 0)
@@ -614,7 +613,7 @@ public class JavaLibrary extends Library {
 	        	stringURLs = "[";
 	     
 	        	for (URL url : urls) {
-					stringURLs = stringURLs + "'" + url.toString().replace("%20", " ") + "',";
+	        		stringURLs = stringURLs + "'" + java.net.URLDecoder.decode(url.toString(), "UTF-8") + "',";
 				}
 	        	
 	        	stringURLs = stringURLs.substring(0, stringURLs.length() - 1);
