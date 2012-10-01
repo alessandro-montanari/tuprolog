@@ -1,6 +1,7 @@
 package alice.util;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -68,9 +69,10 @@ public class DynamicURLClassLoader extends ClassLoader{
 	 * @param className - The class name used to find the class needed.
 	 */
 
+	@SuppressWarnings("resource")
 	public Class<?> findClass(String className) throws ClassNotFoundException {  
         Class<?> result = null;  
-        String classNameReplaced = className.replace(".", "/");
+        String classNameReplaced = className.replace(".", File.separator);
         
         result = (Class<?>) classCache.get(className);  
         if (result != null)  
@@ -85,20 +87,31 @@ public class DynamicURLClassLoader extends ClassLoader{
         		InputStream is = null;
         		byte[] classByte = null;
         		
-        		if(aURL.toString().indexOf("/", aURL.toString().length() - 1) != -1)
-        		{
-        			aURL = new URL(aURL.toString() + classNameReplaced + ".class");
-        			is = aURL.openConnection().getInputStream();
-        		}
         		
         		if(aURL.toString().endsWith(".jar"))
         		{
         			aURL = new URL("jar:" + aURL.toString() +"!/" + classNameReplaced + ".class");
         			is = aURL.openConnection().getInputStream();
         		}
+        		// utilizzo "/" perché è il separatore nel formato URL
+        		// esempio: file:/C:/Users/
+        		if(aURL.toString().indexOf("/", aURL.toString().length() - 1) != -1)
+        		{
+        			try {
+						aURL = new URL(aURL.toString() + classNameReplaced + ".class");
+						is = aURL.openConnection().getInputStream();
+					} catch (IOException e) {
+						try {
+							aURL = new URL(aURL.toString() + classNameReplaced + ".dll");
+							is = aURL.openConnection().getInputStream();
+						} catch (Exception e2) {
+							aURL = new URL(aURL.toString() + classNameReplaced + ".exe");
+							is = aURL.openConnection().getInputStream();
+						}
+					}
+        		}
         		
         		classByte = getClassData(is);
-        		
                 try {
                 	result = defineClass(className, classByte, 0, classByte.length, null);  
             		classCache.put(className, result);
