@@ -141,7 +141,7 @@ public final class LibraryManager
         Library lib = null;
         try
         {
-        	
+    
         	ClassLoader loader = URLClassLoader.newInstance(
 				    new URL[]{ file.toURI().toURL() } ,
 				    getClass().getClassLoader()
