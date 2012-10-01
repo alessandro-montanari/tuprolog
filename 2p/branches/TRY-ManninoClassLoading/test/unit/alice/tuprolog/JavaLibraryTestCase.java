@@ -60,7 +60,7 @@ public class JavaLibraryTestCase extends TestCase {
 		// Testing URLClassLoader with a paths' array
 		setPath(true);
 		theory = "demo(C) :- \n" +
-				"java_object([" + paths +"], 'Counter', [], Obj), \n" +
+				"java_object('Counter', [], Obj,[" + paths +"]), \n" +
 				"Obj <- inc, \n" +
 				"Obj <- inc, \n" +
 				"Obj <- getValue returns C.";
@@ -101,7 +101,7 @@ public class JavaLibraryTestCase extends TestCase {
 		//Testing incorrect path
 		setPath(false);
 		theory = "demo(Res) :- \n" +
-				"java_object([" + paths +"], 'Counter', [], Obj_inc), \n" +
+				"java_object('Counter', [], Obj_inc, [" + paths +"]), \n" +
 				"Obj_inc <- inc, \n" +
 				"Obj_inc <- inc, \n" +
 				"Obj_inc <- getValue returns Res.";
@@ -152,8 +152,8 @@ public class JavaLibraryTestCase extends TestCase {
 	{
 		//Testing java_array_length using URLClassLoader 
 		setPath(true);
-		theory =  "demo(Size) :- java_object([" + paths + "], 'Counter', [], MyCounter), \n"
-				+ "java_object([" + paths + "], 'Counter[]', [10], ArrayCounters), \n"
+		theory =  "demo(Size) :- java_object('Counter', [], MyCounter, [" + paths +"]), \n"
+				+ "java_object('Counter[]', [10], ArrayCounters, [" + paths +"]), \n"
 				+ "java_array_length(ArrayCounters, Size).";
 
 		engine.setTheory(new Theory(theory));
@@ -164,8 +164,8 @@ public class JavaLibraryTestCase extends TestCase {
 
 		//Testing java_array_set and java_array_get
 		setPath(true);
-		theory =  "demo(Res) :- java_object([" + paths + "], 'Counter', [], MyCounter), \n"
-				+ "java_object([" + paths + "], 'Counter[]', [10], ArrayCounters), \n"
+		theory =  "demo(Res) :- java_object('Counter', [], MyCounter, [" + paths +"]), \n"
+				+ "java_object('Counter[]', [10], ArrayCounters, [" + paths +"]), \n"
 				+ "MyCounter <- inc, \n"
 				+ "java_array_set(ArrayCounters, 0, MyCounter), \n"
 				+ "java_array_get(ArrayCounters, 0, C), \n"
@@ -228,7 +228,7 @@ public class JavaLibraryTestCase extends TestCase {
 	{
 		setPath(true);
 		theory = "demo(Obj) :- \n" +
-				"java_object([" + paths +"], 'Counter', [], Obj), \n" +
+				"java_object('Counter', [], Obj, [" + paths +"]), \n" +
 				"Obj <- inc, \n" +
 				"Obj <- inc, \n" +
 				"register(Obj).";
@@ -263,7 +263,7 @@ public class JavaLibraryTestCase extends TestCase {
 		
 		setPath(true);
 		theory = "demo(Obj) :- \n" +
-				"java_object([" + paths +"], 'Counter', [], Obj), \n" +
+				"java_object('Counter', [], Obj,[" + paths +"]), \n" +
 				"Obj <- inc, \n" +
 				"Obj <- inc, \n" +
 				"register(Obj), unregister(Obj).";
