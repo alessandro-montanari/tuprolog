@@ -97,18 +97,22 @@ public class DynamicURLClassLoader extends ClassLoader{
         		// esempio: file:/C:/Users/
         		if(aURL.toString().indexOf("/", aURL.toString().length() - 1) != -1)
         		{
-        			try {
-						aURL = new URL(aURL.toString() + classNameReplaced + ".class");
-						is = aURL.openConnection().getInputStream();
-					} catch (IOException e) {
-						try {
+        			if (System.getProperty("java.vm.name").equals("IKVM.NET"))
+        			{
+        				try {
 							aURL = new URL(aURL.toString() + classNameReplaced + ".dll");
 							is = aURL.openConnection().getInputStream();
 						} catch (Exception e2) {
 							aURL = new URL(aURL.toString() + classNameReplaced + ".exe");
 							is = aURL.openConnection().getInputStream();
 						}
-					}
+        				
+        			}
+        			else
+        			{
+        				aURL = new URL(aURL.toString() + classNameReplaced + ".class");
+						is = aURL.openConnection().getInputStream();
+        			}
         		}
         		
         		classByte = getClassData(is);
