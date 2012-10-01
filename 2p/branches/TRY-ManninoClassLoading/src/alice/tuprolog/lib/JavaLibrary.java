@@ -265,7 +265,7 @@ public class JavaLibrary extends Library {
      * @param id The name of the prolog term
      * @throws JavaException
      */
-    public boolean java_object_4(Term paths, Term className, Term argl, Term id)
+    public boolean java_object_4(Term className, Term argl, Term id, Term paths)
             throws JavaException {
         paths = paths.getTerm();
         try
