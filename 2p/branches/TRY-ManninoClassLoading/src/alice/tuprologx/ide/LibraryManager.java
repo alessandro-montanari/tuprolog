@@ -18,13 +18,15 @@
 package alice.tuprologx.ide;
 
 import alice.tuprolog.*;
+import ikvm.runtime.AssemblyClassLoader;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-
+import cli.System.Reflection.Assembly;
 
 /**
  * A dynamic manager for tuProlog libraries.
@@ -141,11 +143,32 @@ public final class LibraryManager
         Library lib = null;
         try
         {
-    
-        	ClassLoader loader = URLClassLoader.newInstance(
-				    new URL[]{ file.toURI().toURL() } ,
-				    getClass().getClassLoader()
-				);
+        	String path = file.getPath();
+        	
+        	if(path.contains(".class"))
+        		file = new File(file.getPath().substring(0, file.getPath().lastIndexOf(File.separator) + 1));
+        	
+        	URL url = file.toURI().toURL();
+        	
+        	ClassLoader loader = null;
+        	
+        	// .NET
+        	if(System.getProperty("java.vm.name").equals("IKVM.NET"))
+        	{
+        		Assembly asm = Assembly.LoadFrom(file.getPath());
+        		loader = AssemblyClassLoader.getAssemblyClassLoader(asm);
+        		libraryClassname = "cli." + libraryClassname.substring(0, 
+        				libraryClassname.indexOf(",")).trim();
+        	}
+        	// JVM
+        	else
+        	{
+        		loader = URLClassLoader.newInstance(
+    				    new URL[]{ url } ,
+    				    getClass().getClassLoader()
+    				);
+        	}	
+        
 			lib = (Library) Class.forName(libraryClassname, true, loader).newInstance();
 			libraries.add(lib.getName());
         }
