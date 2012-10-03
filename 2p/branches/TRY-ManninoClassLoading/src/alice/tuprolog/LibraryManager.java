@@ -4,18 +4,15 @@
  */
 package alice.tuprolog;
 
-import ikvm.runtime.AssemblyClassLoader;
-
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.*;
-
-import cli.System.IO.FileNotFoundException;
 import cli.System.Reflection.Assembly;
 
 import alice.tuprolog.event.LibraryEvent;
 import alice.tuprolog.event.WarningEvent;
+import alice.util.AssemblyCustomClassLoader;
 
 
 /**
@@ -115,25 +112,18 @@ class LibraryManager {
 			{
 				Assembly asm = null;
 				boolean classFound = false;
-				String asseblyName = className.substring(
-        				className.indexOf(",") + 1, 
-        				className.length()).trim();
 				className = "cli." + className.substring(0, className.indexOf(",")).trim();
-							
 				for(int i = 0; i < paths.length; i++)
 				{
 					try {
-						
-						asm = Assembly.LoadFrom(paths[i]);
-						loader = AssemblyClassLoader.getAssemblyClassLoader(asm);
-						
-		        		if(!asseblyName.equals(asm.GetName().get_Name()))
-		        			throw new InvalidLibraryException(className,-1,-1);
-		        		
+						asm = Assembly.LoadFrom(paths[i]); 
+						loader = new AssemblyCustomClassLoader(asm, urls);
 						lib = (Library) Class.forName(className, true, loader).newInstance();
-						classFound = true;
 						if(lib != null)
+						{
+							classFound = true;
 							break;
+						}							
 					} catch (Exception e) {
 						e.printStackTrace();
 						continue;
@@ -142,7 +132,6 @@ class LibraryManager {
 				if(!classFound)
 					throw new InvalidLibraryException(className, -1, -1);
 			}
-			System.out.println(lib.getName());
 			String name = lib.getName();
 			Library alib = getLibrary(name);
 			if (alib != null) {
