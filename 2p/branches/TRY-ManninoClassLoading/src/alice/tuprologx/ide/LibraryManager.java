@@ -18,7 +18,7 @@
 package alice.tuprologx.ide;
 
 import alice.tuprolog.*;
-import ikvm.runtime.AssemblyClassLoader;
+import alice.util.AssemblyCustomClassLoader;
 
 import java.io.File;
 import java.net.URL;
@@ -125,64 +125,57 @@ public final class LibraryManager
         }
     }
 
-    /**
-     * Add a library to the manager.
-     *
-     * @param libraryClassname The name of the .class of the library to be added.
-     * @param path The path where is contained the library.
-     * @throws ClassNotFoundException if the library class cannot be found.
-     * @throws InvalidLibraryException if the library is not a valid tuProlog library.
-     */
-    public void addLibrary(String libraryClassname, File file) throws ClassNotFoundException, InvalidLibraryException {
-        if (libraryClassname.equals(""))
-            throw new ClassNotFoundException();
-        /** 
-         * check for classpath without uppercase at the first char of the last word
-         */
-        Library lib = null;
-        try
-        {
-        	String path = file.getPath();
-        	
-        	if(path.contains(".class"))
-        		file = new File(file.getPath().substring(0, file.getPath().lastIndexOf(File.separator) + 1));
-        	
-        	URL url = file.toURI().toURL();
-        	
-        	ClassLoader loader = null;
-        	
-        	// .NET
-        	if(System.getProperty("java.vm.name").equals("IKVM.NET"))
-        	{
-        		Assembly asm = Assembly.LoadFrom(file.getPath());
-        		String asseblyName = libraryClassname.substring(
-        					libraryClassname.indexOf(",") + 1, 
-        					libraryClassname.length()).trim();
-        		
-        		if(!asseblyName.equals(asm.GetName().get_Name()))
-        			throw new InvalidLibraryException(libraryClassname,-1,-1);
-        		
-        		loader = AssemblyClassLoader.getAssemblyClassLoader(asm);
-        		libraryClassname = "cli." + libraryClassname.substring(0, 
-        				libraryClassname.indexOf(",")).trim();
-        	}
-        	// JVM
-        	else
-        	{
-        		loader = URLClassLoader.newInstance(
-    				    new URL[]{ url } ,
-    				    getClass().getClassLoader()
-    				);
-        	}	
-        
-			lib = (Library) Class.forName(libraryClassname, true, loader).newInstance();
-			libraries.add(lib.getName());
-        }
-        catch(Exception ex)
-        {
-        	throw new InvalidLibraryException(libraryClassname,-1,-1);
-        }
-    }
+        /**
+	     * Add a library to the manager.
+	     *
+	     * @param libraryClassname The name of the .class of the library to be added.
+	     * @param path The path where is contained the library.
+	     * @throws ClassNotFoundException if the library class cannot be found.
+	     * @throws InvalidLibraryException if the library is not a valid tuProlog library.
+	     */
+	    public void addLibrary(String libraryClassname, File file) throws ClassNotFoundException, InvalidLibraryException {
+	        if (libraryClassname.equals(""))
+	            throw new ClassNotFoundException();
+	        /** 
+	         * check for classpath without uppercase at the first char of the last word
+	         */
+	        Library lib = null;
+	        try
+	        {
+	        	String path = file.getPath();
+	        	
+	        	if(path.contains(".class"))
+	        		file = new File(file.getPath().substring(0, file.getPath().lastIndexOf(File.separator) + 1));
+	        	
+	        	URL url = file.toURI().toURL();
+	        	ClassLoader loader = null;
+	        	
+	        	// .NET
+	        	if(System.getProperty("java.vm.name").equals("IKVM.NET"))
+	        	{
+	        		Assembly asm = Assembly.LoadFrom(file.getPath());
+	        		loader = new AssemblyCustomClassLoader(asm, new URL[]{url});
+	        		libraryClassname = "cli." + libraryClassname.substring(0, 
+	        				libraryClassname.indexOf(",")).trim();
+	        	}
+	        	// JVM
+	        	else
+	        	{
+	        		loader = URLClassLoader.newInstance(
+	        				new URL[]{ url } ,
+	        				getClass().getClassLoader());
+	        	}	
+	        
+				lib = (Library) Class.forName(libraryClassname, true, loader).newInstance();
+				System.out.println("library loaded: " + lib.getName());
+				libraries.add(lib.getName());
+		
+	        }
+	        catch(Exception ex)
+	        {
+	        	throw new InvalidLibraryException(libraryClassname,-1,-1);
+	        }
+	    }
     
     /**
      * Remove a library to the manager.
