@@ -130,8 +130,6 @@ class LibraryManager {
 						asm = Assembly.LoadFrom(temp[i]);
 						loader = AssemblyClassLoader.getAssemblyClassLoader(asm);
 						
-						if(asm == null)
-							System.out.println("asm null!!");
 		        		if(!asseblyName.equals(asm.GetName().get_Name()))
 		        			throw new InvalidLibraryException(className,-1,-1);
 		        		
