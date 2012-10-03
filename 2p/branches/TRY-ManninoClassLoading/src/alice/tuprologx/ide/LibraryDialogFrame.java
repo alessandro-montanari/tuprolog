@@ -354,13 +354,6 @@ public class LibraryDialogFrame extends GenericFrame implements LibraryListener
             }
             else
             {
-            	String path = file.getPath();
-            	// finisce con ".class" o ".dll" o ".exe"
-            	if(!path.contains(".jar"))
-            	{
-//            		libraryClassname = file.getName().substring(0, file.getName().indexOf("."));
-            		file = new File(file.getPath().substring(0, file.getPath().lastIndexOf(File.separator) + 1));
-            	}
             	libraryManager.addLibrary(libraryClassname, file);
                 libraryManager.loadLibrary(libraryClassname, file);
                 librariesDisplayPanel.removeAll();
