@@ -119,15 +119,12 @@ class LibraryManager {
         				className.indexOf(",") + 1, 
         				className.length()).trim();
 				className = "cli." + className.substring(0, className.indexOf(",")).trim();
-				String temp[] = new String[2];
-				temp[0] = "asd";
-				temp[1] = paths[0];
-				
-				for(int i = 0; i < temp.length; i++)
+							
+				for(int i = 0; i < paths.length; i++)
 				{
 					try {
 						
-						asm = Assembly.LoadFrom(temp[i]);
+						asm = Assembly.LoadFrom(paths[i]);
 						loader = AssemblyClassLoader.getAssemblyClassLoader(asm);
 						
 		        		if(!asseblyName.equals(asm.GetName().get_Name()))
