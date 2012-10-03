@@ -21,7 +21,6 @@ import alice.tuprolog.*;
 import ikvm.runtime.AssemblyClassLoader;
 
 import java.io.File;
-import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -156,6 +155,13 @@ public final class LibraryManager
         	if(System.getProperty("java.vm.name").equals("IKVM.NET"))
         	{
         		Assembly asm = Assembly.LoadFrom(file.getPath());
+        		String asseblyName = libraryClassname.substring(
+        					libraryClassname.indexOf(",") + 1, 
+        					libraryClassname.length()).trim();
+        		
+        		if(!asseblyName.equals(asm.GetName().get_Name()))
+        			throw new InvalidLibraryException(libraryClassname,-1,-1);
+        		
         		loader = AssemblyClassLoader.getAssemblyClassLoader(asm);
         		libraryClassname = "cli." + libraryClassname.substring(0, 
         				libraryClassname.indexOf(",")).trim();
