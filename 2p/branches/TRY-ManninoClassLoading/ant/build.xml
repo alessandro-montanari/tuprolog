@@ -473,7 +473,7 @@
 	        
 	        <echo>Building 2p...</echo>
 	 		<exec executable="${ikvmc}">
-	 			<arg value="-reference:mscorlib.dll" />
+	 			<arg value="-reference:mscorlib.dll" /><!-- added -->
 	 			<arg value="-reference:${ikvm.dir}/bin/IKVM.Reflection.dll" /> <!-- added -->
 	 			<arg value="-reference:${ikvm.dir}/bin/IKVM.Runtime.dll" />
 	 			<arg value="-reference:${ikvm.dir}/bin/IKVM.Reflection.dll" />
@@ -496,6 +496,7 @@
 	 		<echo>Building tuprolog...</echo>
 	 		<exec executable="${ikvmc}">
 	 			  	<arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Core.dll" />
+	 				<arg value="-reference:mscorlib.dll" />
 	 				<arg value="-classloader:ikvm.runtime.ClassPathAssemblyClassLoader"/>
  		            <arg value="-target:library" />
  		            <arg value="-compressresources" />
