@@ -4,10 +4,15 @@
  */
 package alice.tuprolog;
 
+import ikvm.runtime.AssemblyClassLoader;
+
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.*;
+
+import cli.System.IO.FileNotFoundException;
+import cli.System.Reflection.Assembly;
 
 import alice.tuprolog.event.LibraryEvent;
 import alice.tuprolog.event.WarningEvent;
@@ -87,19 +92,62 @@ class LibraryManager {
 	public synchronized Library loadLibrary(String className, String[] paths) throws InvalidLibraryException {
 		Library lib = null;
 		URL[] urls = null;
+		ClassLoader loader = null;
 		try {
 			urls = new URL[paths.length];
 			
 			for (int i = 0; i < paths.length; i++) 
 			{
-				File directory = new File(paths[i]);
-				urls[i] = (directory.toURI().toURL());
+				File file = new File(paths[i]);
+				if(paths[i].contains(".class"))
+		    		file = new File(paths[i].substring(0, paths[i].lastIndexOf(File.separator) + 1));
+				urls[i] = (file.toURI().toURL());
 			}
-			ClassLoader loader = URLClassLoader.newInstance(
+			// JVM
+			if(!System.getProperty("java.vm.name").equals("IKVM.NET"))
+			{
+				loader = URLClassLoader.newInstance(
 				    urls ,
-				    getClass().getClassLoader()
-				);
-			lib = (Library) Class.forName(className, true, loader).newInstance();
+				    getClass().getClassLoader());
+				lib = (Library) Class.forName(className, true, loader).newInstance();
+			}
+			else // .NET
+			{
+				Assembly asm = null;
+				boolean classFound = false;
+				String asseblyName = className.substring(
+        				className.indexOf(",") + 1, 
+        				className.length()).trim();
+				className = "cli." + className.substring(0, className.indexOf(",")).trim();
+				String temp[] = new String[2];
+				temp[0] = "asd";
+				temp[1] = paths[0];
+				
+				for(int i = 0; i < temp.length; i++)
+				{
+					try {
+						
+						asm = Assembly.LoadFrom(temp[i]);
+						loader = AssemblyClassLoader.getAssemblyClassLoader(asm);
+						
+						if(asm == null)
+							System.out.println("asm null!!");
+		        		if(!asseblyName.equals(asm.GetName().get_Name()))
+		        			throw new InvalidLibraryException(className,-1,-1);
+		        		
+						lib = (Library) Class.forName(className, true, loader).newInstance();
+						classFound = true;
+						if(lib != null)
+							break;
+					} catch (Exception e) {
+						e.printStackTrace();
+						continue;
+					}
+				}
+				if(!classFound)
+					throw new InvalidLibraryException(className, -1, -1);
+			}
+			System.out.println(lib.getName());
 			String name = lib.getName();
 			Library alib = getLibrary(name);
 			if (alib != null) {
