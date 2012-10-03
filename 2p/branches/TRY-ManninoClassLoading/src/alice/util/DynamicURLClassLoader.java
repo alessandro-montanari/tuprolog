@@ -69,7 +69,6 @@ public class DynamicURLClassLoader extends ClassLoader{
 	 * @param className - The class name used to find the class needed.
 	 */
 
-	@SuppressWarnings("resource")
 	public Class<?> findClass(String className) throws ClassNotFoundException {  
         Class<?> result = null;  
         String classNameReplaced = className.replace(".", File.separator);
@@ -93,26 +92,11 @@ public class DynamicURLClassLoader extends ClassLoader{
         			aURL = new URL("jar:" + aURL.toString() +"!/" + classNameReplaced + ".class");
         			is = aURL.openConnection().getInputStream();
         		}
-        		// utilizzo "/" perché è il separatore nel formato URL
-        		// esempio: file:/C:/Users/
+        		
         		if(aURL.toString().indexOf("/", aURL.toString().length() - 1) != -1)
         		{
-        			if (System.getProperty("java.vm.name").equals("IKVM.NET"))
-        			{
-        				try {
-							aURL = new URL(aURL.toString() + classNameReplaced + ".dll");
-							is = aURL.openConnection().getInputStream();
-						} catch (Exception e2) {
-							aURL = new URL(aURL.toString() + classNameReplaced + ".exe");
-							is = aURL.openConnection().getInputStream();
-						}
-        				
-        			}
-        			else
-        			{
-        				aURL = new URL(aURL.toString() + classNameReplaced + ".class");
-						is = aURL.openConnection().getInputStream();
-        			}
+        			aURL = new URL(aURL.toString() + classNameReplaced + ".class");
+        			is = aURL.openConnection().getInputStream();
         		}
         		
         		classByte = getClassData(is);
