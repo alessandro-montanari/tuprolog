@@ -1,6 +1,9 @@
 package alice.tuprologx.ide;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.Document;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -36,7 +39,7 @@ public class LibraryDialogFrame extends GenericFrame implements LibraryListener
     
     private JPanel addLibraryPanel;
     
-    
+    private JButton browseButton;
     
     private IOFileOperations fileManager;
 
@@ -71,6 +74,31 @@ public class LibraryDialogFrame extends GenericFrame implements LibraryListener
 
         // Display Library Panel 
         libraryClassnameField = new JTextField();
+        Document textFieldDoc = libraryClassnameField.getDocument();
+        textFieldDoc.addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				updated(e);
+				
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				updated(e);
+				
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				updated(e);
+			}
+			private void updated(DocumentEvent e) {
+		        boolean enable = e.getDocument().getLength() > 0;
+		        browseButton.setEnabled(enable);
+		        }
+		      });
+       
         displayLibraryPanel();
         
         JButton bOpen=new JButton();
@@ -140,7 +168,8 @@ public class LibraryDialogFrame extends GenericFrame implements LibraryListener
     
     private void displayLibraryPanel()
     {
-    	JButton browseButton = new JButton("Browse");
+    	browseButton = new JButton("Browse");
+    	browseButton.setEnabled(false);
         JLabel libraryFileLabel = new JLabel("Library file:");
         JLabel libraryFullNameLabel = new JLabel("Library full name:");
         JButton add = new JButton("add");
@@ -236,6 +265,7 @@ public class LibraryDialogFrame extends GenericFrame implements LibraryListener
         librariesDisplayPanel.add(new JLabel(" "),constraints);
     }
 
+    
     /**
      * Create a label to display the name of a
      * library managed by the Library Manager.
