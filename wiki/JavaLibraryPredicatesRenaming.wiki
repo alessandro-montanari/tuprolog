@@ -1,3 +1,5 @@
+#summary Specification of the new names for the JavaLibrary predicates
+
 = Predicates renaming =
 In a future release of tuProlog, there will be naming changes in the predicates of the [http://code.google.com/p/tuprolog/source/browse/2p/trunk/src/alice/tuprolog/lib/JavaLibrary.java JavaLibrary]. 
 The purpose of these changes is to obtain a uniform access to the Object Oriented world from the Prolog side independently of the language that is being used (Java, C#, F# and VB.NET). 
@@ -19,7 +21,7 @@ The changes are listed below:
 || register || register|| ||
 || unregister || unregister|| ||
 
-= Private methods =
+= Private methods Renaming =
 These methods are used internally and are not available for the user on the prolog side.
 || *Old Name* || *New Name* || *Notes* ||
 || java_set/java_get || property_get/property_set || ||
