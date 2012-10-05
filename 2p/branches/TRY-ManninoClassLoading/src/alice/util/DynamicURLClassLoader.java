@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Hashtable;
 
+
 /**
  * Custom Dynamic URLCLassLoader used to add/remove dynamically URLs from it
  * needed by JavaLibrary.
@@ -68,52 +69,52 @@ public class DynamicURLClassLoader extends ClassLoader{
 	 * Find class method specified by className parameter.
 	 * @param className - The class name used to find the class needed.
 	 */
-
+	
 	public Class<?> findClass(String className) throws ClassNotFoundException {  
-        Class<?> result = null;  
-        String classNameReplaced = className.replace(".", File.separator);
-        
-        result = (Class<?>) classCache.get(className);  
-        if (result != null)  
-            return result;  
-        try {
+	    Class<?> result = null;  
+	    String classNameReplaced = className.replace(".", File.separator);
+	    
+	    result = (Class<?>) classCache.get(className);  
+	    if (result != null)  
+	        return result;  
+	    try {
 			return findSystemClass(className);
 		} catch (ClassNotFoundException e) {
 			
 		} 
-        for (URL aURL : listURLs) {
-        	try {
-        		InputStream is = null;
-        		byte[] classByte = null;
-        		
-        		
-        		if(aURL.toString().endsWith(".jar"))
-        		{
-        			aURL = new URL("jar:" + aURL.toString() +"!/" + classNameReplaced + ".class");
-        			is = aURL.openConnection().getInputStream();
-        		}
-        		
-        		if(aURL.toString().indexOf("/", aURL.toString().length() - 1) != -1)
-        		{
-        			aURL = new URL(aURL.toString() + classNameReplaced + ".class");
-        			is = aURL.openConnection().getInputStream();
-        		}
-        		
-        		classByte = getClassData(is);
-                try {
-                	result = defineClass(className, classByte, 0, classByte.length, null);  
-            		classCache.put(className, result);
-            		
+	    for (URL aURL : listURLs) {
+	    	try {
+	    		InputStream is = null;
+	    		byte[] classByte = null;
+	    		
+	    		
+	    		if(aURL.toString().endsWith(".jar"))
+	    		{
+	    			aURL = new URL("jar:" + aURL.toString() +"!/" + classNameReplaced + ".class");
+	    			is = aURL.openConnection().getInputStream();
+	    		}
+	    		
+	    		if(aURL.toString().indexOf("/", aURL.toString().length() - 1) != -1)
+	    		{
+	    			aURL = new URL(aURL.toString() + classNameReplaced + ".class");
+	    			is = aURL.openConnection().getInputStream();
+	    		}
+	    		
+	    		classByte = getClassData(is);
+	            try {
+	            	result = defineClass(className, classByte, 0, classByte.length, null);  
+	        		classCache.put(className, result);
+	        		
 				} catch (SecurityException e) {
 					result = super.loadClass(className);
 				}
-                return result;  
-        	} catch (Exception e) {
-
-        	}
-        }
-        throw new ClassNotFoundException(className);
-    }  
+	            return result;  
+	    	} catch (Exception e) {
+	
+	    	}
+	    }
+	    throw new ClassNotFoundException(className);
+	}  
 	
 	private byte[] getClassData(InputStream is) throws IOException
 	{

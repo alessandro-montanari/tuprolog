@@ -11,7 +11,7 @@ public class AssemblyCustomClassLoader extends java.net.URLClassLoader
     // because this class loader instance may be used during the URL construction.
     for (URL url : urls) {
     	addURL(url);
-	}
+	}    
   }
   
   public void addUrl(URL url)
