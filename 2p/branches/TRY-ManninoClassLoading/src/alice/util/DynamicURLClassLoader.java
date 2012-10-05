@@ -90,7 +90,7 @@ public class DynamicURLClassLoader extends ClassLoader{
 	    		
 	    		if(aURL.toString().endsWith(".jar"))
 	    		{
-	    			aURL = new URL("jar:" + aURL.toString() +"!/" + classNameReplaced + ".class");
+	    			aURL = new URL("jar", "", aURL + "!/" + classNameReplaced + ".class");
 	    			is = aURL.openConnection().getInputStream();
 	    		}
 	    		
@@ -110,7 +110,7 @@ public class DynamicURLClassLoader extends ClassLoader{
 				}
 	            return result;  
 	    	} catch (Exception e) {
-	
+//	    		e.printStackTrace();
 	    	}
 	    }
 	    throw new ClassNotFoundException(className);
