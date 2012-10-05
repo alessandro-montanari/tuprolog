@@ -242,7 +242,7 @@ class LibraryManager {
 			//
 			return lib;
 		} catch (InvalidTheoryException ex) {
-			System.out.println(ex.getMessage());
+//			System.out.println(ex.getMessage());
 			//System.out.println("line "+ex.line+"  "+ex.pos);
 			throw new InvalidLibraryException(lib.getName(),ex.line,ex.pos);
 		} catch (Exception ex) {
