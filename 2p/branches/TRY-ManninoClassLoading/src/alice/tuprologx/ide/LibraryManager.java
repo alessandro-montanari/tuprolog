@@ -167,7 +167,6 @@ public final class LibraryManager
 	        	}	
 	        
 				lib = (Library) Class.forName(libraryClassname, true, loader).newInstance();
-				System.out.println("library loaded: " + lib.getName());
 				libraries.add(lib.getName());
 		
 	        }
