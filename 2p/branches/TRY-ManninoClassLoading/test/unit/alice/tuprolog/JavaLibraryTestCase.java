@@ -15,7 +15,6 @@ public class JavaLibraryTestCase extends TestCase {
 	SolveInfo info = null;
 	String result = null;
 	String paths = null;
-	String checkString = null;
 	
 	public void testGetPrimitives() {
 		Library library = new JavaLibrary();
@@ -214,10 +213,10 @@ public class JavaLibraryTestCase extends TestCase {
 		info = engine.solve("demo(Value).");
 		assertEquals(true, info.isSuccess());
 		assertEquals(true, info.getTerm("Value").isList());
-		assertEquals(checkString, info.getTerm("Value").toString());
+		assertEquals("[" + paths + "]", info.getTerm("Value").toString());
 		
 		// Test if get_classpath(PathList) unify with the DynamicURLClassLoader urls
-		theory =  "demo(P) :- set_classpath([" + paths + "]), get_classpath(" + checkString + ").";
+		theory =  "demo(P) :- set_classpath([" + paths + "]), get_classpath([" + paths + "]).";
 		
 		engine.setTheory(new Theory(theory));
 		info = engine.solve("demo(S).");
@@ -302,24 +301,16 @@ public class JavaLibraryTestCase extends TestCase {
 		// Array paths contains a valid path
 		if(valid)
 		{
-			paths = "'" + file.getCanonicalPath() + "', " +
+			paths = "'" + file.getCanonicalPath() + "'," +
 					"'" + file.getCanonicalPath() 
 					+ File.separator + "test"
 					+ File.separator + "unit" 
 					+ File.separator + "TestURLClassLoader.jar'";
-			
-			File aFile = new File(file.getCanonicalPath() + File.separator + "test" 
-					+ File.separator + "unit" + File.separator
-					+ "TestURLClassLoader.jar");
-			
-			checkString = "['" + new File(new File(".").getCanonicalPath()).toURI().toURL().toString().replace("%20", " ") + "','"
-							+ java.net.URLDecoder.decode(aFile.toURI().toURL().toString(), "UTF-8") + "']";
 		}
 		// Array paths does not contain a valid path
 		else
 		{
 			paths = "'" + file.getCanonicalPath() + "'";
-			checkString = "['" + new File(file.getCanonicalPath()).toURI().toURL() + "']";
 		}
 	}
 }
