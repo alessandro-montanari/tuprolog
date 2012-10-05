@@ -183,6 +183,8 @@ public class JavaLibrary extends Library {
     // ----------------------------------------------------------------------------
 
     /**
+     * @author Michele Mannino
+     * 
      * Creates of a java object - not backtrackable case
      * 
      * @throws JavaException
@@ -258,6 +260,7 @@ public class JavaLibrary extends Library {
     }
     
     /**
+     * @author Michele Mannino
      * Creates of a java object - not backtrackable case
      * @param className The name of the class 
      * @oaram path The list of the paths where the class may be contained
@@ -571,6 +574,8 @@ public class JavaLibrary extends Library {
 	}
 
     /**
+     * @author Michele Mannino
+     * 
      * Set global classpath
      * 
      * @throws JavaException
@@ -597,6 +602,8 @@ public class JavaLibrary extends Library {
     }
     
     /**
+     * @author Michele Mannino
+     * 
      * Get global classpath
      * 
      * @throws JavaException
