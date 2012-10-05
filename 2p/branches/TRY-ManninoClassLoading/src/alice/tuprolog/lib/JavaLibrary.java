@@ -1078,8 +1078,12 @@ public class JavaLibrary extends Library {
 		{
 			if(paths[i] == null)
 				continue;
-			File directory = new File(paths[i]);
-			urls[i] = (directory.toURI().toURL());
+			if(paths[i].contains("http") || paths[i].contains("https") || paths[i].contains("ftp"))
+				urls[i] = new URL(paths[i]);
+			else{
+				File file = new File(paths[i]);
+				urls[i] = (file.toURI().toURL());
+			}
 		}
 		return urls;
     }
