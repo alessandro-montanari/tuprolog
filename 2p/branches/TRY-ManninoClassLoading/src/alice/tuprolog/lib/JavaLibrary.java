@@ -27,6 +27,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.EventListener;
 import java.util.HashMap;
@@ -583,6 +584,7 @@ public class JavaLibrary extends Library {
         	if(!paths.isList())
         		throw new IllegalArgumentException();
         	String[] listOfPaths = getStringArrayFromStruct((Struct) paths);
+        	classLoader.removeAllURLs();
         	classLoader.addURLs(getURLsFromStringArray(listOfPaths));
         	return true;
     	}catch(IllegalArgumentException e)
@@ -613,7 +615,8 @@ public class JavaLibrary extends Library {
 	        	stringURLs = "[";
 	     
 	        	for (URL url : urls) {
-	        		stringURLs = stringURLs + "'" + java.net.URLDecoder.decode(url.toString(), "UTF-8") + "',";
+	        		File file = new File(java.net.URLDecoder.decode(url.getFile(), "UTF-8"));
+	        		stringURLs = stringURLs + "'" + file.getPath() + "',";
 				}
 	        	
 	        	stringURLs = stringURLs.substring(0, stringURLs.length() - 1);
