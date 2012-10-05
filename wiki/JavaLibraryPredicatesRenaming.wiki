@@ -1,4 +1,3 @@
-
 = Predicates renaming =
 In a future release of tuProlog, there will be naming changes in the predicates of the [http://code.google.com/p/tuprolog/source/browse/2p/trunk/src/alice/tuprolog/lib/JavaLibrary.java JavaLibrary]. 
 The purpose of these changes is to obtain a uniform access to the Object Oriented world from the Prolog side independently of the language that is being used (Java, C#, F# and VB.NET). 
@@ -25,3 +24,5 @@ These methods are used internally and are not available for the user on the prol
 || *Old Name* || *New Name* || *Notes* ||
 || java_set/java_get || property_get/property_set || ||
 || java_array || create_array || ||
+
+Note: after the renaming, the old names will be kept for backward compatibility for at least one version of tuProlog.
