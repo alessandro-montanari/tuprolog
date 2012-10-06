@@ -265,6 +265,35 @@ public class LibraryDialogFrame extends GenericFrame implements LibraryListener
         }
         librariesDisplayPanel.add(new JLabel(" "),constraints);
     }
+    
+    public void updateLibraryManagerStatus()
+    {
+    	Object[] libraries = libraryManager.getEngine().getLibraryManager().getCurrentLibraries();
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.weightx = 2;
+        librariesDisplayPanel.removeAll();
+        librariesDisplayPanel.add(new JLabel(" "),constraints);
+        constraints.gridy++;
+        for (int i = 0; i < libraries.length; i++)
+        {
+            constraints.gridx++;constraints.weightx=2;
+            constraints.anchor=GridBagConstraints.WEST;
+            librariesDisplayPanel.add(createLabel(libraries[i]),constraints);
+            constraints.gridx++;constraints.gridx++;
+            constraints.fill = GridBagConstraints.HORIZONTAL;
+            librariesDisplayPanel.add(createComboBox(libraries[i]),constraints);
+            constraints.gridx++;
+            constraints.fill = GridBagConstraints.HORIZONTAL;
+            librariesDisplayPanel.add(createButton(libraries[i]),constraints);
+            constraints.gridx = 0;
+            constraints.gridy++;
+        }
+        librariesDisplayPanel.add(new JLabel(" "),constraints);
+        pack();
+        setSize(395, getSize().height);
+    }
 
     
     /**
@@ -381,7 +410,6 @@ public class LibraryDialogFrame extends GenericFrame implements LibraryListener
         	{
         		libName = "cli." + libraryClassname.substring(0, 
         				libraryClassname.indexOf(",")).trim();
-        		System.out.println("libName : " + libName);
         	}
             if (libraryManager.contains(libName))
             {
