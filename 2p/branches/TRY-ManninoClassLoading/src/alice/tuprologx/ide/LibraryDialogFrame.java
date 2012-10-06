@@ -15,7 +15,6 @@ import java.util.StringTokenizer;
 import alice.tuprolog.event.LibraryEvent;
 import alice.tuprolog.event.LibraryListener;
 import alice.tuprolog.InvalidLibraryException;
-import alice.tuprolog.Library;
 
 public class LibraryDialogFrame extends GenericFrame implements LibraryListener
 {
