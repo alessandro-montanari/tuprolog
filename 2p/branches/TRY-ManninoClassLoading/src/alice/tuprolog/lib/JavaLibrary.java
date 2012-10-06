@@ -28,14 +28,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.EventListener;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
-import java.util.List;
+
 import java.util.Map;
 import java.util.Vector;
 
@@ -618,9 +615,7 @@ public class JavaLibrary extends Library {
     {
     	try {
     		paths = paths.getTerm();
-    		if(!(paths instanceof Var))
-        		throw new IllegalArgumentException();
-        	URL[] urls = classLoader.getURLs();
+    		URL[] urls = classLoader.getURLs();
         	String stringURLs = null;
         	if(urls.length > 0)
         	{
