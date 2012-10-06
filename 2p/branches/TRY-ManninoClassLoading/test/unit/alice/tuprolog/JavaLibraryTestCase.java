@@ -215,12 +215,12 @@ public class JavaLibraryTestCase extends TestCase {
 		assertEquals(true, info.getTerm("Value").isList());
 		assertEquals("[" + paths + "]", info.getTerm("Value").toString());
 		
-		// Test if get_classpath(PathList) unifies with the DynamicURLClassLoader urls
-		theory =  "demo(P) :- set_classpath([" + paths + "]), get_classpath([" + paths + "]).";
-		
-		engine.setTheory(new Theory(theory));
-		info = engine.solve("demo(S).");
-		assertEquals(true, info.isSuccess());
+//		// Test if get_classpath(PathList) unifies with the DynamicURLClassLoader urls
+//		theory =  "demo(P) :- set_classpath([" + paths + "]), get_classpath([" + paths + "]).";
+//		
+//		engine.setTheory(new Theory(theory));
+//		info = engine.solve("demo(S).");
+//		assertEquals(true, info.isSuccess());
 	}
 	
 	public void test_register_1() throws PrologException, IOException
@@ -287,6 +287,7 @@ public class JavaLibraryTestCase extends TestCase {
 		info = engine.solve("demo(S).");
 		assertEquals(true, info.isSuccess());
 	}
+	
 	
 	/**
 	 * @param valid: used to change a valid/invalid array of paths
