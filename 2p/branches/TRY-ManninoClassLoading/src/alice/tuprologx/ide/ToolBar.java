@@ -390,7 +390,6 @@ public class ToolBar extends JPanel
      */
     public void openLibraryManager() {
         parent.setEnabled(false);
-        libraryDialog.updateLibraryManagerStatus();
         libraryDialog.setVisible(true);
         libraryDialog.setStatusMessage("Ready.");
     }
