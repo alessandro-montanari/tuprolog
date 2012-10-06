@@ -19,7 +19,7 @@ import alice.util.AssemblyCustomClassLoader;
  * @author Alex Benini
  *
  */
-class LibraryManager {
+public class LibraryManager {
 
 	/* dynamically loaded built-in libraries */
 	private ArrayList<Library> currentLibraries;
