@@ -614,6 +614,9 @@ public class JavaLibrary extends Library {
     {
     	try {
     		paths = paths.getTerm();
+//    		if (paths instanceof Var) {
+//				throw new JavaException(new IllegalArgumentException(paths
+//						.toString()));
         	URL[] urls = classLoader.getURLs();
         	String stringURLs = null;
         	if(urls.length > 0)
@@ -640,7 +643,7 @@ public class JavaLibrary extends Library {
         	throw new JavaException(e);
 		}
     }
-    
+	
     /**
      * set the field value of an object
      */
