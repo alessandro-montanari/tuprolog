@@ -15,6 +15,7 @@ import java.util.StringTokenizer;
 import alice.tuprolog.event.LibraryEvent;
 import alice.tuprolog.event.LibraryListener;
 import alice.tuprolog.InvalidLibraryException;
+import alice.tuprolog.Library;
 
 public class LibraryDialogFrame extends GenericFrame implements LibraryListener
 {
@@ -341,10 +342,8 @@ public class LibraryDialogFrame extends GenericFrame implements LibraryListener
         try
         {
             /** check to avod that it's possible add more times the same library */
-            if (libraryManager.contains(libraryClassname))
-            {
-                setStatusMessage(libraryClassname + ": Library already loaded");
-            }
+        	if(libraryManager.contains(libraryClassname))
+        			setStatusMessage(libraryClassname + ": Library already loaded");
             else
             {
                 libraryManager.addLibrary(libraryClassname);
@@ -377,7 +376,14 @@ public class LibraryDialogFrame extends GenericFrame implements LibraryListener
         try
         {
             /** check to avod that it's possible add more times the same library */
-            if (libraryManager.contains(libraryClassname))
+        	String libName = libraryClassname;
+        	if(System.getProperty("java.vm.name").equals("IKVM.NET"))
+        	{
+        		libName = "cli." + libraryClassname.substring(0, 
+        				libraryClassname.indexOf(",")).trim();
+        		System.out.println("libName : " + libName);
+        	}
+            if (libraryManager.contains(libName))
             {
                 setStatusMessage(libraryClassname + ": Library already loaded");
             }
