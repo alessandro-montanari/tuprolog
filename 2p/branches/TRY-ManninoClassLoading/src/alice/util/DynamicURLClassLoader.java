@@ -30,6 +30,7 @@ public class DynamicURLClassLoader extends ClassLoader{
 	public DynamicURLClassLoader()
 	{
 		super(DynamicURLClassLoader.class.getClassLoader());
+		listURLs = new ArrayList<URL>();
 	}
 	
     /**
@@ -137,6 +138,8 @@ public class DynamicURLClassLoader extends ClassLoader{
 
 	public void addURLs(URL[] urls) throws MalformedURLException
 	{
+		if(urls == null)
+			throw new IllegalArgumentException("Array URLs must not be null.");
 		for (URL url : urls) {
 			if(!listURLs.contains(url))
 				listURLs.add(url);

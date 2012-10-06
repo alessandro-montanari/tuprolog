@@ -215,7 +215,7 @@ public class JavaLibraryTestCase extends TestCase {
 		assertEquals(true, info.getTerm("Value").isList());
 		assertEquals("[" + paths + "]", info.getTerm("Value").toString());
 		
-		// Test if get_classpath(PathList) unify with the DynamicURLClassLoader urls
+		// Test if get_classpath(PathList) unifies with the DynamicURLClassLoader urls
 		theory =  "demo(P) :- set_classpath([" + paths + "]), get_classpath([" + paths + "]).";
 		
 		engine.setTheory(new Theory(theory));
@@ -275,8 +275,6 @@ public class JavaLibraryTestCase extends TestCase {
 		assertNull(obj);
 	}
 	
-
-
 	public void test_java_catch() throws PrologException, IOException
 	{
 		setPath(true);
@@ -288,7 +286,6 @@ public class JavaLibraryTestCase extends TestCase {
 		engine.setTheory(new Theory(theory));
 		info = engine.solve("demo(S).");
 		assertEquals(true, info.isSuccess());
-				
 	}
 	
 	/**

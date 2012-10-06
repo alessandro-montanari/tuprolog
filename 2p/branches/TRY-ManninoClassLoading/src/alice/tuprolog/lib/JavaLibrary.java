@@ -689,7 +689,8 @@ public class JavaLibrary extends Library {
                                                         .getArg(0).toString()));
                         return false;
                     } finally{
-                    	classLoader.removeURLs(getURLsFromStringArray(listOfPaths));
+                    	if(((Struct) objId).getArity() == 2)
+                    		classLoader.removeURLs(getURLsFromStringArray(listOfPaths));
                     }
             	}
             }
@@ -789,7 +790,8 @@ public class JavaLibrary extends Library {
                                                         .getArg(0).toString()));
                         return false;
                     } finally{
-                    	classLoader.removeURLs(getURLsFromStringArray(listOfPaths));
+                    	if(((Struct) objId).getArity() == 2)
+                    		classLoader.removeURLs(getURLsFromStringArray(listOfPaths));
                     }
             	}
             }
@@ -1047,9 +1049,10 @@ public class JavaLibrary extends Library {
         try {
             Object array = null;
             String obtype = type.substring(0, type.length() - 2);
-            if (obtype.equals("boolean")) {
+          
+            if (obtype.equals("boolean")) { 
                 array = new boolean[nargs];
-            } else if (obtype.equals("byte")) {
+            } else if (obtype.equals("byte")) { 
                 array = new byte[nargs];
             } else if (obtype.equals("char")) {
                 array = new char[nargs];
@@ -1081,19 +1084,23 @@ public class JavaLibrary extends Library {
      */
     private URL[] getURLsFromStringArray(String[] paths) throws MalformedURLException  
     {
-    	URL[] urls = new URL[paths.length];
-		
-		for (int i = 0; i < paths.length; i++) 
-		{
-			if(paths[i] == null)
-				continue;
-			if(paths[i].contains("http") || paths[i].contains("https") || paths[i].contains("ftp"))
-				urls[i] = new URL(paths[i]);
-			else{
-				File file = new File(paths[i]);
-				urls[i] = (file.toURI().toURL());
+    	URL[] urls = null;
+    	if(paths != null)
+    	{
+	    	urls = new URL[paths.length];
+			
+			for (int i = 0; i < paths.length; i++) 
+			{
+				if(paths[i] == null)
+					continue;
+				if(paths[i].contains("http") || paths[i].contains("https") || paths[i].contains("ftp"))
+					urls[i] = new URL(paths[i]);
+				else{
+					File file = new File(paths[i]);
+					urls[i] = (file.toURI().toURL());
+				}
 			}
-		}
+    	}
 		return urls;
     }
     
