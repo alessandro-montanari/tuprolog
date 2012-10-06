@@ -636,10 +636,6 @@ public class JavaLibrary extends Library {
         	}
         	else
         		stringURLs = "[]";
-        	if(paths.isList())
-        	{
-//        		orderPathList(pathList)
-        	}
         	return unify(paths, Term.createTerm(stringURLs));
     	}catch(IllegalArgumentException e)
         {
