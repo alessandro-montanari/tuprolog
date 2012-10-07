@@ -288,6 +288,25 @@ public class JavaLibraryTestCase extends TestCase {
 		assertEquals(true, info.isSuccess());
 	}
 	
+	public void test_interface() throws PrologException, IOException
+	{
+		
+		theory = "goal1 :- set_classpath(['C:\\Users\\TestInterfaces.jar'])," +
+				"java_object('Pippo', [], Obj), class('Pluto') <- method(Obj).";
+				
+		engine.setTheory(new Theory(theory));
+		info = engine.solve("goal1.");
+		assertEquals(true, info.isSuccess());
+		
+		theory = "goal2 :- set_classpath(['C:\\Users\\TestInterfaces.jar'])," +
+				"java_object('Pippo', [], Obj), class('Pluto') <- method2(Obj).";
+				
+		engine.setTheory(new Theory(theory));
+		info = engine.solve("goal2.");
+		assertEquals(true, info.isSuccess());
+	}
+	
+	
 	
 	/**
 	 * @param valid: used to change a valid/invalid array of paths
