@@ -290,15 +290,15 @@ public class JavaLibraryTestCase extends TestCase {
 	
 	public void test_interface() throws PrologException, IOException
 	{
-		
-		theory = "goal1 :- set_classpath(['C:\\Users\\TestInterfaces.jar'])," +
+		setPath(true);
+		theory = "goal1 :- set_classpath([" + paths + "])," +
 				"java_object('Pippo', [], Obj), class('Pluto') <- method(Obj).";
 				
 		engine.setTheory(new Theory(theory));
 		info = engine.solve("goal1.");
 		assertEquals(true, info.isSuccess());
 		
-		theory = "goal2 :- set_classpath(['C:\\Users\\TestInterfaces.jar'])," +
+		theory = "goal2 :- set_classpath([" + paths + "])," +
 				"java_object('Pippo', [], Obj), class('Pluto') <- method2(Obj).";
 				
 		engine.setTheory(new Theory(theory));
@@ -323,6 +323,10 @@ public class JavaLibraryTestCase extends TestCase {
 					+ File.separator + "test"
 					+ File.separator + "unit" 
 					+ File.separator + "TestURLClassLoader.jar'";
+			paths += "," +	"'" + file.getCanonicalPath() 
+					+ File.separator + "test"
+					+ File.separator + "unit" 
+					+ File.separator + "TestInterfaces.jar'";
 		}
 		// Array paths does not contain a valid path
 		else
