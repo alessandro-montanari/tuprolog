@@ -53,17 +53,17 @@ public class InspectionUtils
             return( Boolean.class );
         if(Character.TYPE.equals(primitive))
             return(Character.class);
-        if( Byte.TYPE.equals(primitive))
+        if(Byte.TYPE.equals(primitive))
             return( Byte.class);
-        if( Short.TYPE.equals(primitive) )
+        if(Short.TYPE.equals(primitive))
             return( Short.class);
-        if( Integer.TYPE.equals(primitive))
+        if(Integer.TYPE.equals(primitive))
             return(Integer.class);
-        if( Long.TYPE.equals(primitive))
+        if(Long.TYPE.equals(primitive))
             return(Long.class);
-        if( Float.TYPE.equals(primitive))
+        if(Float.TYPE.equals(primitive))
             return(Float.class);
-        if( Double.TYPE.equals(primitive))
+        if(Double.TYPE.equals(primitive))
             return(Double.class);
 
         throw new RuntimeException("Error translating type:" + primitive);
