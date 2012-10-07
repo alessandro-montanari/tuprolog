@@ -488,8 +488,11 @@ public class JavaLibrary extends Library {
 							String clName = alice.util.Tools
 									.removeApices(id.getArg(0).toString());
 							Class<?> cl = Class.forName(clName, true, classLoader);
-
-							Method m = cl.getMethod(methodName, args.getTypes());
+							
+							
+//							Method m = cl.getMethod(methodName, args.getTypes());
+							
+							Method m = searchForMethod(cl, methodName, args.getTypes());
 							m.setAccessible(true);
 							res = m.invoke(null, args.getValues());
 						} catch (ClassNotFoundException ex) {
@@ -573,7 +576,35 @@ public class JavaLibrary extends Library {
 			throw new JavaException(ex);
 		}
 	}
+	
+	
+	/**
+	 * @author Michele Mannino
+	 * 
+	 * @param type: class to be inspected
+	 * @param methodName: name of method
+	 * @param parms: array of params
+	 */
+	private Method searchForMethod(Class<?> type, String methodName, Class<?>[] parms) {
+	    Method[] methods = type.getMethods();
+	    for(int i = 0; i < methods.length; i++) {
+	        // Has to be named the same of course.
+	        if( !methods[i].getName().equals(methodName))
+	            continue;
 
+	        Class<?>[] types = methods[i].getParameterTypes();
+
+	        // Does it have the same number of arguments that we're looking for.
+	        if( types.length != parms.length )
+	            continue;
+
+	        // Check for type compatibility
+	        if(alice.util.InspectionUtils.areTypesCompatible(types, parms))
+	            return methods[i];
+	        }
+	    return null;
+	}
+	
     /**
      * @author Michele Mannino
      * 
