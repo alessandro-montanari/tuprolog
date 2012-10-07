@@ -515,7 +515,8 @@ public class JavaLibrary extends Library {
 						try {
 							Class<?> cl = Class.forName(clName, true, classLoader);
 
-							Method m = cl.getMethod(methodName, args.getTypes());
+//							Method m = cl.getMethod(methodName, args.getTypes());
+							Method m = searchForMethod(cl, methodName, args.getTypes());
 							m.setAccessible(true);
 							res = m.invoke(null, args.getValues());
 						} catch (ClassNotFoundException ex) {
