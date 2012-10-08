@@ -93,7 +93,7 @@ public class DynamicURLClassLoaderTestCase {
 		assertEquals(1, loader.getLoadedClasses().length);
 	}
 	
-	@Test 
+	@Test(expected = ClassNotFoundException.class)
 	public void TestNestedPackage() throws ClassNotFoundException, IOException
 	{
 		DynamicURLClassLoader loader = null;
@@ -110,7 +110,6 @@ public class DynamicURLClassLoaderTestCase {
 		assertNotNull(cl);
 		loader.removeAllURLs();
 		cl = loader.loadClass("Counter");
-		assertNotNull(cl);
 	}
 	
 	private void setPath(boolean valid) throws IOException

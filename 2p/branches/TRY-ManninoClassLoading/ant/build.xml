@@ -348,7 +348,9 @@
 			<fileset dir="${build.unit.reports.dir}" includes="**/*"/>
 		</delete>
 		
-		<junit fork="yes" printsummary="yes" dir="${tmp.dir}">
+		<!-- We have to set the "dir" attribute in order to start the JVM from the root of the project,
+		in this way the paths used in DynamicURLClassLoaderTestCase.java and JavaLibraryTestCase.java are correct -->
+		<junit fork="yes" printsummary="yes" tempdir="${tmp.dir}" dir="">
 			<formatter type="xml" />
 			<!--<test name="${suite}" />-->
 			<test name="alice.tuprolog.TuPrologTestSuite" todir="${build.unit.reports.dir}"/>
