@@ -304,6 +304,24 @@ public class JavaLibraryTestCase extends TestCase {
 		engine.setTheory(new Theory(theory));
 		info = engine.solve("goal2.");
 		assertEquals(true, info.isSuccess());
+		
+		theory = "goal3 :- java_object('Pippo', [], Obj), class([" + paths + "], 'Pluto') <- method(Obj).";
+				
+		engine.setTheory(new Theory(theory));
+		info = engine.solve("goal3.");
+		assertEquals(true, info.isSuccess());
+		
+		theory = "goal4 :- set_classpath([" + paths + "]), " +
+					"java_object('IPippo[]', [5], Array), " +
+					"java_object('Pippo', [], Obj), " +
+					"java_array_set(Array, 0, Obj)," +
+					"java_array_get(Array, 0, Obj2)," +
+					"Obj2 <- met.";
+		
+		engine.setTheory(new Theory(theory));
+		info = engine.solve("goal4.");
+		assertEquals(true, info.isSuccess());
+		
 	}
 	
 	
