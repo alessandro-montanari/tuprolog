@@ -417,7 +417,7 @@
 	 	
 	 		<copy todir="${build.archives.net.dir}/archives">
 	 			<fileset dir="${ikvm.dir}/bin/">
-	 				<include name="ICSharpCode.SharpZipLib.dll"/> <!-- added -->
+	 				<include name="ICSharpCode.SharpZipLib.dll"/> <!-- Added by Mannino-->
 	 				<include name="IKVM.OpenJDK.XML.API.dll"/>
 	 				<include name="IKVM.OpenJDK.Security.dll"/>
 	 				<include name="IKVM.OpenJDK.Naming.dll"/>
@@ -433,7 +433,7 @@
 	 				<include name="IKVM.OpenJDK.Tools.dll"/>
 	 				<include name="IKVM.OpenJDK.SwingAWT.dll"/>
 	 				<include name="IKVM.Runtime.dll"/> 
-	 				<include name="IKVM.Reflection.dll"/> <!-- added -->
+	 				<include name="IKVM.Reflection.dll"/> <!-- Added by Mannino-->
 	 			</fileset>
 	 		</copy>
 
@@ -473,8 +473,8 @@
 	        
 	        <echo>Building 2p...</echo>
 	 		<exec executable="${ikvmc}">
-	 			<arg value="-reference:mscorlib.dll" /><!-- added -->
-	 			<arg value="-reference:${ikvm.dir}/bin/IKVM.Reflection.dll" /> <!-- added -->
+	 			<arg value="-reference:mscorlib.dll" /><!-- Added by Mannino-->
+	 			<arg value="-reference:${ikvm.dir}/bin/IKVM.Reflection.dll" /> <!-- Added by Mannino-->
 	 			<arg value="-reference:${ikvm.dir}/bin/IKVM.Runtime.dll" />
 	 			<arg value="-reference:${ikvm.dir}/bin/IKVM.Reflection.dll" />
 	 			<arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Core.dll" />
@@ -486,7 +486,7 @@
 	            <arg value="-reference:${build.archives.net.dir}/archives/javassist.dll" />
 				<!-- <arg value="-debug"/> -->
 		 		<arg value="-classloader:ikvm.runtime.ClassPathAssemblyClassLoader"/>
-	            <arg value="-target:exe" />
+	            <arg value="-target:winexe" />
 	            <arg value="-compressresources" />
 	            <arg value="-version:${engine.version}.${NETSpecific.version}" />
 	            <arg value="-out:${build.archives.net.dir}/archives/2p.exe" />
