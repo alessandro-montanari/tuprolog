@@ -322,6 +322,16 @@ public class JavaLibraryTestCase extends TestCase {
 		info = engine.solve("goal4.");
 		assertEquals(true, info.isSuccess());
 		
+		
+		
+		theory = "goal5 :- set_classpath([" + paths + "])," +
+				"java_object('Pippo', [], Obj)," +
+				"class('Pluto') <- method(Obj as 'IPippo').";
+		
+		engine.setTheory(new Theory(theory));
+		info = engine.solve("goal5.");
+		assertEquals(true, info.isSuccess());
+		
 	}
 	
 	
