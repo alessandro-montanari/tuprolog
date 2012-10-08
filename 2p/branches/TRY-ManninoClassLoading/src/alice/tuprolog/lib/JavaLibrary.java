@@ -45,6 +45,7 @@ import alice.tuprolog.Struct;
 import alice.tuprolog.Term;
 import alice.tuprolog.Var;
 import alice.util.DynamicURLClassLoader;
+import alice.util.InspectionUtils;
 
 /**
  * 
@@ -492,7 +493,7 @@ public class JavaLibrary extends Library {
 							
 //							Method m = cl.getMethod(methodName, args.getTypes());
 							
-							Method m = searchForMethod(cl, methodName, args.getTypes());
+							Method m = InspectionUtils.searchForMethod(cl, methodName, args.getTypes());
 							m.setAccessible(true);
 							res = m.invoke(null, args.getValues());
 						} catch (ClassNotFoundException ex) {
@@ -516,7 +517,7 @@ public class JavaLibrary extends Library {
 							Class<?> cl = Class.forName(clName, true, classLoader);
 
 //							Method m = cl.getMethod(methodName, args.getTypes());
-							Method m = searchForMethod(cl, methodName, args.getTypes());
+							Method m = InspectionUtils.searchForMethod(cl, methodName, args.getTypes());
 							m.setAccessible(true);
 							res = m.invoke(null, args.getValues());
 						} catch (ClassNotFoundException ex) {
@@ -576,34 +577,6 @@ public class JavaLibrary extends Library {
 			.warn("Generic error in method invocation " + methodName);
 			throw new JavaException(ex);
 		}
-	}
-	
-	
-	/**
-	 * @author Michele Mannino
-	 * 
-	 * @param type: class to be inspected
-	 * @param methodName: name of method
-	 * @param parms: array of params
-	 */
-	private Method searchForMethod(Class<?> type, String methodName, Class<?>[] parms) {
-	    Method[] methods = type.getMethods();
-	    for(int i = 0; i < methods.length; i++) {
-	        // Has to be named the same of course.
-	        if( !methods[i].getName().equals(methodName))
-	            continue;
-
-	        Class<?>[] types = methods[i].getParameterTypes();
-
-	        // Does it have the same number of arguments that we're looking for.
-	        if( types.length != parms.length )
-	            continue;
-
-	        // Check for type compatibility
-	        if(alice.util.InspectionUtils.areTypesCompatible(types, parms))
-	            return methods[i];
-	        }
-	    return null;
 	}
 	
     /**
