@@ -647,8 +647,11 @@ public class JavaLibrary extends Library {
     {
     	try {
     		paths = paths.getTerm();
+    		if(!(paths instanceof Var))
+    			throw new IllegalArgumentException();
     		URL[] urls = classLoader.getURLs();
         	String stringURLs = null;
+        	Term pathTerm = null;
         	if(urls.length > 0)
         	{
 	        	stringURLs = "[";
@@ -663,7 +666,11 @@ public class JavaLibrary extends Library {
         	}
         	else
         		stringURLs = "[]";
-        	return unify(paths, Term.createTerm(stringURLs));
+//        	pathTerm = orderPathList(Term.createTerm(stringURLs));
+        	pathTerm = Term.createTerm(stringURLs);
+//        	if(paths.isList())
+//          		paths = orderPathList(paths);
+        	return unify(paths, pathTerm);
     	}catch(IllegalArgumentException e)
         {
         	getEngine().warn("Illegal list of paths " + paths);
@@ -673,6 +680,45 @@ public class JavaLibrary extends Library {
         	throw new JavaException(e);
 		}
     }
+	
+//	private Term orderPathList(Term path)
+//	{
+//		Term result = null;
+//		if(path == null)
+//			return result;
+//		if(path.isList())
+//		{
+//			path = path.getTerm();
+//			List<String> list = new ArrayList<String>();
+//			Struct str = (Struct) path.getTerm();
+//			if(!str.isEmptyList())
+//			{
+//				for (Iterator<?> iterator = str.listIterator();iterator.hasNext();) {
+//					list.add(((Term)iterator.next()).toString());
+//				}
+//				Collections.sort(list);
+//				result = getStructFromStringList(list);
+//			}
+//			else
+//				result = path;
+//		}
+//		return result;
+//	}
+//	
+//	
+//	private Struct getStructFromStringList(List<String> paths)
+//	{
+//		Term[] array = null;
+//		if(paths == null)
+//			return null;
+//		array = new Term[paths.size()];
+//		int i = 0;
+//		for (String string : paths) {
+//			array[i++] = Term.createTerm(string);
+//		}
+//		return new Struct(array);
+//	}
+	
 	
     /**
      * set the field value of an object
