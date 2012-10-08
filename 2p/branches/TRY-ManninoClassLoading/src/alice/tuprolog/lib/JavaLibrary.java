@@ -1330,7 +1330,7 @@ public class JavaLibrary extends Library {
                     } else {
                         values[i] = obj_to_cast;
                         try {
-                            types[i] = (Class.forName(castTo_name));
+                            types[i] = Class.forName(castTo_name, true, classLoader);
                         } catch (ClassNotFoundException ex) {
                             getEngine().warn(
                                     "Java class not found: " + castTo_name);
@@ -1357,7 +1357,7 @@ public class JavaLibrary extends Library {
                         types[i] = java.lang.Boolean.TYPE;
                     } else {
                         try {
-                            types[i] = (Class.forName(castTo_name));
+                            types[i] = Class.forName(castTo_name, true, classLoader);
                         } catch (ClassNotFoundException ex) {
                             getEngine().warn(
                                     "Java class not found: " + castTo_name);
