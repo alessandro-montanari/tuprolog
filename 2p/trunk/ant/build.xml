@@ -419,7 +419,6 @@
 	 	
 	 		<copy todir="${build.archives.net.dir}/archives">
 	 			<fileset dir="${ikvm.dir}/bin/">
-	 				<include name="ICSharpCode.SharpZipLib.dll"/> <!-- Added by Mannino-->
 	 				<include name="IKVM.OpenJDK.XML.API.dll"/>
 	 				<include name="IKVM.OpenJDK.Security.dll"/>
 	 				<include name="IKVM.OpenJDK.Naming.dll"/>
@@ -475,11 +474,10 @@
 	        
 	        <echo>Building 2p...</echo>
 	 		<exec executable="${ikvmc}">
+	 			<arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Core.dll" />
 	 			<arg value="-reference:mscorlib.dll" /><!-- Added by Mannino-->
 	 			<arg value="-reference:${ikvm.dir}/bin/IKVM.Reflection.dll" /> <!-- Added by Mannino-->
 	 			<arg value="-reference:${ikvm.dir}/bin/IKVM.Runtime.dll" />
-	 			<arg value="-reference:${ikvm.dir}/bin/IKVM.Reflection.dll" />
-	 			<arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Core.dll" />
 	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Beans.dll" />
 	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Corba.dll" />
 	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Remoting.dll" />
@@ -499,6 +497,7 @@
 	 		<exec executable="${ikvmc}">
 	 			  	<arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Core.dll" />
 	 				<arg value="-reference:mscorlib.dll" />
+	 				<arg value="-reference:${ikvm.dir}/bin/IKVM.Reflection.dll" />
 	 				<arg value="-classloader:ikvm.runtime.ClassPathAssemblyClassLoader"/>
  		            <arg value="-target:library" />
  		            <arg value="-compressresources" />
