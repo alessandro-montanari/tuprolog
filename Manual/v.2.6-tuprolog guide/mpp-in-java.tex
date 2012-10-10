@@ -335,11 +335,11 @@ Throughout this Section, only the exceptions specifically related to the JavaLib
     \texttt{java\_object(`java.awt.Point'[], [100], V)}
     &
     Creates a Java object of class \textit{\texttt{ClassName}} calling the
-    constructor matching the arguments in \textit{\texttt{ArgList}}; if 
+    constructor matching the arguments in \textit{\texttt{ArgList}}; if
     \textit{\texttt{ClassName}} is followed by \texttt{[]}, an array is created.
     The class \textit{\texttt{ClassName}} must be either in the current class path or
     in the paths specified in \texttt{\textit{PathList}}.
-    On success, \textit{\texttt{ObjRef}} is bound to a term representing the 
+    On success, \textit{\texttt{ObjRef}} is bound to a term representing the
     object: if it was a variable, it is bound to a system-generated atom
     of the form \texttt{\$obj\_\textit{N}}.
     \\\\\hline\\
@@ -572,7 +572,7 @@ Throughout this Section, only the exceptions specifically related to the JavaLib
     \template{set\_class\_path(+path\_list)}
 
 \item \bti{get\_class\_path/1}\\
-    \noindent\bt{get\_class\_path(PathList)} is true if \bt{PathList} is can be unified with the list of strings representing the current class paths. Typically, \bt{PathList} is a variable: no side effect occur on the \tuprolog{} class loader configuration.
+    \noindent\bt{get\_class\_path(PathList)} is true if \bt{PathList} is an unbound variable, which is unified with the list of strings representing the current class paths. No side effects occur on the \tuprolog{} class loader configuration.
 
     \template{get\_class\_path(?path\_list)}
 
