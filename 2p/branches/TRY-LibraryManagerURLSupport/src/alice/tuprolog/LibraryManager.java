@@ -5,6 +5,7 @@
 package alice.tuprolog;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.*;
@@ -12,6 +13,7 @@ import cli.System.Reflection.Assembly;
 
 import alice.tuprolog.event.LibraryEvent;
 import alice.tuprolog.event.WarningEvent;
+import alice.tuprologx.pj.annotations.parser.MalformedExpressionException;
 import alice.util.AssemblyCustomClassLoader;
 
 
@@ -28,7 +30,7 @@ public class LibraryManager {
 	private Prolog prolog;
 	private TheoryManager theoryManager;
 	private PrimitiveManager primitiveManager;
-
+	private Hashtable<String, URL> externalLibraries = new Hashtable<String, URL>();
 
 	LibraryManager(){
 		currentLibraries = new ArrayList<Library>();
@@ -144,6 +146,7 @@ public class LibraryManager {
 		} catch (Exception ex){
 			throw new InvalidLibraryException(className, -1, -1);
 		}
+		externalLibraries.put(className, getClassResource(lib.getClass()));
 		bindLibrary(lib);
 		LibraryEvent ev = new LibraryEvent(prolog, lib.getName());
 		prolog.notifyLoadedLibrary(ev);
@@ -209,6 +212,8 @@ public class LibraryManager {
 		if (!found) {
 			throw new InvalidLibraryException();
 		}
+		if(externalLibraries.containsKey(name))
+			externalLibraries.remove(name);
 		theoryManager.removeLibraryTheory(name);
 		theoryManager.rebindPrimitives();
 		LibraryEvent ev = new LibraryEvent(prolog,name);
@@ -281,5 +286,25 @@ public class LibraryManager {
 			alib.onSolveEnd();
 		}
 	}
+	
+	public synchronized URL getExternaLibraryURL(String name)
+	{
+		return isExternalLibrary(name) ? externalLibraries.get(name) : null;
+	}
+	
+	public synchronized boolean isExternalLibrary(String name)
+	{
+		return externalLibraries.containsKey(name);
+	}
+	
+	private static URL getClassResource(Class<?> klass) 
+	{
+		if(klass == null)
+			return null;
+		return klass.getClassLoader().getResource(
+				klass.getName().replace('.', '/') + ".class");
+	}
+	
+	
 
 }
