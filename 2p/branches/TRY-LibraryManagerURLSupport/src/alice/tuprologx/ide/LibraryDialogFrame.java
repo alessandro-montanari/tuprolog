@@ -8,6 +8,8 @@ import javax.swing.text.Document;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.io.IOException;
+import java.net.JarURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
@@ -483,7 +485,23 @@ public class LibraryDialogFrame extends GenericFrame implements LibraryListener
         {
             try
             {
-                libraryManager.addLibrary(libraryName);
+            	alice.tuprolog.LibraryManager mainLibraryManager = libraryManager.getEngine().getLibraryManager();
+            	if(mainLibraryManager.isExternalLibrary(libraryName))
+            	{
+            		URL url = mainLibraryManager.getExternaLibraryURL(libraryName);
+            		if(url.getProtocol().equals("jar"))
+            		{
+	            		JarURLConnection connection =
+	            		        (JarURLConnection) url.openConnection();
+	            		    url = connection.getJarFileURL();
+            		}
+            		    
+            		libraryManager.addLibrary(libraryName, new File(url.getPath()));
+            		pack();
+                    setSize(395,getSize().height);
+            	}
+            	else
+            		libraryManager.addLibrary(libraryName);
             }
             catch (ClassNotFoundException e)
             {
@@ -492,7 +510,9 @@ public class LibraryDialogFrame extends GenericFrame implements LibraryListener
             catch (InvalidLibraryException e)
             {
                 setStatusMessage(libraryName + ": Not a Library");
-            }
+            } catch (IOException e) {
+            	e.printStackTrace();
+			}
         }
         librariesDisplayPanel.removeAll();
         displayLibraryManagerStatus();
