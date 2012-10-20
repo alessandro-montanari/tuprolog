@@ -5,7 +5,6 @@
 package alice.tuprolog;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.*;
@@ -13,7 +12,6 @@ import cli.System.Reflection.Assembly;
 
 import alice.tuprolog.event.LibraryEvent;
 import alice.tuprolog.event.WarningEvent;
-import alice.tuprologx.pj.annotations.parser.MalformedExpressionException;
 import alice.util.AssemblyCustomClassLoader;
 
 
