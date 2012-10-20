@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.JarURLConnection;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -496,7 +497,7 @@ public class LibraryDialogFrame extends GenericFrame implements LibraryListener
 	            		    url = connection.getJarFileURL();
             		}
             		    
-            		libraryManager.addLibrary(libraryName, new File(url.getPath()));
+            		libraryManager.addLibrary(libraryName, new File(URLDecoder.decode(url.getFile(), "UTF-8")));
             		pack();
                     setSize(395,getSize().height);
             	}
