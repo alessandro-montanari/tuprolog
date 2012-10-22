@@ -24,6 +24,7 @@ import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.StringTokenizer;
 import cli.System.Reflection.Assembly;
 
@@ -45,9 +46,10 @@ public final class LibraryManager
 	 * Stores classnames for managed libraries.
 	 */
     private ArrayList<String> libraries;
+    private Hashtable<String, URL> externalLibraries = new Hashtable<String, URL>();
 
     public LibraryManager() {
-            libraries = new ArrayList<String>();
+    	libraries = new ArrayList<String>();
     }
 
     /**
@@ -165,10 +167,10 @@ public final class LibraryManager
 	        				new URL[]{ url } ,
 	        				getClass().getClassLoader());
 	        	}	
-	        
+	        	
 				lib = (Library) Class.forName(libraryClassname, true, loader).newInstance();
 				libraries.add(lib.getName());
-		
+				externalLibraries.put(libraryClassname, getClassResource(lib.getClass()));
 	        }
 	        catch(Exception ex)
 	        {
@@ -253,6 +255,12 @@ public final class LibraryManager
         engine.unloadLibrary(library);
     }
     
+    public void unloadExternalLibrary(String library) throws InvalidLibraryException {
+    	if(externalLibraries.containsKey(library))
+			externalLibraries.remove(library);
+    	engine.unloadLibrary(library);
+    }
+    
     /**
      * Check if a library is contained in the manager.
      * 
@@ -262,5 +270,23 @@ public final class LibraryManager
     public boolean contains(String library) {
             return libraries.contains(library);
     }
+    
+    public synchronized URL getExternalLibraryURL(String name)
+	{
+		return isExternalLibrary(name) ? externalLibraries.get(name) : null;
+	}
+	
+	public synchronized boolean isExternalLibrary(String name)
+	{
+		return externalLibraries.containsKey(name);
+	}
+    
+    private static URL getClassResource(Class<?> klass) 
+	{
+		if(klass == null)
+			return null;
+		return klass.getClassLoader().getResource(
+				klass.getName().replace('.', '/') + ".class");
+	}
 
 } // end LibraryManager class

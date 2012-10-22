@@ -421,7 +421,9 @@ public class LibraryDialogFrame extends GenericFrame implements LibraryListener
              * without this "if" if a library is unloaded
              * an InvalidLibraryException is always catched 
              */
-            if (libraryManager.isLibraryLoaded(libraryClassname))
+        	if(libraryManager.isExternalLibrary(libraryClassname))
+        		libraryManager.unloadExternalLibrary(libraryClassname);
+        	else if (libraryManager.isLibraryLoaded(libraryClassname))
                 libraryManager.unloadLibrary(libraryClassname);
             libraryManager.removeLibrary(libraryClassname);
             setStatusMessage("Ready.");
@@ -458,9 +460,33 @@ public class LibraryDialogFrame extends GenericFrame implements LibraryListener
                 //JOptionPane.showMessageDialog(this, libraryClassname);
 
                 if (((JComboBox)librariesDisplayPanel.getComponent(3*i+2)).getSelectedItem().equals("Loaded"))
-                    libraryManager.loadLibrary(libraryClassname);
+                {
+                	if(libraryManager.isExternalLibrary(libraryClassname))
+                	{
+                		try {
+                			URL url = libraryManager.getExternalLibraryURL(libraryClassname);
+                    		if(url.getProtocol().equals("jar"))
+                    		{
+        	            		JarURLConnection connection =
+        	            		        (JarURLConnection) url.openConnection();
+        	            		    url = connection.getJarFileURL();
+                    		}
+                    		    
+                    		libraryManager.loadLibrary(libraryClassname, new File(URLDecoder.decode(url.getFile(), "UTF-8")));
+                		}
+                		catch (InvalidLibraryException e){
+                        	setStatusMessage(libraryClassname + ": Not a Library");
+                        }
+                		catch (Exception e) {
+                			setStatusMessage(libraryClassname + ": Class Not Found");
+						}
+                	}
+                	else
+                		libraryManager.loadLibrary(libraryClassname);
+                }
                 else
-                    libraryManager.unloadLibrary(libraryClassname);
+                	libraryManager.unloadLibrary(libraryClassname);
+                
             }
             catch (InvalidLibraryException e)
             {
@@ -489,7 +515,7 @@ public class LibraryDialogFrame extends GenericFrame implements LibraryListener
             	alice.tuprolog.LibraryManager mainLibraryManager = libraryManager.getEngine().getLibraryManager();
             	if(mainLibraryManager.isExternalLibrary(libraryName))
             	{
-            		URL url = mainLibraryManager.getExternaLibraryURL(libraryName);
+            		URL url = mainLibraryManager.getExternalLibraryURL(libraryName);
             		if(url.getProtocol().equals("jar"))
             		{
 	            		JarURLConnection connection =
