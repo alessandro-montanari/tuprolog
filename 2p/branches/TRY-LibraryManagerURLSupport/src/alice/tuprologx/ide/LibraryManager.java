@@ -258,7 +258,8 @@ public final class LibraryManager
     public void unloadExternalLibrary(String library) throws InvalidLibraryException {
     	if(externalLibraries.containsKey(library))
 			externalLibraries.remove(library);
-    	engine.unloadLibrary(library);
+    	if(engine.getLibrary(library) != null)
+    		engine.unloadLibrary(library);
     }
     
     /**
