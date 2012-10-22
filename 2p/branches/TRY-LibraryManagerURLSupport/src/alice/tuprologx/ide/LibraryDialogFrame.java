@@ -423,7 +423,7 @@ public class LibraryDialogFrame extends GenericFrame implements LibraryListener
              */
         	if(libraryManager.isExternalLibrary(libraryClassname))
         		libraryManager.unloadExternalLibrary(libraryClassname);
-        	else if (libraryManager.isLibraryLoaded(libraryClassname))
+        	if (libraryManager.isLibraryLoaded(libraryClassname))
                 libraryManager.unloadLibrary(libraryClassname);
             libraryManager.removeLibrary(libraryClassname);
             setStatusMessage("Ready.");
