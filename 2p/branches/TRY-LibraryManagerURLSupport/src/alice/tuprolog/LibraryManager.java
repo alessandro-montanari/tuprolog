@@ -285,7 +285,7 @@ public class LibraryManager {
 		}
 	}
 	
-	public synchronized URL getExternaLibraryURL(String name)
+	public synchronized URL getExternalLibraryURL(String name)
 	{
 		return isExternalLibrary(name) ? externalLibraries.get(name) : null;
 	}
