@@ -157,6 +157,8 @@ To overcome this issue, four alternatives can be followed:
 
 So, a Java application that exploited \texttt{Class.forName} for dynamic class loading, that could originally load only classes in the application JAR unless properly launched (see Section \ref{ssec:library-loading-issues}), will be able to load .NET\footnote{The reason why this feature is limited to .NET classes is, trivially, that only .NET classes possess the \texttt{AssemblyQualifiedName} property and the other assembly details (version, culture, public key token).} classes beyond the application's own assembly when translated to .NET via IKVM.
 
+For the above reason, the \texttt{set\_classpath/1} and \texttt{get\_classpath/1} predicates available in \tuprolog{} for Java are \textit{not} available for .NET classes, as they refer to the class loading mechanism available in Java only, which remains ``behind the scenes'' in \tuprolog{}.NET only for Java parts translated to .NET via IKVM.
+
 %--------------------------------------
 \subsection{The other way: writing .NET applications in Java}
 \label{ssec:ikvm-writing-app-in-java}

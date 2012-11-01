@@ -177,7 +177,10 @@ For the sake of concreteness, Table \ref{tab:javalibrary-counter-example} report
 
         By writing so, the object represented by \texttt{\textit{ObjectRef}} is considered to belong to type \texttt{\textit{Type}}: the latter can be either a class name, as above, or a primitive Java type such as \texttt{int}.
 
-  \item [class loading and dynamic compilation]
+  \item [classpath specification, class loading and dynamic compilation]
+  
+        The \texttt{set\_classpath/1} and \texttt{get\_classpath/1} respectively sets/gets the given path list into a \tuprolog{} engine permanently; accordingly, after a path has been set via \texttt{set\_classpath/1}, all the JavaLibrary predicates (object creation, method calling, etc) can be used transparently, with no need of any further path specification.
+  
         The \texttt{java\_class/4} creates, compiles and loads a new Java class from a source text:
 
         \texttt{~~~~~java\_class(\textit{SourceText}, \textit{FullClassName},}\\
