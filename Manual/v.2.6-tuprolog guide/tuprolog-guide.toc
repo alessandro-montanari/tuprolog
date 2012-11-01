@@ -58,7 +58,7 @@
 \contentsline {section}{\numberline {5.4}DCGLibrary}{81}{section.5.4}
 \contentsline {subsection}{\numberline {5.4.1}Predicates}{82}{subsection.5.4.1}
 \contentsline {subsection}{\numberline {5.4.2}Operators}{83}{subsection.5.4.2}
-\contentsline {section}{\numberline {5.5}ISOIOLibrary \textit {(expected in tuProlog 2.6)}}{84}{section.5.5}
+\contentsline {section}{\numberline {5.5}ISOIOLibrary}{84}{section.5.5}
 \contentsline {subsection}{\numberline {5.5.1}Options}{86}{subsection.5.5.1}
 \contentsline {subsection}{\numberline {5.5.2}Writing terms}{89}{subsection.5.5.2}
 \contentsline {subsection}{\numberline {5.5.3}Predicates}{91}{subsection.5.5.3}
@@ -72,7 +72,7 @@
 \contentsline {section}{\numberline {7.1}Using Java from Prolog: \textit {JavaLibrary}}{106}{section.7.1}
 \contentsline {subsection}{\numberline {7.1.1}Type mapping}{107}{subsection.7.1.1}
 \contentsline {subsection}{\numberline {7.1.2}Creating and accessing objects: an overview}{108}{subsection.7.1.2}
-\contentsline {subsubsection}{\numberline {7.1.2.1}Examples}{111}{subsubsection.7.1.2.1}
+\contentsline {subsubsection}{\numberline {7.1.2.1}Examples}{112}{subsubsection.7.1.2.1}
 \contentsline {subsubsection}{\numberline {7.1.2.2}Registering object bindings}{114}{subsubsection.7.1.2.2}
 \contentsline {subsection}{\numberline {7.1.3}Predicates}{115}{subsection.7.1.3}
 \contentsline {subsubsection}{\numberline {7.1.3.1}Object creation, class compilation and method invocation}{115}{subsubsection.7.1.3.1}
@@ -119,17 +119,17 @@
 \contentsline {subsection}{\numberline {8.2.3}The other way: writing .NET applications in Java}{166}{subsection.8.2.3}
 \contentsline {section}{\numberline {8.3}\unhbox \voidb@x \hbox {{\sf {tu}}Prolog}.NET now}{168}{section.8.3}
 \contentsline {subsection}{\numberline {8.3.1}Highlights}{168}{subsection.8.3.1}
-\contentsline {section}{\numberline {8.4}Using .NET from Prolog: OOLibrary}{169}{section.8.4}
-\contentsline {subsubsection}{\numberline {8.4.0.1}Motivation}{169}{subsubsection.8.4.0.1}
+\contentsline {section}{\numberline {8.4}Using .NET from Prolog: OOLibrary}{170}{section.8.4}
+\contentsline {subsubsection}{\numberline {8.4.0.1}Motivation}{170}{subsubsection.8.4.0.1}
 \contentsline {subsubsection}{\numberline {8.4.0.2}Language Conventions}{171}{subsubsection.8.4.0.2}
 \contentsline {subsubsection}{\numberline {8.4.0.3}OOLibrary: predicates}{172}{subsubsection.8.4.0.3}
 \contentsline {subsection}{\numberline {8.4.1}Examples}{173}{subsection.8.4.1}
 \contentsline {subsection}{\numberline {8.4.2}Handling .NET Exceptions}{177}{subsection.8.4.2}
-\contentsline {section}{\numberline {8.5}Using Prolog from .NET: the API}{177}{section.8.5}
+\contentsline {section}{\numberline {8.5}Using Prolog from .NET: the API}{178}{section.8.5}
 \contentsline {section}{\numberline {8.6}Augmenting Prolog via .NET:\\developing new libraries}{178}{section.8.6}
 \contentsline {subsection}{\numberline {8.6.1}Capturing exceptions raised in .NET libraries}{182}{subsection.8.6.1}
 \contentsline {subsection}{\numberline {8.6.2}Capturing the .NET output in Prolog}{182}{subsection.8.6.2}
-\contentsline {section}{\numberline {8.7}Augmenting .NET via Prolog:\\the P@J framework revised}{182}{section.8.7}
+\contentsline {section}{\numberline {8.7}Augmenting .NET via Prolog:\\the P@J framework revised}{184}{section.8.7}
 \contentsline {section}{\numberline {8.8}Putting everything together}{184}{section.8.8}
 \contentsline {subsection}{\numberline {8.8.1}Example: Multi-language TicTacToe}{186}{subsection.8.8.1}
 \contentsline {subsection}{\numberline {8.8.2}Version 2.0}{191}{subsection.8.8.2}

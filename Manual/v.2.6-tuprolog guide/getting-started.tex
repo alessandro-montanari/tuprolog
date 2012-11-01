@@ -234,9 +234,9 @@ This dialog displays the list of the currently loaded libraries---by default,
 \classname{BasicLibrary}, \classname{IOLibrary}, \classname{ISOLibrary}, \classname{JavaLibrary}.
 %
 Other libraries can be added by providing the fully qualified name of the library class in the textfield, and pressing the \guibutton{Add} button: the added library will be displayed with an initial \textit{Unloaded} status.
-Of course, the new library must be in the current class path for \tuprolog{} to find it; alternatively, the \textit{Browse..} button can be used to locate a library class anywhere in the file system.
+The new library must be in the current class path for \tuprolog{} to find it; alternatively, the \textit{Browse..} button can be used to locate a library class anywhere in the file system (furhter information on class loading issues can be found in Section \ref{ssec:library-loading-issues}).
 %
-Quite clearly, any further class needed by a library must be in the current classpath, too, or the library will not be added to the manager/loaded into the engine.
+Quite clearly, class loading constraints also apply to any further class possibly needed by the library, too: a library will not be added to the manager/loaded into the engine if any of its required classes cannot be found.
 
 The library manager takes into account the effects of \verb|load_library/1|-\verb|/2| and \verb|unload_library/1|-\verb|/2| predicates/directives, too: so, for instance, after a goal such as \verb|load_library('TestLibrary'), test(X).|, a new entry for \verb|TestLibrary| would be displayed.
 
