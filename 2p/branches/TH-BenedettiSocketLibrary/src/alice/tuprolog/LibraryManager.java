@@ -277,6 +277,11 @@ public class LibraryManager {
 			alib.onSolveBegin(g);
 		}
 	}
+	 public synchronized void onSolveHalt(){
+	    	for(Library alib:currentLibraries){
+	            alib.onSolveHalt();
+	        }
+	    }
 
 
 	public synchronized void onSolveEnd(){
