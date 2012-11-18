@@ -26,6 +26,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
+import javax.sql.rowset.spi.SyncResolver;
+
 import alice.util.Tools;
 
 /**
@@ -66,7 +68,7 @@ public class TheoryManager implements Serializable {
 	/**
 	 * inserting of a clause at the head of the dbase
 	 */
-	public void assertA(Struct clause, boolean dyn, String libName, boolean backtrackable) {
+	public synchronized void assertA(Struct clause, boolean dyn, String libName, boolean backtrackable) {
 		ClauseInfo d = new ClauseInfo(toClause(clause), libName);
 		String key = d.getHead().getPredicateIndicator();
 		if (dyn) {
@@ -82,7 +84,7 @@ public class TheoryManager implements Serializable {
 	/**
 	 * inserting of a clause at the end of the dbase
 	 */
-	public void assertZ(Struct clause, boolean dyn, String libName, boolean backtrackable) {
+	public synchronized void assertZ(Struct clause, boolean dyn, String libName, boolean backtrackable) {
 		ClauseInfo d = new ClauseInfo(toClause(clause), libName);
 		String key = d.getHead().getPredicateIndicator();
 		if (dyn) {
@@ -98,7 +100,7 @@ public class TheoryManager implements Serializable {
 	/**
 	 * removing from dbase the first clause with head unifying with clause
 	 */
-	public ClauseInfo retract(Struct cl) {
+	public synchronized ClauseInfo retract(Struct cl) {
 		Struct clause = toClause(cl);
 		Struct struct = ((Struct) clause.getArg(0));
 		FamilyClausesList family = dynamicDBase.get(struct.getPredicateIndicator());
@@ -120,7 +122,7 @@ public class TheoryManager implements Serializable {
 	 * removing from dbase all the clauses corresponding to the
 	 * predicate indicator passed as a parameter
 	 */
-	public boolean abolish(Struct pi) {
+	public synchronized boolean abolish(Struct pi) {
 		String key = Tools.removeApices(pi.toString());
 		List<ClauseInfo> abolished = dynamicDBase.abolish(key); /* Reviewed by Paolo Contessi: LinkedList -> List */
 		if (abolished != null)
@@ -135,7 +137,7 @@ public class TheoryManager implements Serializable {
 	 * Reviewed by Paolo Contessi: modified according to new ClauseDatabase
 	 * implementation
 	 */
-	public List<ClauseInfo> find(Term headt) {
+	public synchronized List<ClauseInfo> find(Term headt) {
 		if (headt instanceof Struct) {
 			//String key = ((Struct) headt).getPredicateIndicator();
 			List<ClauseInfo> list = dynamicDBase.getPredicates(headt);
@@ -164,7 +166,7 @@ public class TheoryManager implements Serializable {
 	 * @param dynamicTheory if it is true, then the clauses are marked as dynamic
 	 * @param libName       if it not null, then the clauses are marked to belong to the specified library
 	 */
-	public void consult(Theory theory, boolean dynamicTheory, String libName) throws InvalidTheoryException {
+	public synchronized void consult(Theory theory, boolean dynamicTheory, String libName) throws InvalidTheoryException {
 		startGoalStack = new Stack<Term>();
 		/*Castagna 06/2011*/   	
 		int clause = 1;
@@ -195,7 +197,7 @@ public class TheoryManager implements Serializable {
 	 * Binds clauses in the database with the corresponding
 	 * primitive predicate, if any
 	 */
-	public void rebindPrimitives() {
+	public synchronized void rebindPrimitives() {
 		for (ClauseInfo d:dynamicDBase){
 			for(AbstractSubGoalTree sge:d.getBody()){
 				Term t = ((SubGoalElement)sge).getValue();
@@ -207,14 +209,14 @@ public class TheoryManager implements Serializable {
 	/**
 	 * Clears the clause dbase.
 	 */
-	public void clear() {
+	public synchronized void clear() {
 		dynamicDBase = new ClauseDatabase();
 	}
 
 	/**
 	 * remove all the clauses of lib theory
 	 */
-	public void removeLibraryTheory(String libName) {
+	public synchronized void removeLibraryTheory(String libName) {
 		for (Iterator<ClauseInfo> allClauses = staticDBase.iterator(); allClauses.hasNext();) {
 			ClauseInfo d = allClauses.next();
 			if (d.libName != null && libName.equals(d.libName))
@@ -229,7 +231,7 @@ public class TheoryManager implements Serializable {
 		}
 	}
 
-	private boolean runDirective(Struct c) {
+	private synchronized boolean runDirective(Struct c) {
 		if ("':-'".equals(c.getName()) || ":-".equals(c.getName()) && c.getArity() == 1 && c.getTerm(0) instanceof Struct) {
 			Struct dir = (Struct) c.getTerm(0);
 			try {
@@ -256,7 +258,7 @@ public class TheoryManager implements Serializable {
 		return t;
 	}
 
-	public void solveTheoryGoal() {
+	public synchronized void solveTheoryGoal() {
 		Struct s = null;
 		while (!startGoalStack.empty()) {
 			s = (s == null) ?
@@ -282,7 +284,7 @@ public class TheoryManager implements Serializable {
 	/**
 	 * saves the dbase on a output stream.
 	 */
-	boolean save(OutputStream os, boolean onlyDynamic) {
+	synchronized boolean save(OutputStream os, boolean onlyDynamic) {
 		try {
 			new DataOutputStream(os).writeBytes(getTheory(onlyDynamic));
 			return true;
@@ -296,7 +298,7 @@ public class TheoryManager implements Serializable {
 	 *
 	 * @param onlyDynamic if true, fetches only dynamic clauses
 	 */
-	public String getTheory(boolean onlyDynamic) {
+	public synchronized String getTheory(boolean onlyDynamic) {
 		StringBuffer buffer = new StringBuffer();
 		for (Iterator<ClauseInfo> dynamicClauses = dynamicDBase.iterator(); dynamicClauses.hasNext();) {
 			ClauseInfo d = dynamicClauses.next();
@@ -314,7 +316,7 @@ public class TheoryManager implements Serializable {
 	 * Gets last consulted theory
 	 * @return  last theory
 	 */
-	public Theory getLastConsultedTheory() {
+	public synchronized Theory getLastConsultedTheory() {
 		return lastConsultedTheory;
 	}
 
