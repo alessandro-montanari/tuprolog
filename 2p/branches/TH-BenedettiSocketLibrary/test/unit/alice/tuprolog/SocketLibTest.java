@@ -90,9 +90,10 @@ public class SocketLibTest {
 		
 		lib.tcp_socket_server_open_3(Address, Socket, Options);
 		
+		SolveInfo goal=engine.solve("client(X,Y,Z).");
 		
-		boolean t=lib.tcp_socket_client_open_2(Address, Socket);
-		assertTrue(t);
+		//boolean t=lib.tcp_socket_client_open_2(Address, Socket);
+		assertTrue(goal.isSuccess());
 	}
 
 
