@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: tuProlog Development Tools
 Bundle-SymbolicName: alice.tuprologx.eclipse;singleton:=true
-Bundle-Version: 2.5.0
+Bundle-Version: 2.6.0
 Bundle-Activator: alice.tuprologx.eclipse.TuProlog
 Bundle-Vendor: tuProlog Team
 Export-Package: alice.tuprolog,
