@@ -1,46 +1,13 @@
 package alice.tuprolog;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import junit.framework.Assert;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.LinkedList;
-import java.util.PriorityQueue;
-import java.util.logging.Logger;
-
-import javax.print.attribute.standard.Severity;
-
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import cli.System.IO.File;
-
-import alice.tuprolog.AbstractSocket;
-import alice.tuprolog.Client_Socket;
-import alice.tuprolog.InvalidLibraryException;
-import alice.tuprolog.InvalidTheoryException;
-import alice.tuprolog.Prolog;
-import alice.tuprolog.PrologError;
-import alice.tuprolog.Server_Socket;
-import alice.tuprolog.SolveInfo;
-import alice.tuprolog.Struct;
-import alice.tuprolog.Term;
-import alice.tuprolog.Theory;
-import alice.tuprolog.Var;
-import alice.tuprologx.pj.model.List;
-
 import alice.tuprolog.lib.SocketLib;
-import alice.tuprolog.Client_Socket;
-import alice.tuprolog.PrologError;
-import alice.tuprolog.Server_Socket;
-import alice.tuprolog.Term;
 
 
 public class SocketLibTest {
@@ -84,7 +51,6 @@ public class SocketLibTest {
 					{
 						System.out.println("Connection accepted");
 					}				
-						
 				
 				} catch (InvalidLibraryException e1) {
 					// TODO Auto-generated catch block
@@ -103,7 +69,7 @@ public class SocketLibTest {
 
 	@Test
 	public void testTcp_socket_client_open_2() throws PrologException, PrologError {
-			
+		
 		String theory="client(X,Y,Z):-tcp_socket_client_open('127.0.0.1:4444',Sock).";
 		engine2.setTheory(new Theory(theory));
 		SolveInfo goal=engine2.solve("client(X,Y,Z).");
@@ -113,38 +79,61 @@ public class SocketLibTest {
 
 	@Test
 	public void testTcp_socket_server_close_1() throws PrologError, InvalidTheoryException, MalformedGoalException {
+		Struct Address=new Struct("127.0.0.1:4441");
+		Term Socket= new Var();
+		Struct Options=new Struct("[]");
+			
+		SocketLib lib= (SocketLib) engine.getLibrary("alice.tuprolog.lib.SocketLib");
+		lib.tcp_socket_server_open_3(Address, Socket, Options);
+	
+		boolean close=lib.tcp_socket_server_close_1(Socket);
 		
-//		String theory="server(X,Y,Z):-tcp_socket_server_close(Sock).";
-//		
-//		engine.setTheory(new Theory(theory));
-//		SolveInfo goal=engine.solve("server(X,Y,Z).");
-//		assertTrue(goal.isSuccess());
+		assertTrue(close);
+		
 		
 
 	}
 
 	@Test
-	public void testWrite_to_socket_2() throws InvalidTheoryException, MalformedGoalException {
+	public void testWrite_to_socket_2() throws InvalidTheoryException, MalformedGoalException, PrologError {
 		String theory="client(X,Y,Z):-tcp_socket_client_open('127.0.0.1:4444',Sock),write_to_socket(Sock,test1).";
 		engine2.setTheory(new Theory(theory));
 		SolveInfo goal=engine2.solve("client(X,Y,Z).");
 		assertTrue(goal.isSuccess());	
+	
 	}
 
 	@Test
-	public void testRead_from_socket_3() throws InvalidTheoryException, MalformedGoalException {
-
-//		String theory="client(X,Y,Z):-tcp_socket_client_open('127.0.0.1:4444',Sock),read_from_socket(Sock,X,[]).";
-//		engine2.setTheory(new Theory(theory));
-//		SolveInfo goal=engine2.solve("client(X,Y,Z).");
-//		assertTrue(goal.isSuccess());	
+	public void testRead_from_socket_3() throws InvalidTheoryException, MalformedGoalException, PrologError, NoSolutionException, UnknownVarException {
+		
+		String theory2="client(X):-tcp_socket_client_open('127.0.0.1:4444',Sock), " +
+				"write_to_socket(Sock,test1).";
+		
+		engine2.setTheory(new Theory(theory2));
+		engine2.solve("client(X).");
+				
+		
+		String theory="server(X):-read_from_socket(Slave,X,[]).";
+		
+		engine.setTheory(new Theory(theory));
+		SolveInfo goal2=engine.solve("server(X).");
+		
+		assertTrue(goal2.isSuccess());
+		
+		
 		
 	}
 
-	@Test
-	public void testAread_from_socket_2() {
-		fail("Not yet implemented");
-	}
+//	@Test
+//	public void testAread_from_socket_2() throws InvalidTheoryException, MalformedGoalException {
+//		
+//		String theory="client(X,Y,Z):-tcp_socket_client_open('127.0.0.1:4444',Sock),aread_from_socket(Slave,[]).";
+//		engine2.setTheory(new Theory(theory));
+//		SolveInfo goal=engine2.solve("client(X,Y,Z).");
+//		assertTrue(goal.isSuccess());
+//			
+//		
+//	}
 
 
 }
