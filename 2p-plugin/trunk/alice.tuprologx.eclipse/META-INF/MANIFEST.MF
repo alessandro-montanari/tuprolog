@@ -4,7 +4,7 @@ Bundle-Name: tuProlog Development Tools
 Bundle-SymbolicName: alice.tuprologx.eclipse;singleton:=true
 Bundle-Version: 2.6.0
 Bundle-Activator: alice.tuprologx.eclipse.TuProlog
-Bundle-Vendor: tuProlog Team
+Bundle-Vendor: tuprolog team @ Alma mater Studiorum - Università di Bologna
 Export-Package: alice.tuprolog,
  alice.tuprolog.event,
  alice.tuprolog.interfaces,
