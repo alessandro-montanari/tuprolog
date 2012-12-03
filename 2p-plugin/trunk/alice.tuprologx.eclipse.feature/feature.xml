@@ -182,21 +182,6 @@ whether future versions of the GNU Lesser General Public License shall
 apply, that proxy's public statement of acceptance of any version is
 permanent authorization for you to choose that version for the
 Library.
-Hide details
-Change log
-r103 by AleMonty88@gmail.com on Nov 19, 2011   Diff
-Added the ant task "11.release.bin".
-Creates the binary release (folder and
-zip) under
-build/release
-Go to: 	
-Double click a line to add a comment
-Older revisions
-All revisions of this file
-File info
-Size: 7637 bytes, 165 lines
-View raw file
-      
    </license>
 
    <url>
