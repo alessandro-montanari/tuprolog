@@ -66,7 +66,7 @@ public class TheoryManager implements Serializable {
 	/**
 	 * inserting of a clause at the head of the dbase
 	 */
-	public void assertA(Struct clause, boolean dyn, String libName, boolean backtrackable) {
+	public synchronized void assertA(Struct clause, boolean dyn, String libName, boolean backtrackable) {
 		ClauseInfo d = new ClauseInfo(toClause(clause), libName);
 		String key = d.getHead().getPredicateIndicator();
 		if (dyn) {
@@ -82,7 +82,7 @@ public class TheoryManager implements Serializable {
 	/**
 	 * inserting of a clause at the end of the dbase
 	 */
-	public void assertZ(Struct clause, boolean dyn, String libName, boolean backtrackable) {
+	public synchronized void assertZ(Struct clause, boolean dyn, String libName, boolean backtrackable) {
 		ClauseInfo d = new ClauseInfo(toClause(clause), libName);
 		String key = d.getHead().getPredicateIndicator();
 		if (dyn) {
@@ -98,7 +98,7 @@ public class TheoryManager implements Serializable {
 	/**
 	 * removing from dbase the first clause with head unifying with clause
 	 */
-	public ClauseInfo retract(Struct cl) {
+	public synchronized ClauseInfo retract(Struct cl) {
 		Struct clause = toClause(cl);
 		Struct struct = ((Struct) clause.getArg(0));
 		FamilyClausesList family = dynamicDBase.get(struct.getPredicateIndicator());
@@ -120,7 +120,7 @@ public class TheoryManager implements Serializable {
 	 * removing from dbase all the clauses corresponding to the
 	 * predicate indicator passed as a parameter
 	 */
-	public boolean abolish(Struct pi) {
+	public synchronized boolean abolish(Struct pi) {
 		String key = Tools.removeApices(pi.toString());
 		List<ClauseInfo> abolished = dynamicDBase.abolish(key); /* Reviewed by Paolo Contessi: LinkedList -> List */
 		if (abolished != null)
@@ -135,7 +135,7 @@ public class TheoryManager implements Serializable {
 	 * Reviewed by Paolo Contessi: modified according to new ClauseDatabase
 	 * implementation
 	 */
-	public List<ClauseInfo> find(Term headt) {
+	public synchronized List<ClauseInfo> find(Term headt) {
 		if (headt instanceof Struct) {
 			//String key = ((Struct) headt).getPredicateIndicator();
 			List<ClauseInfo> list = dynamicDBase.getPredicates(headt);
@@ -195,7 +195,7 @@ public class TheoryManager implements Serializable {
 	 * Binds clauses in the database with the corresponding
 	 * primitive predicate, if any
 	 */
-	public void rebindPrimitives() {
+	public void rebindPrimitives() {	//PRIMITIVE
 		for (ClauseInfo d:dynamicDBase){
 			for(AbstractSubGoalTree sge:d.getBody()){
 				Term t = ((SubGoalElement)sge).getValue();
@@ -207,14 +207,14 @@ public class TheoryManager implements Serializable {
 	/**
 	 * Clears the clause dbase.
 	 */
-	public void clear() {
+	public synchronized void clear() {
 		dynamicDBase = new ClauseDatabase();
 	}
 
 	/**
 	 * remove all the clauses of lib theory
 	 */
-	public void removeLibraryTheory(String libName) {
+	public synchronized void removeLibraryTheory(String libName) {
 		for (Iterator<ClauseInfo> allClauses = staticDBase.iterator(); allClauses.hasNext();) {
 			ClauseInfo d = allClauses.next();
 			if (d.libName != null && libName.equals(d.libName))
@@ -229,7 +229,7 @@ public class TheoryManager implements Serializable {
 		}
 	}
 
-	private boolean runDirective(Struct c) {
+	private boolean runDirective(Struct c) {	//PRIMITIVE
 		if ("':-'".equals(c.getName()) || ":-".equals(c.getName()) && c.getArity() == 1 && c.getTerm(0) instanceof Struct) {
 			Struct dir = (Struct) c.getTerm(0);
 			try {
@@ -247,7 +247,7 @@ public class TheoryManager implements Serializable {
 	/**
 	 * Gets a clause from a generic Term
 	 */
-	private Struct toClause(Struct t) {
+	private Struct toClause(Struct t) {		//PRIMITIVE
 		// TODO bad, slow way of cloning. requires approx twice the time necessary
 		t = (Struct) Term.createTerm(t.toString(), this.engine.getOperatorManager());
 		if (!t.isClause())
@@ -275,7 +275,7 @@ public class TheoryManager implements Serializable {
 	/**
 	 * add a goal eventually defined by last parsed theory.
 	 */
-	public void addStartGoal(Struct g) {
+	public synchronized void addStartGoal(Struct g) {
 		startGoalStack.push(g);
 	}
 

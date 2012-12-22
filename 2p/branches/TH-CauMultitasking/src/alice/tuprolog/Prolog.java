@@ -74,7 +74,6 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	private ArrayList<QueryListener> queryListeners;
 
 
-
 	/**
 	 * Builds a prolog engine with default libraries loaded.
 	 *
@@ -103,6 +102,11 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 				loadLibrary("OOLibrary.OOLibrary, OOLibrary");
 			else
 				loadLibrary("alice.tuprolog.lib.JavaLibrary");
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		try {
+			loadLibrary("alice.tuprolog.ThreadLibrary");	
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -225,7 +229,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 * @throws InvalidTheoryException if the new theory is not valid
 	 * @see Theory
 	 */
-	public synchronized void setTheory(Theory th) throws InvalidTheoryException {
+	public void setTheory(Theory th) throws InvalidTheoryException {	//no syn
 		theoryManager.clear();
 		addTheory(th);
 	}
@@ -238,7 +242,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 * @throws InvalidTheoryException if the new theory is not valid
 	 * @see Theory
 	 */
-	public synchronized void addTheory(Theory th) throws InvalidTheoryException {
+	public void addTheory(Theory th) throws InvalidTheoryException {	//no syn
 		Theory oldTh = getTheory();
 		theoryManager.consult(th, true, null);
 		theoryManager.solveTheoryGoal();
@@ -252,7 +256,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 *
 	 * @return current(dynamic) theory
 	 */
-	public synchronized Theory getTheory() {
+	public Theory getTheory() {	//no syn
 		try {
 			return new Theory(theoryManager.getTheory(true));
 		} catch (Exception ex){
@@ -266,7 +270,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 *  
 	 * @return theory
 	 */
-	public synchronized Theory getLastConsultedTheory() {
+	public Theory getLastConsultedTheory() {	//no syn
 		return theoryManager.getLastConsultedTheory();
 	}
 
@@ -274,7 +278,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	/**
 	 * Clears current theory
 	 */
-	public synchronized void clearTheory() {
+	public void clearTheory() {	//no syn
 		try {
 			setTheory(new Theory());
 		} catch (InvalidTheoryException e) {
@@ -295,7 +299,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 * @return the reference to the Library just loaded
 	 * @throws InvalidLibraryException if name is not a valid library
 	 */
-	public synchronized Library loadLibrary(String className) throws InvalidLibraryException {
+	public Library loadLibrary(String className) throws InvalidLibraryException {	//no syn
 		return libraryManager.loadLibrary(className);
 	}
 	
@@ -310,7 +314,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 * @return the reference to the Library just loaded
 	 * @throws InvalidLibraryException if name is not a valid library
 	 */
-	public synchronized Library loadLibrary(String className, String[] paths) throws InvalidLibraryException {
+	public Library loadLibrary(String className, String[] paths) throws InvalidLibraryException {	//no syn
 		return libraryManager.loadLibrary(className, paths);
 	}
 
@@ -324,7 +328,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 * @param lib the (Java class) name of the library to be loaded
 	 * @throws InvalidLibraryException if name is not a valid library
 	 */
-	public synchronized void loadLibrary(Library lib) throws InvalidLibraryException {
+	public void loadLibrary(Library lib) throws InvalidLibraryException {	//no syn
 		libraryManager.loadLibrary(lib);
 	}
 
@@ -334,7 +338,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 *
 	 * @return the list of the library names
 	 */
-	public synchronized String[] getCurrentLibraries() {
+	public String[] getCurrentLibraries() {		//no syn
 		return libraryManager.getCurrentLibraries();
 	}
 
@@ -345,7 +349,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 * @param name of the library to be unloaded
 	 * @throws InvalidLibraryException if name is not a valid loaded library
 	 */
-	public synchronized void unloadLibrary(String name) throws InvalidLibraryException {
+	public void unloadLibrary(String name) throws InvalidLibraryException {		//no syn
 		libraryManager.unloadLibrary(name);
 	}
 
@@ -357,17 +361,17 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 * @return the reference to the library loaded, null if the library is
 	 *         not found
 	 */
-	public synchronized Library getLibrary(String name) {
+	public Library getLibrary(String name) {	//no syn
 		return libraryManager.getLibrary(name);
 	}
 
 
-	protected Library getLibraryPredicate(String name, int nArgs) {
+	protected Library getLibraryPredicate(String name, int nArgs) {		//no syn
 		return primitiveManager.getLibraryPredicate(name,nArgs);
 	}
 
 
-	protected Library getLibraryFunctor(String name, int nArgs) {
+	protected Library getLibraryFunctor(String name, int nArgs) {		//no syn
 		return primitiveManager.getLibraryFunctor(name,nArgs);
 	}
 
@@ -380,7 +384,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 *
 	 *  @return the list of the operators
 	 */
-	public synchronized java.util.List<Operator> getCurrentOperatorList() {
+	public java.util.List<Operator> getCurrentOperatorList() {	//no syn
 		return opManager.getOperators();
 	}
 
@@ -423,7 +427,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 			throw new MalformedGoalException();
 		}
 	}
-
+	
 	/**
 	 * Gets next solution
 	 *
@@ -451,7 +455,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	/**
 	 * Accepts current solution
 	 */
-	public synchronized void solveEnd() {
+	public void solveEnd() {	//no syn
 		engineManager.solveEnd();
 	}
 
@@ -462,8 +466,9 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 *
 	 * @return true if open alternatives are present
 	 */
-	public synchronized boolean hasOpenAlternatives() {
-		return engineManager.hasOpenAlternatives();
+	public boolean hasOpenAlternatives() {		//no syn
+		boolean b =  engineManager.hasOpenAlternatives();
+		return b;
 	}
 
 	/**
@@ -471,7 +476,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 * 
 	 * @return true if the demonstration was stopped
 	 */
-	public synchronized boolean isHalted() {
+	public boolean isHalted() {		//no syn
 		return engineManager.isHalted();
 	}
 
@@ -482,7 +487,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 * @param t1 second term to be unified
 	 * @return true if the unification was successful
 	 */
-	public synchronized boolean match(Term t0, Term t1) {
+	public boolean match(Term t0, Term t1) {	//no syn
 		return t0.match(t1);
 	}
 
@@ -493,7 +498,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 * @param t1 second term to be unified
 	 * @return true if the unification was successful
 	 */
-	public synchronized boolean unify(Term t0, Term t1) {
+	public boolean unify(Term t0, Term t1) {	//no syn
 		return t0.unify(this,t1);
 	}
 
@@ -502,7 +507,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 * 
 	 * @param term term to identify
 	 */
-	public synchronized void identifyFunctor(Term term) {
+	public void identifyFunctor(Term term) {	//no syn
 		primitiveManager.identifyFunctor(term);
 	}
 
@@ -515,7 +520,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 * @return the term parsed from the string
 	 * @throws InvalidTermException if the string does not represent a valid term
 	 */
-	public synchronized Term toTerm(String st) throws InvalidTermException {
+	public Term toTerm(String st) throws InvalidTermException {	//no syn
 		return Parser.parseSingleTerm(st, opManager);
 	}
 
@@ -526,7 +531,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 * @param term      the term to be represented as a string
 	 * @return the string representing the term
 	 */
-	public synchronized String toString(Term term) {
+	public String toString(Term term) {		//no syn
 		return (term.toStringAsArgY(opManager, OperatorManager.OP_HIGH));
 	}
 

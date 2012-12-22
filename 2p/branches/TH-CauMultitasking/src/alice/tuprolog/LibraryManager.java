@@ -73,6 +73,8 @@ public class LibraryManager {
 		LibraryEvent ev = new LibraryEvent(prolog, lib.getName());
 		prolog.notifyLoadedLibrary(ev);
 		return lib;
+		
+		
 	}   
 
 	/**
@@ -232,8 +234,13 @@ public class LibraryManager {
 			primitiveManager.createPrimitiveInfo(lib);
 			//set theory
 			String th = lib.getTheory();
+			String th1 = lib.getTheory(4);
 			if (th != null) {
 				theoryManager.consult(new Theory(th), false, name);
+				theoryManager.solveTheoryGoal();
+			}
+			if (th1 != null) {
+				theoryManager.consult(new Theory(th1), false, name);
 				theoryManager.solveTheoryGoal();
 			}
 			// in current theory there could be predicates and functors
@@ -249,6 +256,8 @@ public class LibraryManager {
 			//            ex.printStackTrace();
 			throw new InvalidLibraryException(lib.getName(),-1,-1);
 		}
+		
+		
 	}
 
 
