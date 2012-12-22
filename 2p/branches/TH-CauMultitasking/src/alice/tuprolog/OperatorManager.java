@@ -49,7 +49,7 @@ import alice.tuprolog.interfaces.IOperatorManager;
      * Creates a new operator. If the operator is already provided,
      * it replaces it with the new one
      */
-    public void opNew(String name,String type,int prio) {
+    public synchronized void opNew(String name,String type,int prio) {
         final Operator op = new Operator(name, type, prio);
         if (prio >= OP_LOW && prio <= OP_HIGH)
             operatorList.addOperator(op);

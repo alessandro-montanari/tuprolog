@@ -48,13 +48,13 @@ class FlagManager {
     /**
      * Defines a new flag
      */
-    public boolean defineFlag(String name, Struct valueList, Term defValue,
+    public synchronized boolean defineFlag(String name, Struct valueList, Term defValue,
             boolean modifiable, String libName) {
         flags.add(new Flag(name, valueList, defValue, modifiable, libName));
         return true;
     }
 
-    public boolean setFlag(String name, Term value) {
+    public synchronized boolean setFlag(String name, Term value) {
         java.util.Iterator<Flag> it = flags.iterator();
         while (it.hasNext()) {
             Flag flag = (Flag) it.next();
