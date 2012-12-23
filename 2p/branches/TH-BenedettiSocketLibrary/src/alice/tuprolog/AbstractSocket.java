@@ -11,6 +11,8 @@ public abstract class AbstractSocket extends Term{
 	
 	public abstract boolean isServerSocket();
 	
+	public abstract boolean isDatagramSocket();
+	
 	public abstract Object getSocket();
 	
 	public abstract InetAddress getAddress();

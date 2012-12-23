@@ -43,6 +43,11 @@ public class Server_Socket extends AbstractSocket{
 		if(socket.isBound())return socket.getInetAddress();
 		else return null;
 	}
+	@Override
+	public boolean isDatagramSocket() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 
 }
