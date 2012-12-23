@@ -51,7 +51,13 @@ public class SocketLibTest {
 					{
 						System.out.println("Connection accepted");
 					}				
-			
+					
+					boolean rd;
+					rd=lib.read_from_socket_3(ClientSocketSalve, Msg, Options);
+					if(rd)
+					{
+						System.out.println("I read  " + Msg);
+					}
 				
 					
 				} catch (InvalidLibraryException e1) {
