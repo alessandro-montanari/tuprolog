@@ -190,7 +190,7 @@ public boolean udp_receive(Term Socket, Term Data, Struct AddressFrom,
 				
 			}
 		}
-		if(((Struct) t).getName().equals("size")){//if a buffer size has been specified
+		if(((Struct) t).getName().equals("size")){//if a datagram size has been specified
 			int size=Integer.parseInt(((Struct) t).getArg(0).toString());
 			packet.setLength(size);
 		}
