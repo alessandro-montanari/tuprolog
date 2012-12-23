@@ -47,5 +47,11 @@ public class Client_Socket extends AbstractSocket {
 		else return null;
 	}
 
+	@Override
+	public boolean isDatagramSocket() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 
 }

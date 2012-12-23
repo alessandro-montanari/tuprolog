@@ -1,5 +1,7 @@
 package alice.tuprolog.interfaces;
 
+import java.net.SocketException;
+
 import alice.tuprolog.PrologError;
 import alice.tuprolog.Struct;
 import alice.tuprolog.Term;
@@ -18,4 +20,12 @@ public interface ISocketLib {
     public boolean write_to_socket_2(Term Socket, Term Msg) throws PrologError;
     
     public boolean aread_from_socket_2(Term Socket, Struct Options) throws PrologError;
+    
+    public boolean udp_socket_open_2(Struct Address, Term Socket) throws PrologError;
+    
+    boolean udp_send_3(Term Socket, Term Data, Struct AddressTo) throws PrologError;
+    
+    boolean udp_receive(Term Socket, Term Data, Struct AddressFrom, Struct Options) throws PrologError;
+
+    public boolean udp_socket_close_1(Term socket) throws PrologError;
 }

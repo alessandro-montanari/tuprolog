@@ -51,12 +51,8 @@ public class SocketLibTest {
 					{
 						System.out.println("Connection accepted");
 					}				
-				boolean read;
-				read=lib.read_from_socket_3(ClientSocketSalve, Msg, Options);
-				if(read)
-				{
-					System.out.println("I read: " + Msg);
-				}
+			
+				
 					
 				} catch (InvalidLibraryException e1) {
 					// TODO Auto-generated catch block
@@ -65,7 +61,7 @@ public class SocketLibTest {
 				 catch (PrologError e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
+				} 
 			}
 			
 		}; 
@@ -75,13 +71,14 @@ public class SocketLibTest {
 
 	@Test
 	public void testTcp_socket_client_open_2() throws PrologException, PrologError {
-		
+
 		String theory="client(X):-tcp_socket_client_open('127.0.0.1:4444',Sock).";
 		engine2.setTheory(new Theory(theory));
 		SolveInfo goal=engine2.solve("client(X).");
-		assertTrue(goal.isSuccess());	
+		assertTrue(goal.isSuccess());
+		
 	}
-
+	
 
 	@Test
 	public void testTcp_socket_server_close_1() throws PrologError, InvalidTheoryException, MalformedGoalException {
@@ -112,35 +109,20 @@ public class SocketLibTest {
 //	@Test
 //	public void testRead_from_socket_3() throws InvalidTheoryException, MalformedGoalException, PrologError, NoSolutionException, UnknownVarException {
 //		
-//		String theory2="client(X):-tcp_socket_client_open('127.0.0.1:4444',Sock), " +
-//				"write_to_socket(Sock,test1).";
+//			
+//		String theory="client(X):-tcp_socket_client_open('127.0.0.1:4444',Sock),read_from_socket(Sock,X,[]).";
 //		
-//		engine2.setTheory(new Theory(theory2));
-//		SolveInfo goal1=engine2.solve("client(X).");
-//		goal1.getSolution();
-//				
-//		
-//		String theory="server(X):-read_from_socket(Slave,X,[]).";
-//		
-//		engine.setTheory(new Theory(theory));
-//		SolveInfo goal2=engine.solve("server(X).");
+//		engine2.setTheory(new Theory(theory));
+//		SolveInfo goal=engine2.solve("client(X).");
 //
-//		assertTrue(goal2.isSuccess());
+//		assertTrue(goal.isSuccess());
+//		System.out.println("I read"+ goal);
 //		
 //		
 //		
 //	}
 
-//	@Test
-//	public void testAread_from_socket_2() throws InvalidTheoryException, MalformedGoalException {
-//		
-//		String theory="client(X,Y,Z):-tcp_socket_client_open('127.0.0.1:4444',Sock),aread_from_socket(Slave,[]).";
-//		engine2.setTheory(new Theory(theory));
-//		SolveInfo goal=engine2.solve("client(X,Y,Z).");
-//		assertTrue(goal.isSuccess());
-//			
-//		
-//	}
+	
 
 
 }
