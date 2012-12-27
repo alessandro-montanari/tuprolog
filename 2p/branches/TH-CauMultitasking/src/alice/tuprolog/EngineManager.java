@@ -87,7 +87,6 @@ public class EngineManager implements java.io.Serializable {
 	public boolean nextSolution (int id){
 		EngineRunner er = findRunner(id);
 		if (er==null) return false;
-		//int idddd = runnerId();
 		System.out.println("Thread id "+runnerId()+" - next_solution: risveglio il thread di id: "+er.getId());
 		boolean bool = er.nextSolution();
 		return bool;
@@ -369,10 +368,10 @@ public class EngineManager implements java.io.Serializable {
 		}
 	}
 	
-	public int queueSize (){
+/*	public int queueSize (){
 		EngineRunner er=findRunner();
 		return er.msgQSize();
-	}
+	}*/
 	
 	public int queueSize(int id){
 		EngineRunner er = findRunner(id);
