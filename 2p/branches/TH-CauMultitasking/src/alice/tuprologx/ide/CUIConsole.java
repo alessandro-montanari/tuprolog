@@ -135,8 +135,7 @@ public class CUIConsole extends Automaton implements Serializable, OutputListene
                 else
                     break;
             }
-        } catch (IOException ex){
-        }
+        } catch (IOException ex){}
         if (!choice.equals(";")) {
             System.out.println("yes.");
             engine.solveEnd();
