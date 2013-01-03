@@ -58,7 +58,7 @@ import alice.tuprolog.interfaces.IOperatorManager;
     /**
      * Returns the priority of an operator (0 if the operator is not defined).
      */
-    public int opPrio(String name,String type) {
+    public synchronized int opPrio(String name,String type) {
         Operator o = operatorList.getOperator(name, type);
         return (o == null) ? 0 : o.prio;
     }
@@ -66,7 +66,7 @@ import alice.tuprolog.interfaces.IOperatorManager;
     /**
      * Returns the priority nearest (lower) to the priority of a defined operator
      */
-    public int opNext(int prio) {
+    public synchronized int opNext(int prio) {
         int n = 0;
         for (Operator opFromList:operatorList){
             if (opFromList.prio > n && opFromList.prio < prio)
@@ -80,7 +80,7 @@ import alice.tuprolog.interfaces.IOperatorManager;
      *
      *  @return the list of the operators
      */
-    public List<Operator> getOperators() {
+    public synchronized List<Operator> getOperators() {
         return new LinkedList<Operator>(operatorList);
     }
     

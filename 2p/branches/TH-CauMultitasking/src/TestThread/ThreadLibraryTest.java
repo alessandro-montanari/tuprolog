@@ -38,7 +38,7 @@ public class ThreadLibraryTest {
 		SolveInfo sinfo = engine.solve("thread_id(ID).");	//unifica ad ID l'identificativo del thread corrente (Root)
 		assertTrue(sinfo.isSuccess());
 		Term id = sinfo.getVarValue("ID");
-		assertEquals(id, new Int(1));
+		assertEquals(new Int(1), id);
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class ThreadLibraryTest {
 	 */
 	@Test
 	public void testThread_next_sol_1() throws InvalidTheoryException, MalformedGoalException, NoSolutionException {
-		theory = "start(X,Y) :- thread_create(genitore(bob,X), ID), thread_create(genitore(b,Y), ID2), loop(1,5,1,ID), thread_read(ID, X), loop(1,3,1,ID2), thread_read(ID2, Y).\n"+
+		theory = "start(X,Y) :- thread_create(genitore(bob,X), ID), thread_create(genitore(b,Y), ID2), loop(1,5,1,ID),  loop(1,3,1,ID2), thread_read(ID, X), thread_read(ID2, Y).\n"+
 		"loop(I, To, Inc, ThreadId) :- Inc >= 0, I > To, !.\n"+
 		"loop(I, To, Inc, ThreadId) :- Inc < 0,  I < To, !.\n"+
 		"loop(I, To, Inc, ThreadId) :- (thread_has_next(ThreadId) -> thread_next_sol(ThreadId), Next is I+Inc, loop(Next, To, Inc, ThreadId); !).\n"+
@@ -85,10 +85,10 @@ public class ThreadLibraryTest {
 		assertTrue(sinfo.isSuccess());
 		
 		Term X = sinfo.getVarValue("X");
-		assertEquals(X, Term.createTerm("genitore(bob,gdh)"));
+		assertEquals(Term.createTerm("genitore(bob,gdh)"), X);
 		
 		Term Y = sinfo.getVarValue("Y");
-		assertEquals(Y, Term.createTerm("genitore(b,f)"));
+		assertEquals(Term.createTerm("genitore(b,f)"), Y);
 	}
 
 	/**
@@ -107,10 +107,10 @@ public class ThreadLibraryTest {
 		assertTrue(sinfo.isSuccess());
 		
 		Term X = sinfo.getVarValue("X");
-		assertEquals(X, Term.createTerm("genitore(bob,a)"));
+		assertEquals(Term.createTerm("genitore(bob,a)"), X);
 		
 		Term Y = sinfo.getVarValue("Y");
-		assertEquals(Y, Term.createTerm("genitore(b,b)"));
+		assertEquals(Term.createTerm("genitore(b,b)"), Y);
 		
 		sinfo = engine.solve("thread_create(genitore(bob,X), ID), thread_join(ID,X), thread_next_sol(ID).");	//il thread è stato rimosso
 		assertFalse(sinfo.isSuccess());
@@ -141,17 +141,23 @@ public class ThreadLibraryTest {
 	@Test
 	public void testThread_read_2() throws InvalidTheoryException, MalformedGoalException, NoSolutionException {
 		theory = "genitore(bob,a).\n" +
-		"genitore(b,b).";
+		"genitore(b,b).\n" +
+		"genitore(bob,f).\n" +
+		"loop(I, To, Inc, Action) :- Inc >= 0, I > To, !.\n" +
+		"loop(I, To, Inc, Action) :- Inc < 0,  I < To, !.\n" +
+		"loop(I, To, Inc, Action) :- Action, Next is I+Inc, loop(Next, To, Inc, Action).";
 		engine.setTheory(new Theory(theory));
 		
-		SolveInfo sinfo = engine.solve("thread_create(genitore(bob,X), ID), thread_create(genitore(b,Y), ID2), thread_read(ID2,Y), thread_read(ID,X).");
+		//SolveInfo sinfo = engine.solve("thread_create(genitore(bob,X), ID), thread_create(genitore(b,Y), ID2), thread_read(ID2,Y), thread_read(ID,X1), thread_next_sol(ID), thread_read(ID,X).");
+		SolveInfo sinfo = engine.solve("thread_create(genitore(bob,X), ID), thread_read(ID,X1), thread_create(loop(1,10,1, thread_read(ID,X2)), ID2 ),  thread_create(loop(1,2,1, thread_read(ID,X2)), ID3 ), thread_next_sol(ID), thread_read(ID,X).");
+
 		assertTrue(sinfo.isSuccess());
 		
 		Term X = sinfo.getVarValue("X");
-		assertEquals(X, Term.createTerm("genitore(bob,a)"));
+		assertEquals(Term.createTerm("genitore(bob,f)"), X);
 		
-		Term Y = sinfo.getVarValue("Y");
-		assertEquals(Y, Term.createTerm("genitore(b,b)"));
+		Term X1 = sinfo.getVarValue("X1");
+		assertEquals(Term.createTerm("genitore(bob,a)"), X1);
 		
 		sinfo = engine.solve("thread_create(genitore(bob,X), ID), thread_read(ID,X), thread_next_sol(ID).");	//Il thread non è stato rimosso
 		assertTrue(sinfo.isSuccess());
@@ -165,10 +171,10 @@ public class ThreadLibraryTest {
 	 */
 	@Test
 	public void testThread_has_next_1() throws InvalidTheoryException, MalformedGoalException, NoSolutionException {
-		theory = "start(X) :- thread_execute(X, ID), thread_sleep(1), mutex_lock('mutex'), lettura(ID,X).\n" +
+		theory = "start(X) :- thread_execute(X, ID), lettura(ID,X).\n" +
 		"lettura(ID, X):- thread_read(ID, X).\n" +
-		"thread_execute(X, ID):- mutex_lock('mutex'), thread_create(X, ID), thread_execute2(ID), mutex_unlock('mutex'). \n" +
-		"thread_execute2(ID) :- (thread_has_next(ID) -> thread_next_sol(ID), thread_execute2(ID); !). \n" +
+		"thread_execute(X, ID):- thread_create(X, ID), thread_sleep(1), thread_execute2(ID). \n" +
+		"thread_execute2(ID) :- (thread_has_next(ID) -> thread_next_sol(ID), thread_execute2(ID); ! ). \n" +
 		"genitore(bob,a).\n" +
 		"genitore(bob,b).\n" +
 		"genitore(bob,d).";
@@ -178,7 +184,7 @@ public class ThreadLibraryTest {
 		assertTrue(sinfo.isSuccess());
 		
 		Term X = sinfo.getVarValue("X");
-		assertEquals(X, Term.createTerm("d"));
+		assertEquals(Term.createTerm("d"), X);
 	}
 
 	
@@ -231,7 +237,7 @@ public class ThreadLibraryTest {
 		assertTrue(sinfo.isSuccess());
 		
 		Term X = sinfo.getVarValue("X");
-		assertEquals(X, new Struct("messaggio molto importante"));
+		assertEquals(new Struct("messaggio molto importante"), X);
 		
 		theory = "start(X) :- msg_queue_create('CODA'), thread_create(thread1(X), ID), invio(ID, 'messaggio molto importante'), lettura(ID,X), thread_get_msg(a(X),'CODA').\n" +	//Posso nuovamente prelevare, in quanto il msg non è stato eliminato
 		"thread1(X) :- thread_wait_msg(a(X),'CODA'). \n " +
@@ -243,7 +249,7 @@ public class ThreadLibraryTest {
 		assertTrue(sinfo.isSuccess());
 		
 		Term X1 = sinfo.getVarValue("X");
-		assertEquals(X1, new Struct("messaggio molto importante"));
+		assertEquals(new Struct("messaggio molto importante"), X1);
 	}
 
 	/**
@@ -264,7 +270,7 @@ public class ThreadLibraryTest {
 		assertTrue(sinfo.isSuccess());
 		
 		Term X = sinfo.getVarValue("X");
-		assertEquals(X, new Struct("messaggio molto importante"));
+		assertEquals(new Struct("messaggio molto importante"), X);
 	}
 
 	/**
@@ -294,7 +300,7 @@ public class ThreadLibraryTest {
 		assertTrue(sinfo.isSuccess());
 		
 		Term X = sinfo.getVarValue("X");
-		assertEquals(X, new Struct("messaggio molto importante"));
+		assertEquals(new Struct("messaggio molto importante"), X);
 		
 		theory = "start(X) :- msg_queue_create('CODA'), thread_create(thread1(X), ID), lettura(ID,X).\n" +	
 		"thread1(X) :- thread_peek_msg(a(X),'CODA'). \n " +
@@ -332,7 +338,7 @@ public class ThreadLibraryTest {
 		assertTrue(sinfo.isSuccess());
 		
 		Term X = sinfo.getVarValue("X");
-		assertEquals(X, new Struct("messaggio molto importante"));
+		assertEquals(new Struct("messaggio molto importante"), X);
 		
 		//SI BLOCCA IN ATTESA DEL MESSAGGIO
 		/*theory = "start(X) :- message_queue_create('CODA'), thread_create(thread1(X), ID), lettura(ID,X).\n" +	
@@ -345,7 +351,7 @@ public class ThreadLibraryTest {
 	}
 
 	/**
-	 * Il metodo peek non riesce a prelevare la soluzione perchè è stato rimosso il messaggio dalla coda
+	 * Il metodo peek non riesce a prelevare la soluzione perchè il messaggio è stato rimosso
 	 * 
 	 * Test method for {@link alice.tuprolog.ThreadLibrary#thread_remove_msg_2(alice.tuprolog.Term, alice.tuprolog.Term)}.
 	 * @throws InvalidTheoryException 
@@ -353,10 +359,9 @@ public class ThreadLibraryTest {
 	 */
 	@Test
 	public void testThread_remove_msg_2() throws InvalidTheoryException, MalformedGoalException {
-		theory = "start(X) :- msg_queue_create('CODA'), thread_create(thread1(X), ID), invio('CODA', 'messaggio molto importante'), remove('CODA', 'messaggio molto importante'), lettura(ID,X).\n" +
-		"thread1(X) :- thread_peek_msg(a(X),'CODA'), thread_sleep(500). \n " +
+		theory = "start(X) :- msg_queue_create('CODA'),  invio('CODA', 'messaggio molto importante'), thread_create(thread1(X), ID), thread_sleep(50), thread_peek_message(X).\n" +
+		"thread1(X) :- thread_remove_msg(a(X),'CODA'). \n " +
 		"invio(ID, M):- thread_send_msg(a(M),ID). \n" +		//Versione con 'CODA'
-		"remove(ID,M):- thread_remove_msg(a(M), ID).\n" +
 		"lettura(ID, X):- thread_join(ID, thread1(X)). ";
 		engine.setTheory(new Theory(theory));
 		
@@ -416,7 +421,7 @@ public class ThreadLibraryTest {
 		assertTrue(sinfo.isSuccess());
 		
 		Term X = sinfo.getVarValue("S");
-		assertEquals(X, new Int(5));
+		assertEquals(new Int(5), X);
 	}
 
 /*	*//**

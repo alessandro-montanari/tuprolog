@@ -27,7 +27,6 @@ public class EngineManager implements java.io.Serializable {
 		this.vm=vm;
 		runners=new Hashtable<Integer,EngineRunner>();
 		threads = new Hashtable<Integer,Integer>();
-
 		queues =new Hashtable<String, TermQueue>();
 		locks = new Hashtable<String, ReentrantLock>();
 		
@@ -269,7 +268,7 @@ public class EngineManager implements java.io.Serializable {
 		
 	}
 	
-	public SolveInfo solve(Term query) {
+	public synchronized SolveInfo solve(Term query) {
 		System.out.println("Root - pid: "+Thread.currentThread().getId());
 		
 		rootPID = (int) Thread.currentThread().getId();
@@ -291,8 +290,6 @@ public class EngineManager implements java.io.Serializable {
 		threads=new Hashtable<Integer,Integer>();
 		queues =new Hashtable<String, TermQueue>();
 		locks = new Hashtable<String, ReentrantLock>();
-		
-		removeRunner(er.getId());
 	}
 	
 	public void solveHalt() {
@@ -309,7 +306,7 @@ public class EngineManager implements java.io.Serializable {
 		}
 	}
 	
-	public SolveInfo solveNext() throws NoMoreSolutionException {
+	public synchronized SolveInfo solveNext() throws NoMoreSolutionException {
 		EngineRunner er = findRunner(rootID);
 		return er.solveNext();
 	}
@@ -467,8 +464,5 @@ public class EngineManager implements java.io.Serializable {
 		er.identify(t);
 	}
 	
-	public int getRootID(){
-		return rootID;
-	}
 }
 
