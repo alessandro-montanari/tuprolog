@@ -296,7 +296,7 @@ public class TheoryManager implements Serializable {
 	 *
 	 * @param onlyDynamic if true, fetches only dynamic clauses
 	 */
-	public String getTheory(boolean onlyDynamic) {
+	public synchronized String getTheory(boolean onlyDynamic) {
 		StringBuffer buffer = new StringBuffer();
 		for (Iterator<ClauseInfo> dynamicClauses = dynamicDBase.iterator(); dynamicClauses.hasNext();) {
 			ClauseInfo d = dynamicClauses.next();
@@ -314,7 +314,7 @@ public class TheoryManager implements Serializable {
 	 * Gets last consulted theory
 	 * @return  last theory
 	 */
-	public Theory getLastConsultedTheory() {
+	public synchronized Theory getLastConsultedTheory() {
 		return lastConsultedTheory;
 	}
 

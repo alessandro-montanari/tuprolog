@@ -130,8 +130,7 @@ public class ThreadLibrary extends Library {
 		name = name.getTerm();
 		PrintStream log = files.get(name.toString());
 		if(log == null)
-			throw PrologError.domain_error(engine.getEngineManager(), 1,
-                    "file name does not exist", name);
+			 throw PrologError.existence_error(engineManager, 2, "file", name, new Struct("File name does not exist."));
 		log.println(arg.toString());
 		return true;
 	}
@@ -236,7 +235,7 @@ public class ThreadLibrary extends Library {
 			return engineManager.sendMsg(msg, ((Int)id).intValue());		
 		if (!id.isAtomic() || !id.isAtom()) 
 			throw PrologError.type_error(engine.getEngineManager(), 1,
-                    "atom or atomic", id);
+                    "atom, atomic or integer", id);
 		return engineManager.sendMsg(msg, id.toString());
 	}
 	
@@ -246,7 +245,7 @@ public class ThreadLibrary extends Library {
 			return engineManager.getMsg(msg, ((Int)id).intValue());
 		if (!id.isAtom() || !id.isAtomic()) 
 			throw PrologError.type_error(engine.getEngineManager(), 1,
-                    "atom or atomic", id);
+                    "atom, atomic or integer", id);
 		return engineManager.getMsg(msg,id.toString());
 	}	
 	
@@ -256,7 +255,7 @@ public class ThreadLibrary extends Library {
 			return engineManager.peekMsg(msg, ((Int)id).intValue());
 		if (!id.isAtom() || !id.isAtomic()) 
 			throw PrologError.type_error(engine.getEngineManager(), 1,
-                    "atom or atomic", id);
+                    "atom, atomic or integer", id);
 		return engineManager.peekMsg(msg,id.toString());
 	}
 
@@ -266,7 +265,7 @@ public class ThreadLibrary extends Library {
 			return engineManager.waitMsg(msg, ((Int)id).intValue());
 		if (!id.isAtom() || !id.isAtomic()) 
 			throw PrologError.type_error(engine.getEngineManager(), 1,
-                    "atom or atomic", id);
+                    "atom, atomic or integer", id);
 		return engineManager.waitMsg(msg,id.toString());
 	}
 
@@ -276,7 +275,7 @@ public class ThreadLibrary extends Library {
 			return engineManager.removeMsg(msg, ((Int)id).intValue());
 		if (!id.isAtom() || !id.isAtomic()) 
 			throw PrologError.type_error(engine.getEngineManager(), 1,
-                    "atom or atomic", id);
+                    "atom, atomic or integer", id);
 		return engineManager.removeMsg(msg,id.toString());
 	}
 	
@@ -322,13 +321,12 @@ public class ThreadLibrary extends Library {
 	public boolean msg_queue_size_2(Term n, Term id) throws PrologError{
 		id=id.getTerm();
 		int size;
-		if (id instanceof Int) {
+		if (id instanceof Int) 
 			size=engineManager.queueSize(((Int)id).intValue());
-		
-		}else{
+		else{
 			if (!id.isAtom() || !id.isAtomic())
 				throw PrologError.type_error(engine.getEngineManager(), 1,
-	                    "atom or atomic", id);
+	                    "atom, atomic or integer", id);
 			size=engineManager.queueSize(id.toString());
 		}
 		if (size<0) return false;

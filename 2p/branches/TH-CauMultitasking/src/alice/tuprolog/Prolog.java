@@ -398,7 +398,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 * @return the result of the demonstration
 	 * @see SolveInfo
 	 **/
-	public synchronized SolveInfo solve(Term g) {
+	public SolveInfo solve(Term g) {
 		//System.out.println("ENGINE SOLVE #0: "+g);
 		if (g == null) return null;
 
@@ -418,7 +418,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 * @return the result of the demonstration
 	 * @see SolveInfo
 	 **/
-	public synchronized SolveInfo solve(String st) throws MalformedGoalException {
+	public SolveInfo solve(String st) throws MalformedGoalException {
 		try {
 			Parser p = new Parser(opManager, st);
 			Term t = p.nextTerm(true);
@@ -435,7 +435,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 * @throws NoMoreSolutionException if no more solutions are present
 	 * @see SolveInfo
 	 **/
-	public synchronized SolveInfo solveNext() throws NoMoreSolutionException {
+	public SolveInfo solveNext() throws NoMoreSolutionException {
 		if (hasOpenAlternatives()) {
 			SolveInfo sinfo = engineManager.solveNext();
 			QueryEvent ev = new QueryEvent(this,sinfo);

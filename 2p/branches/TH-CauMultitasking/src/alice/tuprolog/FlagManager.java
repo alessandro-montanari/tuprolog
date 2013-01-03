@@ -70,7 +70,7 @@ class FlagManager {
         return false;
     }
 
-    public Struct getPrologFlagList() {
+    public synchronized Struct getPrologFlagList() {
         Struct flist = new Struct();
         java.util.Iterator<Flag> it = flags.iterator();
         while (it.hasNext()) {
@@ -81,7 +81,7 @@ class FlagManager {
         return flist;
     }
 
-    public Term getFlag(String name) {
+    public synchronized Term getFlag(String name) {
         java.util.Iterator<Flag> it = flags.iterator();
         while (it.hasNext()) {
             Flag fl = (Flag) it.next();
