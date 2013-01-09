@@ -27,9 +27,8 @@ import java.util.*;
  * @see Term
  *
  */
-@SuppressWarnings("serial")
 public class Var extends Term {
-    
+	private static final long serialVersionUID = 1L;
     final static String ANY = "_";
     // the name identifying the var
     private String name;
