@@ -1,4 +1,155 @@
 #summary Here are reported all the informations needed to manage the repository
 
+==Introduction==
+Here we want to explain the structure of the repository for the project tuProlog In this document we will also explain the policies used to update the contents in the repository in case of bug fixes, releases, fixture implementations and so on.
+
+This document is targeted on SVN (Subeversion) source code version system so sometimes in the examples we will show specific commands for this system, however the principles and the policies chosen can be used with many different kind of repositories and systems. 
+By the way since the system used here is subversion we choose to follow the main repository layout convention (described in the SVN book) in order to ensure that other users that are usual with subversion or with its conventions can easly navigate and use our repository, however we add some specific strategies that are not exactly described in the SVN book. Some of the concepts are also taken from some articles of Ariejan de Vroom.
+
+In this document we will give as known some basic concepts about version control systems and subversion, like: repository, working copy, revision, branch, tag, merge, commit, update, switch, check out, copy-modify-merge model. For more informations on this concepts we advice to read the SVN book. In the Appendix A a brief description of a typical work cycle is given. 
+
+==Structure of the repository==
+As mentioned in the introduction, following the SVN convention, our repository will contain a trunk subdirectory for the main development line, a branches subdirectory in which specific branches (or collections of branches) will be created, and a tags subdirectory in which specific tags (or collections of tags) will be created. The tuProlog project is composed of four parts: the java version of the engine, the eclipse plugin, the android application both based on the java version and the .NET version of the engine automatically produced from the java version using the tool IKVM.NET. These four parts are divided into four different projects, all hosted in the same repository in order to simplify the relationships between them how described in the following sections.
+
+{{{
+/svn
+	/2p
+		/trunk
+		/branches
+		/tags
+	/2p-android
+		/trunk
+		/branches
+		/tags
+	/2p-plugin
+		/trunk
+		/branches
+		/tags
+	/2p-net
+		/trunk
+		/branches
+		/tags
+}}}
+
+==Trunk Management==
+The trunk contains the most current development code at all times. This is where we work up to our next major release of code. The trunk is designed as a space where the application is always in a consistent state (successful compilation and test), in other words every commit to the trunk should not break the application. In accordance to the previous statement before commit to the trunk the application should be tested in deep in order to ensure that anything (hopefully) is changed, for this reason the development directly against the trunk is allowed only in the cases where the changes are very small and easy to describe and understand. Otherwise if the modification is deep (and maybe require a lot of changes before to reach the final stable result) *is mandatory* to create another branch (they are intended exactly for this purpose) and develop the modification against it, at the end of the process, when a stable result is reached, the work done in the branch can be merged inside the trunk. Using this approach the development cycle will not break because when someone is working on a bug fix in its specific branch another developer, at the same time, can develop a new feature and at the end, the work of the two can be merged together in order to have a better application with less bugs. 
+
+In summary:
+  # The application in the trunk must be in a consistent state (compilation + tests) in any moment;
+  # Every commit to the trunk should bring the application in a consistent state;
+  # If the point 2 is impossible you must create a branch.
+
+==Branches management==
+As mentioned in the previous section the branches are the tools to not break the development cycle. A branch, in short, is a copy of the trunk in a specific moment. After the creation of the branch it has its own life, so, in other words, each commit into a branch is not committed into the trunk. In this way you are free to commit bit by bit changes into the branch without break the stable version of the application in the trunk. This approach will give us also more control over the changes that each developer made, indeed we can analyze each small modification and so we can easily recognize a new bug that can be introduced during the development against one branch. When the work on the branch is finished the changes made in it should be reintegrated inside the trunk in order to ensure that the trunk contains the latest version of the application. 
+
+Before describe how handle with the different kind of branches in our vision, we will focus into two important topics about branching and merging: synchronization of a branch and reintegrate a branch. 
+
+===Keeping a Branch in Sync===
+As explained before the usefulness of the branches is that your are “disconnected” from the trunk so you let the other developers work without any problems. This is of course a nice feature but lets consider this scenario: while you are working on your branch the code in the trunk is changed a lot, very deeply, when you have to reintegrate your work into the trunk you will recognize that your new feature is not working anymore in the new version of the application or you have a lot of conflicts to resolve. This is a typical problem that you will encounter if you work on your own branch in total isolation. The best way to handle this is to replicate the changes made in the trunk to your own branch, just to make sure they mesh well with your changes. Subversion is aware of the history of your branch and knows when it divided away from the trunk. To replicate the latest, greatest trunk changes to your branch, first make sure your working copy of the branch is “clean”—that it has no local modifications reported by svn status. Then simply run:
+
+{{{
+$ svn merge ^/calc/trunk 
+--- Merging r345 through r356 into '.': U button.c U integer.c $
+}}}
+
+This basic syntax—svn merge URL—tells Subversion to merge all recent changes from the URL to the current working directory (which is typically the root of your working copy). Also notice that we're using the caret (^) syntax to avoid having to type out the entire /trunk URL.
+*After running the prior example, your branch working copy now contains new local modifications, and these edits are duplications of all of the changes that have happened on the trunk since you first created your branch*. After performing the merge, you might also need to resolve some conflicts or possibly make some small edits to get things working properly. If you encounter serious problems, you can always abort the local changes by running "svn revert . -R" (which will undo all local modifications) and start a long “what's going on?” discussion with your collaborators. If things look good, however, you can submit these changes into the repository:
+
+{{{
+$ svn commit -m 
+"Merged latest trunk changes to my-calc-branch.”.
+}}}
+
+We think that, considering the actual speed in tuProlog development, if you are working on a branch you should sync your own branch one time every two weeks.
+ 
+===Reintegrating a Branch===
+This is the operation that you have to do when your work on your own branch is finished and you have to make your changes available to the others developers. The process is simple. First, bring your branch in sync with the trunk again, just as you've been doing all along. Now, you use svn merge with the --reintegrate option to replicate your branch changes back into the trunk. *You'll need a working copy of /trunk*. Your trunk working copy cannot have any local edits or be at mixed-revisions. While these are typically best practices for merging, they are required when using the --reintegrate option.
+Once you have a clean working copy of the trunk, you're ready to merge your branch back into it:
+
+{{{
+$ svn update # (make sure the working copy is up to date)
+$ svn merge --reintegrate ^/calc/branches/my-calc-branch 
+--- Merging differences between repository URLs into '.': U button.c U integer.c U Makefile U.
+$ # build, test, verify, ...
+$ svn commit -m "Merge my-calc-branch back into trunk!" Sending	. Sending	button.c . button.c README
+	 ...
+	Committed revision 391.
+}}}
+
+Your branch has now been remerged back into the main line of development. By specifying the --reintegrate option, you're asking Subversion to carefully replicate only those changes unique to your branch. (And in fact, it does this by comparing the latest trunk tree with the latest branch tree: the resulting difference is exactly your branch changes!).
+Now that your private branch is merged to trunk, you may wish to remove it from the repository:
+
+{{{
+$ svn delete ^/calc/branches/my-calc-branch \ -m "Remove my-calc-branch, reintegrated with trunk in r391."
+Committed revision 392.
+}}}
+
+*This operation is not totally destructive, indeed even though your branch is no longer visible in the /branches directory, its existence is still an immutable part of the repository's history*. A simple svn log command on the /branches URL will show the entire history of your branch. Your branch can even be resurrected at some point, should you desire (see the section called “Resurrecting Deleted Items” in the SVN book).
+Once a --reintegrate merge is done from branch to trunk, the branch is no longer usable for further work. It's not able to correctly absorb new trunk changes, nor can it be properly reintegrated to trunk again. For this reason, if you want to keep working on your feature branch, we recommend destroying it and then re-creating it from the trunk. There is another way of making the branch usable again after reintegration, without deleting the branch. See the section called “Keeping a Reintegrated Branch Alive” in the SVN book.
+
+*In summary, for reintegrate a branch:*
+	1	make the last synchronization with the trunk;
+	2	get a working copy of the trunk and update it;
+	3	merge the branch with the working copy;
+	4	commit the changes;
+	5	delete the branch.
+
+===Bug Fix Branches===
+When a bug is recognized, if that bug is easy to solve and can be solved with just one commit, it is possible to fix it directly from where it was discovered (trunk or branch) but if the bug is more complex and require quite time and work to be fixed, the better way is to create a new branch and develop the solution on that branch. For this kind of branches we chose the following template for the name of the relative directory "BUG-[bug ID]", where bug ID  is the Identification Number of the bug in the bug tracker. An example:
+
+{{{
+/
+	trunk/
+	branches/
+		BUG-3456/
+	tags/
+}}}
+
+The bug branch can be used like any other branch and when the work is finished it has to be reintegrated into the trunk or into the branch as described in the section 3.2.
+Sometimes could be useful to tag the situation of the project before and after the solution of the bug, this topic is better explained in section 4.3.
+
+We recall here the best procedure for handle a bug:
+  # after the discovery insert a detailed description in the bug traker;
+  # create one or more test that expose the bug;
+  # create a bug branch for fixing it;
+  # reintegrate the branch when the work is finished.
+
+===Experimental Branches===
+The experimental branches are intended to use when a new technology or a new approach is going to take place in the project, since this could be a dangerous operation and we don’t want to compromise the work in the trunk, a new branch is the right solution. In this case the template is the following: "TRY-[keywords of the exepriment]", where with some keywords you have to describe what is going to change, for example:
+
+{{{
+/
+	trunk/
+	branches/
+		BUG-3456/
+		TRY-JDK1.7/
+		TRY-generics/
+	tags/
+}}}
+
+An experimental branch can be abandoned (or deleted) or reintegrate into the trunk
+
+===Thesis Branches===
+Since most of the work on the tuProlog engine is made by students as thesis work, a kind of branch for this particular case is provided. Usually a thesis on tuProlog is like trying a new technology or a new approach to solve a problem or to improve the quality of the engine so this kind of branch is like an experimental branch but a new template for the name is used in order to let the professors to find the right directory immediately. The template is: "TB-[surname of the student]". An example:
+
+{{{
+/
+	trunk/
+	branches/
+		BUG-3456/
+		TRY-JDK1.7/
+		TRY-generics/
+		TB-montanari/
+	tags/
+}}}
+
+A thesis branch should also contain a document where the purpose of the thesis is reported, in order to let the people involved to better understand in which direction the work is going on.
+
+When the work is finished it will be integrate into the trunk if it is good enough otherwise the branch can be deleted or maintained if future work will take place. In any case a thesis tag should be made. 
+
+==Relationships between projects==
+
+===Externals===
+
 = Compilation Target for Android =
 At the moment (Nov-2012) the Android SDK is not capable to use java libraries compiled with target level 1.7, this will lead to a `JavaClassNotFoundException`. For this reason the default target level for the java project is set to 1.6 (file ant/environment.properties).
