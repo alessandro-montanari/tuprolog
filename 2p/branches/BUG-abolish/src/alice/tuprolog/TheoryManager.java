@@ -99,14 +99,14 @@ public class TheoryManager implements Serializable {
 	 * removing from dbase the first clause with head unifying with clause
 	 */
 	public ClauseInfo retract(Struct cl) {
-//		Struct clause = toClause(cl);					// TODO Perché?!?
-		Struct struct = ((Struct) cl.getArg(0));	// uguale a cl
+		Struct clause = toClause(cl);					// TODO Perché?!?
+		Struct struct = ((Struct) clause.getArg(0));	// uguale a cl
 		FamilyClausesList family = dynamicDBase.get(struct.getPredicateIndicator());
 		if (family == null)
 			return null;
 		for (Iterator<ClauseInfo> it = family.iterator(); it.hasNext();) {
 			ClauseInfo d = it.next();
-			if (cl.match(d.getClause())) {
+			if (clause.match(d.getClause())) {
 				it.remove();
 //				family.unregister(d);
 				engine.spy("DELETE: " + d.getClause() + "\n");
