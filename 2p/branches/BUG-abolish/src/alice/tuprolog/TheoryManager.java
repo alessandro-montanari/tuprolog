@@ -99,14 +99,14 @@ public class TheoryManager implements Serializable {
 	 * removing from dbase the first clause with head unifying with clause
 	 */
 	public ClauseInfo retract(Struct cl) {
-		Struct clause = toClause(cl);
-		Struct struct = ((Struct) clause.getArg(0));
+//		Struct clause = toClause(cl);					// TODO Perché?!?
+		Struct struct = ((Struct) cl.getArg(0));	// uguale a cl
 		FamilyClausesList family = dynamicDBase.get(struct.getPredicateIndicator());
 		if (family == null)
 			return null;
 		for (Iterator<ClauseInfo> it = family.iterator(); it.hasNext();) {
 			ClauseInfo d = it.next();
-			if (clause.match(d.getClause())) {
+			if (cl.match(d.getClause())) {
 				it.remove();
 //				family.unregister(d);
 				engine.spy("DELETE: " + d.getClause() + "\n");
@@ -120,12 +120,12 @@ public class TheoryManager implements Serializable {
 	 * removing from dbase all the clauses corresponding to the
 	 * predicate indicator passed as a parameter
 	 */
-	public boolean abolish(Struct pi) {
-		String key = Tools.removeApices(pi.toString());
+	public boolean abolish(Struct pi) {							// pi = '/'(fact,1) - predicateIndicator = "//2"
+		String key = pi.getArg(0) + "/" + pi.getArg(1);
 		List<ClauseInfo> abolished = dynamicDBase.abolish(key); /* Reviewed by Paolo Contessi: LinkedList -> List */
 		if (abolished != null)
 			engine.spy("ABOLISHED: " + key + " number of clauses=" + abolished.size() + "\n");
-		return true;
+		return true;											// TODO deve restituire sempre true??
 	}
 
 	/**
