@@ -148,8 +148,14 @@ A thesis branch should also contain a document where the purpose of the thesis i
 When the work is finished it will be integrate into the trunk if it is good enough otherwise the branch can be deleted or maintained if future work will take place. In any case a thesis tag should be made. 
 
 ==Relationships between projects==
+TODO
+
 
 ===Externals===
+TODO
+
+==Target Ant==
+TODO
 
 = Compilation Target for Android =
 At the moment (Nov-2012) the Android SDK is not capable to use java libraries compiled with target level 1.7, this will lead to a `JavaClassNotFoundException`. For this reason the default target level for the java project is set to 1.6 (file ant/environment.properties).
