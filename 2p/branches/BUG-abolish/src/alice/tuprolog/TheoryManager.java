@@ -99,8 +99,8 @@ public class TheoryManager implements Serializable {
 	 * removing from dbase the first clause with head unifying with clause
 	 */
 	public ClauseInfo retract(Struct cl) {
-		Struct clause = toClause(cl);					// TODO Perché?!?
-		Struct struct = ((Struct) clause.getArg(0));	// uguale a cl
+		Struct clause = toClause(cl);				
+		Struct struct = ((Struct) clause.getArg(0));	
 		FamilyClausesList family = dynamicDBase.get(struct.getPredicateIndicator());
 		if (family == null)
 			return null;
@@ -108,7 +108,7 @@ public class TheoryManager implements Serializable {
 			ClauseInfo d = it.next();
 			if (clause.match(d.getClause())) {
 				it.remove();
-//				family.unregister(d);
+				//				family.unregister(d);
 				engine.spy("DELETE: " + d.getClause() + "\n");
 				return new ClauseInfo(d.getClause(), null);
 			}
@@ -120,12 +120,19 @@ public class TheoryManager implements Serializable {
 	 * removing from dbase all the clauses corresponding to the
 	 * predicate indicator passed as a parameter
 	 */
-	public boolean abolish(Struct pi) {							// pi = '/'(fact,1) - predicateIndicator = "//2"
-		String key = pi.getArg(0) + "/" + pi.getArg(1);
+	public boolean abolish(Struct pi) {		
+		if (!(pi instanceof Struct) || !pi.isGround() || !(pi.getArity() == 2))
+			throw new IllegalArgumentException(pi + " is not a valid Struct");
+		if(!pi.getName().equals("/"))
+				throw new IllegalArgumentException(pi + " has not the valid predicate name. Espected '/' but was " + pi.getName());
+		
+		String arg0 = Tools.removeApices(pi.getArg(0).toString());
+		String arg1 = Tools.removeApices(pi.getArg(1).toString());
+		String key =  arg0 + "/" + arg1;
 		List<ClauseInfo> abolished = dynamicDBase.abolish(key); /* Reviewed by Paolo Contessi: LinkedList -> List */
 		if (abolished != null)
 			engine.spy("ABOLISHED: " + key + " number of clauses=" + abolished.size() + "\n");
-		return true;											// TODO deve restituire sempre true??
+		return true;											
 	}
 
 	/**
