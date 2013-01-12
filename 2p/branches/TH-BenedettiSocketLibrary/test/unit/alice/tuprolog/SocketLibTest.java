@@ -1,12 +1,11 @@
 package alice.tuprolog;
 
 import static org.junit.Assert.assertTrue;
-import junit.framework.Assert;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import alice.tuprolog.lib.SocketLib;
+import alice.tuprolog.lib.SocketLibrary;
 
 
 public class SocketLibTest {
@@ -23,7 +22,7 @@ public class SocketLibTest {
 		Thread myThread = new Thread() { 
 			public void run() { 
 				System.out.println("Running myThread"); 
-				SocketLib lib;
+				SocketLibrary lib;
 
 				Struct Address=new Struct("127.0.0.1:4444");
 				Term Socket= new Var();
@@ -33,10 +32,10 @@ public class SocketLibTest {
 				
 					try {			
 				
-					engine.loadLibrary("alice.tuprolog.lib.SocketLib");
-					engine2.loadLibrary("alice.tuprolog.lib.SocketLib");
+					engine.loadLibrary("alice.tuprolog.lib.SocketLibrary");
+					engine2.loadLibrary("alice.tuprolog.lib.SocketLibrary");
 						
-					lib = (SocketLib) engine.getLibrary("alice.tuprolog.lib.SocketLib");
+					lib = (SocketLibrary) engine.getLibrary("alice.tuprolog.lib.SocketLibrary");
 									
 					boolean ts;
 					ts=lib.tcp_socket_server_open_3(Address, Socket, Options);
@@ -92,7 +91,7 @@ public class SocketLibTest {
 		Term Socket= new Var();
 		Struct Options=new Struct("[]");
 			
-		SocketLib lib= (SocketLib) engine.getLibrary("alice.tuprolog.lib.SocketLib");
+		SocketLibrary lib= (SocketLibrary) engine.getLibrary("alice.tuprolog.lib.SocketLibrary");
 		lib.tcp_socket_server_open_3(Address, Socket, Options);
 	
 		boolean close=lib.tcp_socket_server_close_1(Socket);

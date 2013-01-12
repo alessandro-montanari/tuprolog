@@ -39,13 +39,13 @@ import alice.tuprolog.interfaces.*;
  *
  */
 
-public class SocketLib extends Library implements ISocketLib {
+public class SocketLibrary extends Library implements ISocketLib {
 	private String addrRegex;
 	private LinkedList<ThreadReader> readers;					// Active readers
 	private LinkedList<ServerSocket> serverSockets;		// Opened ServerSockets
 	private LinkedList<Socket> clientSockets;			// Opened Sockets
 
-	public SocketLib() {
+	public SocketLibrary() {
 		addrRegex = "[\\. :]";	// Address:Port parsed using regex
 		readers = new LinkedList<ThreadReader>();
 		serverSockets=new LinkedList<ServerSocket>();

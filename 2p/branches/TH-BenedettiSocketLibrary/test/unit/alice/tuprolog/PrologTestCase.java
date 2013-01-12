@@ -12,7 +12,7 @@ public class PrologTestCase extends TestCase {
 	
 	public void testEngineInitialization() {
 		Prolog engine = new Prolog();
-		assertEquals(5, engine.getCurrentLibraries().length);
+		assertEquals(4, engine.getCurrentLibraries().length);
 		assertNotNull(engine.getLibrary("alice.tuprolog.lib.BasicLibrary"));
 		assertNotNull(engine.getLibrary("alice.tuprolog.lib.ISOLibrary"));
 		assertNotNull(engine.getLibrary("alice.tuprolog.lib.IOLibrary"));
