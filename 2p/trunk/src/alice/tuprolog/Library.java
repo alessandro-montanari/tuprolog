@@ -166,6 +166,9 @@ public abstract class Library implements Serializable, IPrimitives {
      * method invoked when the engine has
      * finished a demostration
      */
+    
+    public void onSolveHalt(){}
+    
     public void onSolveEnd() {}
     
     /**
