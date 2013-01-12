@@ -157,6 +157,7 @@ public class EngineManager implements java.io.Serializable {
      */
     public void solveHalt() {
         env.mustStop();
+        libraryManager.onSolveHalt();
     }
     
     /**
