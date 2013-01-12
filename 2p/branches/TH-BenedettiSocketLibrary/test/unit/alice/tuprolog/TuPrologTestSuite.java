@@ -24,6 +24,7 @@ import org.junit.runners.Suite.SuiteClasses;
 				VarTestCase.class, 
 				TestVarIsEqual.class, 
 				DynamicURLClassLoaderTestCase.class,
-				ISOIOLibraryTestCase.class
+				ISOIOLibraryTestCase.class,
+				SocketLibTest.class
 })
 public class TuPrologTestSuite {}

@@ -174,10 +174,12 @@ public class BuiltIn extends Library {
 		 arg0 = arg0.getTerm();
 		 if (arg0 instanceof Var)
 			 throw PrologError.instantiation_error(engineManager, 1);
-		 if (!(arg0 instanceof Struct) || !arg0.isGround()) {
-			 throw PrologError.type_error(engineManager, 1,
-					 "predicate_indicator", arg0);
-		 }
+		 if (!(arg0 instanceof Struct) || !arg0.isGround()) 
+			 throw PrologError.type_error(engineManager, 1, "predicate_indicator", arg0);
+		 
+		 if( ((Struct)arg0).getArg(0).toString().equals("abolish") )
+			 throw PrologError.permission_error(engineManager, "modify", "static_procedure", arg0, new Struct(""));
+		 
 		 return theoryManager.abolish((Struct) arg0);
 	 }
 

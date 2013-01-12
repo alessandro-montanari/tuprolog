@@ -99,11 +99,6 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 			ex.printStackTrace();
 		}
 		try {
-			loadLibrary("alice.tuprolog.lib.SocketLib");
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		try {
 			if (System.getProperty("java.vm.name").equals("IKVM.NET"))
 				loadLibrary("OOLibrary.OOLibrary, OOLibrary");
 			else

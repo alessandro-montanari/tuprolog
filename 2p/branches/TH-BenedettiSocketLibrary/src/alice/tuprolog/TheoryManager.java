@@ -26,7 +26,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
-import javax.sql.rowset.spi.SyncResolver;
 
 import alice.util.Tools;
 
@@ -122,8 +121,15 @@ public class TheoryManager implements Serializable {
 	 * removing from dbase all the clauses corresponding to the
 	 * predicate indicator passed as a parameter
 	 */
-	public synchronized boolean abolish(Struct pi) {
-		String key = Tools.removeApices(pi.toString());
+	public synchronized boolean abolish(Struct pi) {		
+		if (!(pi instanceof Struct) || !pi.isGround() || !(pi.getArity() == 2))
+			throw new IllegalArgumentException(pi + " is not a valid Struct");
+		if(!pi.getName().equals("/"))
+				throw new IllegalArgumentException(pi + " has not the valid predicate name. Espected '/' but was " + pi.getName());
+		
+		String arg0 = Tools.removeApices(pi.getArg(0).toString());
+		String arg1 = Tools.removeApices(pi.getArg(1).toString());
+		String key =  arg0 + "/" + arg1;
 		List<ClauseInfo> abolished = dynamicDBase.abolish(key); /* Reviewed by Paolo Contessi: LinkedList -> List */
 		if (abolished != null)
 			engine.spy("ABOLISHED: " + key + " number of clauses=" + abolished.size() + "\n");
