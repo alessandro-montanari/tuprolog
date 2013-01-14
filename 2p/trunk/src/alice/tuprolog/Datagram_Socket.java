@@ -5,6 +5,8 @@ import java.net.InetAddress;
 import java.util.List;
 
 public class Datagram_Socket extends AbstractSocket {
+	private static final long serialVersionUID = 1L;
+
 	private DatagramSocket socket;
 
 	
