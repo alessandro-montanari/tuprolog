@@ -232,7 +232,7 @@ public class ThreadLibrary extends Library {
 	public boolean thread_send_msg_2(Term msg, Term id) throws PrologError{
 		id=id.getTerm();
 		if (id instanceof Int) 
-			return engineManager.sendMsg(msg, ((Int)id).intValue());		
+			return engineManager.sendMsg(msg, ((Int)id).intValue());	
 		if (!id.isAtomic() || !id.isAtom()) 
 			throw PrologError.type_error(engine.getEngineManager(), 1,
                     "atom, atomic or integer", id);
