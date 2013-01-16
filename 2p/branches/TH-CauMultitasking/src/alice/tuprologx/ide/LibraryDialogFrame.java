@@ -8,7 +8,10 @@ import javax.swing.text.Document;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.io.IOException;
+import java.net.JarURLConnection;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -418,7 +421,9 @@ public class LibraryDialogFrame extends GenericFrame implements LibraryListener
              * without this "if" if a library is unloaded
              * an InvalidLibraryException is always catched 
              */
-            if (libraryManager.isLibraryLoaded(libraryClassname))
+        	if(libraryManager.isExternalLibrary(libraryClassname))
+        		libraryManager.unloadExternalLibrary(libraryClassname);
+        	if (libraryManager.isLibraryLoaded(libraryClassname))
                 libraryManager.unloadLibrary(libraryClassname);
             libraryManager.removeLibrary(libraryClassname);
             setStatusMessage("Ready.");
@@ -455,9 +460,33 @@ public class LibraryDialogFrame extends GenericFrame implements LibraryListener
                 //JOptionPane.showMessageDialog(this, libraryClassname);
 
                 if (((JComboBox)librariesDisplayPanel.getComponent(3*i+2)).getSelectedItem().equals("Loaded"))
-                    libraryManager.loadLibrary(libraryClassname);
+                {
+                	if(libraryManager.isExternalLibrary(libraryClassname))
+                	{
+                		try {
+                			URL url = libraryManager.getExternalLibraryURL(libraryClassname);
+                    		if(url.getProtocol().equals("jar"))
+                    		{
+        	            		JarURLConnection connection =
+        	            		        (JarURLConnection) url.openConnection();
+        	            		    url = connection.getJarFileURL();
+                    		}
+                    		    
+                    		libraryManager.loadLibrary(libraryClassname, new File(URLDecoder.decode(url.getFile(), "UTF-8")));
+                		}
+                		catch (InvalidLibraryException e){
+                        	setStatusMessage(libraryClassname + ": Not a Library");
+                        }
+                		catch (Exception e) {
+                			setStatusMessage(libraryClassname + ": Class Not Found");
+						}
+                	}
+                	else
+                		libraryManager.loadLibrary(libraryClassname);
+                }
                 else
-                    libraryManager.unloadLibrary(libraryClassname);
+                	libraryManager.unloadLibrary(libraryClassname);
+                
             }
             catch (InvalidLibraryException e)
             {
@@ -483,7 +512,23 @@ public class LibraryDialogFrame extends GenericFrame implements LibraryListener
         {
             try
             {
-                libraryManager.addLibrary(libraryName);
+            	alice.tuprolog.LibraryManager mainLibraryManager = libraryManager.getEngine().getLibraryManager();
+            	if(mainLibraryManager.isExternalLibrary(libraryName))
+            	{
+            		URL url = mainLibraryManager.getExternalLibraryURL(libraryName);
+            		if(url.getProtocol().equals("jar"))
+            		{
+	            		JarURLConnection connection =
+	            		        (JarURLConnection) url.openConnection();
+	            		    url = connection.getJarFileURL();
+            		}
+            		    
+            		libraryManager.addLibrary(libraryName, new File(URLDecoder.decode(url.getFile(), "UTF-8")));
+            		pack();
+                    setSize(395,getSize().height);
+            	}
+            	else
+            		libraryManager.addLibrary(libraryName);
             }
             catch (ClassNotFoundException e)
             {
@@ -492,7 +537,9 @@ public class LibraryDialogFrame extends GenericFrame implements LibraryListener
             catch (InvalidLibraryException e)
             {
                 setStatusMessage(libraryName + ": Not a Library");
-            }
+            } catch (IOException e) {
+            	e.printStackTrace();
+			}
         }
         librariesDisplayPanel.removeAll();
         displayLibraryManagerStatus();

@@ -273,6 +273,7 @@ public class EngineRunner implements java.io.Serializable, Runnable{
      */
     public void solveHalt() {
         env.mustStop();
+        libraryManager.onSolveHalt();
     }
     
     /**

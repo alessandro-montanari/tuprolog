@@ -332,8 +332,6 @@ public class JavaLibraryTestCase extends TestCase {
 		
 	}
 	
-	
-	
 	/**
 	 * @param valid: used to change a valid/invalid array of paths
 	 */

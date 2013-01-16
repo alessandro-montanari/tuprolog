@@ -23,6 +23,8 @@ import org.junit.runners.Suite.SuiteClasses;
 				SpyEventTestCase.class, 
 				VarTestCase.class, 
 				TestVarIsEqual.class, 
-				DynamicURLClassLoaderTestCase.class
+				DynamicURLClassLoaderTestCase.class,
+				ISOIOLibraryTestCase.class,
+				SocketLibTest.class
 })
 public class TuPrologTestSuite {}
