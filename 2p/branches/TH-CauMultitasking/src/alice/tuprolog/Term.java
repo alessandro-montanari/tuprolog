@@ -32,8 +32,8 @@ import alice.util.OneWayList;
  * @see Var
  * @see  Number
  */
-@SuppressWarnings("serial")
 public abstract class Term implements Serializable {
+	private static final long serialVersionUID = 1L;
 
     // true and false constants
     public static final Term TRUE  = new Struct("true");
