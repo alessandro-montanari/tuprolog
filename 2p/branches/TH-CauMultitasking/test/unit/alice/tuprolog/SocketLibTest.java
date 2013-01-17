@@ -14,7 +14,7 @@ public class SocketLibTest {
 	private static  Prolog engine2=null;
 
 	@BeforeClass
-	public static void before() throws InterruptedException {
+	public static void before() throws InterruptedException, InvalidTheoryException, MalformedGoalException {
 		engine = new Prolog();
 		engine2=new Prolog();
 		
@@ -88,18 +88,15 @@ public class SocketLibTest {
 	@Test
 	public void testTcp_socket_server_close_1() throws PrologError, InvalidTheoryException, MalformedGoalException {
 		Struct Address=new Struct("127.0.0.1:4441");
-		Term Socket= new Var();
-		Struct Options=new Struct("[]");
-			
-		SocketLibrary lib= (SocketLibrary) engine.getLibrary("alice.tuprolog.lib.SocketLibrary");
-		lib.tcp_socket_server_open_3(Address, Socket, Options);
-	
-		boolean close=lib.tcp_socket_server_close_1(Socket);
-		
-		assertTrue(close);
-		
-		
+        Term Socket= new Var();
+        Struct Options=new Struct("[]");
+                
+        SocketLibrary lib= (SocketLibrary) engine.getLibrary("alice.tuprolog.lib.SocketLibrary");
+        lib.tcp_socket_server_open_3(Address, Socket, Options);
 
+        boolean close=lib.tcp_socket_server_close_1(Socket);
+        
+        assertTrue(close);
 	}
 
 	@Test

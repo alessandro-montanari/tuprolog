@@ -18,6 +18,7 @@ public class EngineManager implements java.io.Serializable {
 	private Hashtable<Integer, Integer> threads;	//key: pid; obj: id
 	private int rootID;
 	private int rootPID;
+	private int baseID;
 	
 	private Hashtable<String, TermQueue> queues;
 	private Hashtable<String, ReentrantLock> locks;
@@ -248,7 +249,11 @@ public class EngineManager implements java.io.Serializable {
 	
 	ExecutionContext getCurrentContext() {
 		EngineRunner runner=findRunner();
-		return runner.getCurrentContext();
+		if(runner!=null)
+			return runner.getCurrentContext();
+		if(!runners.containsKey(baseID))
+			libCall();
+		return runners.get(baseID).getCurrentContext();
 	}
 
 	
@@ -281,6 +286,16 @@ public class EngineManager implements java.io.Serializable {
 		addRunner(er, rootID);
 		
 		return er.solve();
+	}
+	
+	public synchronized void libCall() {
+		System.out.println("Root - pid: "+Thread.currentThread().getId());
+		baseID = 0;
+		
+		EngineRunner er = new EngineRunner(baseID);
+		er.initialize(vm);
+		
+		addRunner(er, baseID);
 	}
 	
 	public void solveEnd() {
