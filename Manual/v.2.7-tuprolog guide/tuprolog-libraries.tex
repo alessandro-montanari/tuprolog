@@ -1675,3 +1675,148 @@ When a term is written via \texttt{write\_term/3}, the following rules apply:
 \end{itemize}
 
 
+
+%---------------------------------------------------------------------
+\section{SocketLibrary}
+\label{sec:socket-library}
+%---------------------------------------------------------------------
+
+\noindent \emph{Library Dependencies}: BasicLibrary.
+
+This library provides support for TCP and UDP sockets. To this end, the library provides functionalities for 
+\begin{itemize}
+  \item handling server sockets---namely, creating and closing a server socket, and accepting incoming connections;
+  \item handling client sockets---namely, opening a socket establishing a connection to a given address;
+  \item handling client/server communication, both in synchronous and asynchronous mode.
+\end{itemize}
+
+As an example, let us consider the following TCP server-side code:\\
+
+\begin{verbatim}
+server(X,Y,Z):- tcp_socket_server_open('127.0.0.1:4444', Sock,[]),
+                tcp_socket_server_accept(Sock,ClientAddr,Slave),
+                read_from_socket(Slave,X,[]),
+                write_to_socket(Slave,echo(X)),
+                read_from_socket(Slave,Y,[]),
+                write_to_socket(Slave,echo(Y)),
+                read_from_socket(Slave,Z,[]),
+                write_to_socket(Slave,echo(Z)),
+                tcp_socket_server_close(Sock).
+\end{verbatim}
+
+\noindent to be coupled with the following TCP client-side code:\\
+
+\begin{verbatim}
+client(X,Y,Z):- tcp_socket_client_open('127.0.0.1:4444',Sock),
+                write_to_socket(Sock,test1),
+                read_from_socket(Sock,X,[]),
+                write_to_socket(Sock,test2),
+                read_from_socket(Sock,Y,[]),
+                write_to_socket(Sock,test3),
+                read_from_socket(Sock,Z,[]).
+\end{verbatim}
+
+\noindent In this scenario, the client opens a connection towards the server -- that is supposed to be already up and running, waiting connection requests on its server socket  -- and starts exchanging messages with the server.
+
+
+%---------------------------------------------------------------------
+\subsection{Predicates}
+%---------------------------------------------------------------------
+
+\noindent The following socket handling predicates are provided:
+
+\begin{itemize}
+%
+\item \bti{tcp\_socket\_server\_open/3}\\
+    \noindent\bt{tcp\_socket\_server\_open(+Address, -Socket, +Options)} is true iff \bt{Address} represents a valid Internet address, and \bt{Socket} can be unified with a newly-created server socket; \bt{Options} is a possibly-empty list of options---currently, only the maximum number od connection request can be specified in the form of the \texttt{backlog(\textit{N})} term: if unspecified, the default value is \texttt{backlog(0)}, meaning the queue is unlimited.
+
+    \template{tcp\_socket\_server\_open(+term, -term, +list)}
+
+    \textbf{\exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} if \texttt{Category} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).}
+
+\item \bti{tcp\_socket\_server\_accept/3}\\
+    \noindent\bt{tcp\_socket\_server\_accept(+ServerSocket, -ClientAddress,\\
+    -ClientSlaveSocket)} is true iff \bt{ServerSocket} represents a valid server socket address, and \bt{ClientAddress} can be unified with the client address in the \texttt{\textit{Address}:\textit{Port}} form, and \bt{ClientSlaveSocket} can be unified with the newly-created client socket.
+
+    \template{tcp\_socket\_server\_accept(+term, -term, -term)}
+
+    \textbf{\exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} if \texttt{Category} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).}
+
+\item \bti{tcp\_socket\_server\_close/1}\\
+    \noindent\bt{tcp\_socket\_server\_close(+ServerSocket)} is true iff \bt{ServerSocket} represents a valid server socket; as a side effect, the socket is closed.
+
+    \template{tcp\_socket\_server\_close(+term)}
+
+    \textbf{\exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} if \texttt{Category} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).}
+    
+\item \bti{tcp\_socket\_client\_open/2}\\
+    \noindent\bt{tcp\_socket\_client\_open(+Address, -Socket)} is true iff \bt{Address} represents a valid Internet address in the \texttt{\textit{Address}:\textit{Port}} form, a server is waiting for incoming connection at that address, and \texttt{Socket} is unified with a newly-created socket.
+
+    \template{tcp\_socket\_client\_open(+term, -term)}
+
+    \textbf{\exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} if \texttt{Category} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).}    
+
+\item \bti{write\_to\_socket/2}\\
+    \noindent\bt{write\_to\_socket(+Socket, +Msg)} is true iff \bt{Socket} represents a valid socket with an open associated output stream, and \texttt{Msg} is a valid term representing the message to be sent; as a side effect, the message is sent onto the stream.
+
+    \template{write\_to\_socket(+term, +term)}
+
+    \textbf{\exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} if \texttt{Category} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).}    
+
+\item \bti{read\_from\_socket/2}\\
+    \noindent\bt{read\_from\_socket(+Socket, -Msg, +Options)} is true iff \bt{Socket} represents a valid socket with an open associated input stream, and \texttt{Options} is a valid option list---currently, only a timeout in milliseconds can be specified; as a side effect, a message is read from the stream and unified with \texttt{Msg}. If no message is available, the primitive suspends until one arrives (synchronous behaviour).
+
+    \template{read\_from\_socket(+term, -term, +list)}
+
+    \textbf{\exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} if \texttt{Category} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).}  
+
+\item \bti{aread\_from\_socket/2}\\
+    \noindent\bt{aread\_from\_socket(+Socket, +Options)} is the asynchronous version of the above primitive; again, it is true iff \bt{Socket} represents a valid socket with an open associated input stream, and \texttt{Options} is a valid option list. As a side effect, a message is eventually read from the stream and asserted into the current prolog theory via \texttt{asserta}.
+    Two options are available: the first makes it possible to set a timeout in milliseconds, as above; the other makes it possible to specify that the message is eventually asserted at the end of the current theory (i.e. via \texttt{assertz}) instead of at the top (i.e. via \texttt{asserta}, the default behaviour).
+
+    \template{aread\_from\_socket(+term, +list)}
+
+    \textbf{\exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} if \texttt{Category} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).} 
+            
+\end{itemize}
+
+%---------------------------------------------------------------------
+\subsection{Operators}
+%---------------------------------------------------------------------
+
+No operators are defined in this library.
+
+%The full list of SocketLibrary operators, with their priority and associativity, is reported in Table \ref{tab:socketlibrary-operators}.
+%
+%\begin{table}[h]
+%    \begin{center}{\small\tt
+%    \begin{tabular}{p{2cm}|p{3cm}|p{3cm}}\hline\hline
+%    Operator & Associativity & Priority \\ \hline
+%%    --> & xfx & 1200\\
+%    \hline\hline
+%    \end{tabular}
+%    }\end{center}
+%    \caption{SocketLibrary operators.}\label{tab:socketlibrary-operators}
+%\end{table}
+
+%---------------------------------------------------------------------
+\subsection{Java-side use: Term hierarchy extension}
+%---------------------------------------------------------------------
+SocketLibrary introduces four further \texttt{Term} types to represent sockets: more precisely, \texttt{AbstractSocket} (a direct child of \texttt{Term}) represents the generic socket, whose concrete realisations are provided by its three children--- \texttt{Client\_Socket} and \texttt{Server\_Socket} in the TCP case, \texttt{Dataggram\_Socket} in the UDP case. 
+
+Consequently, \texttt{AbstractSocket} redefines some \texttt{Term} methods and defines some new abstract methods, implemented in \texttt{Client\_Socket} and \texttt{Server\_Socket}:
+\begin{itemize}
+  \item \texttt{public abstract boolean isClientSocket();}
+  \item \texttt{public abstract boolean isServerSocket();}
+  \item \texttt{public abstract boolean isDatagramSocket();}
+  \item \texttt{public abstract Object getSocket();}
+  \item \texttt{public abstract InetAddress getAddress();}
+\end{itemize}
+
