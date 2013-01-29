@@ -178,9 +178,9 @@ For the sake of concreteness, Table \ref{tab:javalibrary-counter-example} report
         By writing so, the object represented by \texttt{\textit{ObjectRef}} is considered to belong to type \texttt{\textit{Type}}: the latter can be either a class name, as above, or a primitive Java type such as \texttt{int}.
 
   \item [classpath specification, class loading and dynamic compilation]
-  
+
         The \texttt{set\_classpath/1} and \texttt{get\_classpath/1} respectively sets/gets the given path list into a \tuprolog{} engine permanently; accordingly, after a path has been set via \texttt{set\_classpath/1}, all the JavaLibrary predicates (object creation, method calling, etc) can be used transparently, with no need of any further path specification.
-  
+
         The \texttt{java\_class/4} creates, compiles and loads a new Java class from a source text:
 
         \texttt{~~~~~java\_class(\textit{SourceText}, \textit{FullClassName},}\\
@@ -569,15 +569,15 @@ Throughout this Section, only the exceptions specifically related to the JavaLib
 %---------------------------------------------------------------------
 
 \begin{itemize}
-\item \bti{set\_class\_path/1}\\
-    \noindent\bt{set\_class\_path(PathList)} is true if \bt{PathList} is a list of strings representing class paths. As a side effect, the \tuprolog{} class loader of the current \tuprolog{} engine is permanently configured to load classes \textit{also} from the specified paths, other than the default ones.
+\item \bti{set\_classpath/1}\\
+    \noindent\bt{set\_classpath(PathList)} is true if \bt{PathList} is a list of strings representing class paths. As a side effect, the \tuprolog{} class loader of the current \tuprolog{} engine is permanently configured to load classes \textit{also} from the specified paths, other than the default ones.
 
-    \template{set\_class\_path(+path\_list)}
+    \template{set\_classpath(+path\_list)}
 
-\item \bti{get\_class\_path/1}\\
-    \noindent\bt{get\_class\_path(PathList)} is true if \bt{PathList} is an unbound variable, which is unified with the list of strings representing the current class paths. No side effects occur on the \tuprolog{} class loader configuration.
+\item \bti{get\_classpath/1}\\
+    \noindent\bt{get\_classpath(PathList)} is true if \bt{PathList} is an unbound variable, which is unified with the list of strings representing the current class paths. No side effects occur on the \tuprolog{} class loader configuration.
 
-    \template{get\_class\_path(?path\_list)}
+    \template{get\_classpath(?path\_list)}
 
 \item \bti{java\_object\_string/2}\\
     \noindent\bt{java\_object\_string(ObjectRef, String)} is true if
