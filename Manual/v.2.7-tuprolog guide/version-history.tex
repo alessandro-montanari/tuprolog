@@ -305,6 +305,8 @@ Another major addition is the new support to .NET augmenting (Section \ref{sec:d
 
 \textbf{To be confirmed:\textit{The support for handling the Standard Input from Java has been improved, enabling stdin (e.g. keyboard) input not only from the CUIConsole, but also from the \tuprolog{} GUI. This improvement also affects the Android and the Eclipse Plugin version.}}
 
+Among the bug fixes, an annoying bug on the \texttt{abolish/1} predicate has been fixed (see \texttt{http://sourceforge.net/p/tuprolog/bugs/62/} for details).
+
 Other minor changes include the addition of the \texttt{serialVersionUID=1L} in \texttt{Struct}, \texttt{Term} and \texttt{Var} classes where it was missing, causing compilation problems on the Android platform.
 Some class methods have also been \texttt{synchronized} to make them work seamlessly with the new \texttt{SocketLib}.
 
