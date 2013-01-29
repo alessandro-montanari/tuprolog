@@ -142,4 +142,5 @@
 \contentsline {subsection}{\numberline {8.8.8}From Version 2.3.1 to Version 2.4}{202}{subsection.8.8.8}
 \contentsline {subsection}{\numberline {8.8.9}From Version 2.4 to Version 2.5}{202}{subsection.8.8.9}
 \contentsline {subsection}{\numberline {8.8.10}From Version 2.5 to Version 2.6}{202}{subsection.8.8.10}
-\contentsline {section}{\numberline {8.9}Acknowledgments}{202}{section.8.9}
+\contentsline {subsection}{\numberline {8.8.11}From Version 2.6 to Version 2.7}{202}{subsection.8.8.11}
+\contentsline {section}{\numberline {8.9}Acknowledgments}{203}{section.8.9}

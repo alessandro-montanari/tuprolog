@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.11 (MiKTeX 2.9) (preloaded format=pdflatex 2012.9.7)  10 JAN 2013 19:48
+This is pdfTeX, Version 3.1415926-1.40.11 (MiKTeX 2.9) (preloaded format=pdflatex 2012.9.7)  29 JAN 2013 18:42
 entering extended mode
 **E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog*guide/tuprolo
 g-guide.tex
@@ -303,7 +303,7 @@ ii"
 \MPscratchDim=\dimen109
 \MPnumerator=\count107
 \everyMPtoPDFconversion=\toks16
-) <images/logo.png, id=583, 182.6825pt x 199.74625pt>
+) <images/logo.png, id=587, 182.6825pt x 199.74625pt>
 File: images/logo.png Graphic file (type png)
  <use images/logo.png>
 LaTeX Font Info:    External font `cmex10' loaded for size
@@ -394,11 +394,11 @@ Chapter 3.
 
 
 
-] <images/tuprologIDE.png, id=841, 352.31625pt x 406.51875pt>
+] <images/tuprologIDE.png, id=846, 352.31625pt x 406.51875pt>
 File: images/tuprologIDE.png Graphic file (type png)
 
 <use images/tuprologIDE.png>
-<images/tuprologCUI.png, id=842, 507.69675pt x 198.14024pt>
+<images/tuprologCUI.png, id=847, 507.69675pt x 198.14024pt>
 File: images/tuprologCUI.png Graphic file (type png)
 
 <use images/tuprologCUI.png>
@@ -417,15 +417,15 @@ LaTeX Font Warning: Font shape `OMS/cmtt/m/n' undefined
 [14] [15 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog guide
 /images/tuprologIDE.png (PNG copy)> <E:/Home/Technologies/tuProlog/repo-google/
 Manual/v.2.7-tuprolog guide/images/tuprologCUI.png (PNG copy)>]
-<images/tuprologAgent.png, id=855, 555.87675pt x 83.71275pt>
+<images/tuprologAgent.png, id=860, 555.87675pt x 83.71275pt>
 File: images/tuprologAgent.png Graphic file (type png)
 
 <use images/tuprologAgent.png>
-<images/syntaxErrorFound.png, id=856, 352.31625pt x 406.51875pt>
+<images/syntaxErrorFound.png, id=861, 352.31625pt x 406.51875pt>
 File: images/syntaxErrorFound.png Graphic file (type png)
 
 <use images/syntaxErrorFound.png>
-<images/setTheorySucceeded.png, id=857, 352.31625pt x 406.51875pt>
+<images/setTheorySucceeded.png, id=862, 352.31625pt x 406.51875pt>
 File: images/setTheorySucceeded.png Graphic file (type png)
 
 <use images/setTheorySucceeded.png> [16 <E:/Home/Technologies/tuProlog/repo-goo
@@ -433,20 +433,20 @@ gle/Manual/v.2.7-tuprolog guide/images/tuprologAgent.png (PNG copy)>] [17 <E:/H
 ome/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog guide/images/syntax
 ErrorFound.png (PNG copy)> <E:/Home/Technologies/tuProlog/repo-google/Manual/v.
 2.7-tuprolog guide/images/setTheorySucceeded.png (PNG copy)>]
-<images/gui-solutions.png, id=871, 352.31625pt x 406.51875pt>
+<images/gui-solutions.png, id=876, 352.31625pt x 406.51875pt>
 File: images/gui-solutions.png Graphic file (type png)
 
 <use images/gui-solutions.png>
-<images/gui-bindings.png, id=872, 352.31625pt x 406.51875pt>
+<images/gui-bindings.png, id=877, 352.31625pt x 406.51875pt>
 File: images/gui-bindings.png Graphic file (type png)
 
 <use images/gui-bindings.png> [18 <E:/Home/Technologies/tuProlog/repo-google/Ma
 nual/v.2.7-tuprolog guide/images/gui-solutions.png (PNG copy)>]
-<images/gui-output.png, id=884, 352.31625pt x 406.51875pt>
+<images/gui-output.png, id=889, 352.31625pt x 406.51875pt>
 File: images/gui-output.png Graphic file (type png)
 
 <use images/gui-output.png>
-<images/gui-exceptions.png, id=885, 352.31625pt x 406.51875pt>
+<images/gui-exceptions.png, id=890, 352.31625pt x 406.51875pt>
 File: images/gui-exceptions.png Graphic file (type png)
 
 <use images/gui-exceptions.png> [19 <E:/Home/Technologies/tuProlog/repo-google/
@@ -454,21 +454,21 @@ Manual/v.2.7-tuprolog guide/images/gui-bindings.png (PNG copy)>] [20 <E:/Home/T
 echnologies/tuProlog/repo-google/Manual/v.2.7-tuprolog guide/images/gui-output.
 png (PNG copy)> <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolo
 g guide/images/gui-exceptions.png (PNG copy)>]
-<images/gui-debug.png, id=899, 349.90726pt x 406.51875pt>
+<images/gui-debug.png, id=904, 349.90726pt x 406.51875pt>
 File: images/gui-debug.png Graphic file (type png)
 
 <use images/gui-debug.png>
-<images/gui-library-manager.png, id=901, 234.27525pt x 264.99pt>
+<images/gui-library-manager.png, id=906, 234.27525pt x 264.99pt>
 File: images/gui-library-manager.png Graphic file (type png)
 
 <use images/gui-library-manager.png> [21] [22 <E:/Home/Technologies/tuProlog/re
 po-google/Manual/v.2.7-tuprolog guide/images/gui-debug.png> <E:/Home/Technologi
 es/tuProlog/repo-google/Manual/v.2.7-tuprolog guide/images/gui-library-manager.
-png (PNG copy)>] <images/gui-config.png, id=916, 337.26pt x 251.7405pt>
+png (PNG copy)>] <images/gui-config.png, id=921, 337.26pt x 251.7405pt>
 File: images/gui-config.png Graphic file (type png)
 
 <use images/gui-config.png>
-<images/tuprologPluginGUI.png, id=918, 745.5855pt x 434.8245pt>
+<images/tuprologPluginGUI.png, id=923, 745.5855pt x 434.8245pt>
 File: images/tuprologPluginGUI.png Graphic file (type png)
 
 <use images/tuprologPluginGUI.png> [23 <E:/Home/Technologies/tuProlog/repo-goog
@@ -479,23 +479,23 @@ Overfull \hbox (6.3988pt too wide) in paragraph at lines 276--277
 's con-text menu,
  []
 
-<images/plugin1.png, id=929, 277.035pt x 179.4705pt>
+<images/plugin1.png, id=934, 277.035pt x 179.4705pt>
 File: images/plugin1.png Graphic file (type png)
  <use images/plugin1.png>
-<images/plugin2.png, id=930, 369.17924pt x 314.3745pt>
+<images/plugin2.png, id=935, 369.17924pt x 314.3745pt>
 File: images/plugin2.png Graphic file (type png)
 
 <use images/plugin2.png>
-<images/plugin3.png, id=931, 369.17924pt x 268.00125pt>
+<images/plugin3.png, id=936, 369.17924pt x 268.00125pt>
 File: images/plugin3.png Graphic file (type png)
 
-<use images/plugin3.png> <images/plugin4.png, id=932, 219.219pt x 317.988pt>
+<use images/plugin3.png> <images/plugin4.png, id=937, 219.219pt x 317.988pt>
 File: images/plugin4.png Graphic file (type png)
 
-<use images/plugin4.png> <images/plugin5.png, id=933, 674.52pt x 507.0945pt>
+<use images/plugin4.png> <images/plugin5.png, id=938, 674.52pt x 507.0945pt>
 File: images/plugin5.png Graphic file (type png)
 
-<use images/plugin5.png> <images/plugin6.png, id=934, 687.7695pt x 289.08pt>
+<use images/plugin5.png> <images/plugin6.png, id=939, 687.7695pt x 289.08pt>
 File: images/plugin6.png Graphic file (type png)
 
 <use images/plugin6.png> [24 <E:/Home/Technologies/tuProlog/repo-google/Manual/
@@ -507,16 +507,16 @@ nual/v.2.7-tuprolog guide/images/plugin3.png (PNG copy)>] [26 <E:/Home/Technolo
 gies/tuProlog/repo-google/Manual/v.2.7-tuprolog guide/images/plugin4.png (PNG c
 opy)> <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog guide/im
 ages/plugin5.png (PNG copy)>]
-<images/plugin7.png, id=959, 674.52pt x 507.0945pt>
+<images/plugin7.png, id=964, 674.52pt x 507.0945pt>
 File: images/plugin7.png Graphic file (type png)
  <use images/plugin7.png>
-<images/plugin8.png, id=960, 186.6975pt x 96.36pt>
+<images/plugin8.png, id=965, 186.6975pt x 96.36pt>
 File: images/plugin8.png Graphic file (type png)
  <use images/plugin8.png>
-<images/plugin9.png, id=961, 99.37125pt x 167.4255pt>
+<images/plugin9.png, id=966, 99.37125pt x 167.4255pt>
 File: images/plugin9.png Graphic file (type png)
  <use images/plugin9.png>
-<images/plugin10.png, id=962, 231.264pt x 271.0125pt>
+<images/plugin10.png, id=967, 231.264pt x 271.0125pt>
 File: images/plugin10.png Graphic file (type png)
 
 <use images/plugin10.png> [27 <E:/Home/Technologies/tuProlog/repo-google/Manual
@@ -525,17 +525,17 @@ olog/repo-google/Manual/v.2.7-tuprolog guide/images/plugin7.png (PNG copy)> <E:
 /Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog guide/images/plug
 in8.png (PNG copy)>] [28 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.
 7-tuprolog guide/images/plugin9.png (PNG copy)>]
-<images/plugin11.png, id=979, 274.02374pt x 87.32625pt>
+<images/plugin11.png, id=984, 274.02374pt x 87.32625pt>
 File: images/plugin11.png Graphic file (type png)
 
 <use images/plugin11.png> [29 <E:/Home/Technologies/tuProlog/repo-google/Manual
 /v.2.7-tuprolog guide/images/plugin10.png (PNG copy)> <E:/Home/Technologies/tuP
 rolog/repo-google/Manual/v.2.7-tuprolog guide/images/plugin11.png (PNG copy)>]
-<images/android1.png, id=991, 289.08pt x 284.86424pt>
+<images/android1.png, id=996, 289.08pt x 284.86424pt>
 File: images/android1.png Graphic file (type png)
 
 <use images/android1.png>
-<images/android2.png, id=992, 289.08pt x 164.41425pt>
+<images/android2.png, id=997, 289.08pt x 164.41425pt>
 File: images/android2.png Graphic file (type png)
 
 <use images/android2.png>
@@ -543,10 +543,10 @@ Overfull \hbox (43.9348pt too wide) in paragraph at lines 388--390
 [][] [] 
  []
 
-[30] <images/android3.png, id=1003, 289.08pt x 271.0125pt>
+[30] <images/android3.png, id=1008, 289.08pt x 271.0125pt>
 File: images/android3.png Graphic file (type png)
 
-<use images/android3.png> <images/android4.png, id=1004, 289.08pt x 216.81pt>
+<use images/android3.png> <images/android4.png, id=1009, 289.08pt x 216.81pt>
 File: images/android4.png Graphic file (type png)
 
 <use images/android4.png>
@@ -554,10 +554,10 @@ Overfull \hbox (43.9348pt too wide) in paragraph at lines 400--402
 [][] [] 
  []
 
-<images/android6.png, id=1005, 289.08pt x 187.902pt>
+<images/android6.png, id=1010, 289.08pt x 187.902pt>
 File: images/android6.png Graphic file (type png)
  <use images/android6.png>
-<images/android5.png, id=1006, 289.08pt x 202.95825pt>
+<images/android5.png, id=1011, 289.08pt x 202.95825pt>
 File: images/android5.png Graphic file (type png)
 
 <use images/android5.png>
@@ -565,10 +565,10 @@ Overfull \hbox (43.9348pt too wide) in paragraph at lines 406--408
 [][] [] 
  []
 
-<images/android7.png, id=1007, 289.08pt x 481.8pt>
+<images/android7.png, id=1012, 289.08pt x 481.8pt>
 File: images/android7.png Graphic file (type png)
  <use images/android7.png>
-<images/android8.png, id=1008, 289.08pt x 357.13425pt>
+<images/android8.png, id=1013, 289.08pt x 357.13425pt>
 File: images/android8.png Graphic file (type png)
 
 <use images/android8.png>
@@ -1182,12 +1182,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 1098--1099
 
  []
 
-<images/dcg-example.png, id=1272, 355.3275pt x 274.02374pt>
+<images/dcg-example.png, id=1277, 355.3275pt x 274.02374pt>
 File: images/dcg-example.png Graphic file (type png)
 
 <use images/dcg-example.png> [82 <E:/Home/Technologies/tuProlog/repo-google/Man
 ual/v.2.7-tuprolog guide/images/dcg-example.png (PNG copy)>]
-<images/isoiolibrary-table.png, id=1279, 234.27525pt x 335.45325pt>
+<images/isoiolibrary-table.png, id=1284, 234.27525pt x 335.45325pt>
 File: images/isoiolibrary-table.png Graphic file (type png)
 
 <use images/isoiolibrary-table.png> [83] [84] [85 <E:/Home/Technologies/tuProlo
@@ -1695,11 +1695,11 @@ Underfull \hbox (badness 10000) in paragraph at lines 904--905
 
  []
 
-<images/exceptions1a.png, id=1536, 378.213pt x 283.65974pt>
+<images/exceptions1a.png, id=1541, 378.213pt x 283.65974pt>
 File: images/exceptions1a.png Graphic file (type png)
 
 <use images/exceptions1a.png>
-<images/exceptions1b.png, id=1537, 364.9635pt x 265.59225pt>
+<images/exceptions1b.png, id=1542, 364.9635pt x 265.59225pt>
 File: images/exceptions1b.png Graphic file (type png)
 
 <use images/exceptions1b.png>
@@ -1708,7 +1708,7 @@ Overfull \hbox (13.6647pt too wide) in paragraph at lines 923--923
  true)).[] 
  []
 
-<images/exceptions2.png, id=1539, 380.01974pt x 271.0125pt>
+<images/exceptions2.png, id=1544, 380.01974pt x 271.0125pt>
 File: images/exceptions2.png Graphic file (type png)
 
 <use images/exceptions2.png>
@@ -1779,7 +1779,7 @@ Overfull \hbox (50.33858pt too wide) in paragraph at lines 1273--1322
 LaTeX Warning: Float too large for page by 45.13307pt on input line 1325.
 
 [136] [137] [138]
-<images/console-interpreter.png, id=1607, 555.87675pt x 213.79875pt>
+<images/console-interpreter.png, id=1612, 555.87675pt x 213.79875pt>
 File: images/console-interpreter.png Graphic file (type png)
 
 <use images/console-interpreter.png>
@@ -1818,7 +1818,7 @@ Overfull \hbox (0.95204pt too wide) in paragraph at lines 1417--1419
 anks to []'s
  []
 
-<images/onOutput.png, id=1628, 416.757pt x 118.041pt>
+<images/onOutput.png, id=1633, 416.757pt x 118.041pt>
 File: images/onOutput.png Graphic file (type png)
 
 <use images/onOutput.png>
@@ -1860,23 +1860,23 @@ Underfull \hbox (badness 10000) in paragraph at lines 1508--1511
 
  []
 
-[143] [144] <images/TestLibrary3.png, id=1666, 359.54324pt x 320.99925pt>
+[143] [144] <images/TestLibrary3.png, id=1671, 359.54324pt x 320.99925pt>
 File: images/TestLibrary3.png Graphic file (type png)
 
 <use images/TestLibrary3.png>
-<images/TestLibrary4.png, id=1667, 555.87675pt x 202.95825pt>
+<images/TestLibrary4.png, id=1672, 555.87675pt x 202.95825pt>
 File: images/TestLibrary4.png Graphic file (type png)
 
 <use images/TestLibrary4.png>
-<images/TestLibrary1.png, id=1670, 237.88875pt x 181.27725pt>
+<images/TestLibrary1.png, id=1675, 237.88875pt x 181.27725pt>
 File: images/TestLibrary1.png Graphic file (type png)
 
 <use images/TestLibrary1.png>
-<images/TestLibrary2.png, id=1671, 237.88875pt x 196.93575pt>
+<images/TestLibrary2.png, id=1676, 237.88875pt x 196.93575pt>
 File: images/TestLibrary2.png Graphic file (type png)
 
 <use images/TestLibrary2.png>
-<images/TestLibrary5.png, id=1674, 555.87675pt x 202.95825pt>
+<images/TestLibrary5.png, id=1679, 555.87675pt x 202.95825pt>
 File: images/TestLibrary5.png Graphic file (type png)
 
 <use images/TestLibrary5.png> [145] [146] [147 <E:/Home/Technologies/tuProlog/r
@@ -2089,12 +2089,12 @@ t(Value),[]
  []
 
 [173] [174]
-<images/dotnet-oolibrary-using-StringTokenizer.png, id=1879, 352.31625pt x 263.
+<images/dotnet-oolibrary-using-StringTokenizer.png, id=1884, 352.31625pt x 263.
 18324pt>
 File: images/dotnet-oolibrary-using-StringTokenizer.png Graphic file (type png)
 
  <use images/dotnet-oolibrary-using-StringTokenizer.png>
-<images/dotnet-oolibrary-dynamiccompilation.png, id=1880, 352.31625pt x 317.385
+<images/dotnet-oolibrary-dynamiccompilation.png, id=1885, 352.31625pt x 317.385
 76pt>
 File: images/dotnet-oolibrary-dynamiccompilation.png Graphic file (type png)
  <use images/dotnet-oolibrary-dynamiccompilation.png>
@@ -2123,23 +2123,23 @@ ean',''], StudVB),[]
 de/images/dotnet-oolibrary-using-StringTokenizer.png (PNG copy)> <E:/Home/Techn
 ologies/tuProlog/repo-google/Manual/v.2.7-tuprolog guide/images/dotnet-oolibrar
 y-dynamiccompilation.png (PNG copy)>] [177]
-<images/dotnet-visualstudio1.png, id=1910, 350.5095pt x 235.47975pt>
+<images/dotnet-visualstudio1.png, id=1915, 350.5095pt x 235.47975pt>
 File: images/dotnet-visualstudio1.png Graphic file (type png)
 
 <use images/dotnet-visualstudio1.png>
-<images/dotnet-visualstudio2.png, id=1911, 326.4195pt x 246.9225pt>
+<images/dotnet-visualstudio2.png, id=1916, 326.4195pt x 246.9225pt>
 File: images/dotnet-visualstudio2.png Graphic file (type png)
 
 <use images/dotnet-visualstudio2.png>
-<images/dotnet-visualstudio3.png, id=1912, 331.83975pt x 114.4275pt>
+<images/dotnet-visualstudio3.png, id=1917, 331.83975pt x 114.4275pt>
 File: images/dotnet-visualstudio3.png Graphic file (type png)
 
 <use images/dotnet-visualstudio3.png>
-<images/dotnet-visualstudio5.png, id=1913, 336.65775pt x 113.82526pt>
+<images/dotnet-visualstudio5.png, id=1918, 336.65775pt x 113.82526pt>
 File: images/dotnet-visualstudio5.png Graphic file (type png)
 
 <use images/dotnet-visualstudio5.png>
-<images/dotnet-visualstudio4.png, id=1914, 365.56575pt x 456.5055pt>
+<images/dotnet-visualstudio4.png, id=1919, 365.56575pt x 456.5055pt>
 File: images/dotnet-visualstudio4.png Graphic file (type png)
 
 <use images/dotnet-visualstudio4.png>
@@ -2161,11 +2161,11 @@ e/images/dotnet-visualstudio3.png (PNG copy)> <E:/Home/Technologies/tuProlog/re
 po-google/Manual/v.2.7-tuprolog guide/images/dotnet-visualstudio5.png (PNG copy
 )>] [181 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog guide
 /images/dotnet-visualstudio4.png (PNG copy)>]
-<images/dotnet-testlibrary1.png, id=1947, 350.5095pt x 251.13824pt>
+<images/dotnet-testlibrary1.png, id=1952, 350.5095pt x 251.13824pt>
 File: images/dotnet-testlibrary1.png Graphic file (type png)
 
 <use images/dotnet-testlibrary1.png>
-<images/dotnet-testlibrary2.png, id=1948, 237.88875pt x 191.5155pt>
+<images/dotnet-testlibrary2.png, id=1953, 237.88875pt x 191.5155pt>
 File: images/dotnet-testlibrary2.png Graphic file (type png)
 
 <use images/dotnet-testlibrary2.png>
@@ -2177,11 +2177,11 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 de/images/dotnet-testlibrary1.png (PNG copy)> <E:/Home/Technologies/tuProlog/re
 po-google/Manual/v.2.7-tuprolog guide/images/dotnet-testlibrary2.png (PNG copy)
 >] [184] [185]
-<images/dotnet-codegen1.png, id=1979, 404.30292pt x 357.25925pt>
+<images/dotnet-codegen1.png, id=1984, 404.30292pt x 357.25925pt>
 File: images/dotnet-codegen1.png Graphic file (type png)
 
 <use images/dotnet-codegen1.png>
-<images/dotnet-codegen2.png, id=1980, 402.93935pt x 277.48953pt>
+<images/dotnet-codegen2.png, id=1985, 402.93935pt x 277.48953pt>
 File: images/dotnet-codegen2.png Graphic file (type png)
 
 <use images/dotnet-codegen2.png>
@@ -2191,7 +2191,7 @@ LaTeX Warning: Float too large for page by 0.70412pt on input line 622.
 [186] [187 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog gui
 de/images/dotnet-codegen1.png (PNG copy)> <E:/Home/Technologies/tuProlog/repo-g
 oogle/Manual/v.2.7-tuprolog guide/images/dotnet-codegen2.png (PNG copy)>]
-<images/dotnet-pipolo1.png, id=1993, 253.54726pt x 152.36925pt>
+<images/dotnet-pipolo1.png, id=1998, 253.54726pt x 152.36925pt>
 File: images/dotnet-pipolo1.png Graphic file (type png)
 
 <use images/dotnet-pipolo1.png>
@@ -2203,7 +2203,7 @@ st\OT1/cmr/m/n/10.95 , while class \OT1/cmtt/m/n/10.95 B \OT1/cmr/m/n/10.95 pro
 
 [188 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog guide/ima
 ges/dotnet-pipolo1.png (PNG copy)>]
-<images/dotnet-pipolo5.png, id=2003, 289.68225pt x 83.1105pt>
+<images/dotnet-pipolo5.png, id=2008, 289.68225pt x 83.1105pt>
 File: images/dotnet-pipolo5.png Graphic file (type png)
 
 <use images/dotnet-pipolo5.png>
@@ -2214,15 +2214,15 @@ Overfull \hbox (38.33858pt too wide) in paragraph at lines 710--711
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<images/dotnet-pipolo2.png, id=2006, 189.1065pt x 116.8365pt>
+<images/dotnet-pipolo2.png, id=2011, 189.1065pt x 116.8365pt>
 File: images/dotnet-pipolo2.png Graphic file (type png)
 
 <use images/dotnet-pipolo2.png>
-<images/dotnet-pipolo3.png, id=2007, 289.08pt x 238.491pt>
+<images/dotnet-pipolo3.png, id=2012, 289.08pt x 238.491pt>
 File: images/dotnet-pipolo3.png Graphic file (type png)
 
 <use images/dotnet-pipolo3.png>
-<images/dotnet-pipolo4.png, id=2008, 289.08pt x 183.68625pt>
+<images/dotnet-pipolo4.png, id=2013, 289.08pt x 183.68625pt>
 File: images/dotnet-pipolo4.png Graphic file (type png)
 
 <use images/dotnet-pipolo4.png>
@@ -2403,24 +2403,24 @@ erm#isNumber\OT1/cmr/m/n/10.95 : use \OT1/cmtt/m/n/10.95 instanceof
  []
 
 [198] [199] [200] [201] [202]
-Overfull \hbox (13.53226pt too wide) in paragraph at lines 308--309
+Overfull \hbox (13.53226pt too wide) in paragraph at lines 323--324
 []\OT1/cmr/m/n/10.95 Performance gain in 2.3.1: Michael Gat-tavec-chia, Paolo C
 on-tessi, Lorenzo
  []
 
-
-Overfull \hbox (0.77252pt too wide) in paragraph at lines 316--317
+[203]
+Overfull \hbox (0.77252pt too wide) in paragraph at lines 331--332
 []\OT1/cmr/m/n/10.95 New class load-ing mech-a-nism and reg-is-ter/1 pred-i-cat
 e in 2.6.x: Michele
  []
 
-) [203]
+) [204]
 ("E:\Home\Technologies\tuProlog\repo-google\Manual\v.2.7-tuprolog guide\tuprolo
 g-guide.bbl"
 Missing character: There is no Ð in font cmr10!
 )
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 125.
- [204
+ [205
 
 
 ]
@@ -2448,7 +2448,7 @@ dotnet.aux")
 -history.aux"))
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 125.
 Package rerunfilecheck Info: File `tuprolog-guide.out' has not changed.
-(rerunfilecheck)             Checksum: BA92FC34FA7E0D9DDA98C043C5F5F112;11971.
+(rerunfilecheck)             Checksum: F95B488F3251F0C2DE21C98E02C64897;12065.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
@@ -2458,10 +2458,10 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 6451 strings out of 494019
- 104621 string characters out of 3143862
+ 6454 strings out of 494019
+ 104665 string characters out of 3143862
  191247 words of memory out of 3000000
- 9018 multiletter control sequences out of 15000+200000
+ 9019 multiletter control sequences out of 15000+200000
  17328 words of font info for 61 fonts, out of 3000000 for 9000
  714 hyphenation exceptions out of 8191
  31i,11n,34p,869b,472s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -2489,9 +2489,9 @@ pe1/public/amsfonts/cm/cmti10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type
 ublic/amsfonts/cm/cmtt10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/pub
 lic/amsfonts/cm/cmtt8.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public
 /amsfonts/cm/cmtt9.pfb>
-Output written on tuprolog-guide.pdf (205 pages, 4446040 bytes).
+Output written on tuprolog-guide.pdf (206 pages, 4452922 bytes).
 PDF statistics:
- 2270 PDF objects out of 2487 (max. 8388607)
- 514 named destinations out of 1000 (max. 500000)
- 1466 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 2280 PDF objects out of 2487 (max. 8388607)
+ 516 named destinations out of 1000 (max. 500000)
+ 1474 words of extra memory for PDF output out of 10000 (max. 10000000)
 
