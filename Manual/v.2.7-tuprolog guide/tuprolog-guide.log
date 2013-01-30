@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.11 (MiKTeX 2.9) (preloaded format=pdflatex 2012.9.7)  29 JAN 2013 19:54
+This is pdfTeX, Version 3.1415926-1.40.11 (MiKTeX 2.9) (preloaded format=pdflatex 2012.9.7)  30 JAN 2013 15:45
 entering extended mode
 **E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog*guide/tuprolo
 g-guide.tex
@@ -1342,43 +1342,89 @@ Underfull \hbox (badness 10000) in paragraph at lines 1707--1708
 
  []
 
+
+Underfull \hbox (badness 10000) in paragraph at lines 1722--1723
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1730--1731
+
+ []
+
 [100]
-Overfull \hbox (6.67741pt too wide) in paragraph at lines 1755--1757
+Overfull \hbox (6.67741pt too wide) in paragraph at lines 1772--1774
 \OT1/cmtt/m/n/10.95 tcp[]socket[]client[]open(+Address, -Socket) \OT1/cmr/m/n/1
 0.95 is true iff \OT1/cmtt/m/n/10.95 Address \OT1/cmr/m/n/10.95 rep-
  []
 
-
-Overfull \hbox (1.50496pt too wide) in paragraph at lines 1763--1765
+[101]
+Overfull \hbox (1.50496pt too wide) in paragraph at lines 1780--1782
 \OT1/cmtt/m/n/10.95 write[]to[]socket(+Socket, +Msg) \OT1/cmr/m/n/10.95 is true
  iff \OT1/cmtt/m/n/10.95 Socket \OT1/cmr/m/n/10.95 rep-re-sents a valid
  []
 
-[101]
-Overfull \hbox (2.53836pt too wide) in paragraph at lines 1771--1773
+
+Overfull \hbox (2.53836pt too wide) in paragraph at lines 1788--1790
 \OT1/cmtt/m/n/10.95 read[]from[]socket(+Socket, -Msg, +Options) \OT1/cmr/m/n/10
 .95 is true iff \OT1/cmtt/m/n/10.95 Socket \OT1/cmr/m/n/10.95 rep-
  []
 
 
-Overfull \hbox (0.98787pt too wide) in paragraph at lines 1779--1782
+Overfull \hbox (0.98787pt too wide) in paragraph at lines 1796--1799
 \OT1/cmtt/m/n/10.95 aread[]from[]socket(+Socket, +Options) \OT1/cmr/m/n/10.95 i
 s the asyn-chronous ver-sion
  []
 
+[102]
+Overfull \hbox (2.53836pt too wide) in paragraph at lines 1814--1816
+\OT1/cmtt/m/n/10.95 udp[]socket[]close(+DatagramSocket) \OT1/cmr/m/n/10.95 is t
+rue iff \OT1/cmtt/m/n/10.95 DatagramSocket \OT1/cmr/m/n/10.95 rep-
+ []
 
-Overfull \hbox (29.48737pt too wide) in paragraph at lines 1812--1813
-\OT1/cmr/m/n/10.95 socket, whose con-crete re-al-i-sa-tions are pro-vided by it
-s two chil-dren, \OT1/cmtt/m/n/10.95 Client[]Socket
+[103]
+Overfull \hbox (11.87616pt too wide) in paragraph at lines 1866--1867
+\OT1/cmr/m/n/10.95 some new ab-stract meth-ods, im-ple-mented in the de-rived c
+lasses \OT1/cmtt/m/n/10.95 Client[]Socket
  []
 
 
-Overfull \hbox (21.21411pt too wide) in paragraph at lines 1812--1813
-\OT1/cmr/m/n/10.95 meth-ods and de-fines some new ab-stract meth-ods, im-ple-me
-nted in \OT1/cmtt/m/n/10.95 Client[]Socket
+Overfull \hbox (17.9956pt too wide) in paragraph at lines 1904--1904
+[]\OT1/cmtt/m/n/9 public void testTcp_socket_client_open_2() throws PrologExcep
+tion, PrologError {[] 
  []
 
-[102]) [103]
+
+Overfull \hbox (17.9956pt too wide) in paragraph at lines 1904--1904
+[]    \OT1/cmtt/m/n/9 String theory="client(X) :- tcp_socket_client_open('127.0
+.0.1:4444',Sock).";[] 
+ []
+
+[104]
+Overfull \hbox (17.9956pt too wide) in paragraph at lines 1904--1904
+[]\OT1/cmtt/m/n/9 public void testTcp_socket_client_open_2() throws PrologExcep
+tion, PrologError {[] 
+ []
+
+
+Overfull \hbox (27.4455pt too wide) in paragraph at lines 1904--1904
+[]    \OT1/cmtt/m/n/9 SocketLib lib= (SocketLib) engine2.getLibrary("alice.tuPr
+olog.lib.SocketLib");[] 
+ []
+
+
+Overfull \hbox (17.9956pt too wide) in paragraph at lines 1904--1904
+[]                                           \OT1/cmtt/m/n/9 MalformedGoalExcep
+tion, PrologError {[] 
+ []
+
+
+Overfull \hbox (27.4455pt too wide) in paragraph at lines 1904--1904
+[]    \OT1/cmtt/m/n/9 String theory = "client(X,Y,Z):tcp_socket_client_open('12
+7.0.0.1:4444',Sock),"[] 
+ []
+
+) [105]
 ("E:\Home\Technologies\tuProlog\repo-google\Manual\v.2.7-tuprolog guide\excepti
 ons.tex"
 Chapter 6.
@@ -1388,7 +1434,7 @@ Overfull \hbox (4.84718pt too wide) in paragraph at lines 10--11
 g stan-dard (ISO/IEC
  []
 
-[104
+[106
 
 
 
@@ -1403,7 +1449,7 @@ Overfull \hbox (6.12175pt too wide) in paragraph at lines 65--67
 cmtt/m/n/10.95 'error'\OT1/cmr/m/n/10.95 , not \OT1/cmtt/m/n/10.95 'error---'
  []
 
-[105]
+[107]
 Overfull \hbox (1.96469pt too wide) in paragraph at lines 75--80
 \OT1/cmtt/m/n/10.95 error(\OT1/cmtt/m/it/10.95 Error[]term\OT1/cmtt/m/n/10.95 ,
  \OT1/cmtt/m/it/10.95 Implementation[]defined[]term\OT1/cmtt/m/n/10.95 ) \OT1/c
@@ -1426,7 +1472,7 @@ Overfull \hbox (1.41974pt too wide) in paragraph at lines 86--90
 e[]sink\OT1/cmr/m/n/10.95 ,
  []
 
-[106]
+[108]
 Overfull \hbox (1.45009pt too wide) in paragraph at lines 95--97
 \OT1/cmtt/m/n/10.95 binary[]stream\OT1/cmr/m/n/10.95 , \OT1/cmtt/m/n/10.95 past
 []end[]of[]stream\OT1/cmr/m/n/10.95 , \OT1/cmtt/m/n/10.95 operator\OT1/cmr/m/n/
@@ -1439,11 +1485,11 @@ Overfull \hbox (6.0201pt too wide) in paragraph at lines 98--100
 m/n/10.95 )\OT1/cmr/m/n/10.95 : when an implementation-defined limit,
  []
 
-[107] [108]) [109]
+[109] [110]) [111]
 ("E:\Home\Technologies\tuProlog\repo-google\Manual\v.2.7-tuprolog guide\mpp-in-
 java.tex"
 Chapter 7.
-[110
+[112
 
 
 
@@ -1474,21 +1520,21 @@ Overfull \hbox (4.3917pt too wide) in paragraph at lines 59--61
 n-guish \OT1/cmtt/m/n/10.95 Number
  []
 
-[111]
+[113]
 Overfull \hbox (4.0856pt too wide) in paragraph at lines 93--103
 \OT1/cmr/m/n/10.95 for \OT1/cmtt/m/n/10.95 foo/bar/\OT1/cmtt/m/it/10.95 classna
 me\OT1/cmtt/m/n/10.95 .class\OT1/cmr/m/n/10.95 , while an en-try like \OT1/cmtt
 /m/n/10.95 'mylib.jar' \OT1/cmr/m/n/10.95 causes
  []
 
-[112] [113]
+[114] [115]
 Overfull \hbox (17.22697pt too wide) in paragraph at lines 149--150
 []\OT1/cmr/m/n/10.95 The first con-struct sets the pub-lic field \OT1/cmtt/m/it
 /10.95 Field \OT1/cmr/m/n/10.95 to the spec-i-fied \OT1/cmtt/m/it/10.95 GroundT
 erm\OT1/cmr/m/n/10.95 ,
  []
 
-[114]
+[116]
 Overfull \hbox (6.25238pt too wide) in paragraph at lines 182--183
 []\OT1/cmr/m/n/10.95 The
  []
@@ -1499,7 +1545,7 @@ Overfull \hbox (7.22372pt too wide) in paragraph at lines 182--183
  get[]classpath/1 \OT1/cmr/m/n/10.95 re-spec-tively sets/gets the given
  []
 
-[115] [116] [117]
+[117] [118] [119]
 Underfull \hbox (badness 10000) in paragraph at lines 292--295
 
  []
@@ -1519,7 +1565,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 300--301
 
  []
 
-[118]
+[120]
 Overfull \hbox (0.89154pt too wide) in paragraph at lines 322--322
 []\OT1/cmr/bx/n/10 Functionality| 
  []
@@ -1619,7 +1665,7 @@ Overfull \hbox (1.74661pt too wide) in paragraph at lines 465--467
 bind-ing pos-si-bly es-tab-lished
  []
 
-[119] [120]
+[121] [122]
 Overfull \hbox (11.56918pt too wide) in paragraph at lines 470--473
 \OT1/cmtt/m/n/10.95 java[]class(SourceText, ClassName, PathList, ObjectRef) \OT
 1/cmr/m/n/10.95 cre-ates
@@ -1649,7 +1695,7 @@ Overfull \hbox (5.4854pt too wide) in paragraph at lines 494--496
 hod rep-re-sented by the \OT1/cmtt/m/n/10.95 Method
  []
 
-[121]
+[123]
 Overfull \hbox (4.72415pt too wide) in paragraph at lines 501--503
 []\OT1/cmtt/m/n/10.95 ObjectRef <- Method returns ResultRef \OT1/cmr/m/n/10.95 
 calls the Java method rep-
@@ -1661,7 +1707,7 @@ Overfull \hbox (7.85542pt too wide) in paragraph at lines 506--507
 hod[]signature), ?@obj[]id) 
  []
 
-[122]
+[124]
 Overfull \hbox (9.64877pt too wide) in paragraph at lines 536--537
 []\OT1/cmr/m/it/10.95 Exception: \OT1/cmtt/m/n/10.95 java.lang.IllegalArgumentE
 xception(Cause, Message,
@@ -1679,12 +1725,12 @@ Overfull \hbox (4.21101pt too wide) in paragraph at lines 560--563
 95 is true iff \OT1/cmtt/m/n/10.95 ArrayLength
  []
 
-[123]
+[125]
 Overfull \hbox (3.04698pt too wide) in paragraph at lines 605--605
 []\OT1/cmtt/m/n/10 Assoc.| 
  []
 
-[124]
+[126]
 Underfull \hbox (badness 10000) in paragraph at lines 631--632
 
  []
@@ -1730,7 +1776,7 @@ Overfull \hbox (7.4968pt too wide) in paragraph at lines 755--755
 d ]'), nl.[] 
  []
 
-[125] [126] [127] [128]
+[127] [128] [129] [130]
 Overfull \hbox (17.9967pt too wide) in paragraph at lines 817--817
 []\OT1/cmtt/m/n/10 get_remote_file(DirName, FileName, FTPHost, FTPUser, FTPPwd,
  Content) :-[] 
@@ -1742,7 +1788,7 @@ Overfull \hbox (23.24666pt too wide) in paragraph at lines 817--817
 st], Client),[] 
  []
 
-[129] [130] [131]
+[131] [132] [133]
 Overfull \hbox (2.16733pt too wide) in paragraph at lines 900--900
 []       \OT1/cmtt/m/n/10.95 [('java.lang.ClassNotFoundException'(Cause, Messag
 e, _),[] 
@@ -1753,11 +1799,11 @@ Underfull \hbox (badness 10000) in paragraph at lines 904--905
 
  []
 
-<images/exceptions1a.png, id=1577, 378.213pt x 283.65974pt>
+<images/exceptions1a.png, id=1586, 378.213pt x 283.65974pt>
 File: images/exceptions1a.png Graphic file (type png)
 
 <use images/exceptions1a.png>
-<images/exceptions1b.png, id=1578, 364.9635pt x 265.59225pt>
+<images/exceptions1b.png, id=1587, 364.9635pt x 265.59225pt>
 File: images/exceptions1b.png Graphic file (type png)
 
 <use images/exceptions1b.png>
@@ -1766,7 +1812,7 @@ Overfull \hbox (13.6647pt too wide) in paragraph at lines 923--923
  true)).[] 
  []
 
-<images/exceptions2.png, id=1580, 380.01974pt x 271.0125pt>
+<images/exceptions2.png, id=1589, 380.01974pt x 271.0125pt>
 File: images/exceptions2.png Graphic file (type png)
 
 <use images/exceptions2.png>
@@ -1775,7 +1821,7 @@ Overfull \hbox (19.41339pt too wide) in paragraph at lines 942--942
 , true)).[] 
  []
 
-[132] [133 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog gui
+[134] [135 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog gui
 de/images/exceptions1a.png (PNG copy)> <E:/Home/Technologies/tuProlog/repo-goog
 le/Manual/v.2.7-tuprolog guide/images/exceptions1b.png (PNG copy)>]
 Overfull \hbox (59.6542pt too wide) in paragraph at lines 974--974
@@ -1783,14 +1829,14 @@ Overfull \hbox (59.6542pt too wide) in paragraph at lines 974--974
  _), Y is 3+5)],[] 
  []
 
-[134 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog guide/ima
+[136 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog guide/ima
 ges/exceptions2.png (PNG copy)>]
 Overfull \hbox (2.15146pt too wide) in paragraph at lines 1030--1031
 \OT1/cmr/m/n/10.95 uni-fi-ca-tion, term pars-ing, term copy-ing, etc.; its sub-
 classes dis-tin-guish among
  []
 
-[135]
+[137]
 Overfull \hbox (21.88582pt too wide) in paragraph at lines 1065--1090
  [] 
  []
@@ -1798,13 +1844,13 @@ Overfull \hbox (21.88582pt too wide) in paragraph at lines 1065--1090
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[136]
+[138]
 Overfull \hbox (24.2234pt too wide) in paragraph at lines 1107--1108
 []\OT1/cmr/m/n/10.95 the \OT1/cmtt/m/n/10.95 getTerm \OT1/cmr/m/n/10.95 method 
 re-turns the re-ferred term, fol-low-ing vari-able bindings---
  []
 
-[137]
+[139]
 Overfull \hbox (50.33858pt too wide) in paragraph at lines 1122--1150
  [] 
  []
@@ -1822,7 +1868,7 @@ Overfull \hbox (1.86597pt too wide) in paragraph at lines 1183--1185
 /m/n/10.95 ,
  []
 
-[138] [139]
+[140] [141]
 Overfull \hbox (7.4968pt too wide) in paragraph at lines 1241--1241
 []                \OT1/cmtt/m/n/10 System.out.println("solution: " + info.getSo
 lution() +[] 
@@ -1836,8 +1882,8 @@ Overfull \hbox (50.33858pt too wide) in paragraph at lines 1273--1322
 
 LaTeX Warning: Float too large for page by 45.13307pt on input line 1325.
 
-[140] [141] [142]
-<images/console-interpreter.png, id=1648, 555.87675pt x 213.79875pt>
+[142] [143] [144]
+<images/console-interpreter.png, id=1657, 555.87675pt x 213.79875pt>
 File: images/console-interpreter.png Graphic file (type png)
 
 <use images/console-interpreter.png>
@@ -1856,7 +1902,7 @@ Overfull \hbox (8.8763pt too wide) in paragraph at lines 1354--1357
  ground term (oth-er-wise an \OT1/cmtt/m/n/10.95 InvalidObjectIdException
  []
 
-[143 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog guide/ima
+[145 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog guide/ima
 ges/console-interpreter.png (PNG copy)>]
 Overfull \hbox (2.83977pt too wide) in paragraph at lines 1365--1366
 \OT1/cmr/m/n/10.95 To bind \OT1/cmtt/m/n/10.95 System.out \OT1/cmr/m/n/10.95 pe
@@ -1870,13 +1916,13 @@ Overfull \hbox (7.4968pt too wide) in paragraph at lines 1401--1401
 Library");[] 
  []
 
-[144]
+[146]
 Overfull \hbox (0.95204pt too wide) in paragraph at lines 1417--1419
 []\OT1/cmr/m/n/10.95 Yet, this fea-ture can be added in a non-intrusive way, th
 anks to []'s
  []
 
-<images/onOutput.png, id=1670, 416.757pt x 118.041pt>
+<images/onOutput.png, id=1678, 416.757pt x 118.041pt>
 File: images/onOutput.png Graphic file (type png)
 
 <use images/onOutput.png>
@@ -1887,7 +1933,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `\\' on input line 1464.
 
-[145] [146 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog gui
+[147] [148 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog gui
 de/images/onOutput.png (PNG copy)>]
 Underfull \hbox (badness 10000) in paragraph at lines 1488--1489
 
@@ -1918,29 +1964,29 @@ Underfull \hbox (badness 10000) in paragraph at lines 1508--1511
 
  []
 
-[147] [148] <images/TestLibrary3.png, id=1707, 359.54324pt x 320.99925pt>
+[149] [150] <images/TestLibrary3.png, id=1716, 359.54324pt x 320.99925pt>
 File: images/TestLibrary3.png Graphic file (type png)
 
 <use images/TestLibrary3.png>
-<images/TestLibrary4.png, id=1708, 555.87675pt x 202.95825pt>
+<images/TestLibrary4.png, id=1717, 555.87675pt x 202.95825pt>
 File: images/TestLibrary4.png Graphic file (type png)
 
 <use images/TestLibrary4.png>
-<images/TestLibrary1.png, id=1711, 237.88875pt x 181.27725pt>
+<images/TestLibrary1.png, id=1720, 237.88875pt x 181.27725pt>
 File: images/TestLibrary1.png Graphic file (type png)
 
 <use images/TestLibrary1.png>
-<images/TestLibrary2.png, id=1712, 237.88875pt x 196.93575pt>
+<images/TestLibrary2.png, id=1721, 237.88875pt x 196.93575pt>
 File: images/TestLibrary2.png Graphic file (type png)
 
 <use images/TestLibrary2.png>
-<images/TestLibrary5.png, id=1715, 555.87675pt x 202.95825pt>
+<images/TestLibrary5.png, id=1724, 555.87675pt x 202.95825pt>
 File: images/TestLibrary5.png Graphic file (type png)
 
-<use images/TestLibrary5.png> [149] [150] [151 <E:/Home/Technologies/tuProlog/r
+<use images/TestLibrary5.png> [151] [152] [153 <E:/Home/Technologies/tuProlog/r
 epo-google/Manual/v.2.7-tuprolog guide/images/TestLibrary3.png (PNG copy)> <E:/
 Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog guide/images/TestL
-ibrary4.png (PNG copy)>] [152 <E:/Home/Technologies/tuProlog/repo-google/Manual
+ibrary4.png (PNG copy)>] [154 <E:/Home/Technologies/tuProlog/repo-google/Manual
 /v.2.7-tuprolog guide/images/TestLibrary1.png (PNG copy)> <E:/Home/Technologies
 /tuProlog/repo-google/Manual/v.2.7-tuprolog guide/images/TestLibrary2.png (PNG 
 copy)>]
@@ -1953,8 +1999,8 @@ Underfull \hbox (badness 10000) in paragraph at lines 1698--1701
 \OT1/cmtt/m/n/10.95 int count=0;     while (engine.hasOpenAlternatives() &&
  []
 
-[153 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog guide/ima
-ges/TestLibrary5.png (PNG copy)>] [154]
+[155 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog guide/ima
+ges/TestLibrary5.png (PNG copy)>] [156]
 Underfull \hbox (badness 10000) in paragraph at lines 1743--1745
 
  []
@@ -1975,7 +2021,7 @@ Overfull \hbox (80.79326pt too wide) in paragraph at lines 1754--1755
 TestProject/test',
  []
 
-[155]
+[157]
 Overfull \hbox (36.1122pt too wide) in paragraph at lines 1778--1799
  [] 
  []
@@ -1984,14 +2030,14 @@ Overfull \hbox (36.1122pt too wide) in paragraph at lines 1778--1799
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `\\' on input line 1806.
 
-[156] [157]
+[158] [159]
 Overfull \hbox (4.02542pt too wide) in paragraph at lines 1855--1856
 \OT1/cmr/m/n/10.95 where, clearly, \OT1/cmtt/m/n/10.95 Term<Int> \OT1/cmr/m/n/1
 0.95 is used for a term con-tain-ing an \OT1/cmtt/m/n/10.95 Int\OT1/cmr/m/n/10.
 95 , \OT1/cmtt/m/n/10.95 Term<Double>
  []
 
-[158]
+[160]
 Overfull \hbox (2.16733pt too wide) in paragraph at lines 1900--1900
 []   \OT1/cmtt/m/n/10.95 extends Compound<Cons<H,R>> implements Iterable<Term<?
 >>{..}[] 
@@ -2009,7 +2055,7 @@ Overfull \hbox (2.16733pt too wide) in paragraph at lines 1900--1900
 rm<?>,[] 
  []
 
-[159]
+[161]
 
 LaTeX Font Warning: Font shape `OT1/cmss/m/it' in size <9> not available
 (Font)              Font shape `OT1/cmss/m/sl' tried instead on input line 1929
@@ -2039,11 +2085,11 @@ Overfull \hbox (12.93782pt too wide) in paragraph at lines 2120--2120
 ) expression ?[] 
  []
 
-) [160] [161] [162] [163] [164]
+) [162] [163] [164] [165] [166]
 ("E:\Home\Technologies\tuProlog\repo-google\Manual\v.2.7-tuprolog guide\mpp-in-
 dotnet.tex"
 Chapter 8.
-[165
+[167
 
 
 
@@ -2058,25 +2104,25 @@ Overfull \hbox (12.58774pt too wide) in paragraph at lines 31--34
 /10.95 ) 
  []
 
-[166] [167] [168]
+[168] [169] [170]
 Overfull \hbox (3.46658pt too wide) in paragraph at lines 135--136
 []\OT1/cmr/m/n/10.95 each \OT1/cmr/m/it/10.95 statically-generated \OT1/cmr/m/n
 /10.95 as-sem-bly is as-so-ci-ated to its own class loader---
  []
 
-[169]
+[171]
 Overfull \hbox (7.03554pt too wide) in paragraph at lines 151--153
 []\OT1/cmr/m/n/10.95 using the spe-cial \OT1/cmtt/m/n/10.95 ikvm.runtime.AppDom
 ainAssemblyClassLoader \OT1/cmr/m/n/10.95 class
  []
 
-[170] [171]
+[172] [173]
 Overfull \hbox (3.66216pt too wide) in paragraph at lines 215--216
 \OT1/cmr/m/n/10.95 which ob-vi-ously re-quire the [] Java ver-sion) that ex-plo
 it []
  []
 
-[172]
+[174]
 Overfull \hbox (1.5989pt too wide) in paragraph at lines 228--236
 [][] 
  []
@@ -2091,7 +2137,7 @@ e older [].NET
 Package hyperref Warning: Difference (2) between bookmark levels is greater 
 (hyperref)                than one, level fixed on input line 251.
 
-[173]
+[175]
 Overfull \hbox (0.89299pt too wide) in paragraph at lines 259--260
 []\OT1/cmr/m/n/10.95 the code re-or-gan-i-sa-tion per-formed behind-the-scenes 
 by the .NET com-
@@ -2103,7 +2149,7 @@ Overfull \hbox (4.50836pt too wide) in paragraph at lines 272--275
 means of its \OT1/cmtt/m/it/10.95 AssemblyQualifiedName\OT1/cmr/m/n/10.95 ---
  []
 
-[174]
+[176]
 Overfull \hbox (9.71498pt too wide) in paragraph at lines 282--283
 \OT1/cmr/m/n/10.95 Language con-ven-tions are [] means to sep-a-rate and em-bed
  the language-
@@ -2121,7 +2167,7 @@ Overfull \hbox (2.24684pt too wide) in paragraph at lines 301--301
 Name) ...[] 
  []
 
-[175]
+[177]
 Overfull \hbox (7.4968pt too wide) in paragraph at lines 341--341
 []  \OT1/cmtt/m/n/10 public bool method_call_3(Term objRef, Term methodName, Te
 rm resRef)[] 
@@ -2134,7 +2180,7 @@ Overfull \hbox (23.16661pt too wide) in paragraph at lines 354--355
 ]3\OT1/cmr/m/n/10.95 ),
  []
 
-[176]
+[178]
 Overfull \hbox (33.74657pt too wide) in paragraph at lines 399--399
 []  \OT1/cmtt/m/n/10 class('VBStudent.Student,VBStudent') <- get_StaticProperty
  returns Value,[] 
@@ -2146,13 +2192,13 @@ Overfull \hbox (2.24684pt too wide) in paragraph at lines 399--399
 t(Value),[] 
  []
 
-[177] [178]
-<images/dotnet-oolibrary-using-StringTokenizer.png, id=1920, 352.31625pt x 263.
+[179] [180]
+<images/dotnet-oolibrary-using-StringTokenizer.png, id=1929, 352.31625pt x 263.
 18324pt>
 File: images/dotnet-oolibrary-using-StringTokenizer.png Graphic file (type png)
 
  <use images/dotnet-oolibrary-using-StringTokenizer.png>
-<images/dotnet-oolibrary-dynamiccompilation.png, id=1921, 352.31625pt x 317.385
+<images/dotnet-oolibrary-dynamiccompilation.png, id=1930, 352.31625pt x 317.385
 76pt>
 File: images/dotnet-oolibrary-dynamiccompilation.png Graphic file (type png)
  <use images/dotnet-oolibrary-dynamiccompilation.png>
@@ -2177,27 +2223,27 @@ Overfull \hbox (13.27066pt too wide) in paragraph at lines 475--475
 ean',''], StudVB),[] 
  []
 
-[179] [180 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog gui
+[181] [182 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog gui
 de/images/dotnet-oolibrary-using-StringTokenizer.png (PNG copy)> <E:/Home/Techn
 ologies/tuProlog/repo-google/Manual/v.2.7-tuprolog guide/images/dotnet-oolibrar
-y-dynamiccompilation.png (PNG copy)>] [181]
-<images/dotnet-visualstudio1.png, id=1952, 350.5095pt x 235.47975pt>
+y-dynamiccompilation.png (PNG copy)>] [183]
+<images/dotnet-visualstudio1.png, id=1960, 350.5095pt x 235.47975pt>
 File: images/dotnet-visualstudio1.png Graphic file (type png)
 
 <use images/dotnet-visualstudio1.png>
-<images/dotnet-visualstudio2.png, id=1953, 326.4195pt x 246.9225pt>
+<images/dotnet-visualstudio2.png, id=1961, 326.4195pt x 246.9225pt>
 File: images/dotnet-visualstudio2.png Graphic file (type png)
 
 <use images/dotnet-visualstudio2.png>
-<images/dotnet-visualstudio3.png, id=1954, 331.83975pt x 114.4275pt>
+<images/dotnet-visualstudio3.png, id=1962, 331.83975pt x 114.4275pt>
 File: images/dotnet-visualstudio3.png Graphic file (type png)
 
 <use images/dotnet-visualstudio3.png>
-<images/dotnet-visualstudio5.png, id=1955, 336.65775pt x 113.82526pt>
+<images/dotnet-visualstudio5.png, id=1963, 336.65775pt x 113.82526pt>
 File: images/dotnet-visualstudio5.png Graphic file (type png)
 
 <use images/dotnet-visualstudio5.png>
-<images/dotnet-visualstudio4.png, id=1956, 365.56575pt x 456.5055pt>
+<images/dotnet-visualstudio4.png, id=1964, 365.56575pt x 456.5055pt>
 File: images/dotnet-visualstudio4.png Graphic file (type png)
 
 <use images/dotnet-visualstudio4.png>
@@ -2211,19 +2257,19 @@ Overfull \hbox (1.07375pt too wide) in paragraph at lines 544--549
 on []7.3[] (same method
  []
 
-[182] [183 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog gui
+[184] [185 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog gui
 de/images/dotnet-visualstudio1.png (PNG copy)> <E:/Home/Technologies/tuProlog/r
 epo-google/Manual/v.2.7-tuprolog guide/images/dotnet-visualstudio2.png (PNG cop
-y)>] [184 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog guid
+y)>] [186 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog guid
 e/images/dotnet-visualstudio3.png (PNG copy)> <E:/Home/Technologies/tuProlog/re
 po-google/Manual/v.2.7-tuprolog guide/images/dotnet-visualstudio5.png (PNG copy
-)>] [185 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog guide
+)>] [187 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog guide
 /images/dotnet-visualstudio4.png (PNG copy)>]
-<images/dotnet-testlibrary1.png, id=1988, 350.5095pt x 251.13824pt>
+<images/dotnet-testlibrary1.png, id=1997, 350.5095pt x 251.13824pt>
 File: images/dotnet-testlibrary1.png Graphic file (type png)
 
 <use images/dotnet-testlibrary1.png>
-<images/dotnet-testlibrary2.png, id=1989, 237.88875pt x 191.5155pt>
+<images/dotnet-testlibrary2.png, id=1998, 237.88875pt x 191.5155pt>
 File: images/dotnet-testlibrary2.png Graphic file (type png)
 
 <use images/dotnet-testlibrary2.png>
@@ -2231,25 +2277,25 @@ File: images/dotnet-testlibrary2.png Graphic file (type png)
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `\\' on input line 572.
 
-[186] [187 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog gui
+[188] [189 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog gui
 de/images/dotnet-testlibrary1.png (PNG copy)> <E:/Home/Technologies/tuProlog/re
 po-google/Manual/v.2.7-tuprolog guide/images/dotnet-testlibrary2.png (PNG copy)
->] [188] [189]
-<images/dotnet-codegen1.png, id=2021, 404.30292pt x 357.25925pt>
+>] [190] [191]
+<images/dotnet-codegen1.png, id=2029, 404.30292pt x 357.25925pt>
 File: images/dotnet-codegen1.png Graphic file (type png)
 
 <use images/dotnet-codegen1.png>
-<images/dotnet-codegen2.png, id=2022, 402.93935pt x 277.48953pt>
+<images/dotnet-codegen2.png, id=2030, 402.93935pt x 277.48953pt>
 File: images/dotnet-codegen2.png Graphic file (type png)
 
 <use images/dotnet-codegen2.png>
 
 LaTeX Warning: Float too large for page by 0.70412pt on input line 622.
 
-[190] [191 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog gui
+[192] [193 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog gui
 de/images/dotnet-codegen1.png (PNG copy)> <E:/Home/Technologies/tuProlog/repo-g
 oogle/Manual/v.2.7-tuprolog guide/images/dotnet-codegen2.png (PNG copy)>]
-<images/dotnet-pipolo1.png, id=2034, 253.54726pt x 152.36925pt>
+<images/dotnet-pipolo1.png, id=2043, 253.54726pt x 152.36925pt>
 File: images/dotnet-pipolo1.png Graphic file (type png)
 
 <use images/dotnet-pipolo1.png>
@@ -2259,9 +2305,9 @@ st\OT1/cmr/m/n/10.95 , while class \OT1/cmtt/m/n/10.95 B \OT1/cmr/m/n/10.95 pro
 -vides a \OT1/cmtt/m/n/10.95 PrintList
  []
 
-[192 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog guide/ima
+[194 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog guide/ima
 ges/dotnet-pipolo1.png (PNG copy)>]
-<images/dotnet-pipolo5.png, id=2045, 289.68225pt x 83.1105pt>
+<images/dotnet-pipolo5.png, id=2053, 289.68225pt x 83.1105pt>
 File: images/dotnet-pipolo5.png Graphic file (type png)
 
 <use images/dotnet-pipolo5.png>
@@ -2272,15 +2318,15 @@ Overfull \hbox (38.33858pt too wide) in paragraph at lines 710--711
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<images/dotnet-pipolo2.png, id=2048, 189.1065pt x 116.8365pt>
+<images/dotnet-pipolo2.png, id=2056, 189.1065pt x 116.8365pt>
 File: images/dotnet-pipolo2.png Graphic file (type png)
 
 <use images/dotnet-pipolo2.png>
-<images/dotnet-pipolo3.png, id=2049, 289.08pt x 238.491pt>
+<images/dotnet-pipolo3.png, id=2057, 289.08pt x 238.491pt>
 File: images/dotnet-pipolo3.png Graphic file (type png)
 
 <use images/dotnet-pipolo3.png>
-<images/dotnet-pipolo4.png, id=2050, 289.08pt x 183.68625pt>
+<images/dotnet-pipolo4.png, id=2058, 289.08pt x 183.68625pt>
 File: images/dotnet-pipolo4.png Graphic file (type png)
 
 <use images/dotnet-pipolo4.png>
@@ -2296,10 +2342,10 @@ Overfull \hbox (9.88582pt too wide) in paragraph at lines 723--725
 
 LaTeX Warning: Float too large for page by 25.54643pt on input line 726.
 
-[193]) [194 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog gu
-ide/images/dotnet-pipolo5.png (PNG copy)>] [195 <E:/Home/Technologies/tuProlog/
+[195]) [196 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog gu
+ide/images/dotnet-pipolo5.png (PNG copy)>] [197 <E:/Home/Technologies/tuProlog/
 repo-google/Manual/v.2.7-tuprolog guide/images/dotnet-pipolo2.png (PNG copy)>]
-[196 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog guide/ima
+[198 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog guide/ima
 ges/dotnet-pipolo3.png (PNG copy)> <E:/Home/Technologies/tuProlog/repo-google/M
 anual/v.2.7-tuprolog guide/images/dotnet-pipolo4.png (PNG copy)>]
 ("E:\Home\Technologies\tuProlog\repo-google\Manual\v.2.7-tuprolog guide\version
@@ -2398,7 +2444,7 @@ Overfull \hbox (67.65938pt too wide) in paragraph at lines 9--24
  [][] 
  []
 
-[197
+[199
 
 
 
@@ -2414,7 +2460,7 @@ Overfull \hbox (15.55211pt too wide) in paragraph at lines 42--43
 m/n/10.95 method to \OT1/cmtt/m/n/10.95 alice.tuprolog.SolveInfo
  []
 
-[198]
+[200]
 Overfull \hbox (1.76622pt too wide) in paragraph at lines 73--74
 []\OT1/cmr/m/n/10.95 Eliminated loop in solv-ing con-junc-tions of goals. (Alex
  Benini) [Source-
@@ -2427,7 +2473,7 @@ ored in \OT1/cmtt/m/n/10.95 String
  []
 
 Missing character: There is no ¯ in font cmr10!
-[199]
+[201]
 Overfull \hbox (6.49599pt too wide) in paragraph at lines 99--100
 \OT1/cmr/m/n/10.95 an-other list as their tail. (Giulio Pi-ancastelli) [Source-
 Forge bug 1622783] 
@@ -2440,13 +2486,13 @@ m/n/10.95 in \OT1/cmtt/m/n/10.95 SpyEvent#toString\OT1/cmr/m/n/10.95 . (Alex Be
 nini)
  []
 
-[200]
+[202]
 Overfull \hbox (8.47191pt too wide) in paragraph at lines 136--137
 \OT1/cmr/m/n/10.95 prop-erly fol-lows ISO stan-dard. (Alex Benini, Giulio Pi-an
 castelli, Nathan
  []
 
-[201]
+[203]
 Overfull \hbox (27.25241pt too wide) in paragraph at lines 150--151
 []\OT1/cmr/m/n/10.95 Removed \OT1/cmtt/m/n/10.95 '$asserta'/1 \OT1/cmr/m/n/10.9
 5 and \OT1/cmtt/m/n/10.95 '$assertz'/1\OT1/cmr/m/n/10.95 . Use \OT1/cmtt/m/n/10
@@ -2460,25 +2506,25 @@ Overfull \hbox (24.70729pt too wide) in paragraph at lines 154--155
 erm#isNumber\OT1/cmr/m/n/10.95 : use \OT1/cmtt/m/n/10.95 instanceof
  []
 
-[202] [203] [204] [205] [206]
+[204] [205] [206] [207] [208]
 Overfull \hbox (13.53226pt too wide) in paragraph at lines 325--326
 []\OT1/cmr/m/n/10.95 Performance gain in 2.3.1: Michael Gat-tavec-chia, Paolo C
 on-tessi, Lorenzo
  []
 
-[207]
+[209]
 Overfull \hbox (0.77252pt too wide) in paragraph at lines 333--334
 []\OT1/cmr/m/n/10.95 New class load-ing mech-a-nism and reg-is-ter/1 pred-i-cat
 e in 2.6.x: Michele
  []
 
-) [208]
+) [210]
 ("E:\Home\Technologies\tuProlog\repo-google\Manual\v.2.7-tuprolog guide\tuprolo
 g-guide.bbl"
 Missing character: There is no Ð in font cmr10!
 )
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 125.
- [209
+ [211
 
 
 ]
@@ -2516,8 +2562,8 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 6467 strings out of 494019
- 104843 string characters out of 3143862
+ 6469 strings out of 494019
+ 104859 string characters out of 3143862
  191292 words of memory out of 3000000
  9024 multiletter control sequences out of 15000+200000
  17328 words of font info for 61 fonts, out of 3000000 for 9000
@@ -2547,9 +2593,9 @@ pe1/public/amsfonts/cm/cmti10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type
 ublic/amsfonts/cm/cmtt10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/pub
 lic/amsfonts/cm/cmtt8.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public
 /amsfonts/cm/cmtt9.pfb>
-Output written on tuprolog-guide.pdf (210 pages, 4464894 bytes).
+Output written on tuprolog-guide.pdf (212 pages, 4469360 bytes).
 PDF statistics:
- 2318 PDF objects out of 2487 (max. 8388607)
- 524 named destinations out of 1000 (max. 500000)
+ 2327 PDF objects out of 2487 (max. 8388607)
+ 526 named destinations out of 1000 (max. 500000)
  1506 words of extra memory for PDF output out of 10000 (max. 10000000)
 

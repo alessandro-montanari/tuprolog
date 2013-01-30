@@ -1683,14 +1683,14 @@ When a term is written via \texttt{write\_term/3}, the following rules apply:
 
 \noindent \emph{Library Dependencies}: BasicLibrary.
 
-This library provides support for TCP and UDP sockets. To this end, the library provides functionalities for 
+This library provides support for TCP and UDP sockets. To this end, the library provides functionalities for
 \begin{itemize}
   \item handling server sockets---namely, creating and closing a server socket, and accepting incoming connections;
   \item handling client sockets---namely, opening a socket establishing a connection to a given address;
   \item handling client/server communication, both in synchronous and asynchronous mode.
 \end{itemize}
 
-As an example, let us consider the following TCP server-side code:\\
+As an example, let us first consider the following TCP server-side code:\\
 
 \begin{verbatim}
 server(X,Y,Z):- tcp_socket_server_open('127.0.0.1:4444', Sock,[]),
@@ -1717,6 +1717,23 @@ client(X,Y,Z):- tcp_socket_client_open('127.0.0.1:4444',Sock),
 \end{verbatim}
 
 \noindent In this scenario, the client opens a connection towards the server -- that is supposed to be already up and running, waiting connection requests on its server socket  -- and starts exchanging messages with the server.
+
+
+In the UDP case, the same example would become:\\
+
+\begin{verbatim}
+server(X):- udp_socket_open('127.0.0.1:4445',Sock2),
+            udp_receive(Sock2, X , '127.0.0.1:4444',[]),
+            udp_socket_close(Sock2).
+\end{verbatim}
+
+\noindent to be coupled with the following UDP client:\\
+
+\begin{verbatim}
+client(X):- udp_socket_open('127.0.0.1:4444',Sock),
+            udp_send(Sock, test1,'127.0.0.1:4444'),
+            udp_socket_close(Sock).
+\end{verbatim}
 
 
 %---------------------------------------------------------------------
@@ -1751,14 +1768,14 @@ client(X,Y,Z):- tcp_socket_client_open('127.0.0.1:4444',Sock),
 
     \textbf{\exception{error(instantiation\_error, instantiation\_error(\\
     Goal, ArgNo))} if \texttt{Category} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).}
-    
+
 \item \bti{tcp\_socket\_client\_open/2}\\
     \noindent\bt{tcp\_socket\_client\_open(+Address, -Socket)} is true iff \bt{Address} represents a valid Internet address in the \texttt{\textit{Address}:\textit{Port}} form, a server is waiting for incoming connection at that address, and \texttt{Socket} is unified with a newly-created socket.
 
     \template{tcp\_socket\_client\_open(+term, -term)}
 
     \textbf{\exception{error(instantiation\_error, instantiation\_error(\\
-    Goal, ArgNo))} if \texttt{Category} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).}    
+    Goal, ArgNo))} if \texttt{Category} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).}
 
 \item \bti{write\_to\_socket/2}\\
     \noindent\bt{write\_to\_socket(+Socket, +Msg)} is true iff \bt{Socket} represents a valid socket with an open associated output stream, and \texttt{Msg} is a valid term representing the message to be sent; as a side effect, the message is sent onto the stream.
@@ -1766,7 +1783,7 @@ client(X,Y,Z):- tcp_socket_client_open('127.0.0.1:4444',Sock),
     \template{write\_to\_socket(+term, +term)}
 
     \textbf{\exception{error(instantiation\_error, instantiation\_error(\\
-    Goal, ArgNo))} if \texttt{Category} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).}    
+    Goal, ArgNo))} if \texttt{Category} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).}
 
 \item \bti{read\_from\_socket/2}\\
     \noindent\bt{read\_from\_socket(+Socket, -Msg, +Options)} is true iff \bt{Socket} represents a valid socket with an open associated input stream, and \texttt{Options} is a valid option list---currently, only a timeout in milliseconds can be specified; as a side effect, a message is read from the stream and unified with \texttt{Msg}. If no message is available, the primitive suspends until one arrives (synchronous behaviour).
@@ -1774,7 +1791,7 @@ client(X,Y,Z):- tcp_socket_client_open('127.0.0.1:4444',Sock),
     \template{read\_from\_socket(+term, -term, +list)}
 
     \textbf{\exception{error(instantiation\_error, instantiation\_error(\\
-    Goal, ArgNo))} if \texttt{Category} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).}  
+    Goal, ArgNo))} if \texttt{Category} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).}
 
 \item \bti{aread\_from\_socket/2}\\
     \noindent\bt{aread\_from\_socket(+Socket, +Options)} is the asynchronous version of the above primitive; again, it is true iff \bt{Socket} represents a valid socket with an open associated input stream, and \texttt{Options} is a valid option list. As a side effect, a message is eventually read from the stream and asserted into the current prolog theory via \texttt{asserta}.
@@ -1783,8 +1800,43 @@ client(X,Y,Z):- tcp_socket_client_open('127.0.0.1:4444',Sock),
     \template{aread\_from\_socket(+term, +list)}
 
     \textbf{\exception{error(instantiation\_error, instantiation\_error(\\
-    Goal, ArgNo))} if \texttt{Category} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).} 
-            
+    Goal, ArgNo))} if \texttt{Category} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).}
+
+\item \bti{udp\_socket\_open/2}\\
+    \noindent\bt{udp\_socket\_open(+Address, -Socket)} is true iff \bt{Address} represents a valid Internet address in the \texttt{\textit{Address}:\textit{Port}} form, a server is waiting for incoming connection at that address, and \texttt{Socket} is unified with a newly-created socket.
+
+    \template{udp\_socket\_open(+term, -term)}
+
+    \textbf{\exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} if \texttt{Category} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).}
+
+
+\item \bti{udp\_socket\_close/1}\\
+    \noindent\bt{udp\_socket\_close(+DatagramSocket)} is true iff \bt{DatagramSocket} represents a valid server socket; as a side effect, the socket is closed.
+
+    \template{udp\_socket\_close(+term)}
+
+    \textbf{\exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} if \texttt{Category} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).}
+
+\item \bti{udp\_send/3}\\
+    \noindent\bt{udp\_send(+Socket, +Msg, +AddressTo)} is true iff \bt{Socket} represents a valid datagram socket with an open associated output stream, \texttt{Msg} is a valid term representing the message to be sent, and \texttt{AddressTo} represents the destination address in the \texttt{\textit{Address}:\textit{Port}} form; as a side effect, the message is sent onto the stream.
+
+    \template{udp\_send(+term, +term, +term)}
+
+    \textbf{\exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} if \texttt{Category} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).}
+
+\item \bti{udp\_receive/4}\\
+    \noindent\bt{udp\_receive(+Socket, -Msg, +AddressTo, +Options)} is true iff \\
+    \bt{Socket} represents a valid datagram socket with an open associated input stream, \texttt{AddressTo} represents the destination address in the \texttt{\textit{Address}:\textit{Port}} form, and \texttt{Options} is a possibly-empty option list; currently, the only available option is \texttt{max\_msg\_size(+\textit{Size})}, whose default value is 4096 bytes. Upon reception of a message, as a side effect, the \texttt{Msg} term is unified with the incoming message.
+
+    \template{udp\_receive(+term, +term, +term, +list)}
+
+    \textbf{\exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} if \texttt{Category} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).}
+
+
 \end{itemize}
 
 %---------------------------------------------------------------------
@@ -1809,9 +1861,9 @@ No operators are defined in this library.
 %---------------------------------------------------------------------
 \subsection{Java-side use: Term hierarchy extension}
 %---------------------------------------------------------------------
-SocketLibrary introduces four further \texttt{Term} types to represent sockets: more precisely, \texttt{AbstractSocket} (a direct child of \texttt{Term}) represents the generic socket, whose concrete realisations are provided by its three children--- \texttt{Client\_Socket} and \texttt{Server\_Socket} in the TCP case, \texttt{Dataggram\_Socket} in the UDP case. 
+SocketLibrary introduces four further \texttt{Term} types to represent sockets: more precisely, \texttt{AbstractSocket} (a direct child of \texttt{Term}) represents the generic socket, whose concrete realisations are provided by its three children--- \texttt{Client\_Socket} and \texttt{Server\_Socket} in the TCP case, \texttt{Dataggram\_Socket} in the UDP case.
 
-Consequently, \texttt{AbstractSocket} redefines some \texttt{Term} methods and defines some new abstract methods, implemented in \texttt{Client\_Socket} and \texttt{Server\_Socket}:
+Consequently, \texttt{AbstractSocket} redefines some \texttt{Term} methods and defines some new abstract methods, implemented in the derived classes \texttt{Client\_Socket} and \texttt{Server\_Socket}:
 \begin{itemize}
   \item \texttt{public abstract boolean isClientSocket();}
   \item \texttt{public abstract boolean isServerSocket();}
@@ -1820,3 +1872,33 @@ Consequently, \texttt{AbstractSocket} redefines some \texttt{Term} methods and d
   \item \texttt{public abstract InetAddress getAddress();}
 \end{itemize}
 
+\noindent In order to show the use of the SocketLibrary functions from Java, here are some small code chunks used in the JUnit test suite:
+
+{\footnotesize\begin{verbatim}
+@Test
+public void testTcp_socket_client_open_2() throws PrologException, PrologError {
+    String theory="client(X) :- tcp_socket_client_open('127.0.0.1:4444',Sock).";
+    engine2.setTheory(new Theory(theory));
+    SolveInfo goal=engine2.solve("client(X).");
+    assertTrue(goal.isSuccess());	
+} 
+
+@Test
+public void testTcp_socket_client_open_2() throws PrologException, PrologError {
+    Struct Address=new Struct("127.0.0.1:4444");
+    Term Socket= new Var();
+    SocketLib lib= (SocketLib) engine2.getLibrary("alice.tuProlog.lib.SocketLib");
+    boolean res=lib.tcp_socket_client_open_2(Address, Socket);
+    assertTrue(res);
+}
+
+@Test
+public void testWrite_to_socket_2() throws InvalidTheoryException, 
+                                           MalformedGoalException, PrologError {
+    String theory = "client(X,Y,Z):tcp_socket_client_open('127.0.0.1:4444',Sock),"
+                    + "write_to_socket(Sock,test1)."	
+    engine2.setTheory(new Theory(theory));
+    SolveInfo goal=engine2.solve("client(X,Y,Z).");
+    assertTrue(goal.isSuccess());	
+}
+\end{verbatim}}
