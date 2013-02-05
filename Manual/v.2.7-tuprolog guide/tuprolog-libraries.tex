@@ -1749,8 +1749,8 @@ client(X):- udp_socket_open('127.0.0.1:4444',Sock),
 
     \template{tcp\_socket\_server\_open(+term, -term, +list)}
 
-    \textbf{\exception{error(instantiation\_error, instantiation\_error(\\
-    Goal, ArgNo))} if \texttt{Category} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).}
+    \exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} if \texttt{Socket} is not a variable, or the address length is not equal to 5 during the transformation of \texttt{Address} from the \texttt{IP:Port} form to the byte array and port number inner form.
 
 \item \bti{tcp\_socket\_server\_accept/3}\\
     \noindent\bt{tcp\_socket\_server\_accept(+ServerSocket, -ClientAddress,\\
@@ -1758,40 +1758,40 @@ client(X):- udp_socket_open('127.0.0.1:4444',Sock),
 
     \template{tcp\_socket\_server\_accept(+term, -term, -term)}
 
-    \textbf{\exception{error(instantiation\_error, instantiation\_error(\\
-    Goal, ArgNo))} if \texttt{Category} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).}
+    \exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} if \texttt{ServerSocket} is a variable, or is not bound to server socket.
 
 \item \bti{tcp\_socket\_server\_close/1}\\
     \noindent\bt{tcp\_socket\_server\_close(+ServerSocket)} is true iff \bt{ServerSocket} represents a valid server socket; as a side effect, the socket is closed.
 
     \template{tcp\_socket\_server\_close(+term)}
 
-    \textbf{\exception{error(instantiation\_error, instantiation\_error(\\
-    Goal, ArgNo))} if \texttt{Category} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).}
+    \exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} if \texttt{ServerSocket} is a variable, or is not bound to server socket.
 
 \item \bti{tcp\_socket\_client\_open/2}\\
     \noindent\bt{tcp\_socket\_client\_open(+Address, -Socket)} is true iff \bt{Address} represents a valid Internet address in the \texttt{\textit{Address}:\textit{Port}} form, a server is waiting for incoming connection at that address, and \texttt{Socket} is unified with a newly-created socket.
 
     \template{tcp\_socket\_client\_open(+term, -term)}
 
-    \textbf{\exception{error(instantiation\_error, instantiation\_error(\\
-    Goal, ArgNo))} if \texttt{Category} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).}
+    \exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} if \texttt{Socket} is not a variable, or the address length is not equal to 5 during the transformation of \texttt{Address} from the \texttt{IP:Port} form to the byte array and port number inner form.
 
 \item \bti{write\_to\_socket/2}\\
     \noindent\bt{write\_to\_socket(+Socket, +Msg)} is true iff \bt{Socket} represents a valid socket with an open associated output stream, and \texttt{Msg} is a valid term representing the message to be sent; as a side effect, the message is sent onto the stream.
 
     \template{write\_to\_socket(+term, +term)}
 
-    \textbf{\exception{error(instantiation\_error, instantiation\_error(\\
-    Goal, ArgNo))} if \texttt{Category} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).}
+    \exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} if \texttt{Socket} is a variable, or is not bound to client socket, or \texttt{Msg} is a variable.
 
 \item \bti{read\_from\_socket/2}\\
     \noindent\bt{read\_from\_socket(+Socket, -Msg, +Options)} is true iff \bt{Socket} represents a valid socket with an open associated input stream, and \texttt{Options} is a valid option list---currently, only a timeout in milliseconds can be specified; as a side effect, a message is read from the stream and unified with \texttt{Msg}. If no message is available, the primitive suspends until one arrives (synchronous behaviour).
 
     \template{read\_from\_socket(+term, -term, +list)}
 
-    \textbf{\exception{error(instantiation\_error, instantiation\_error(\\
-    Goal, ArgNo))} if \texttt{Category} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).}
+    \exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} if \texttt{Socket} is a variable, or is not bound to client socket, or \texttt{Msg} is a variable.
 
 \item \bti{aread\_from\_socket/2}\\
     \noindent\bt{aread\_from\_socket(+Socket, +Options)} is the asynchronous version of the above primitive; again, it is true iff \bt{Socket} represents a valid socket with an open associated input stream, and \texttt{Options} is a valid option list. As a side effect, a message is eventually read from the stream and asserted into the current prolog theory via \texttt{asserta}.
@@ -1799,43 +1799,41 @@ client(X):- udp_socket_open('127.0.0.1:4444',Sock),
 
     \template{aread\_from\_socket(+term, +list)}
 
-    \textbf{\exception{error(instantiation\_error, instantiation\_error(\\
-    Goal, ArgNo))} if \texttt{Category} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).}
+    \exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} if \texttt{Socket} is a variable, or is not bound to client socket (only client sockets can asynchronously read from a server).
 
 \item \bti{udp\_socket\_open/2}\\
-    \noindent\bt{udp\_socket\_open(+Address, -Socket)} is true iff \bt{Address} represents a valid Internet address in the \texttt{\textit{Address}:\textit{Port}} form, a server is waiting for incoming connection at that address, and \texttt{Socket} is unified with a newly-created socket.
+    \noindent\bt{udp\_socket\_open(+Address, -DatagramSocket)} is true iff \bt{Address} represents a valid Internet address in the \texttt{\textit{Address}:\textit{Port}} form, a server is waiting for incoming connection at that address, and \texttt{DatagramSocket} is unified with a newly-created datagram socket.
 
     \template{udp\_socket\_open(+term, -term)}
 
-    \textbf{\exception{error(instantiation\_error, instantiation\_error(\\
-    Goal, ArgNo))} if \texttt{Category} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).}
-
+    \exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} if \texttt{Socket} is not a variable, or the address length is not equal to 5 during the transformation of \texttt{Address} from the \texttt{IP:Port} form to the byte array and port number inner form.
 
 \item \bti{udp\_socket\_close/1}\\
     \noindent\bt{udp\_socket\_close(+DatagramSocket)} is true iff \bt{DatagramSocket} represents a valid server socket; as a side effect, the socket is closed.
 
     \template{udp\_socket\_close(+term)}
 
-    \textbf{\exception{error(instantiation\_error, instantiation\_error(\\
-    Goal, ArgNo))} if \texttt{Category} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).}
+    \exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} if \texttt{DatagramSocket} is a variable, or is not bound to datagram socket.
 
 \item \bti{udp\_send/3}\\
     \noindent\bt{udp\_send(+Socket, +Msg, +AddressTo)} is true iff \bt{Socket} represents a valid datagram socket with an open associated output stream, \texttt{Msg} is a valid term representing the message to be sent, and \texttt{AddressTo} represents the destination address in the \texttt{\textit{Address}:\textit{Port}} form; as a side effect, the message is sent onto the stream.
 
     \template{udp\_send(+term, +term, +term)}
 
-    \textbf{\exception{error(instantiation\_error, instantiation\_error(\\
-    Goal, ArgNo))} if \texttt{Category} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).}
+    \exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} if \texttt{Socket} is a variable, or the address length is not equal to 5 during the transformation of \texttt{AddressTo} from the \texttt{IP:Port} form to the byte array and port number inner form.
 
 \item \bti{udp\_receive/4}\\
     \noindent\bt{udp\_receive(+Socket, -Msg, +AddressTo, +Options)} is true iff \\
-    \bt{Socket} represents a valid datagram socket with an open associated input stream, \texttt{AddressTo} represents the destination address in the \texttt{\textit{Address}:\textit{Port}} form, and \texttt{Options} is a possibly-empty option list; currently, the only available option is \texttt{max\_msg\_size(+\textit{Size})}, whose default value is 4096 bytes. Upon reception of a message, as a side effect, the \texttt{Msg} term is unified with the incoming message.
+    \bt{Socket} represents a valid datagram socket with an open associated input stream, \texttt{AddressTo} represents the destination address in the \texttt{\textit{Address}:\textit{Port}} form, and \texttt{Options} is a possibly-empty option list; currently, the available options are \texttt{max\_msg\_size(+\textit{Size})}, whose default value is 4096 bytes, and \texttt{timeout(+\textit{Time})}, which specifies a timeout. Upon reception of a message, as a side effect, the \texttt{Msg} term is unified with the incoming message.
 
     \template{udp\_receive(+term, +term, +term, +list)}
 
-    \textbf{\exception{error(instantiation\_error, instantiation\_error(\\
-    Goal, ArgNo))} if \texttt{Category} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).}
-
+    \exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} if \texttt{Socket} is a variable, or the address length is not equal to 5 during the transformation of \texttt{AddressTo} from the \texttt{IP:Port} form to the byte array and port number inner form.
 
 \end{itemize}
 
@@ -1881,7 +1879,7 @@ public void testTcp_socket_client_open_2() throws PrologException, PrologError {
     engine2.setTheory(new Theory(theory));
     SolveInfo goal=engine2.solve("client(X).");
     assertTrue(goal.isSuccess());	
-} 
+}
 
 @Test
 public void testTcp_socket_client_open_2() throws PrologException, PrologError {
@@ -1893,7 +1891,7 @@ public void testTcp_socket_client_open_2() throws PrologException, PrologError {
 }
 
 @Test
-public void testWrite_to_socket_2() throws InvalidTheoryException, 
+public void testWrite_to_socket_2() throws InvalidTheoryException,
                                            MalformedGoalException, PrologError {
     String theory = "client(X,Y,Z):tcp_socket_client_open('127.0.0.1:4444',Sock),"
                     + "write_to_socket(Sock,test1)."	
