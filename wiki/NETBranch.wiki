@@ -1,0 +1,30 @@
+#summary Notes on the management of the .NET branch
+
+L'idea che avevo in mente era quella di gestire la dipendenza dei due progetti da 2p nello stesso modo in cui è gestita per gli altri progetti (android e plugin) 
+ossia nel momento in cui viene taggato 2p per java nella cartella /build/archives vengono anche copiati i file 2p.exe e tuprolog.dll (oltre a 2p.jar e tuprolog.jar), 
+quindi ad ogni release la struttura sarebbe così:
+{{{
+/2p
+  /REL-2.7.0
+    ...
+    /build
+      /archives
+        2p.jar
+        tuprolog.jar
+        2p.exe
+        tuprolog.dll
+}}}
+
+In questo modo, come per android e per il plugin, i progetti .NET scaricano 2p.exe o tuprolog.dll via externals e li copiano in una cartella "lib"
+in cui viene inserito il reference in visual studio.
+Questa soluzione appesantisce un po' ogni tag di 2p (anche se comunque ci si risparmia di copiare le dll di ikvm) e sporca un po' il progetto
+java con file relativi .NET però così siamo uniformi con la gestione delle dipendenze degli altri progetti e si semplifica la vita a chi deve lavorare 
+sui progetti .NET perché una volta fatto il checkout del progetto si ha tutto quello che serve per lavorare. 
+
+Un'alternativa più pulita sarebbe quella di scaricare il file 2p.jar o tuprolog.jar nei progetti .NET e poi tramite un script ant tradurli in .exe o .dll
+e utilizzarli. Questo vuol dire che quando si fa il checkout del progetto occorre prima lanciare il target ant per costruire la dll, niente di trascendentale 
+comunque.
+ 
+La complessità di realizzazione è la stessa perché il target ant per costruire le dll esiste già, quindi è solo questione di mettere un external verso un file
+o verso l'altro. La seconda soluzione tiene un po' più isolati i progetti java e .net anche per quanto riguarda il file di ant che verrebbe diviso in 2, uno 
+con solo target per java e l'altro con solo target per .net.
