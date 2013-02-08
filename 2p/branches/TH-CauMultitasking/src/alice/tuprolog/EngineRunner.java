@@ -4,9 +4,6 @@
  */
 package alice.tuprolog;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintStream;
 import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +26,6 @@ public class EngineRunner implements java.io.Serializable, Runnable{
     private LibraryManager   	libraryManager;
     private EngineManager 		engineManager;
 
-    private PrintStream log;
     private int id;
     private long pid;
     private boolean detached;
@@ -39,7 +35,7 @@ public class EngineRunner implements java.io.Serializable, Runnable{
     private TermQueue msgs;
     private ArrayList<Boolean> next;
     private int countNext;
-    private Lock lockVar;		//condizioni per la lettura
+    private Lock lockVar;		
     private Condition cond;
     private Object semaphore;
     
@@ -137,15 +133,9 @@ public class EngineRunner implements java.io.Serializable, Runnable{
      * @return the result of the demonstration
      * @see SolveInfo
      **/
-   private synchronized void threadSolve() {
-	   	println("\nThread produttore - Cerco la prima soluzione");
-		println("pid: "+Thread.currentThread().getId());
-        
+   private void threadSolve() {        
         sinfo = solve();
-        
-        solving = false;
-        println("Thread produttore - Ho risolto il goal");
-        println("\n\n**- Soluzione computata -**\n"+sinfo+"\n\n");       
+        solving = false;    
         
         lockVar.lock();
 		try{
@@ -157,14 +147,11 @@ public class EngineRunner implements java.io.Serializable, Runnable{
             
         if (!sinfo.hasOpenAlternatives()) {
             solveEnd();
-            println("Thread produttore - non ci sono pi soluzioni\nTermino");
         }
         else if(next.isEmpty() || !next.get(countNext)){
         	synchronized(semaphore){     	
             	try {
-            		println("Thread produttore - mi metto in attesa di eventuali altre richieste");
             		semaphore.wait();	//Mi metto in attesa di eventuali altre richieste
-            		println("Thread produttore - mi sono risvegliato.");
     			} catch (InterruptedException e) {
     				e.printStackTrace();
     			}	
@@ -205,19 +192,14 @@ public class EngineRunner implements java.io.Serializable, Runnable{
      * @throws NoMoreSolutionException if no more solutions are present
      * @see SolveInfo
      **/
-    private synchronized void threadSolveNext() throws NoMoreSolutionException {
+    private void threadSolveNext() throws NoMoreSolutionException {
     	next.set(countNext, false);
     	countNext++;
-    	println("\nThread produttore - la soluzione precedente era: "+sinfo);
-    	println("Thread produttore - cerco altre soluzioni");
-    		
+   
 		sinfo = solveNext();
 		
 		solving = false;
-		println("Thread produttore - ho risolto il goal");
-		println("\n\n**- Soluzione computata -**\n"+sinfo+"\n\n");
-       
-        
+
 		lockVar.lock();
 		try{
 			cond.signalAll();
@@ -228,14 +210,11 @@ public class EngineRunner implements java.io.Serializable, Runnable{
         
         if (!sinfo.hasOpenAlternatives()){
         	solveEnd();
-            println("Thread produttore - non ci sono pi soluzioni\nTermino");
         }
         else if(countNext>(next.size()-1) || !next.get(countNext)){
         	try{
                 synchronized(semaphore){
-                	println("Thread produttore - mi metto in attesa di eventuali altre richieste");
                 	semaphore.wait();	//Mi metto in attesa di eventuali altre richieste
-                	println("Thread produttore - mi sono risvegliato.");
                 }
             }
             catch(InterruptedException e) {}
@@ -363,17 +342,7 @@ public class EngineRunner implements java.io.Serializable, Runnable{
 
 	@Override
 	public void run() {
-		pid = Thread.currentThread().getId();
-		
-		File file = new File("Runner"+pid+"Log.txt");
-		try {
-			file.createNewFile();
-			log=new PrintStream(file);
-		} catch (IOException e) {}
-		
 		solving = true;
-		println("\nThread produttore - procedo con la computazione del risultato");
-		//println("pid: "+pid);
 		
 		if (sinfo == null) {
 			threadSolve();
@@ -388,10 +357,6 @@ public class EngineRunner implements java.io.Serializable, Runnable{
 		}
 		engineManager.removeThread(pid);
 	}    
-	
-	public void println(String s){
-		log.println(s);
-	}
 	
 	public int getId(){
 		return id;
@@ -408,7 +373,6 @@ public class EngineRunner implements java.io.Serializable, Runnable{
 	public boolean nextSolution() {
 		solving = true;
 		next.add(true);
-		//System.out.println("nextsol");	
 		
 		synchronized(semaphore){	
 			semaphore.notify();			
@@ -425,7 +389,6 @@ public class EngineRunner implements java.io.Serializable, Runnable{
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			//println("read");
 		}
 		finally{
 			lockVar.unlock();
@@ -433,23 +396,6 @@ public class EngineRunner implements java.io.Serializable, Runnable{
 		
 		return sinfo;
 	}
-	
-	/*public SolveInfo join(){
-		lockVar.lock();
-		try{
-			while(solving || sinfo==null)
-			try {
-				cond.await();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			println("join");
-		}
-		finally{
-			lockVar.unlock();
-		}
-		return sinfo;
-	}*/
 	
 	public void setSolving(boolean solved){
 		solving = solved;

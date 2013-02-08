@@ -106,7 +106,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 			ex.printStackTrace();
 		}
 		try {
-			loadLibrary("alice.tuprolog.ThreadLibrary");	
+			loadLibrary("alice.tuprolog.lib.ThreadLibrary");	
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

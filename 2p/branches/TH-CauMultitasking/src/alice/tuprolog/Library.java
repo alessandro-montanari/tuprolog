@@ -99,7 +99,7 @@ public abstract class Library implements Serializable, IPrimitives {
     /**
 	 * @param en
 	 */
-    void setEngine(Prolog en) {	//aggiunta visibilitˆ
+    public void setEngine(Prolog en) {	
         engine = en;
     }
     

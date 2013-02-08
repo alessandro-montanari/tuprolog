@@ -22,7 +22,6 @@ public class TermQueue {
 			found=search(t,engine,remove);
 			if (found) return true;
 			er.setSolving(false);
-			System.out.println("Thread "+Thread.currentThread().getId()+" - mi metto in attesa del messaggio ");
 			try {
 				wait();
 			} catch (InterruptedException e) {break;}
@@ -67,7 +66,6 @@ public class TermQueue {
 	public synchronized void store (Term t){
 		queue.addLast(t);
     	notifyAll();	
-    	System.out.println("Thread pid "+Thread.currentThread().getId()+" - messaggio depositato");
 	}
 	
 	public synchronized int size(){
