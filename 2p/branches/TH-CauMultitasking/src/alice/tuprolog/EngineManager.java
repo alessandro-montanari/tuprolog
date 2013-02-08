@@ -19,12 +19,12 @@ public class EngineManager implements java.io.Serializable {
 	private int rootID;
 	private int rootPID;
 	private int baseID;
+	private int basePID;
 	
 	private Hashtable<String, TermQueue> queues;
 	private Hashtable<String, ReentrantLock> locks;
 
 	public void initialize(Prolog vm) {
-		//if (!(vm instanceof Prolog)) throw new RuntimeException("Current Prolog engine does not support multi-threading");
 		this.vm=vm;
 		runners=new Hashtable<Integer,EngineRunner>();
 		threads = new Hashtable<Integer,Integer>();
@@ -45,19 +45,14 @@ public class EngineManager implements java.io.Serializable {
 		
 		if (!vm.unify(threadID, new Int(id))) return false;
 		
-		System.out.println("Thread id "+Thread.currentThread().getId()+" - thread_create");
 		er.setGoal(goal);
-		
 		addRunner(er, id);
-		
 		Thread t = new Thread(er);
-		System.out.println("pid: "+ t.getId());
 		addThread(t.getId(), id);
 		
 		t.start();
 		return true;
 	}
-
 	
 	public SolveInfo join(int id) {
 		EngineRunner er = findRunner(id);
@@ -92,7 +87,6 @@ public class EngineManager implements java.io.Serializable {
 		return bool;
 	}
 	
-	
 	public void detach (int id) {
 		EngineRunner er= findRunner(id);
 		if (er==null) return;
@@ -122,12 +116,6 @@ public class EngineManager implements java.io.Serializable {
 		return er.getMsg(msg);
 	}
 	
-	/*public boolean getMsg(Term msg){
-		EngineRunner er = findRunner();
-		if (er==null) return false;
-		return er.getMsg(msg);
-	}*/
-	
 	public boolean getMsg(Term msg, String name){
 		EngineRunner er=findRunner();
 		if (er==null) return false;
@@ -141,12 +129,6 @@ public class EngineManager implements java.io.Serializable {
 		if (er==null) return false;
 		return er.waitMsg(msg);
 	}	
-	
-	/*public boolean waitMsg(Term msg){
-		EngineRunner er=findRunner();
-		if (er==null) return false;
-		return er.waitMsg(msg);
-	}*/
 	
 	public boolean waitMsg(Term msg, String name){
 		EngineRunner er=findRunner();
@@ -162,12 +144,6 @@ public class EngineManager implements java.io.Serializable {
 		return er.peekMsg(msg);
 	}
 	
-	/*public boolean peekMsg(Term msg){
-		EngineRunner er=findRunner();
-		if (er==null) return false;
-		return er.peekMsg(msg);
-	}*/
-	
 	public boolean peekMsg(Term msg, String name){
 		TermQueue queue=queues.get(name);
 		if (queue==null) return false;
@@ -180,31 +156,11 @@ public class EngineManager implements java.io.Serializable {
 		return er.removeMsg(msg);
 	}
 	
-	/*public boolean removeMsg(Term msg){
-		EngineRunner er=findRunner();
-		if (er==null) return false;
-		return er.removeMsg(msg);
-	}*/
-	
 	public boolean removeMsg(Term msg, String name){
 		TermQueue queue=queues.get(name);
 		if (queue==null) return false;
 		return queue.remove(msg, vm);
 	}
-
-	
-/*	public boolean add_reader (int shared, int reader){
-		EngineRunner er=runners.get(new Integer(shared));
-		if (er==null) return false;
-		return er.add_reader(reader);
-	}
-	
-	public boolean add_owner (int shared, int owner){
-		EngineRunner er=runners.get(new Integer(shared));
-		if (er==null) return false;
-		return er.add_owner(owner);
-	}*/
-
 	
 	private void removeRunner(int id){
 		synchronized (runners) {
@@ -212,14 +168,12 @@ public class EngineManager implements java.io.Serializable {
 			if (er==null) return;
 			runners.remove(id);
 		}
-		System.out.println("RIMOSSO RUNNER DI ID "+id);
 	}
 	
 	private void addRunner(EngineRunner er, int id){
 		synchronized (runners){
 			runners.put(id, er);
 		}
-		System.out.println("AGGIUNTO UN RUNNER DI ID "+id);
 	}
 	
 	public void removeThread(long pid){
@@ -228,19 +182,10 @@ public class EngineManager implements java.io.Serializable {
 		}
 	}
 	
-	public void addThread(long pid, int id){
+	private void addThread(long pid, int id){
 		synchronized (threads){
 			threads.put((int) pid, id);
 		}
-		System.out.println("AGGIUNTO UN THREAD DI ID "+id+" e pid: "+pid);
-	}
-	
-	public synchronized void println (String s){
-		EngineRunner er = findRunner();
-		if (er!=null)
-			er.println(s);
-		else
-			System.out.println("Operation failed!");
 	}
 	
 	void cut() {
@@ -255,7 +200,6 @@ public class EngineManager implements java.io.Serializable {
 			libCall();
 		return runners.get(baseID).getCurrentContext();
 	}
-
 	
 	boolean hasOpenAlternatives() {
 		EngineRunner runner = findRunner();
@@ -274,8 +218,6 @@ public class EngineManager implements java.io.Serializable {
 	}
 	
 	public synchronized SolveInfo solve(Term query) {
-		System.out.println("Root - pid: "+Thread.currentThread().getId());
-		
 		rootPID = (int) Thread.currentThread().getId();
 		rootID = 1;
 		
@@ -284,18 +226,20 @@ public class EngineManager implements java.io.Serializable {
 		er.setGoal(query);
 		
 		addRunner(er, rootID);
+		addThread(rootPID, rootID);
 		
 		return er.solve();
 	}
 	
 	public synchronized void libCall() {
-		System.out.println("Root - pid: "+Thread.currentThread().getId());
+		basePID = (int) Thread.currentThread().getId();
 		baseID = 0;
 		
 		EngineRunner er = new EngineRunner(baseID);
 		er.initialize(vm);
 		
 		addRunner(er, baseID);
+		addThread(basePID, baseID);
 	}
 	
 	public void solveEnd() {
@@ -315,7 +259,6 @@ public class EngineManager implements java.io.Serializable {
 			java.util.Enumeration<EngineRunner> ers=runners.elements();
 			while (ers.hasMoreElements()) {
 				EngineRunner current=ers.nextElement();
-				current.println("MOTORE FERMATO DALL'ESTERNO");
 				current.solveHalt();		
 			}
 		}
@@ -346,7 +289,7 @@ public class EngineManager implements java.io.Serializable {
 	
 	private EngineRunner findRunner(){
 		int key = (int) Thread.currentThread().getId();
-		if(key == rootPID) return runners.get(rootID);
+		//if(key == rootPID) return runners.get(rootID);
 		int id = 0;
 		synchronized(threads){
 			if(threads.containsKey(key))
@@ -379,11 +322,6 @@ public class EngineManager implements java.io.Serializable {
 			queues.remove(name);
 		}
 	}
-	
-/*	public int queueSize (){
-		EngineRunner er=findRunner();
-		return er.msgQSize();
-	}*/
 	
 	public int queueSize(int id){
 		EngineRunner er = findRunner(id);
@@ -477,7 +415,6 @@ public class EngineManager implements java.io.Serializable {
 	public void identify(Term t) {
 		EngineRunner er=findRunner();
 		er.identify(t);
-	}
-	
+	}	
 }
 

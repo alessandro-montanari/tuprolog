@@ -28,7 +28,7 @@ public class ThreadLibraryTest {
 	
 
 	/**
-	 * Test method for {@link alice.tuprolog.ThreadLibrary#thread_id_1(alice.tuprolog.Term)}.
+	 * Test method for {@link alice.tuprolog.lib.ThreadLibrary#thread_id_1(alice.tuprolog.Term)}.
 	 * @throws InvalidTheoryException 
 	 * @throws MalformedGoalException 
 	 * @throws NoSolutionException 
@@ -42,7 +42,7 @@ public class ThreadLibraryTest {
 	}
 
 	/**
-	 * Test method for {@link alice.tuprolog.ThreadLibrary#thread_create_2(alice.tuprolog.Term, alice.tuprolog.Term)}.
+	 * Test method for {@link alice.tuprolog.lib.ThreadLibrary#thread_create_2(alice.tuprolog.Term, alice.tuprolog.Term)}.
 	 * @throws MalformedGoalException 
 	 * @throws InvalidTheoryException 
 	 */
@@ -62,7 +62,7 @@ public class ThreadLibraryTest {
 	}
 	
 	/**
-	 * Test method for {@link alice.tuprolog.ThreadLibrary#thread_next_sol_1(alice.tuprolog.Term)}.
+	 * Test method for {@link alice.tuprolog.lib.ThreadLibrary#thread_next_sol_1(alice.tuprolog.Term)}.
 	 * @throws InvalidTheoryException 
 	 * @throws MalformedGoalException 
 	 * @throws NoSolutionException 
@@ -92,7 +92,7 @@ public class ThreadLibraryTest {
 	}
 
 	/**
-	 * Test method for {@link alice.tuprolog.ThreadLibrary#thread_join_2(alice.tuprolog.Term, alice.tuprolog.Term)}.
+	 * Test method for {@link alice.tuprolog.lib.ThreadLibrary#thread_join_2(alice.tuprolog.Term, alice.tuprolog.Term)}.
 	 * @throws InvalidTheoryException 
 	 * @throws MalformedGoalException 
 	 * @throws NoSolutionException 
@@ -115,25 +115,9 @@ public class ThreadLibraryTest {
 		sinfo = engine.solve("thread_create(genitore(bob,X), ID), thread_join(ID,X), thread_next_sol(ID).");	//il thread  stato rimosso
 		assertFalse(sinfo.isSuccess());
 	}
-/*
-	*//**
-	 * Test method for {@link alice.tuprolog.ThreadLibrary#new_log_file_1(alice.tuprolog.Term)}.
-	 *//*
-	@Test
-	public void testNew_log_file_1() {
-		
-	}
-
-	*//**
-	 * Test method for {@link alice.tuprolog.ThreadLibrary#write_log_2(alice.tuprolog.Term, alice.tuprolog.Term)}.
-	 *//*
-	@Test
-	public void testWrite_log_2() {
-		fail("Not yet implemented");
-	}*/
 
 	/**
-	 * Test method for {@link alice.tuprolog.ThreadLibrary#thread_read_2(alice.tuprolog.Term, alice.tuprolog.Term)}.
+	 * Test method for {@link alice.tuprolog.lib.ThreadLibrary#thread_read_2(alice.tuprolog.Term, alice.tuprolog.Term)}.
 	 * @throws InvalidTheoryException 
 	 * @throws MalformedGoalException 
 	 * @throws NoSolutionException 
@@ -164,7 +148,7 @@ public class ThreadLibraryTest {
 	}
 
 	/**
-	 * Test method for {@link alice.tuprolog.ThreadLibrary#thread_has_next_1(alice.tuprolog.Term)}.
+	 * Test method for {@link alice.tuprolog.lib.ThreadLibrary#thread_has_next_1(alice.tuprolog.Term)}.
 	 * @throws InvalidTheoryException 
 	 * @throws MalformedGoalException 
 	 * @throws NoSolutionException 
@@ -190,7 +174,7 @@ public class ThreadLibraryTest {
 	
 
 	/**
-	 * Test method for {@link alice.tuprolog.ThreadLibrary#thread_detach_1(alice.tuprolog.Term)}.
+	 * Test method for {@link alice.tuprolog.lib.ThreadLibrary#thread_detach_1(alice.tuprolog.Term)}.
 	 * @throws InvalidTheoryException 
 	 * @throws MalformedGoalException 
 	 */
@@ -205,7 +189,7 @@ public class ThreadLibraryTest {
 	}
 
 	/**
-	 * Test method for {@link alice.tuprolog.ThreadLibrary#thread_sleep_1(alice.tuprolog.Term)}.
+	 * Test method for {@link alice.tuprolog.lib.ThreadLibrary#thread_sleep_1(alice.tuprolog.Term)}.
 	 * @throws InvalidTheoryException 
 	 * @throws MalformedGoalException 
 	 */
@@ -220,7 +204,7 @@ public class ThreadLibraryTest {
 	}
 
 	/**
-	 * Test method for {@link alice.tuprolog.ThreadLibrary#thread_send_msg_2(alice.tuprolog.Term, alice.tuprolog.Term)}.
+	 * Test method for {@link alice.tuprolog.lib.ThreadLibrary#thread_send_msg_2(alice.tuprolog.Term, alice.tuprolog.Term)}.
 	 * @throws MalformedGoalException 
 	 * @throws NoSolutionException 
 	 * @throws InvalidTheoryException 
@@ -253,7 +237,7 @@ public class ThreadLibraryTest {
 	}
 
 	/**
-	 * Test method for {@link alice.tuprolog.ThreadLibrary#thread_get_msg_2(alice.tuprolog.Term, alice.tuprolog.Term)}.
+	 * Test method for {@link alice.tuprolog.lib.ThreadLibrary#thread_get_msg_2(alice.tuprolog.Term, alice.tuprolog.Term)}.
 	 * @throws InvalidTheoryException 
 	 * @throws MalformedGoalException 
 	 * @throws NoSolutionException 
@@ -274,7 +258,7 @@ public class ThreadLibraryTest {
 	}
 
 	/**
-	 * Test method for {@link alice.tuprolog.ThreadLibrary#thread_peek_msg_2(alice.tuprolog.Term, alice.tuprolog.Term)}.
+	 * Test method for {@link alice.tuprolog.lib.ThreadLibrary#thread_peek_msg_2(alice.tuprolog.Term, alice.tuprolog.Term)}.
 	 * @throws InvalidTheoryException 
 	 * @throws MalformedGoalException 
 	 * @throws NoSolutionException 
@@ -312,7 +296,7 @@ public class ThreadLibraryTest {
 	}
 
 	/**
-	 * Test method for {@link alice.tuprolog.ThreadLibrary#thread_wait_msg_2(alice.tuprolog.Term, alice.tuprolog.Term)}.
+	 * Test method for {@link alice.tuprolog.lib.ThreadLibrary#thread_wait_msg_2(alice.tuprolog.Term, alice.tuprolog.Term)}.
 	 * @throws InvalidTheoryException 
 	 * @throws MalformedGoalException 
 	 * @throws NoSolutionException 
@@ -353,7 +337,7 @@ public class ThreadLibraryTest {
 	/**
 	 * Il metodo peek non riesce a prelevare la soluzione perch il messaggio  stato rimosso
 	 * 
-	 * Test method for {@link alice.tuprolog.ThreadLibrary#thread_remove_msg_2(alice.tuprolog.Term, alice.tuprolog.Term)}.
+	 * Test method for {@link alice.tuprolog.lib.ThreadLibrary#thread_remove_msg_2(alice.tuprolog.Term, alice.tuprolog.Term)}.
 	 * @throws InvalidTheoryException 
 	 * @throws MalformedGoalException 
 	 */
@@ -370,17 +354,9 @@ public class ThreadLibraryTest {
 	}
 
 	/**
-	 * Test method for {@link alice.tuprolog.ThreadLibrary#message_queue_create_1(alice.tuprolog.Term)}.
-	 *//*
-	@Test
-	public void testMessage_queue_create_1() {
-		
-	}*/
-
-	/**
 	 * start(X) -> prelevo la soluzione, poi distruggo la coda.
 	 * start2(X) -> distruggo la coda, poi prelevo la soluzione.
-	 * Test method for {@link alice.tuprolog.ThreadLibrary#message_queue_destroy_1(alice.tuprolog.Term)}.
+	 * Test method for {@link alice.tuprolog.lib.ThreadLibrary#message_queue_destroy_1(alice.tuprolog.Term)}.
 	 * @throws InvalidTheoryException 
 	 * @throws MalformedGoalException 
 	 */
@@ -401,7 +377,7 @@ public class ThreadLibraryTest {
 	}
 
 	/**
-	 * Test method for {@link alice.tuprolog.ThreadLibrary#msg_queue_size_2(alice.tuprolog.Term, alice.tuprolog.Term)}.
+	 * Test method for {@link alice.tuprolog.lib.ThreadLibrary#msg_queue_size_2(alice.tuprolog.Term, alice.tuprolog.Term)}.
 	 * @throws InvalidTheoryException 
 	 * @throws MalformedGoalException 
 	 * @throws NoSolutionException 
@@ -424,18 +400,8 @@ public class ThreadLibraryTest {
 		assertEquals(new Int(5), X);
 	}
 
-/*	*//**
-	 * Test method for {@link alice.tuprolog.ThreadLibrary#mutex_create_1(alice.tuprolog.Term)}.
-	 * @throws InvalidTheoryException 
-	 * @throws MalformedGoalException 
-	 *//*
-	@Test
-	public void testMutex_create_1() throws InvalidTheoryException, MalformedGoalException {
-		
-	}*/
-
 	/**
-	 * Test method for {@link alice.tuprolog.ThreadLibrary#mutex_destroy_1(alice.tuprolog.Term)}.
+	 * Test method for {@link alice.tuprolog.lib.ThreadLibrary#mutex_destroy_1(alice.tuprolog.Term)}.
 	 * @throws InvalidTheoryException 
 	 * @throws MalformedGoalException 
 	 */
@@ -469,7 +435,7 @@ public class ThreadLibraryTest {
 	}
 
 	/**
-	 * Test method for {@link alice.tuprolog.ThreadLibrary#mutex_trylock_1(alice.tuprolog.Term)}.
+	 * Test method for {@link alice.tuprolog.lib.ThreadLibrary#mutex_trylock_1(alice.tuprolog.Term)}.
 	 * @throws InvalidTheoryException 
 	 * @throws MalformedGoalException 
 	 */
@@ -486,7 +452,7 @@ public class ThreadLibraryTest {
 	}
 
 	/**
-	 * Test method for {@link alice.tuprolog.ThreadLibrary#mutex_unlock_all_0()}.
+	 * Test method for {@link alice.tuprolog.lib.ThreadLibrary#mutex_unlock_all_0()}.
 	 * @throws InvalidTheoryException 
 	 * @throws MalformedGoalException 
 	 */
@@ -500,4 +466,147 @@ public class ThreadLibraryTest {
 		SolveInfo sinfo = engine.solve("start(X).");
 		assertTrue(sinfo.isSuccess());
 	}
+	
+	@Test
+	public void testFattoriale() throws InvalidTheoryException, MalformedGoalException, NoSolutionException{
+		theory = "start(N,X,M,Y):- thread_create(fact1(N,X),ID), thread_create(fact1(M,Y),ID2), thread_join(ID, fact1(N,X)), thread_join(ID2, fact1(M,Y)).\n" +
+				"fact1(0,1):-!.\n" +
+				"fact1(N,X):-M is N-1,fact1(M,Y),X is Y*N.";
+		engine.setTheory(new Theory(theory));
+		
+		SolveInfo sinfo = engine.solve("start(7,X,8,Y).");
+		assertTrue(sinfo.isSuccess());
+		
+		Term X = sinfo.getVarValue("X");
+		assertEquals(new Int(5040), X);
+		
+		Term Y = sinfo.getVarValue("Y");
+		assertEquals(new Int(40320), Y);
+	}
+	
+	@Test 
+	public void testMutex1() throws InvalidTheoryException, MalformedGoalException, NoSolutionException{
+		theory = "start(X) :- thread_create(genitore(bob,X), ID), mutex_lock('mutex'), thread_create(lettura(ID,X), ID2), loop(1,3,1,ID),  mutex_unlock('mutex').\n" +
+		"genitore(bob,c).\n" +
+		"genitore(bob,gdh).\n" +
+		"loop(I, To, Inc, ThreadId) :- Inc >= 0, I > To, !.\n" +
+		"loop(I, To, Inc, ThreadId) :- Inc < 0,  I < To, !.\n" +
+		"loop(I, To, Inc, ThreadId) :- (thread_has_next(ThreadId) -> thread_next_sol(ThreadId), Next is I+Inc, loop(Next, To, Inc, ThreadId); !).\n" +
+		"lettura(ID, X):- mutex_lock('mutex'), thread_read(ID,X), mutex_unlock('mutex').";
+		engine.setTheory(new Theory(theory));
+		
+		SolveInfo sinfo = engine.solve("start(X).");
+		assertTrue(sinfo.isSuccess());
+	}
+	
+	@Test
+	public void testMutex2() throws InvalidTheoryException, MalformedGoalException, NoSolutionException{
+		theory = "start :- thread_create(figlio(bob,X), ID1), mutex_lock('mutex')," +
+				"thread_create(lettura(ID1,X), ID2), loop(1,5,1,ID1),  mutex_unlock('mutex').\n" +
+				"loop(I, To, Inc, ThreadId) :- Inc >= 0, I > To, !.\n" +
+				"loop(I, To, Inc, ThreadId) :- Inc < 0,  I < To, !.\n" +
+				"loop(I, To, Inc, ThreadId) :- (thread_has_next(ThreadId) ->" +
+				"thread_next_sol(ThreadId), Next is I+Inc, loop(Next, To, Inc, ThreadId); !).\n" +
+				"lettura(ID, X) :- mutex_lock('mutex'), thread_read(ID,X)," +
+				"mutex_unlock('mutex').\n" +
+				"figlio(bob,alex).\n" +
+				"figlio(bob,anna).\n" +
+				"figlio(bob,maria).";
+		engine.setTheory(new Theory(theory));
+		
+		SolveInfo sinfo = engine.solve("start.");
+		assertTrue(sinfo.isSuccess());
+		
+	}
+	
+	@Test
+	public void testMutex3() throws InvalidTheoryException, MalformedGoalException, NoSolutionException{
+		theory = "start :- thread_create(figlio(bob,X), ID1)," +
+				"loop(1,5,1,ID1), thread_create(lettura(ID1,X), ID2).\n" +
+				"loop(I, To, Inc, ThreadId) :- Inc >= 0, I > To, !.\n" +
+				"loop(I, To, Inc, ThreadId) :- Inc < 0,  I < To, !.\n" +
+				"loop(I, To, Inc, ThreadId) :- (thread_has_next(ThreadId) ->" +
+				"thread_next_sol(ThreadId), Next is I+Inc, loop(Next, To, Inc, ThreadId); !).\n" +
+				"lettura(ID, X) :- thread_read(ID,X).\n" +
+				"figlio(bob,alex).\n" +
+				"figlio(bob,anna).\n" +
+				"figlio(bob,maria).";
+		engine.setTheory(new Theory(theory));
+		
+		SolveInfo sinfo = engine.solve("start.");
+		assertTrue(sinfo.isSuccess());
+	}
+	
+	@Test
+	public void concurrentTest1() throws InvalidTheoryException, MalformedGoalException, NoSolutionException{
+		theory= "bubble(L1,L2) :- bubble(L1,0,L2).\n" +
+				"bubble(L1,0,L2) :- sweep(L1,0,L2).\n" +
+				"bubble(L1,0,L2) :- sweep(L1,1,LTMP),bubble(LTMP,0,L2).\n" +
+				"sweep([X|[]],0,[X|[]]).\n" +
+				"sweep([X,Y|REST1],CHANGED,[X|REST2]) :- X =< Y,sweep([Y|REST1],CHANGED,REST2).\n" +
+				"sweep([X,Y|REST1],1,[Y|REST2]) :- X > Y,sweep([X|REST1],_,REST2).\n"+
+				"plain(L1,L2) :- plain(L1,[],L2).\n" +
+				"plain([],ACC,ACC).\n" +
+				"plain([H|REST],ACC,L2) :- H = [_|_],plain(H,ACC,ACC1),plain(REST,ACC1,L2).\n" +
+				"plain([H|REST],ACC,L2) :- append(ACC,[H],ACC1),plain(REST,ACC1,L2).\n" +
+				"plain(X,ACC,L2) :- append(ACC,[X],L2).\n"+
+				
+				"ordina(L, N, T) :- thread_create(firstResp(L, N),ID), secondResp(L, N, T).\n" +
+				"secondResp(L, 0, T):- !.\n" +
+				"secondResp([H|Tail], N, T) :- occorr(T,H,Count), C is N-1, secondResp(Tail,C, T).\n"+
+				
+				"firstResp(L, 0) :- !.\n"+
+				"firstResp([H|Tail], N) :- plain(H,L_plain), bubble(L_plain,L_ord), C is N - 1, firstResp(Tail, C).\n"+
+				"occorr(T,L,N) :- occorr(T,L,0,N).\n" +
+				"occorr(_,[],ACC,ACC).\n" +
+				"occorr(T,[T|REST],ACC,N) :-ACC1 is ACC+1,occorr(T,REST,ACC1,N).\n" +
+				"occorr(T,[_|REST],ACC,N) :- occorr(T,REST,ACC,N).";
+				engine.setTheory(new Theory(theory));
+		
+				SolveInfo sinfo = engine.solve("ordina([[[2,2],2,2,1],[4,[3],2],[9,8,9,2]],3, 2).");
+				assertTrue(sinfo.isSuccess());
+				
+	}
+	
+	@Test
+	public void concurrentTest2() throws InvalidTheoryException, MalformedGoalException, NoSolutionException{
+		theory= "coppie(L,C,DX,SX):-thread_create(coppieDX(L,C,DX),ID1), thread_create(coppieSX(L,C,SX),ID2).\n" +
+		
+				"coppieDX([],_,[]).\n " +
+				"coppieDX([[X,X]|T],X,[X|Td]) :- !,coppieDX(T,X,Td).\n " +
+				"coppieDX([[X,Y]|T],X,[Y|Td]) :- !,coppieDX(T,X,Td).\n " +
+				"coppieDX([_|T],X,Td) :- coppieDX(T,X,Td).\n" +
+				
+				"coppieSX([],_,[]).\n " +
+				"coppieSX([[X,X]|T],X,[X|Ts]) :- !,coppieSX(T,X,Ts). \n" +
+				"coppieSX([[Y,X]|T],X,[Y|Ts]) :- !,coppieSX(T,X,Ts). \n" +
+				"coppieSX([_|T],X,Ts) :- coppieSX(T,X,Ts).";
+				engine.setTheory(new Theory(theory));
+
+				SolveInfo sinfo = engine.solve("coppie([[2,3],[5,2]], 2, DX,SX).");
+				assertTrue(sinfo.isSuccess());
+	}
+	
+	@Test
+	public void concurrentTest3() throws InvalidTheoryException, MalformedGoalException, NoSolutionException{
+		theory="study(L_stud, L_exams, N,Num) :- thread_create(loop(1, N, 1, L_stud, L_exams),ID), length(L_exams,Num). \n"+
+				
+				"length([],0).\n"+
+				"length([_|Queue],N):-length(Queue,Nqueue),N is Nqueue + 1.\n"+
+			
+				"loop(I, To, Inc, L_stud, L_exams) :- Inc >= 0, I > To, !.\n"+
+				"loop(I, To, Inc, L_stud, L_exams) :- Inc < 0,  I < To, !.\n"+
+				"loop(I, To, Inc, [H|Tail], L_exams) :- thread_create((totStud(H,L_exams,N,T), N > 0, AV is T/N),ID),  Next is I+Inc, loop(Next, To, Inc, Tail, L_exams).\n"+
+				
+				"totStud(_,[],0,0) :- !. \n" +
+				"totStud(S,[exam(S,_,V)|R],N,T) :- !, totStud(S,R,NN,TT), N is NN + 1, T is TT + V. \n" +
+				"totStud(S,[_|R],N,T) :- totStud(S,R,N,T).";
+		
+				engine.setTheory(new Theory(theory));
+		
+				SolveInfo sinfo = engine.solve("study([s1,s2,s3,s4,s5],[exam(s2,f1,30), exam(s1,f1,27), exam(s3,f1,25), exam(s1,f2,30),exam(s4,f1,25),exam(s3,f2,20),exam(s5,f1,20),exam(s2,f5,30), exam(s1,f5,27), exam(s3,f5,25), exam(s1,f4,30),exam(s4,f5,25),exam(s3,f8,20),exam(s5,f7,20)], 5,Num).");
+				assertTrue(sinfo.isSuccess());			
+	}
+
+	
 }

@@ -203,7 +203,7 @@ public class TheoryManager implements Serializable {
 	 * Binds clauses in the database with the corresponding
 	 * primitive predicate, if any
 	 */
-	public synchronized void rebindPrimitives() {
+	public void rebindPrimitives() {
 		for (ClauseInfo d:dynamicDBase){
 			for(AbstractSubGoalTree sge:d.getBody()){
 				Term t = ((SubGoalElement)sge).getValue();
@@ -238,7 +238,7 @@ public class TheoryManager implements Serializable {
 	}
 
 
-	private synchronized boolean runDirective(Struct c) {
+	private boolean runDirective(Struct c) {
 		if ("':-'".equals(c.getName()) || ":-".equals(c.getName()) && c.getArity() == 1 && c.getTerm(0) instanceof Struct) {
 			Struct dir = (Struct) c.getTerm(0);
 			try {

@@ -1,85 +1,41 @@
 /**
- * @author Robertino Aniello
+ * @author Eleonora Cau
  *
  */
 
-package alice.tuprolog;
-//import java.io.File;
-//import java.io.IOException;
-//import java.io.PrintStream;
+package alice.tuprolog.lib;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.util.Hashtable;
-
+import alice.tuprolog.EngineManager;
+import alice.tuprolog.Int;
+import alice.tuprolog.InvalidTermException;
 import alice.tuprolog.Library;
+import alice.tuprolog.NoSolutionException;
+import alice.tuprolog.Prolog;
+import alice.tuprolog.PrologError;
+import alice.tuprolog.SolveInfo;
+import alice.tuprolog.Term;
+
 
 
 
 @SuppressWarnings("serial")
 public class ThreadLibrary extends Library {
 
-	//protected Prolog engine;
 	protected EngineManager engineManager;
-
-	private Hashtable<String, PrintStream> files = new Hashtable<String, PrintStream>();
 	
-	
-	void setEngine(Prolog en) {	
-		/*try {
-			file.createNewFile();
-			log = new PrintStream(file);
-		} catch (IOException e) {}*/
-		
-		/*if (!(en instanceof CProlog)){
-			System.out.println("Current Prolog engine does not support multi-threading");
-			throw new RuntimeException("Current Prolog engine does not support multi-threading");
-		}*/
+	public void setEngine(Prolog en) {	
         engine = en;
         engineManager = en.getEngineManager();
-        //engineManager=((CProlog) en).getEngineManager();
-        
-        /*if (engineManager==null){
-        	System.out.println("Current Prolog engine does not support multi-threading");
-			throw new RuntimeException("Current Prolog engine does not support multi-threading");
-		}*/
 	}
 	
 	//Tenta di unificare a t l'identificativo del thread corrente
 	public boolean thread_id_1 (Term t) throws PrologError{
         int id = engineManager.runnerId();
-        try{
-        	unify(t,new Int(id));
-		} catch (InvalidTermException e) {
-			throw PrologError.syntax_error(engine.getEngineManager(),-1, e.line, e.pos, t);
-		}
+        unify(t,new Int(id));
 		return true;
 	}
 	
-	
-	/*Crea un nuovo thread di identificatore id e comincia ad eseguire il goal dato.
-	status dˆ la possibilitˆ di specificare i diritti di accesso al thread: public, protected, private (deve essere un atomo).
-	*/
-	/*public boolean thread_create_3 (Term goal, Term id, Term status){
-	 * int permits;
-		status = status.getTerm();		
-		if (!status.isAtom() || !status.isAtomic()) 
-			return false;
-		String s = status.toString();
-		if (s.contains("private")) 
-			permits=2;
-		else if (s.contains("protected")) 
-			permits=1;
-		else if (s.contains("public")) 
-			permits=0;
-		else return false;
-		return engineManager.threadCreate(goal, id);
-	}*/
-	
-	/*Crea un nuovo thread di identificatore id e comincia ad eseguire il goal dato
-	Diritto di accesso (di default): pretected 
-	*/
+	//Crea un nuovo thread di identificatore id che comincia ad eseguire il goal dato
 	public boolean thread_create_2 (Term goal, Term id){
 		return engineManager.threadCreate(goal, id);
 	}
@@ -93,7 +49,6 @@ public class ThreadLibrary extends Library {
                     "integer", id);
 		SolveInfo res = engineManager.join(((Int)id).intValue());
 		if (res == null) return false;
-		//log.println("Join completato con successo");
 		Term status;
 		try {
 			status = res.getSolution();
@@ -106,32 +61,6 @@ public class ThreadLibrary extends Library {
 		} catch (InvalidTermException e) {
 			throw PrologError.syntax_error(engine.getEngineManager(),-1, e.line, e.pos, result);
 		}
-		return true;
-	}
-
-	public boolean new_log_file_1(Term name) throws PrologError{
-		name = name.getTerm();
-		File file = new File(name.toString());
-		PrintStream log = null;
-		try {
-			file.createNewFile();
-			log=new PrintStream(file);
-		} catch (IOException e) {
-			 throw PrologError.permission_error(engine.getEngineManager(),
-                     "file", "stream", name,
-                     new Struct(e.getMessage()));
-		}
-		files.put(name.toString(), log);
-		return true;
-	}
-	
-	public boolean write_log_2(Term name, Term arg) throws PrologError{
-		arg = arg.getTerm();
-		name = name.getTerm();
-		PrintStream log = files.get(name.toString());
-		if(log == null)
-			 throw PrologError.existence_error(engineManager, 2, "file", name, new Struct("File name does not exist."));
-		log.println(arg.toString());
 		return true;
 	}
 		
@@ -149,23 +78,6 @@ public class ThreadLibrary extends Library {
 			//status = new Struct("FALSE");
 			return false;
 		}
-		/*boolean uni;
-		synchronized (log){
-			log.println("\nUnificazione(" +
-					Thread.currentThread().getId() +
-					"): result->  " +
-					result +
-					"; status-> " +
-					status);
-			uni= unify (result, status);
-			log.println(" - Successo: " +
-					uni +
-					"  Termini dopo l'unificazione: " +
-					"result-> " +
-					result +
-					" status-> "+
-					status);
-			}*/
 		try{
 			unify (result, status);
 		} catch (InvalidTermException e) {
@@ -214,20 +126,6 @@ public class ThreadLibrary extends Library {
 		}
 		return true;
 	}
-	
-	/*public boolean share_read_permits_2(Term shared, Term reader){
-		shared=shared.getTerm();
-		reader=reader.getTerm();
-		if (!(shared instanceof Int) || !(reader instanceof Int)) return false;
-		return engineManager.add_reader(((Int)shared).intValue(), ((Int)reader).intValue());
-	}
-	
-	public boolean share_modify_permits_2(Term shared, Term reader){
-		shared=shared.getTerm();
-		reader=reader.getTerm();
-		if (!(shared instanceof Int) || !(reader instanceof Int)) return false;
-		return engineManager.add_owner(((Int)shared).intValue(), ((Int)reader).intValue());
-	}*/
 	
 	public boolean thread_send_msg_2(Term msg, Term id) throws PrologError{
 		id=id.getTerm();
@@ -279,23 +177,6 @@ public class ThreadLibrary extends Library {
 		return engineManager.removeMsg(msg,id.toString());
 	}
 	
-	/*public boolean thread_get_msg_1 (Term msg){
-		return engineManager.getMsg(msg);
-	}*/
-	
-	/*public boolean thread_peek_msg_1 (Term msg){
-		return engineManager.peekMsg(msg);
-	}*/
-	
-	/*public boolean thread_wait_msg_1 (Term msg){
-		return engineManager.waitMsg(msg);
-	}*/
-	
-	/*public boolean thread_remove_msg_1 (Term msg){
-		return engineManager.removeMsg(msg);
-	}*/
-	
-	
 	public boolean msg_queue_create_1(Term q) throws PrologError{
 		q= q.getTerm();
 		if (!q.isAtomic() || !q.isAtom()) 
@@ -313,11 +194,6 @@ public class ThreadLibrary extends Library {
 		return true;
 	}
 	
-	/*public boolean msg_queue_size_1(Term n){
-		Int size = new Int(engineManager.queueSize());
-		return unify(n,size);
-	}*/
-	
 	public boolean msg_queue_size_2(Term n, Term id) throws PrologError{
 		id=id.getTerm();
 		int size;
@@ -331,8 +207,7 @@ public class ThreadLibrary extends Library {
 		}
 		if (size<0) return false;
 		return unify(n, new Int(size));
-	}
-	
+	}	
 	
 	public boolean mutex_create_1(Term mutex) throws PrologError{
 		mutex=mutex.getTerm();
@@ -401,49 +276,5 @@ public class ThreadLibrary extends Library {
 		"with_mutex(MUTEX,GOAL):-mutex_unlock(MUTEX), fail."		
 		;
 	
-	}
-	
-	public String getTheory(int a){
-		switch(a){
-		case 1 :  return "genitore(bob,a).\n" +
-				"genitore(bob,b).\n" +
-				"genitore(bob,c).\n" +
-				"genitore(bob,d)."
-			;
-		case 2 : return "start(X,Y) :- crea_log('FileProva'), thread_create(genitore(b,X), ID2),  thread_create(thread1(ID2), ID), thread_create(genitore(bob,Y), ID3), thread_next_sol(ID3), thread_read(ID2,X), thread_read(ID3,Y), write_log('FileProva', X).\n" +		
-				"thread1(ID2):- thread_next_sol(ID2), thread_next_sol(ID2), thread_next_sol(ID2).\n"+
-				"crea_log(NOME):- new_log_file(NOME).\n"+
-				"genitore(bob,a).\n" +
-				"genitore(b,b).\n" +
-				"genitore(bob,c).\n" +
-				"genitore(b,d).\n" +
-				"genitore(bob,gdh).\n"+
-				"genitore(b,e).\n" +
-				"genitore(b,f)." 
-			;
-		case 3: return "start(X) :- thread_execute(X, ID), lettura(ID,X).\n" +
-				"lettura(ID, X):- thread_read(ID, X).\n" +
-				"genitore(bob,b).\n" +
-				"genitore(bob,c).\n" +
-				"genitore(bob,a).\n" +
-				"genitore(bob,d)."
-			;
-		case 4: return "start(X) :- msg_queue_create('CODA'), thread_create(thread1(X), ID), thread_sleep(500), invio('CODA', 'messaggio molto importante'), lettura(ID,X).\n" +
-				"thread1(X) :- thread_wait_msg(a(X),'CODA'). \n " +
-				"invio(ID, M):- thread_send_msg(a(M),ID). \n" +
-				"lettura(ID, X):- thread_join(ID, thread1(X)). "	
-			;
-		case 5: return "start(X) :- mutex_lock('mutex'), thread_create(thread1(X), ID), msg_queue_create('CODA'), invio('CODA', 'messaggio molto importante'), lettura(ID,X). \n" +
-				"thread1(X) :- mutex_lock('mutex'), thread_peek_msg(a(X),'CODA'), mutex_unlock('mutex'). \n" +
-				"invio(Q, M):- thread_send_msg(a(M),Q), mutex_unlock('mutex'). \n" +
-				"lettura(ID, X):- thread_read(ID, thread1(X))."	
-			;
-		case 6: return "start(X) :- thread_create(thread1(X,ID), ID), invio(ID, 'messaggio molto importante'), lettura(ID,X). \n" +
-				"thread1(X, ID) :- thread_wait_msg(a(X), ID). \n" +
-				"invio(ID, M):- thread_send_msg(a(M),ID). \n" +
-				"lettura(ID, X):- thread_join(ID, thread1(X,ID))." 
-			;
-		default : return null;
-		}
 	}
 }
