@@ -1161,7 +1161,7 @@ A reference to a loaded library can be obtained via the \texttt{getLibrary} meth
 %
 Such a reference can be used to operate on the library, as discussed below.
 
-The user theory can either be set from scratch via the \texttt{setTheory} method, which overwrites any previous theory, or be built incrementally, adding new clauses to the existing theory via the \texttt{addTheory} method: both take a \texttt{Theory} as their argument. This theory can be built in several ways---from an input stream, from a string, or from a clause list (represented as a \texttt{Struct} object).
+The user theory can either be set from scratch via the \texttt{setTheory} method, which overwrites any previous theory, or be built incrementally, adding new clauses to the existing theory via the \texttt{addTheory} method: both take a \texttt{Theory} as their argument. This theory can be built in several ways---from an input stream, from a string, or from a clause list (represented as a \texttt{Struct} object---see the example in Table \ref{tab:java-api-example-clauselist} on page \pageref{tab:java-api-example-clauselist} for details).
 %
 The current theory can be retrieved via the \texttt{getTheory} method.
 
@@ -1262,6 +1262,64 @@ solution: append([],[1,2],[1,2]) - bindings: X/[]    Y/[1,2]
 solution: append([1],[2],[1,2])  - bindings: X/[1]   Y/[2]
 solution: append([1,2],[],[1,2]) - bindings: X/[1,2] Y/[]
 \end{verbatim}
+
+
+%--------------
+\subsubsection{Exploiting a theory from clause list}
+%--------------
+
+\begin{table}
+{\small{
+\begin{verbatim}
+import alice.tuprolog.*;
+
+public class Main {
+
+  public static void main(String[] args) throws InvalidTheoryException,
+      MalformedGoalException, NoSolutionException, NoMoreSolutionException {
+      
+      Struct clause1 = new Struct(":-", new Struct("p",new Var("X")), 
+                                        new Struct("q",new Var("X")));
+      Struct clause2 = new Struct(":-", new Struct("q",new Int(0)), 
+                                        new Struct("true"));
+      System.out.println(clause1 + " is a clause? " + clause1.isClause());
+      System.out.println(clause2 + " is a clause? " + clause2.isClause());
+
+      Prolog engine = new Prolog();
+      Struct clauseList = new Struct(clause1, 
+                                     new Struct(clause2, new Struct()));
+      System.out.println(clauseList + " is a list? " + clauseList.isList());
+
+      Theory t = new Theory(clauseList);
+      engine.addTheory(t);
+      SolveInfo info = engine.solve("p(X).");
+      
+      while (info.isSuccess()) { % taken from the previous example
+        System.out.println("solution: " + info.getSolution() +
+                           " - bindings: " + info);
+        if (engine.hasOpenAlternatives()) {
+          info = engine.solveNext();
+        } else {
+          break;
+        }
+      }
+      
+    }
+}
+\end{verbatim}
+}}
+\caption{Building a theory ``by hand'' from a clause list.}
+\label{tab:java-api-example-clauselist}
+\end{table}
+
+In this example (see Table \ref{tab:java-api-example-clauselist}), a \tuprolog{} theory is built from a clause list.
+As in any standard Prolog, a \tuprolog{} clause is just a structure whose functor is \texttt{`:-'}/2. In their turn, facts are expressed as clauses whose body is the atom \texttt{true}, which can be built as a new \texttt{Struct("true")} (the same holds for the atom \texttt{false}, of course). Accordingly, \texttt{clause1} and \texttt{clause2} represent the \texttt{p(X):-q(X).} and \texttt{q(0):-true.} clauses, respectively.
+In order to make the example more explanatory, a couple of print statements have been added that check whether \texttt{clause1} and \texttt{clause2} are actually valid clauses, via the \texttt{Term.isClause} method.
+
+A clause list is just what it name says: a prolog list whose terms are clauses. Since lists are just \texttt{Struct} instances built from a term and another list (possibly the empty list built by the default \texttt{Struct} constructor), the desired clause list is built by creating a \texttt{Struct} having \texttt{clause1} as its first argument, and another list as its second argument: the latter is built by creating a \texttt{Struct} having \texttt{clause2} as its first argument, and the empty list as its second argument. Again, a print statement has been added to show that the \texttt{clauseList} term is actually a valid list.
+The clause list is then used to construct the new theory, as required.
+
+In order to make the example more complete, the engine is finally asked to solve the \texttt{p(X).} query, which obviously has \texttt{p(0)} as its only solution; the same exploration cycle presented in Table \ref{tab:java-api-example1} is re-used for this purpose.
 
 %--------------
 \subsubsection{A console-based Prolog interpreter}

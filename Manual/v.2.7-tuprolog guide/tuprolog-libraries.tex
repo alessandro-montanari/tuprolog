@@ -1811,7 +1811,7 @@ client(X):- udp_socket_open('127.0.0.1:4444',Sock),
     Goal, ArgNo))} if \texttt{Socket} is not a variable, or the address length is not equal to 5 during the transformation of \texttt{Address} from the \texttt{IP:Port} form to the byte array and port number inner form.
 
 \item \bti{udp\_socket\_close/1}\\
-    \noindent\bt{udp\_socket\_close(+DatagramSocket)} is true iff \bt{DatagramSocket} represents a valid server socket; as a side effect, the socket is closed.
+    \noindent\bt{udp\_socket\_close(DatagramSocket)} is true iff \bt{DatagramSocket} represents a valid datagram socket; as a side effect, the socket is closed.
 
     \template{udp\_socket\_close(+term)}
 
@@ -1828,7 +1828,7 @@ client(X):- udp_socket_open('127.0.0.1:4444',Sock),
 
 \item \bti{udp\_receive/4}\\
     \noindent\bt{udp\_receive(-DatagramSocket, -Msg, +AddressTo, +Options)} is true iff \\
-    \texttt{AddressTo} represents the destination address in the \texttt{\textit{Address}:\textit{Port}} form, and \texttt{Options} is a possibly-empty option list; currently, the available options are \texttt{max\_msg\_size(+\textit{Size})}, whose default value is 4096 bytes, and \texttt{timeout(+\textit{Time})}, which specifies a timeout: if the timeout expires, a\texttt{SocketTimeException} is raised. A value of 0 for \texttt{\textit{Time}} stands for infinite timeout.
+    \texttt{AddressTo} represents the destination address in the \texttt{\textit{Address}:\textit{Port}} form, and \texttt{Options} is a possibly-empty option list; currently, the available options are \texttt{max\_msg\_size(+\textit{Size})}, whose default value is 4096 bytes, and \texttt{timeout(+\textit{Time})}, which specifies a timeout: a value of 0 stands for infinite waiting.
     Upon reception of a message, as a side effect, the \texttt{Msg} term is unified with the incoming message, and
     \bt{DatagramSocket} is bound to a datagram socket associated to the input stream.
 

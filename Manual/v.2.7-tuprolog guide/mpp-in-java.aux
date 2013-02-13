@@ -68,67 +68,70 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {7.2.3}Examples}{142}{subsection.7.2.3}}
 \newlabel{ssec:java-api-examples}{{7.2.3}{142}{Examples\relax }{subsection.7.2.3}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {7.2.3.1}Appending lists}{142}{subsubsection.7.2.3.1}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.2.3.2}A console-based Prolog interpreter}{142}{subsubsection.7.2.3.2}}
 \@writefile{lot}{\contentsline {table}{\numberline {7.13}{\ignorespaces The list appending example.}}{143}{table.7.13}}
 \newlabel{tab:java-api-example1}{{7.13}{143}{The list appending example}{table.7.13}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {7.14}{\ignorespaces A simple console-based Prolog interpreter.}}{144}{table.7.14}}
-\newlabel{tab:console-sample}{{7.14}{144}{A simple console-based Prolog interpreter}{table.7.14}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7.4}{\ignorespaces A sample session with the Console-based Interpreter.}}{145}{figure.7.4}}
-\newlabel{fig:console-interpreter}{{7.4}{145}{A sample session with the Console-based Interpreter}{figure.7.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {7.14}{\ignorespaces Building a theory ``by hand'' from a clause list.}}{144}{table.7.14}}
+\newlabel{tab:java-api-example-clauselist}{{7.14}{144}{Building a theory ``by hand'' from a clause list}{table.7.14}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.2.3.2}Exploiting a theory from clause list}{145}{subsubsection.7.2.3.2}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.2.3.3}A console-based Prolog interpreter}{145}{subsubsection.7.2.3.3}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {7.2.4}Registering object bindings}{145}{subsection.7.2.4}}
 \newlabel{ssec:register(Java)}{{7.2.4}{145}{Registering object bindings\relax }{subsection.7.2.4}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {7.15}{\ignorespaces A program registering \texttt  {stdout} for \texttt  {System.out}. As an alternative to \texttt  {getLibrary}, \texttt  {loadLibrary} could have been used---if the library is already loaded, its behavior is identical to \texttt  {getLibrary}'s. Also, the fully qualified class name \texttt  {"alice.tuprolog.lib.JavaLibrary"} is needed in \texttt  {getLibrary} only because \texttt  {JavaLibrary} does \textit  {not} define a short library name (see Section \ref  {ssec:library-name} for details): otherwise, the shorter name could have been used.}}{146}{table.7.15}}
-\newlabel{tab:registering-stdout-example}{{7.15}{146}{A program registering \texttt {stdout} for \texttt {System.out}. As an alternative to \texttt {getLibrary}, \texttt {loadLibrary} could have been used---if the library is already loaded, its behavior is identical to \texttt {getLibrary}'s. Also, the fully qualified class name \texttt {"alice.tuprolog.lib.JavaLibrary"} is needed in \texttt {getLibrary} only because \texttt {JavaLibrary} does \textit {not} define a short library name (see Section \ref {ssec:library-name} for details): otherwise, the shorter name could have been used}{table.7.15}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.2.5}Capturing the Prolog output in Java}{147}{subsection.7.2.5}}
-\newlabel{ssec:capturing-output}{{7.2.5}{147}{Capturing the Prolog output in Java\relax }{subsection.7.2.5}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {7.3}Augmenting Prolog via Java:\\developing new libraries}{147}{section.7.3}}
-\newlabel{sec:howto-develop-libraries}{{7.3}{147}{Augmenting Prolog via Java:\\developing new libraries\relax }{section.7.3}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {7.16}{\ignorespaces Capturing the Prolog output from Java: a complete example.}}{148}{table.7.16}}
-\newlabel{tab:capturing-output-complete}{{7.16}{148}{Capturing the Prolog output from Java: a complete example}{table.7.16}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.3.1}Syntactic conventions}{149}{subsection.7.3.1}}
-\newlabel{ssec:library-syntax}{{7.3.1}{149}{Syntactic conventions\relax }{subsection.7.3.1}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {7.17}{\ignorespaces Definition of a \unhbox \voidb@x \hbox {{\sf  {tu}}Prolog}{} library in Java.}}{150}{table.7.17}}
-\newlabel{tab:TestLibrary}{{7.17}{150}{Definition of a \tuprolog {} library in Java}{table.7.17}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.3.1.1}Capturing exceptions raised in libraries}{151}{subsubsection.7.3.1.1}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.3.1.2}Capturing the Java output in Prolog}{151}{subsubsection.7.3.1.2}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.3.1.3}Naming issues}{151}{subsubsection.7.3.1.3}}
-\@writefile{lot}{\contentsline {table}{\numberline {7.18}{\ignorespaces A test program for the library defined in Table \ref  {tab:TestLibrary} \textit  {(top)} and the corresponding output \textit  {(bottom)}.}}{152}{table.7.18}}
-\newlabel{tab:TestLibrary-Main}{{7.18}{152}{A test program for the library defined in Table \ref {tab:TestLibrary} \textit {(top)} and the corresponding output \textit {(bottom)}}{table.7.18}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7.5}{\ignorespaces Loading a library from the Prolog side in the GUI \textit  {(top)} and its output (\textit  {bottom}). Be sure to read the loading issues in Section \ref  {ssec:library-loading-issues}, or the example will not work.}}{153}{figure.7.5}}
-\newlabel{fig:testlibrary3}{{7.5}{153}{Loading a library from the Prolog side in the GUI \textit {(top)} and its output (\textit {bottom}). Be sure to read the loading issues in Section \ref {ssec:library-loading-issues}, or the example will not work}{figure.7.5}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7.6}{\ignorespaces Loading a library from the Prolog side via the Library Manager icon in the \unhbox \voidb@x \hbox {{\sf  {tu}}Prolog}{} GUI. The loading issues in Section \ref  {ssec:library-loading-issues} still apply. Please note that the browse/save buttons in the dialog are \textit  {not} to be used to load/save libraries, but only to load/save \textit  {\unhbox \voidb@x \hbox {{\sf  {tu}}Prolog}{} preferences} in the form of \texttt  {.2p} files.}}{154}{figure.7.6}}
-\newlabel{fig:testlibrary1}{{7.6}{154}{Loading a library from the Prolog side via the Library Manager icon in the \tuprolog {} GUI. The loading issues in Section \ref {ssec:library-loading-issues} still apply. Please note that the browse/save buttons in the dialog are \textit {not} to be used to load/save libraries, but only to load/save \textit {\tuprolog {} preferences} in the form of \texttt {.2p} files}{figure.7.6}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7.7}{\ignorespaces Loading a library from the Prolog side on the CUIConsole: the output here is in the same terminal, as expected. Again, be sure to read the loading issues in Section \ref  {ssec:library-loading-issues}, or the example will not work.}}{155}{figure.7.7}}
-\newlabel{fig:testlibrary5}{{7.7}{155}{Loading a library from the Prolog side on the CUIConsole: the output here is in the same terminal, as expected. Again, be sure to read the loading issues in Section \ref {ssec:library-loading-issues}, or the example will not work}{figure.7.7}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.3.2}Hybrid Java+Prolog libraries}{155}{subsection.7.3.2}}
-\newlabel{ssec:hybrid-libraries}{{7.3.2}{155}{Hybrid Java+Prolog libraries\relax }{subsection.7.3.2}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {7.19}{\ignorespaces A hybrid (mixed) Java + Prolog library \textit  {(top)} and the corresponding test program \textit  {(bottom)}. }}{156}{table.7.19}}
-\newlabel{tab:HybridLibrary}{{7.19}{156}{A hybrid (mixed) Java + Prolog library \textit {(top)} and the corresponding test program \textit {(bottom)}}{table.7.19}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.3.3}Library loading issues}{157}{subsection.7.3.3}}
-\newlabel{ssec:library-loading-issues}{{7.3.3}{157}{Library loading issues\relax }{subsection.7.3.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {7.15}{\ignorespaces A simple console-based Prolog interpreter.}}{146}{table.7.15}}
+\newlabel{tab:console-sample}{{7.15}{146}{A simple console-based Prolog interpreter}{table.7.15}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7.4}{\ignorespaces A sample session with the Console-based Interpreter.}}{147}{figure.7.4}}
+\newlabel{fig:console-interpreter}{{7.4}{147}{A sample session with the Console-based Interpreter}{figure.7.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {7.16}{\ignorespaces A program registering \texttt  {stdout} for \texttt  {System.out}. As an alternative to \texttt  {getLibrary}, \texttt  {loadLibrary} could have been used---if the library is already loaded, its behavior is identical to \texttt  {getLibrary}'s. Also, the fully qualified class name \texttt  {"alice.tuprolog.lib.JavaLibrary"} is needed in \texttt  {getLibrary} only because \texttt  {JavaLibrary} does \textit  {not} define a short library name (see Section \ref  {ssec:library-name} for details): otherwise, the shorter name could have been used.}}{148}{table.7.16}}
+\newlabel{tab:registering-stdout-example}{{7.16}{148}{A program registering \texttt {stdout} for \texttt {System.out}. As an alternative to \texttt {getLibrary}, \texttt {loadLibrary} could have been used---if the library is already loaded, its behavior is identical to \texttt {getLibrary}'s. Also, the fully qualified class name \texttt {"alice.tuprolog.lib.JavaLibrary"} is needed in \texttt {getLibrary} only because \texttt {JavaLibrary} does \textit {not} define a short library name (see Section \ref {ssec:library-name} for details): otherwise, the shorter name could have been used}{table.7.16}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2.5}Capturing the Prolog output in Java}{148}{subsection.7.2.5}}
+\newlabel{ssec:capturing-output}{{7.2.5}{148}{Capturing the Prolog output in Java\relax }{subsection.7.2.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7.3}Augmenting Prolog via Java:\\developing new libraries}{149}{section.7.3}}
+\newlabel{sec:howto-develop-libraries}{{7.3}{149}{Augmenting Prolog via Java:\\developing new libraries\relax }{section.7.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {7.17}{\ignorespaces Capturing the Prolog output from Java: a complete example.}}{150}{table.7.17}}
+\newlabel{tab:capturing-output-complete}{{7.17}{150}{Capturing the Prolog output from Java: a complete example}{table.7.17}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.3.1}Syntactic conventions}{150}{subsection.7.3.1}}
+\newlabel{ssec:library-syntax}{{7.3.1}{150}{Syntactic conventions\relax }{subsection.7.3.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {7.18}{\ignorespaces Definition of a \unhbox \voidb@x \hbox {{\sf  {tu}}Prolog}{} library in Java.}}{152}{table.7.18}}
+\newlabel{tab:TestLibrary}{{7.18}{152}{Definition of a \tuprolog {} library in Java}{table.7.18}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {7.19}{\ignorespaces A test program for the library defined in Table \ref  {tab:TestLibrary} \textit  {(top)} and the corresponding output \textit  {(bottom)}.}}{153}{table.7.19}}
+\newlabel{tab:TestLibrary-Main}{{7.19}{153}{A test program for the library defined in Table \ref {tab:TestLibrary} \textit {(top)} and the corresponding output \textit {(bottom)}}{table.7.19}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.3.1.1}Capturing exceptions raised in libraries}{154}{subsubsection.7.3.1.1}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.3.1.2}Capturing the Java output in Prolog}{154}{subsubsection.7.3.1.2}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.3.1.3}Naming issues}{154}{subsubsection.7.3.1.3}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7.5}{\ignorespaces Loading a library from the Prolog side in the GUI \textit  {(top)} and its output (\textit  {bottom}). Be sure to read the loading issues in Section \ref  {ssec:library-loading-issues}, or the example will not work.}}{155}{figure.7.5}}
+\newlabel{fig:testlibrary3}{{7.5}{155}{Loading a library from the Prolog side in the GUI \textit {(top)} and its output (\textit {bottom}). Be sure to read the loading issues in Section \ref {ssec:library-loading-issues}, or the example will not work}{figure.7.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7.6}{\ignorespaces Loading a library from the Prolog side via the Library Manager icon in the \unhbox \voidb@x \hbox {{\sf  {tu}}Prolog}{} GUI. The loading issues in Section \ref  {ssec:library-loading-issues} still apply. Please note that the browse/save buttons in the dialog are \textit  {not} to be used to load/save libraries, but only to load/save \textit  {\unhbox \voidb@x \hbox {{\sf  {tu}}Prolog}{} preferences} in the form of \texttt  {.2p} files.}}{156}{figure.7.6}}
+\newlabel{fig:testlibrary1}{{7.6}{156}{Loading a library from the Prolog side via the Library Manager icon in the \tuprolog {} GUI. The loading issues in Section \ref {ssec:library-loading-issues} still apply. Please note that the browse/save buttons in the dialog are \textit {not} to be used to load/save libraries, but only to load/save \textit {\tuprolog {} preferences} in the form of \texttt {.2p} files}{figure.7.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {7.20}{\ignorespaces A hybrid (mixed) Java + Prolog library \textit  {(top)} and the corresponding test program \textit  {(bottom)}. }}{157}{table.7.20}}
+\newlabel{tab:HybridLibrary}{{7.20}{157}{A hybrid (mixed) Java + Prolog library \textit {(top)} and the corresponding test program \textit {(bottom)}}{table.7.20}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7.7}{\ignorespaces Loading a library from the Prolog side on the CUIConsole: the output here is in the same terminal, as expected. Again, be sure to read the loading issues in Section \ref  {ssec:library-loading-issues}, or the example will not work.}}{158}{figure.7.7}}
+\newlabel{fig:testlibrary5}{{7.7}{158}{Loading a library from the Prolog side on the CUIConsole: the output here is in the same terminal, as expected. Again, be sure to read the loading issues in Section \ref {ssec:library-loading-issues}, or the example will not work}{figure.7.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.3.2}Hybrid Java+Prolog libraries}{158}{subsection.7.3.2}}
+\newlabel{ssec:hybrid-libraries}{{7.3.2}{158}{Hybrid Java+Prolog libraries\relax }{subsection.7.3.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.3.3}Library loading issues}{158}{subsection.7.3.3}}
+\newlabel{ssec:library-loading-issues}{{7.3.3}{158}{Library loading issues\relax }{subsection.7.3.3}{}}
 \citation{short-patj-sac08}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.3.4}Library Name}{158}{subsection.7.3.4}}
-\newlabel{ssec:library-name}{{7.3.4}{158}{Library Name\relax }{subsection.7.3.4}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {7.4}Augmenting Java via Prolog:\\the P@J framework}{158}{section.7.4}}
-\newlabel{sec:p@j}{{7.4}{158}{Augmenting Java via Prolog:\\the P@J framework\relax }{section.7.4}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {7.20}{\ignorespaces Defining a new library with the same name as another.}}{159}{table.7.20}}
-\newlabel{tab:StringLibrary-NewStringLibrary}{{7.20}{159}{Defining a new library with the same name as another}{table.7.20}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.4.1}Term taxonomy}{160}{subsection.7.4.1}}
-\newlabel{ssec:p@j-term-taxonomy}{{7.4.1}{160}{Term taxonomy\relax }{subsection.7.4.1}{}}
-\newlabel{ssec:java-api-types}{{7.4.1}{160}{Term taxonomy\relax }{subsection.7.4.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.4.2}Examples}{161}{subsection.7.4.2}}
-\newlabel{ssec:p@j-examples}{{7.4.2}{161}{Examples\relax }{subsection.7.4.2}{}}
-\newlabel{tab:pj-example2}{{7.4.2}{162}{Examples\relax }{table.7.23}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {7.21}{\ignorespaces A Java class exploiting Prolog for implementing an abstract method \textit  {(top)} and a client using it \textit  {(bottom)}. Note that the \texttt  {Arrays.asList} method exploits the Java shortcut syntax for varargs. To run the example, the \texttt  {javassist.jar} library, used by the P@J runtime, must be in the class path: \texttt  {E:>java\nobreakspace  {}\nobreakspace  {}-cp .;2p.jar;javassist.jar PJexample} }}{163}{table.7.21}}
-\newlabel{tab:pj-example1}{{7.21}{163}{A Java class exploiting Prolog for implementing an abstract method \textit {(top)} and a client using it \textit {(bottom)}. Note that the \texttt {Arrays.asList} method exploits the Java shortcut syntax for varargs. To run the example, the \texttt {javassist.jar} library, used by the P@J runtime, must be in the class path: \texttt {E:>java~~-cp .;2p.jar;javassist.jar PJexample}\relax }{table.7.21}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {7.22}{\ignorespaces Another Java class exploiting Prolog for method implementation. The \texttt  {length/2} predicate used in the \texttt  {clauses} section on top is part of the standard ISO list management predicates.}}{164}{table.7.22}}
-\newlabel{tab:pj-example2}{{7.22}{164}{Another Java class exploiting Prolog for method implementation. The \texttt {length/2} predicate used in the \texttt {clauses} section on top is part of the standard ISO list management predicates}{table.7.22}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {7.23}{\ignorespaces Another Java class exploiting Prolog for method implementation.}}{165}{table.7.23}}
-\newlabel{tab:pj-example3}{{7.23}{165}{Another Java class exploiting Prolog for method implementation}{table.7.23}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {7.24}{\ignorespaces A parser for arithmetic expressions encoded in Prolog inside an annotated Java program. The output prints \texttt  {true}, \texttt  {false}, \texttt  {true}, \texttt  {true} in this order, since 12+(3*4) is an expression but not a factor, while (12+(3*4)) is both an expression and a factor.}}{166}{table.7.24}}
-\newlabel{tab:pj-example4}{{7.24}{166}{A parser for arithmetic expressions encoded in Prolog inside an annotated Java program. The output prints \texttt {true}, \texttt {false}, \texttt {true}, \texttt {true} in this order, since 12+(3*4) is an expression but not a factor, while (12+(3*4)) is both an expression and a factor}{table.7.24}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {7.21}{\ignorespaces Defining a new library with the same name as another.}}{160}{table.7.21}}
+\newlabel{tab:StringLibrary-NewStringLibrary}{{7.21}{160}{Defining a new library with the same name as another}{table.7.21}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.3.4}Library Name}{160}{subsection.7.3.4}}
+\newlabel{ssec:library-name}{{7.3.4}{160}{Library Name\relax }{subsection.7.3.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7.4}Augmenting Java via Prolog:\\the P@J framework}{161}{section.7.4}}
+\newlabel{sec:p@j}{{7.4}{161}{Augmenting Java via Prolog:\\the P@J framework\relax }{section.7.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.4.1}Term taxonomy}{161}{subsection.7.4.1}}
+\newlabel{ssec:p@j-term-taxonomy}{{7.4.1}{161}{Term taxonomy\relax }{subsection.7.4.1}{}}
+\newlabel{ssec:java-api-types}{{7.4.1}{162}{Term taxonomy\relax }{subsection.7.4.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.4.2}Examples}{163}{subsection.7.4.2}}
+\newlabel{ssec:p@j-examples}{{7.4.2}{163}{Examples\relax }{subsection.7.4.2}{}}
+\newlabel{tab:pj-example2}{{7.4.2}{164}{Examples\relax }{table.7.24}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {7.22}{\ignorespaces A Java class exploiting Prolog for implementing an abstract method \textit  {(top)} and a client using it \textit  {(bottom)}. Note that the \texttt  {Arrays.asList} method exploits the Java shortcut syntax for varargs. To run the example, the \texttt  {javassist.jar} library, used by the P@J runtime, must be in the class path: \texttt  {E:>java\nobreakspace  {}\nobreakspace  {}-cp .;2p.jar;javassist.jar PJexample} }}{165}{table.7.22}}
+\newlabel{tab:pj-example1}{{7.22}{165}{A Java class exploiting Prolog for implementing an abstract method \textit {(top)} and a client using it \textit {(bottom)}. Note that the \texttt {Arrays.asList} method exploits the Java shortcut syntax for varargs. To run the example, the \texttt {javassist.jar} library, used by the P@J runtime, must be in the class path: \texttt {E:>java~~-cp .;2p.jar;javassist.jar PJexample}\relax }{table.7.22}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {7.23}{\ignorespaces Another Java class exploiting Prolog for method implementation. The \texttt  {length/2} predicate used in the \texttt  {clauses} section on top is part of the standard ISO list management predicates.}}{166}{table.7.23}}
+\newlabel{tab:pj-example2}{{7.23}{166}{Another Java class exploiting Prolog for method implementation. The \texttt {length/2} predicate used in the \texttt {clauses} section on top is part of the standard ISO list management predicates}{table.7.23}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {7.24}{\ignorespaces Another Java class exploiting Prolog for method implementation.}}{167}{table.7.24}}
+\newlabel{tab:pj-example3}{{7.24}{167}{Another Java class exploiting Prolog for method implementation}{table.7.24}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {7.25}{\ignorespaces A parser for arithmetic expressions encoded in Prolog inside an annotated Java program. The output prints \texttt  {true}, \texttt  {false}, \texttt  {true}, \texttt  {true} in this order, since 12+(3*4) is an expression but not a factor, while (12+(3*4)) is both an expression and a factor.}}{168}{table.7.25}}
+\newlabel{tab:pj-example4}{{7.25}{168}{A parser for arithmetic expressions encoded in Prolog inside an annotated Java program. The output prints \texttt {true}, \texttt {false}, \texttt {true}, \texttt {true} in this order, since 12+(3*4) is an expression but not a factor, while (12+(3*4)) is both an expression and a factor}{table.7.25}{}}
 \@setckpt{mpp-in-java}{
-\setcounter{page}{167}
+\setcounter{page}{169}
 \setcounter{equation}{0}
 \setcounter{enumi}{2}
 \setcounter{enumii}{0}
@@ -144,10 +147,10 @@
 \setcounter{paragraph}{0}
 \setcounter{subparagraph}{0}
 \setcounter{figure}{7}
-\setcounter{table}{24}
+\setcounter{table}{25}
 \setcounter{Item}{26}
 \setcounter{Hfootnote}{21}
-\setcounter{bookmark@seq@number}{114}
+\setcounter{bookmark@seq@number}{115}
 \setcounter{FancyVerbLine}{18}
 \setcounter{section@level}{2}
 }
