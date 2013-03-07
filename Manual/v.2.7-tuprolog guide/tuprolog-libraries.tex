@@ -1054,6 +1054,118 @@ I/O.
     \template{rand\_int(?integer, @integer)}
 \end{itemize}
 
+
+%---------------------------------------------------------------------
+\section{ThreadLibrary}
+\label{sec:thread-library}
+%---------------------------------------------------------------------
+
+Introduced in \tuprolog{} 2.7, ThreadLibrary provides primitives for explicit multi-threading, namely:
+\begin{itemize}
+  \item predicates to create and delete threads;
+  \item predicates to search and retrieve solutions;
+  \item predicates for the communication among threads;
+  \item predicates for the mutual exclusion among threads;
+  \item backtrackable predicates. 
+\end{itemize}
+%
+Since the underlying architecture has been changed in-depth in some points to support multi-threading, 
+ThreadLibrary is loaded by default in any \tuprolog{} engine.
+
+%ED
+\color{red}
+aggiungere due parole sul modello di thread usato, e i loro stati
+
+\normalcolor{}
+
+%---------------------------------------------------------------------
+\subsection{Predicates}
+%---------------------------------------------------------------------
+
+%---------------------------------------------------------------------
+\subsubsection{Creating and deleting threads}
+%---------------------------------------------------------------------
+
+noindent The following predicates are provided to create and delete threads:
+
+\begin{itemize}
+%
+\item \bti{thread\_create/2}\\
+    \noindent\bt{thread\_create(+Query, -ThreadID)} is true if a new thread can be created to solve the given \bt{Query}; the unique ID of the newly-thread thread is unified with \bt{ThreadID}.
+    
+    \template{thread\_create(+term, -term)}
+
+\item \bti{thread\_id/1}\\
+    \noindent\bt{thread\_id(?ThreadID)} is true if the unique ID of the current thread can be unified with \bt{ThreadID}.
+    
+    \template{thread\_id(-variable)}
+    
+    \template{thread\_id(+number)}
+
+\item \bti{thread\_join/2}\\
+    \noindent\bt{thread\_join(+ThreadID, ?Result)} waits for the thread \bt{ThreadID} to terminate, and unifies its result with
+    \bt{Result}. As a side effect, the terminated thread is removed from the system. The call fails if the thread \bt{ThreadID} is in \textit{detached} state (see \bt{thread\_detach/1} below).
+    
+    \template{thread\_join(+number, ?term)}
+
+    \exception{error(type\_error(ExpectedType, Culprit), type\_error(\\
+    Goal, ArgNo, ExpectedType, Culprit))} if \texttt{ThreadID} is not an integer. \texttt{Goal} is the goal where the problem occurred, \texttt{ExpectedType} is the expected type (integer),  \texttt{Culprit} is the wrong term actually found.
+
+\item \bti{thread\_read/2}\\
+    \noindent\bt{thread\_read(+ThreadID, ?Result)} waits for the thread \bt{ThreadID} to terminate, and unifies its result with
+    \bt{Result}. Unlike \texttt{thread\_join}, the terminated thread is \textit{not} removed from the system and remains available for further reads. The call fails if the thread \bt{ThreadID} is in \textit{detached} state (see \bt{thread\_detach/1} below).
+    
+    \template{thread\_read(+number, ?term)}
+
+    \exception{error(type\_error(ExpectedType, Culprit), type\_error(\\
+    Goal, ArgNo, ExpectedType, Culprit))} if \texttt{ThreadID} is not an integer. \texttt{Goal} is the goal where the problem occurred, \texttt{ExpectedType} is the expected type (integer),  \texttt{Culprit} is the wrong term actually found.
+
+\item \bti{thread\_detach/1}\\
+    \noindent\bt{thread\_detach(+ThreadID)} puts the specified thread in the \textit{detached} state. Threads in this state cannot be read, or waited for, by other threads via \texttt{thread\_read/2} or \texttt{thread\_join/2}, nor can they be queried via \texttt{thread\_next\_sol/1}. When a detached thread terminates, it leaves no traces of its previous computation.
+    
+    \template{thread\_detach(+number)}
+
+    \exception{error(type\_error(ExpectedType, Culprit), type\_error(\\
+    Goal, ArgNo, ExpectedType, Culprit))} if \texttt{ThreadID} is not an integer. \texttt{Goal} is the goal where the problem occurred, \texttt{ExpectedType} is the expected type (integer),  \texttt{Culprit} is the wrong term actually found.
+
+\item \bti{thread\_next\_sol/1}\\
+    \noindent\bt{thread\_next\_sol(+ThreadID)} forces the specified thread to resume computing, exploring further solutions to the (initial) query.
+    
+    \template{thread\_next\_sol(+number)}
+
+    \exception{error(type\_error(ExpectedType, Culprit), type\_error(\\
+    Goal, ArgNo, ExpectedType, Culprit))} if \texttt{ThreadID} is not an integer. \texttt{Goal} is the goal where the problem occurred, \texttt{ExpectedType} is the expected type (integer),  \texttt{Culprit} is the wrong term actually found.
+    
+\item \bti{thread\_has\_next/1}\\
+    \noindent\bt{thread\_has\_next(+ThreadID)} succeeds iff the specified thread can provide further solutions to the (initial) query.
+    
+    \template{thread\_has\_next(+number)}
+
+    \exception{error(type\_error(ExpectedType, Culprit), type\_error(\\
+    Goal, ArgNo, ExpectedType, Culprit))} if \texttt{ThreadID} is not an integer. \texttt{Goal} is the goal where the problem occurred, \texttt{ExpectedType} is the expected type (integer),  \texttt{Culprit} is the wrong term actually found.
+
+\item \bti{thread\_execute/2}\\
+    \noindent\bt{thread\_execute(+Query, +ThreadID)} is the backtrackable version of \bt{thread\_create/2}. It must be followed by some read operation to retrieve the subsequent solutions computed by the thread.
+    Care must be taken in using \bt{thread\_join/2} to retrieve alternative solutions (after the first one): on backtracking, 
+    \bt{thread\_execute} would fail, since \bt{thread\_join} removes the thread from the system.
+    
+    \template{thread\_execute(+term, +number)}
+
+    \exception{error(type\_error(ExpectedType, Culprit), type\_error(\\
+    Goal, ArgNo, ExpectedType, Culprit))} if \texttt{ThreadID} is not an integer. \texttt{Goal} is the goal where the problem occurred, \texttt{ExpectedType} is the expected type (integer),  \texttt{Culprit} is the wrong term actually found.
+
+\item \bti{thread\_sleep/1}\\
+    \noindent\bt{thread\_sleep(+ThreadID)} suspends the current thread for the given time (expressed in milliseconds)
+    
+    \template{thread\_sleep(+number)}
+
+    \exception{error(type\_error(ExpectedType, Culprit), type\_error(\\
+    Goal, ArgNo, ExpectedType, Culprit))} if \texttt{ThreadID} is not an integer. \texttt{Goal} is the goal where the problem occurred, \texttt{ExpectedType} is the expected type (integer),  \texttt{Culprit} is the wrong term actually found.
+\end{itemize}
+
+
+
+
 %---------------------------------------------------------------------
 \section{DCGLibrary}
 \label{sec:dgc-library}
@@ -1202,152 +1314,6 @@ When an output stream is repositioned, any output possibly present in the sink i
 A stream that can be repositioned (that is, whose \texttt{reposition} property is true) must support also the \textit{end position} concept: the position of an input stream that has been completely read is represented by the \texttt{end-of-stream} atom, while any attempt to read beyond the end of stream causes the stream position to become \texttt{past-end-of-stream}.
 
 On the other hand, output streams can be \textit{flushed} when necessary via the \texttt{flush\_output/1} predicate; a stream is automatically flushed before closing.
-
-
-%---------------------------------------------------------------------
-\subsection{Options}
-%---------------------------------------------------------------------
-
-The ISO standard defines options for stream creation, stream closure, and stream properties.
-
-\noindent When a stream is opened via \texttt{open/4}:
-
-\begin{itemize}
- \item \texttt{type(\textit{Type})} specifies the stream type---either a binary stream or a text stream (default);
- \item \texttt{reposition(\textit{Bool})} specifies whether the stream can be repositioned or not (see above);
- \item \texttt{alias(\textit{Alias})} defines \texttt{\textit{Alias}} as a stream alias for this stream;
- \item \texttt{eof\_action(\textit{Action})} specifies the value to be returned by a read predicate encountering the end-of-stream; possible values are \texttt{error}, to indicate that no further read is possible, or \texttt{eof\_code} \textit{(default)}, to indicate that the special \texttt{eof} value must be returned, or \texttt{reset}, meaning that the read position must be reset to the start of the stream. This is particulary useful on the console input.
-\end{itemize}
-
-\noindent Conversely, when a stream is closed via \texttt{close/1}-\texttt{/2}:
-
-\begin{itemize}
- \item \texttt{force(\textit{Bool})} specifies whether the stream must be forcedly closed upon error: the default is \textit{false}. If the value is set to \textit{true}, the stream might remain in an inconsistent state, or data may be lost, when the forced closing occurs.
-\end{itemize}
-
-\noindent Stream properties are expressed via the \texttt{stream\_property(\textit{Stream}, \textit{Property})} predicate, where \texttt{\textit{Property}} is one of the following:
-
-\begin{itemize}
- \item \texttt{file\_name(\textit{File})} if the stream is connected to a file, returns a unique identifier of the file;
-
-  \item \texttt{mode(\textit{Mode})} is to be specified when the stream is opened: \texttt{\textit{Mode}} can be \texttt{read}, \texttt{write} or \texttt{append};
-
-  \item \texttt{input} if the stream is connected to a source;
-
-  \item \texttt{output} if the stream is connected to a sink;
-
-  \item \texttt{alias(\textit{Alias})} returns the stream alias, if the stream has one;
-
-  \item \texttt{position(\textit{Pos})} returns the current stream position, if the stream can be repositioned;
-
-  \item \texttt{end\_of\_stream(\textit{End})} returns either \texttt{not}, if the stream is not at the end, or \texttt{at}, if the stream is precisely at the end, or \texttt{past} if the stream is past the end of the stream;
-
-  \item \texttt{eof\_action(\textit{Action})} returns the \texttt{\textit{Action}} specified when the stream was opened, if there was one, or an implementation-dependent action associated to the stream, otherwise;
-
-  \item \texttt{reposition(\textit{Bool})} returns whether the stream can be repositioned (\texttt{true} or \texttt{false});
-
-  \item \texttt{type(\textit{Type})} returns whether the stream is a \texttt{binary} stream or a \texttt{text} stream.
-\end{itemize}
-
-\noindent The standard input and output streams are configured as in Table \ref{tab:isoiolibrary-user-streams}.
-
-\begin{table}
-  \centering
-  \begin{tabular}{|p{5cm}|p{5cm}|}
-    \hline
-    \textbf{\texttt{user\_input}} & \textbf{\texttt{user\_output}}\\
-    \hline
-    \texttt{mode(read)} & \texttt{mode(append)} \\
-    \texttt{input} & \texttt{output} \\
-    \texttt{alias(user\_input)} & \texttt{alias(user\_output)}\\
-    \texttt{eof\_action(reset)} & \texttt{eof\_action(reset)}\\
-    \texttt{reposition(false)} & \texttt{reposition(false)}\\
-    \texttt{type(text)} & \texttt{type(text)}\\
-    \hline
-  \end{tabular}
-  \caption{The default configuration of the standard I/O streams.}
-  \label{tab:isoiolibrary-user-streams}
-\end{table}
-
-
-\noindent Read properties can be specified in read predicates like \texttt{read\_term}, and can have the following forms:
-
-\begin{itemize}
- \item \texttt{variables(\textit{Vars})}: when a term is read, \texttt{\textit{Vars}} is the list of variables found in the term; anonymous variables are included;
-
- \item \texttt{variable\_names(\textit{VNList})}: when a term is read, \texttt{\textit{VNList}} is unified with a list of \texttt{A=V} pairs, where \texttt{A} is an atom denoting a variable name in term read, and \texttt{V} is the corresponding variable in the term template; anonymous variables are not included in the list;
-
- \item \texttt{singletons(\textit{VNList})}: when a term is read, \texttt{\textit{VNList}} is unified with a list of \texttt{A=V} pairs, where \texttt{A} is an atom denoting a variable name in term read, and \texttt{V} is the corresponding variable in the term template; anonymous variables are not included in the list.
-\end{itemize}
-
-\noindent For instance, if a query like:
-
-\texttt{?:- read\_term(st, T, [variables(VL),\\
-\mbox{~~~~~~~~~~~~~~~~~~~~~~~~~}variable\_names(VN), singletons(VS)].}
-
-\noindent reads a term such as \texttt{foo(A+Roger, A+\_)}, the result is:
-
-\noindent
-\texttt{T  / foo(Xl+X2, X1+X3)}\\
-\texttt{VL / [Xl, X2, X3]}\\
-\texttt{VN / ['A' = Xl, 'Roger' = X2]}\\
-\texttt{VS / ['Roger' = X2]}
-
-\noindent Basically, the term read is scanned for variables, which are named according to some implementation-dependent template (e.g. \texttt{X1}, \texttt{X2}, \texttt{X3}); these names are used in the lists above, either to list all the variables (including the anonymous ones---see \texttt{X3} in \texttt{VL}), or to list the correspondence between the actual variable names and such placeholders (\texttt{VN} and \texttt{VS}, the latter including singleton variables only).
-
-Analogously, write properties can be specified in write predicates like \texttt{write\_term}, and can have the following forms:
-
-\begin{itemize}
- \item \texttt{quoted(\textit{Bool})}: specifies whether each atom of functor is quoted (usually because it comes from a previous \texttt{read\_term});
-
- \item \texttt{ignore\_ops(\textit{Bool})}: if true, each compound term is returned in a function notation. Any other option is ignored.
-
- \item \texttt{numbervars(\textit{Bool})}: if true, the terms of the form \texttt{'\$VAR'(N)} are replaced by a system-generated variable name that uses the \textit{N}th capital letter\footnote{\texttt{A} is considered the 0th letter.} followed by a the \texttt{N}/26 integer.
-     For instance, \texttt{'\$VAR'(51)} produces \texttt{Z1}, since the 51th letter of the alphabet (mod 26) is \texttt{Z}, and 51/26=1.
-\end{itemize}
-
-
-%---------------------------------------------------------------------
-\subsection{Writing terms}
-%---------------------------------------------------------------------
-
-When a term is written via \texttt{write\_term/3}, the following rules apply:
-
-\begin{itemize}
-  \item if the term is a variable, a character is produced of the form \texttt{\_\textit{string}} where the string following the underscore are implementation-dependent. A variable occurring multiple times in the term is obviously converted into the same \texttt{\_\textit{string}} for each occurrence.
-  \item if the term is an integer number, the corresponding string is produced; negative values starts with \texttt{-}.
-  \item if the term is a real number, the corresponding string is produced; negative values starts with \texttt{-}. If the write option \texttt{quoted} is true, the produced string ensures that a subsequent \texttt{read\_term} can read it back correctly.
-  \item if the term is an atom that could not be read back unless quoted, and the write option \texttt{quoted} is true, the produced string is quoted; otherwise it is not.
-  \item if the term contains a main functor that \textit{is not} an operator, or the write option \texttt{ignore\_ops} is true, the term is written in the \textit{canonical form} (Table \ref{tab:isoiolibrary-write-terms}); otherwise it is not.
-  \item if, instead, the term contains a main that \textit{is} an operator and the write option \texttt{ignore\_ops} is true, the term is written in the operator notation ((Table \ref{tab:isoiolibrary-write-terms}).
-\end{itemize}
-
-\begin{table}
-  \footnotesize\centering
-  \begin{tabular}{|p{6cm}|p{6cm}|}
-    \hline
-    \textit{Canonical form} & \textit{Operator notation}\\
-    \hline
-    For every term other than lists: & - The operator itself is returned either before
-    (for prefix operators), or between (for infix operators) or after (for postfix operators) its arguments;\\
-    - the main functor's atom; &  - a space is always inserted between the operator and its arguments;\\
-    - the open parenthesis \texttt{'('}; & - for each argument, the same rules above are applied recursively; \\
-    - each term argument, built applying the same rules recursively, in a comma-separated list; & - if one of the argument is also an operator, it is enclosed between parentheses. \\
-    - the closed parenthesis \texttt{')'}; & \\
-    \textbf{Example:} \texttt{2+3} becomes \texttt{+(2,3)} & \\
-    \hline
-    For lists (e.g. terms of the form \texttt{‘.’(Head, Tail)}), the list notation is used if the write option \texttt{ignore\_ops} is false: & \\
-    - an open square bracket \texttt{'['}; &  \\
-    - the head argument, built applying the same rules recursively; & \\
-    - the tail argument, built as follows; & \\
-    \mbox{~~}- if the tail has the form \texttt{‘.’(Head, Tail)}), a comma is produced and the above rule is triggered recursively; & \\
-    \mbox{~~}- otherwise, if the tail is empty (e.g. \texttt{[]}), a close bracket is produced \texttt{']'} & \\
-    \mbox{~~}- otherwise, a pipe symbol is produced \texttt{'|'} and these rules are re-applied recursively; at the end, a close bracket is produced \texttt{']'} & \\
-    \hline
-  \end{tabular}
-  \caption{Term writing rules: canonical form and operator notation.}
-  \label{tab:isoiolibrary-write-terms}
-\end{table}
 
 
 %---------------------------------------------------------------------
@@ -1660,6 +1626,49 @@ When a term is written via \texttt{write\_term/3}, the following rules apply:
 
     \exception{}: the same as above
 
+%---------------------------------------------------------------------
+%\subsubsection{Writing terms}
+%---------------------------------------------------------------------
+
+    When a term is written via \texttt{write\_term/3}, the following rules apply:
+    
+    \begin{itemize}
+      \item if the term is a variable, a character is produced of the form \texttt{\_\textit{string}} where the string following the underscore are implementation-dependent. A variable occurring multiple times in the term is obviously converted into the same \texttt{\_\textit{string}} for each occurrence.
+      \item if the term is an integer number, the corresponding string is produced; negative values starts with \texttt{-}.
+      \item if the term is a real number, the corresponding string is produced; negative values starts with \texttt{-}. If the write option \texttt{quoted} is true, the produced string ensures that a subsequent \texttt{read\_term} can read it back correctly.
+      \item if the term is an atom that could not be read back unless quoted, and the write option \texttt{quoted} is true, the produced string is quoted; otherwise it is not.
+      \item if the term contains a main functor that \textit{is not} an operator, or the write option \texttt{ignore\_ops} is true, the term is written in the \textit{canonical form} (Table \ref{tab:isoiolibrary-write-terms}); otherwise it is not.
+      \item if, instead, the term contains a main that \textit{is} an operator and the write option \texttt{ignore\_ops} is true, the term is written in the operator notation ((Table \ref{tab:isoiolibrary-write-terms}).
+    \end{itemize}
+    
+    \begin{table}
+      \footnotesize\centering
+      \begin{tabular}{|p{6cm}|p{6cm}|}
+        \hline
+        \textit{Canonical form} & \textit{Operator notation}\\
+        \hline
+        For every term other than lists: & - The operator itself is returned either before
+        (for prefix operators), or between (for infix operators) or after (for postfix operators) its arguments;\\
+        - the main functor's atom; &  - a space is always inserted between the operator and its arguments;\\
+        - the open parenthesis \texttt{'('}; & - for each argument, the same rules above are applied recursively; \\
+        - each term argument, built applying the same rules recursively, in a comma-separated list; & - if one of the argument is also an operator, it is enclosed between parentheses. \\
+        - the closed parenthesis \texttt{')'}; & \\
+        \textbf{Example:} \texttt{2+3} becomes \texttt{+(2,3)} & \\
+        \hline
+        For lists (e.g. terms of the form \texttt{‘.’(Head, Tail)}), the list notation is used if the write option \texttt{ignore\_ops} is false: & \\
+        - an open square bracket \texttt{'['}; &  \\
+        - the head argument, built applying the same rules recursively; & \\
+        - the tail argument, built as follows; & \\
+        \mbox{~~}- if the tail has the form \texttt{‘.’(Head, Tail)}), a comma is produced and the above rule is triggered recursively; & \\
+        \mbox{~~}- otherwise, if the tail is empty (e.g. \texttt{[]}), a close bracket is produced \texttt{']'} & \\
+        \mbox{~~}- otherwise, a pipe symbol is produced \texttt{'|'} and these rules are re-applied recursively; at the end, a close bracket is produced \texttt{']'} & \\
+        \hline
+      \end{tabular}
+      \caption{Term writing rules: canonical form and operator notation.}
+      \label{tab:isoiolibrary-write-terms}
+\end{table}
+
+
 \item \bti{get\_byte/2} - \bti{get\_byte/1} - \bti{peek\_byte/2} - \bti{peek\_byte/1} - \bti{put\_byte/2} - \bti{put\_byte/1}\\
     \noindent\bt{get\_byte}, \bt{peek\_byte} and \bt{put\_byte} are the binary counterparts of the \texttt{get\_char}, \texttt{peek\_char} and \texttt{put\_char} above; syntax and exceptions raised are basically identical, with obvious changes (i.e., the wrong type of stream here is \texttt{text} instead of \texttt{binary}).
 
@@ -1674,6 +1683,111 @@ When a term is written via \texttt{write\_term/3}, the following rules apply:
 
 \end{itemize}
 
+
+
+
+
+%---------------------------------------------------------------------
+\subsection{Options}
+%---------------------------------------------------------------------
+
+The ISO standard defines options for stream creation, stream closure, and stream properties.
+
+\noindent When a stream is opened via \texttt{open/4}:
+
+\begin{itemize}
+ \item \texttt{type(\textit{Type})} specifies the stream type---either a binary stream or a text stream (default);
+ \item \texttt{reposition(\textit{Bool})} specifies whether the stream can be repositioned or not (see above);
+ \item \texttt{alias(\textit{Alias})} defines \texttt{\textit{Alias}} as a stream alias for this stream;
+ \item \texttt{eof\_action(\textit{Action})} specifies the value to be returned by a read predicate encountering the end-of-stream; possible values are \texttt{error}, to indicate that no further read is possible, or \texttt{eof\_code} \textit{(default)}, to indicate that the special \texttt{eof} value must be returned, or \texttt{reset}, meaning that the read position must be reset to the start of the stream. This is particulary useful on the console input.
+\end{itemize}
+
+\noindent Conversely, when a stream is closed via \texttt{close/1}-\texttt{/2}:
+
+\begin{itemize}
+ \item \texttt{force(\textit{Bool})} specifies whether the stream must be forcedly closed upon error: the default is \textit{false}. If the value is set to \textit{true}, the stream might remain in an inconsistent state, or data may be lost, when the forced closing occurs.
+\end{itemize}
+
+\noindent Stream properties are expressed via the \texttt{stream\_property(\textit{Stream}, \textit{Property})} predicate, where \texttt{\textit{Property}} is one of the following:
+
+\begin{itemize}
+ \item \texttt{file\_name(\textit{File})} if the stream is connected to a file, returns a unique identifier of the file;
+
+  \item \texttt{mode(\textit{Mode})} is to be specified when the stream is opened: \texttt{\textit{Mode}} can be \texttt{read}, \texttt{write} or \texttt{append};
+
+  \item \texttt{input} if the stream is connected to a source;
+
+  \item \texttt{output} if the stream is connected to a sink;
+
+  \item \texttt{alias(\textit{Alias})} returns the stream alias, if the stream has one;
+
+  \item \texttt{position(\textit{Pos})} returns the current stream position, if the stream can be repositioned;
+
+  \item \texttt{end\_of\_stream(\textit{End})} returns either \texttt{not}, if the stream is not at the end, or \texttt{at}, if the stream is precisely at the end, or \texttt{past} if the stream is past the end of the stream;
+
+  \item \texttt{eof\_action(\textit{Action})} returns the \texttt{\textit{Action}} specified when the stream was opened, if there was one, or an implementation-dependent action associated to the stream, otherwise;
+
+  \item \texttt{reposition(\textit{Bool})} returns whether the stream can be repositioned (\texttt{true} or \texttt{false});
+
+  \item \texttt{type(\textit{Type})} returns whether the stream is a \texttt{binary} stream or a \texttt{text} stream.
+\end{itemize}
+
+\noindent The standard input and output streams are configured as in Table \ref{tab:isoiolibrary-user-streams}.
+
+\begin{table}
+  \centering
+  \begin{tabular}{|p{5cm}|p{5cm}|}
+    \hline
+    \textbf{\texttt{user\_input}} & \textbf{\texttt{user\_output}}\\
+    \hline
+    \texttt{mode(read)} & \texttt{mode(append)} \\
+    \texttt{input} & \texttt{output} \\
+    \texttt{alias(user\_input)} & \texttt{alias(user\_output)}\\
+    \texttt{eof\_action(reset)} & \texttt{eof\_action(reset)}\\
+    \texttt{reposition(false)} & \texttt{reposition(false)}\\
+    \texttt{type(text)} & \texttt{type(text)}\\
+    \hline
+  \end{tabular}
+  \caption{The default configuration of the standard I/O streams.}
+  \label{tab:isoiolibrary-user-streams}
+\end{table}
+
+
+\noindent Read properties can be specified in read predicates like \texttt{read\_term}, and can have the following forms:
+
+\begin{itemize}
+ \item \texttt{variables(\textit{Vars})}: when a term is read, \texttt{\textit{Vars}} is the list of variables found in the term; anonymous variables are included;
+
+ \item \texttt{variable\_names(\textit{VNList})}: when a term is read, \texttt{\textit{VNList}} is unified with a list of \texttt{A=V} pairs, where \texttt{A} is an atom denoting a variable name in term read, and \texttt{V} is the corresponding variable in the term template; anonymous variables are not included in the list;
+
+ \item \texttt{singletons(\textit{VNList})}: when a term is read, \texttt{\textit{VNList}} is unified with a list of \texttt{A=V} pairs, where \texttt{A} is an atom denoting a variable name in term read, and \texttt{V} is the corresponding variable in the term template; anonymous variables are not included in the list.
+\end{itemize}
+
+\noindent For instance, if a query like:
+
+\texttt{?:- read\_term(st, T, [variables(VL),\\
+\mbox{~~~~~~~~~~~~~~~~~~~~~~~~~}variable\_names(VN), singletons(VS)].}
+
+\noindent reads a term such as \texttt{foo(A+Roger, A+\_)}, the result is:
+
+\noindent
+\texttt{T  / foo(Xl+X2, X1+X3)}\\
+\texttt{VL / [Xl, X2, X3]}\\
+\texttt{VN / ['A' = Xl, 'Roger' = X2]}\\
+\texttt{VS / ['Roger' = X2]}
+
+\noindent Basically, the term read is scanned for variables, which are named according to some implementation-dependent template (e.g. \texttt{X1}, \texttt{X2}, \texttt{X3}); these names are used in the lists above, either to list all the variables (including the anonymous ones---see \texttt{X3} in \texttt{VL}), or to list the correspondence between the actual variable names and such placeholders (\texttt{VN} and \texttt{VS}, the latter including singleton variables only).
+
+Analogously, write properties can be specified in write predicates like \texttt{write\_term}, and can have the following forms:
+
+\begin{itemize}
+ \item \texttt{quoted(\textit{Bool})}: specifies whether each atom of functor is quoted (usually because it comes from a previous \texttt{read\_term});
+
+ \item \texttt{ignore\_ops(\textit{Bool})}: if true, each compound term is returned in a function notation. Any other option is ignored.
+
+ \item \texttt{numbervars(\textit{Bool})}: if true, the terms of the form \texttt{'\$VAR'(N)} are replaced by a system-generated variable name that uses the \textit{N}th capital letter\footnote{\texttt{A} is considered the 0th letter.} followed by a the \texttt{N}/26 integer.
+     For instance, \texttt{'\$VAR'(51)} produces \texttt{Z1}, since the 51th letter of the alphabet (mod 26) is \texttt{Z}, and 51/26=1.
+\end{itemize}
 
 
 %---------------------------------------------------------------------
@@ -1859,9 +1973,11 @@ No operators are defined in this library.
 %\end{table}
 
 %---------------------------------------------------------------------
-\subsection{Java-side use: Term hierarchy extension}
+\subsection{Use from the Java side: term hierarchy extension}
 %---------------------------------------------------------------------
-SocketLibrary introduces four further \texttt{Term} types to represent sockets: more precisely, \texttt{AbstractSocket} (a direct child of \texttt{Term}) represents the generic socket, whose concrete realisations are provided by its three children--- \texttt{Client\_Socket} and \texttt{Server\_Socket} in the TCP case, \texttt{Dataggram\_Socket} in the UDP case.
+
+In order to support the use of sockets from the Java side, SocketLibrary enhances the Term hierarchy by
+introducing four further \texttt{Term} types that represent sockets: more precisely, \texttt{AbstractSocket} (a direct child of \texttt{Term}) represents the generic socket, whose concrete realisations are provided by its three children--- \texttt{Client\_Socket} and \texttt{Server\_Socket} in the TCP case, \texttt{Dataggram\_Socket} in the UDP case.
 
 Consequently, \texttt{AbstractSocket} redefines some \texttt{Term} methods and defines some new abstract methods, implemented in the derived classes \texttt{Client\_Socket} and \texttt{Server\_Socket}:
 \begin{itemize}
