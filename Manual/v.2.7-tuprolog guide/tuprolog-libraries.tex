@@ -1080,9 +1080,9 @@ Each thread is committed to solve a specific goal, and is identified by a unique
 %The execution context is represented as an \texttt{EngineManager} instance, that encapsulates the \tuprolog{} finite-state engine; the execution environment, instead, is mapped onto the other traditional \tuprolog{} managers (\texttt{TheoryManager}, \texttt{LibraryManager}, \texttt{OperatorManager}, \texttt{FlagManager}, \texttt{PrimitiveManager}). The new \texttt{ThreadManager} takes care of creating a new thread, with its execution context, for each new query: so, the Thread manager holds the list of all its threads, that are \texttt{EngineRunner} instances.
 
 In this model, multiple threads cooperate -- at subsequent times -- to find the solutions of a query: more precisely, while each thread computes a single solution and then terminates, its execution context is not discarded, so as to have it available if an alternative solution is requested. In this case, a new thread is generated and associates to the existing execution context, to find the next solution.
-So, the unique thread ID seen by the user actually refers to an execution context (that is, to a family of threads), rather than to a single thread, since different physical threads re-use that ID at different times.
-%
-More detailed information about the internal organisation and thread handling is reported in the box on page \pageref{box:thread-internals}.
+So, the unique thread ID seen by the user actually refers to an execution context (hence a family of threads), rather than to a single thread, since different physical threads re-use that ID at different times.
+
+More detailed information about the internal organisation and thread handling is reported in the box on page \pageref{box:thread-internals}, while several examples of ThreadLibrary use are discussed in Section \ref{ssec:threadlibrary-examples} on page \pageref{ssec:threadlibrary-examples}.
 
 
 \begin{table}
@@ -1108,45 +1108,6 @@ So, when the producer finds a solution, four situations can occur:
 \label{box:thread-internals}
 \end{table}
 
-\smallskip
-As a first, simple example, let us start by computing the factorial of two numbers--say, 7 and 8. This is not a good problem to be solved concurrently, but it is small enough to easily show the \tuprolog{} multi-threading approach at work.
-The sequential code could be written classically as follows:
-%
-\begin{verbatim}
-fact(0,1):- !.
-fact(N,X):- M is N-1, fact(M,Y), X is Y*N.
-\end{verbatim}
-%
-with queries like
-\begin{verbatim}
-?- fact(7,X).                 ?- fact(8,Y).
-yes                           yes
-X / 5040                      Y / 40320
-\end{verbatim}
-%
-To compute the two factorials concurrently, we can create two threads, one for each query, and then read their answers, as follows:
-\begin{verbatim}
-start(N,X,M,Y):- thread_create(fact(N,X),ID1),
-                 thread_create(fact(M,Y),ID2),
-                 thread_read(ID1, fact(N,X)),
-                 thread_read(ID2, fact(M,Y)).
-\end{verbatim}
-%
-whose query would be like
-\begin{verbatim}
-?- start(7,X,8,Y).
-yes.
-X / 5040  Y / 40320
-\end{verbatim}
-%
-Since the two factorial goals are rather short here, the overhead of handling concurrency is (unexpectedly) greater than the advantage brought by concurrency, as confirmed by some simple performance measuring (+14\% execution time).
-However, the example shows how to create a pair of threads (\texttt{thread\_create} primitive), each identified by a unique identifier and devoted to solve a given goal, and how such identifier is reused to get the solution (\texttt{thread\_read} primitive).
-
-
-
-
-
-
 %---------------------------------------------------------------------
 \subsection{Predicates}
 %---------------------------------------------------------------------
@@ -1155,7 +1116,7 @@ However, the example shows how to create a pair of threads (\texttt{thread\_crea
 \subsubsection{Creating and deleting threads}
 %---------------------------------------------------------------------
 
-noindent The following predicates are provided to create and delete threads:
+\noindent The following predicates are provided to create and delete threads:
 
 \begin{itemize}
 %
@@ -1366,6 +1327,177 @@ ThreadLibrary also provides the notion of \textit{mutex} as a simple thread sync
     \template{mutex\_unlock\_all}
 
 \end{itemize}
+
+
+
+%-----------------------------------------------------------------------
+\subsection{Examples}
+\label{ssec:threadlibrary-examples}
+%-----------------------------------------------------------------------
+
+The following examples illustrate the use of most \texttt{ThreadLibrary} features.
+
+%-------------------------------
+\subsubsection{Factorial of two numbers}
+%-------------------------------
+
+As a first, simple example, let us start by computing the factorial of two numbers--say, 7 and 8. This is not a good problem to be solved concurrently, but it is small enough to easily show the \tuprolog{} multi-threading approach at work.
+The sequential code could be written classically as follows:
+%
+\begin{verbatim}
+fact(0,1):- !.
+fact(N,X):- M is N-1, fact(M,Y), X is Y*N.
+\end{verbatim}
+%
+with queries like
+\begin{verbatim}
+?- fact(7,X).                 ?- fact(8,Y).
+yes                           yes
+X / 5040                      Y / 40320
+\end{verbatim}
+%
+To compute the two factorials concurrently, we can create two threads, one for each query, and then read their answers, as follows:
+\begin{verbatim}
+start(N,X,M,Y):- thread_create(fact(N,X),ID1),
+                 thread_create(fact(M,Y),ID2),
+                 thread_read(ID1, fact(N,X)),
+                 thread_read(ID2, fact(M,Y)).
+\end{verbatim}
+%
+whose query would be like
+\begin{verbatim}
+?- start(7,X,8,Y).
+yes.
+X / 5040  Y / 40320
+\end{verbatim}
+%
+Since the two factorial goals are rather short here, the overhead of handling concurrency is (unexpectedly) greater than the advantage brought by concurrency, as confirmed by some simple performance measuring (+14\% execution time).
+However, the example shows how to create a pair of threads (via \texttt{thread\_create}), each identified by a unique identifier and devoted to solve a given goal, and how such identifier is reused to get the solution (\texttt{thread\_read} primitive).
+
+%-------------------------------
+\subsubsection{Father and child communicating via a public queue}
+%-------------------------------
+
+As a second example, let us consider the case of two threads that communicate via the public queue \texttt{MyQueue}. First, the father creates the child (\texttt{thread\_create} primitive), which immediately suspends waiting for a message (\texttt{thread\_get\_msg} primitive). The father, after sleeping for 500 ms (via \texttt{thread\_sleep}), sends its message (\texttt{thread\_send\_msg} primitive), thus awakening the child, and waits for the child to terminate (\texttt{thread\_join} primitive).
+%Any ground term can be used as a message: in this case, the message format is \texttt{m(\textit{text})}, and the specific message send by the father to the child is \texttt{'important message'}.
+
+\begin{verbatim}
+start(X):- msg_queue_create('MyQueue'), 
+           thread_create(child(X),ID),
+           thread_sleep(500), 
+           thread_send_msg( m('important message'), 'MyQueue'), 
+           thread_join(ID, child(X)).
+           
+child(X):- thread_get_msg( m(X),'MyQueue').
+\end{verbatim}
+%
+The query \texttt{start(X)} succeeds unifying \texttt{X} with \texttt{'important message'}.
+%\begin{verbatim}
+%?- start(X).
+%yes.
+%X / 'important message'
+%\end{verbatim}
+
+%-------------------------------
+\subsubsection{Father and children communicating via a private queue}
+%-------------------------------
+
+The third example is similar, but the father creates three children, with three different tasks (the diagram of their execution flows is reported in Figure \ref{fig:thread-example} on page \pageref{fig:thread-example}): the first waits for a message to arrive in its private queue (logging actions on a file), the second sends the message, the third just monitors his brother's queue, without actually getting anything; they all communicate via the private queue implicitly associated to the first child.
+
+\begin{figure}
+\centering
+\includegraphics[width=12cm]{images/thread-example}
+\caption{Execution flows in the third example.}
+\label{fig:thread-example}
+\end{figure}
+
+\begin{verbatim}
+start(X):- thread_create(thread1(ID1),  ID1), 
+           thread_sleep(200),
+           thread_create(thread2(ID1),  ID2), 
+           thread_create(thread3(ID1,X),ID3), 
+           thread_read(ID3, _),
+           write('Father: done'). 
+           
+thread1(ID):- tell('threadLog.txt'),
+              write('ID1: waiting for message'), 
+              thread_get_msg( m(X),ID), 
+              write('ID1: message retrieved').
+
+thread2(ID):- thread_send_msg( m('critical message'), ID), 
+              write('ID2: message sent').		
+
+thread3(ID,X):- thread_peek_msg( m(X), ID),
+                write('ID3: trying to get message').
+\end{verbatim}
+
+More in detail, the father creates three threads identified by \texttt{ID1}, \texttt{ID2}, and \texttt{ID3}, which execute the goals \texttt{thread1/1}, \texttt{thread2/1}, and \texttt{thread3/2}, respectively: \texttt{ID1} is the message receiver/logger, \texttt{ID2} is the message sender, \texttt{ID3} is the task charged to monitor its brother's queue. To prevent races, the father waits for 200 ms after creating the first (message receiver) thread \texttt{ID1}, so that it is surely up and running when the message sender \texttt{ID2} and its brother \texttt{ID3} actually start.
+Then, the father suspends its execution, waiting for \texttt{ID3} to terminate.
+
+However, since \texttt{ID1} removes the message from its queue when reading (via \texttt{thread\_get\_msg/2}), \texttt{ID3} never finds anything when checking its brother's queue (via the non-blocking \texttt{thread\_peek\_msg/2} primitive): thus, its goal \texttt{thread3/2} always fails, causing the father's \texttt{thread\_read} to fail, too. As a result, the father's final write is never performed, either:
+
+\begin{verbatim}
+?- start(X).
+no
+\end{verbatim}
+%
+and the log file finally contains just 
+
+\begin{verbatim}
+ID1: waiting for message
+ID2: message sent
+ID1: message retrieved
+\end{verbatim}
+
+
+%-------------------------------
+\subsubsection{Synchronizing thread interactions}
+%-------------------------------
+
+In this producer/consumer example, the consumer's goal is to retrieve only the \textit{last} solution of the query \texttt{has\_child(bob,X)}, while the producer computes all the solutions to this query; the father coordinates the two tasks (the execution flow diagram is reported in Figure \ref{fig:thread-exampleMutex} on page \pageref{fig:thread-exampleMutex}).
+
+\begin{figure}
+\centering
+\includegraphics[width=13cm]{images/thread-exampleMutex}
+\caption{Execution flows in the mutex example.}
+\label{fig:thread-exampleMutex}
+\end{figure}
+
+\begin{verbatim}
+start :- thread_create( has_child(bob,X), ID1),
+         mutex_lock('mutex'),
+         thread_create( read_child(ID1,X), ID2), 
+         loop(1,5,1, ID1), 
+         mutex_unlock('mutex').
+
+read_child(ID, X) :- mutex_lock('mutex'), 
+                     thread_read(ID, X),
+                     mutex_unlock('mutex').
+
+has_child(bob, alex).
+has_child(bob, anna).
+has_child(bob, maria).
+
+loop(I, To, Inc, ThreadId) :- Inc >= 0, I > To, !.
+loop(I, To, Inc, ThreadId) :- Inc < 0,  I < To, !.
+loop(I, To, Inc, ThreadId) :- 
+  (thread_has_next(ThreadId) -> thread_next_sol(ThreadId), 
+                                Next is I+Inc, 
+                                loop(Next, To, Inc, ThreadId)
+                              ; !).
+\end{verbatim}
+
+Il thread iniziale crea un figlio produttore con identificativo pari a ID1 che inizia a cercare la prima soluzione. Fino a quando non arrivano ulteriori richieste di computazione, il processo produttore ID1 si sospende. 
+La chiamata alla funzione loop(from,to,inc,info) consiste in un ciclo iterativo in cui bisogna specificare l’indice da cui partire, il suo valore iniziale, l’incremento desiderato e i parametri che eventualmente devono essere trasferiti da una chiamata all’altra, come in questo caso l’identificatore del thread. Il ciclo ha lo scopo di chiamare delle thread\_next\_sol/1 ripetutamente fino a quando le soluzioni della query non sono esaurite. 
+Il thread padre poi genera un secondo figlio con il ruolo di lettore dell’ultima soluzione computata dal thread ID1.
+
+SENZA MUTEX, non sarebbe possibile prevedere quale soluzione sia prelevata tra alex, anna o maria, perché ciò dipenderebbe dalle velocità relative del processo lettore e del padre. Infatti, se il padre non aspetta che il figlio computi tutte le soluzioni, ma deposita semplicemente le richieste di ulteriori computazioni continuando poi la sua esecuzione, il figlio lettore viene generato durante la fase di computazione del produttore e di conseguenza preleva la prima soluzione disponibile. 
+
+PER EVITARLO,
+Gli accessi al thread produttore per il prelievo della soluzione sono sincronizzati attraverso il semaforo mutex che regola le interazioni: fino a quando il mutex è in mano al padre, il lettore non può prelevare alcuna soluzione. Non appena il produttore esce dal ciclo, il padre rilascia il lock di mutex, così che il lettore possa appropriarsene e prelevare la soluzione, avendo ora la certezza che si tratti dell’ultima soluzione alternativa per la query figlio(bob,X), cioè X / maria.
+
+L’esempio di utilizzo dei mutex, mette in luce la necessità di introdurre sincronizzazione esplicita nel flusso di esecuzione dei thread e soprattutto come cambino le interazioni tra i processi, in presenza o in assenza di questa.
+Inoltre, senza un’adeguata sincronizzazione tra i processi, è possibile che essi non vengano schedulati nel quanto di tempo che intercorre tra la computazione della soluzione di interesse e la successiva. L'esecuzione parallela di più thread all'interno della stessa applicazione, infatti, è vincolata dall'architettura della macchina su cui gira: se la macchina ha un unico processore, in un determinato momento può essere in esecuzione un unico thread, con il grande vantaggio che tutti i processi vengono fatti evolvere contemporaneamente anche se in ogni istante solo uno di essi è in reale esecuzione. Sfruttando i semafori, si dà così un ordine alle esecuzioni parallele dei thread.
 
 
 
