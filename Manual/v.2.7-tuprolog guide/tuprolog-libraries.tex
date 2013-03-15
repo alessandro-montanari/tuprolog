@@ -1382,12 +1382,12 @@ As a second example, let us consider the case of two threads that communicate vi
 %Any ground term can be used as a message: in this case, the message format is \texttt{m(\textit{text})}, and the specific message send by the father to the child is \texttt{'important message'}.
 
 \begin{verbatim}
-start(X):- msg_queue_create('MyQueue'), 
+start(X):- msg_queue_create('MyQueue'),
            thread_create(child(X),ID),
-           thread_sleep(500), 
-           thread_send_msg( m('important message'), 'MyQueue'), 
+           thread_sleep(500),
+           thread_send_msg( m('important message'), 'MyQueue'),
            thread_join(ID, child(X)).
-           
+
 child(X):- thread_get_msg( m(X),'MyQueue').
 \end{verbatim}
 %
@@ -1412,19 +1412,19 @@ The third example is similar, but the father creates three children, with three 
 \end{figure}
 
 \begin{verbatim}
-start(X):- thread_create(thread1(ID1),  ID1), 
+start(X):- thread_create(thread1(ID1),  ID1),
            thread_sleep(200),
-           thread_create(thread2(ID1),  ID2), 
-           thread_create(thread3(ID1,X),ID3), 
+           thread_create(thread2(ID1),  ID2),
+           thread_create(thread3(ID1,X),ID3),
            thread_read(ID3, _),
-           write('Father: done'). 
-           
+           write('Father: done').
+
 thread1(ID):- tell('threadLog.txt'),
-              write('ID1: waiting for message'), 
-              thread_get_msg( m(X),ID), 
+              write('ID1: waiting for message'),
+              thread_get_msg( m(X),ID),
               write('ID1: message retrieved').
 
-thread2(ID):- thread_send_msg( m('critical message'), ID), 
+thread2(ID):- thread_send_msg( m('critical message'), ID),
               write('ID2: message sent').		
 
 thread3(ID,X):- thread_peek_msg( m(X), ID),
@@ -1441,7 +1441,7 @@ However, since \texttt{ID1} removes the message from its queue when reading (via
 no
 \end{verbatim}
 %
-and the log file finally contains just 
+and the log file finally contains just
 
 \begin{verbatim}
 ID1: waiting for message
@@ -1454,50 +1454,51 @@ ID1: message retrieved
 \subsubsection{Synchronizing thread interactions}
 %-------------------------------
 
-In this producer/consumer example, the consumer's goal is to retrieve only the \textit{last} solution of the query \texttt{has\_child(bob,X)}, while the producer computes all the solutions to this query; the father coordinates the two tasks (the execution flow diagram is reported in Figure \ref{fig:thread-exampleMutex} on page \pageref{fig:thread-exampleMutex}).
+In this producer/consumer example, the consumer's goal is to retrieve only the \textit{last} solution of the query \texttt{has\_child(bob,X)}, while the producer computes all the solutions to this query; the father coordinates the two tasks, by first creating the producer and the consumer, and then triggering the producer to generate all the possible solutions in sequence.
+
+Without an explicit synchronisation mechanism, races would occur, causing the reader to read not \textit{the last} solution, but just ``one of'' the possible solutions, depending which thread is faster. 
+
+By suitably sequentialising the access to the producer's queue, the \texttt{mutex} semaphore guarantees that all solutions are produced \textit{before} the consumer can start reading, so that the last solution is actually read. (The execution flow diagram and the complete code are reported in Figure \ref{fig:thread-exampleMutex} on page \pageref{fig:thread-exampleMutex}.)
 
 \begin{figure}
 \centering
 \includegraphics[width=13cm]{images/thread-exampleMutex}
 \caption{Execution flows in the mutex example.}
-\label{fig:thread-exampleMutex}
-\end{figure}
+%\label{fig:thread-exampleMutex}
+%\end{figure}
 
-\begin{verbatim}
-start :- thread_create( has_child(bob,X), ID1),
-         mutex_lock('mutex'),
-         thread_create( read_child(ID1,X), ID2), 
-         loop(1,5,1, ID1), 
-         mutex_unlock('mutex').
-
-read_child(ID, X) :- mutex_lock('mutex'), 
+\begin{Verbatim}[frame=single, samepage=true]
+start(X):- thread_create( has_child(bob,X), ID1),
+           mutex_lock('mutex'),
+           thread_create( read_child(ID1,X), ID2),
+           loop(1,5,1, ID1),
+           mutex_unlock('mutex').
+           
+read_child(ID, X) :- mutex_lock('mutex'),
                      thread_read(ID, X),
                      mutex_unlock('mutex').
-
+                     
 has_child(bob, alex).
 has_child(bob, anna).
-has_child(bob, maria).
+has_child(bob, mary).
 
 loop(I, To, Inc, ThreadId) :- Inc >= 0, I > To, !.
 loop(I, To, Inc, ThreadId) :- Inc < 0,  I < To, !.
-loop(I, To, Inc, ThreadId) :- 
-  (thread_has_next(ThreadId) -> thread_next_sol(ThreadId), 
-                                Next is I+Inc, 
+loop(I, To, Inc, ThreadId) :-
+  (thread_has_next(ThreadId) -> thread_next_sol(ThreadId),
+                                Next is I+Inc,
                                 loop(Next, To, Inc, ThreadId)
                               ; !).
-\end{verbatim}
+\end{Verbatim}
 
-Il thread iniziale crea un figlio produttore con identificativo pari a ID1 che inizia a cercare la prima soluzione. Fino a quando non arrivano ulteriori richieste di computazione, il processo produttore ID1 si sospende. 
-La chiamata alla funzione loop(from,to,inc,info) consiste in un ciclo iterativo in cui bisogna specificare l’indice da cui partire, il suo valore iniziale, l’incremento desiderato e i parametri che eventualmente devono essere trasferiti da una chiamata all’altra, come in questo caso l’identificatore del thread. Il ciclo ha lo scopo di chiamare delle thread\_next\_sol/1 ripetutamente fino a quando le soluzioni della query non sono esaurite. 
-Il thread padre poi genera un secondo figlio con il ruolo di lettore dell’ultima soluzione computata dal thread ID1.
+\label{fig:thread-exampleMutex}
+\end{figure}
 
-SENZA MUTEX, non sarebbe possibile prevedere quale soluzione sia prelevata tra alex, anna o maria, perché ciò dipenderebbe dalle velocità relative del processo lettore e del padre. Infatti, se il padre non aspetta che il figlio computi tutte le soluzioni, ma deposita semplicemente le richieste di ulteriori computazioni continuando poi la sua esecuzione, il figlio lettore viene generato durante la fase di computazione del produttore e di conseguenza preleva la prima soluzione disponibile. 
+The first child, \texttt{ID1}, is the solution finder \& producer: its task is to generate the solutions of the given goal \texttt{has\_child(bob,X)}. When started, it looks for the first solution: once found, it suspends waiting for possible future requests for alternative solutions. These will be actually asked shortly, since the father triggers \texttt{ID1} to find all the alternative solutions (via the \texttt{loop/4} predicate, which embeds a call to \texttt{thread\_next\_sol}) just after generating its second child, the solution reader thread \texttt{ID2}.
+In fact, \texttt{ID2}'s task is to retrieve the computed solution from \texttt{ID1}'s private queue: but due to the \texttt{thread\_read} semantics, it actually reads \texttt{ID1}'s result only when \texttt{ID1} has terminated. This is why explicit synchronisation is needed: otherwise, the reader would read ``one of'' the solutions, non-deterministically, depending on which thread is faster (this can be easily checked by commenting out the \texttt{mutex\_lock}/\texttt{mutex\_unlock} statements).
 
-PER EVITARLO,
-Gli accessi al thread produttore per il prelievo della soluzione sono sincronizzati attraverso il semaforo mutex che regola le interazioni: fino a quando il mutex è in mano al padre, il lettore non può prelevare alcuna soluzione. Non appena il produttore esce dal ciclo, il padre rilascia il lock di mutex, così che il lettore possa appropriarsene e prelevare la soluzione, avendo ora la certezza che si tratti dell’ultima soluzione alternativa per la query figlio(bob,X), cioè X / maria.
+With the explicit \texttt{mutex} semaphore, interactions are sequentialised: as long as the father holds the lock, the reader cannot retrieve any solution. Since the lock is released only after all the solutions have been explored, the reader will actually get only the last computed solution, \texttt{X / mary}.
 
-L’esempio di utilizzo dei mutex, mette in luce la necessità di introdurre sincronizzazione esplicita nel flusso di esecuzione dei thread e soprattutto come cambino le interazioni tra i processi, in presenza o in assenza di questa.
-Inoltre, senza un’adeguata sincronizzazione tra i processi, è possibile che essi non vengano schedulati nel quanto di tempo che intercorre tra la computazione della soluzione di interesse e la successiva. L'esecuzione parallela di più thread all'interno della stessa applicazione, infatti, è vincolata dall'architettura della macchina su cui gira: se la macchina ha un unico processore, in un determinato momento può essere in esecuzione un unico thread, con il grande vantaggio che tutti i processi vengono fatti evolvere contemporaneamente anche se in ogni istante solo uno di essi è in reale esecuzione. Sfruttando i semafori, si dà così un ordine alle esecuzioni parallele dei thread.
 
 
 
