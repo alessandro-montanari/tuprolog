@@ -61,31 +61,36 @@
 \@writefile{lof}{\contentsline {figure}{\numberline {5.2}{\ignorespaces Execution flows in the mutex example.}}{94}{figure.5.2}}
 \newlabel{fig:thread-exampleMutex}{{5.2}{94}{Execution flows in the mutex example}{figure.5.2}{}}
 \citation{bra00}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.4.2.5}Flattening and manipulating lists}{95}{subsubsection.5.4.2.5}}
 \@writefile{toc}{\contentsline {section}{\numberline {5.5}DCGLibrary}{95}{section.5.5}}
 \newlabel{sec:dgc-library}{{5.5}{95}{DCGLibrary\relax }{section.5.5}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.3}{\ignorespaces The DCG Library example in the \unhbox \voidb@x \hbox {{\sf  {tu}}Prolog}{} GUI (note the explicit library loading directive).}}{96}{figure.5.3}}
-\newlabel{fig:dcg-example}{{5.3}{96}{The DCG Library example in the \tuprolog {} GUI (note the explicit library loading directive)}{figure.5.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.5.1}Predicates}{96}{subsection.5.5.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.5.2}Operators}{97}{subsection.5.5.2}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.4}{\ignorespaces DCGLibrary operators.}}{97}{table.5.4}}
-\newlabel{tab:dcglibrary-operators}{{5.4}{97}{DCGLibrary operators}{table.5.4}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.6}ISOIOLibrary}{97}{section.5.6}}
-\newlabel{sec:isoio-library}{{5.6}{97}{ISOIOLibrary\relax }{section.5.6}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.4}{\ignorespaces Comparison between the I/O predicates provided by IOLibrary and the ISO standard specification. Bold style indicates missing predicates, plain style indicates existing functionalities to be refactored, improved, or be provided with a different signature to be ISO-compliant.}}{98}{figure.5.4}}
-\newlabel{fig:isoiolibrary-table}{{5.4}{98}{Comparison between the I/O predicates provided by IOLibrary and the ISO standard specification. Bold style indicates missing predicates, plain style indicates existing functionalities to be refactored, improved, or be provided with a different signature to be ISO-compliant}{figure.5.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.6.1}Predicates}{100}{subsection.5.6.1}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.5}{\ignorespaces Term writing rules: canonical form and operator notation.}}{109}{table.5.5}}
-\newlabel{tab:isoiolibrary-write-terms}{{5.5}{109}{Term writing rules: canonical form and operator notation}{table.5.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.6.2}Options}{110}{subsection.5.6.2}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.6}{\ignorespaces The default configuration of the standard I/O streams.}}{111}{table.5.6}}
-\newlabel{tab:isoiolibrary-user-streams}{{5.6}{111}{The default configuration of the standard I/O streams}{table.5.6}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.7}SocketLibrary}{112}{section.5.7}}
-\newlabel{sec:socket-library}{{5.7}{112}{SocketLibrary\relax }{section.5.7}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.7.1}Predicates}{114}{subsection.5.7.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.7.2}Operators}{117}{subsection.5.7.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.7.3}Use from the Java side: term hierarchy extension}{117}{subsection.5.7.3}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.4}{\ignorespaces The sequential version of the list manipulation program. Query: \texttt  {?- start([[[2,2],2,2,1],[4,[3],2],[9,8,9,2]], 3, 2).}}}{96}{table.5.4}}
+\newlabel{tab:thread-exampleFlatList}{{5.4}{96}{The sequential version of the list manipulation program. Query: \texttt {?- start([[[2,2],2,2,1],[4,[3],2],[9,8,9,2]], 3, 2).}\relax }{table.5.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.5}{\ignorespaces The sequential version (top) and the concurrent (bottom) version of the list manipulation program. Query: \texttt  {?- start([[[2,2],2,2,1],[4,[3],2],[9,8,9,2]], 3, 2).}}}{97}{table.5.5}}
+\newlabel{tab:thread-exampleFlatListConcurrent}{{5.5}{97}{The sequential version (top) and the concurrent (bottom) version of the list manipulation program. Query: \texttt {?- start([[[2,2],2,2,1],[4,[3],2],[9,8,9,2]], 3, 2).}\relax }{table.5.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.3}{\ignorespaces The DCG Library example in the \unhbox \voidb@x \hbox {{\sf  {tu}}Prolog}{} GUI (note the explicit library loading directive).}}{98}{figure.5.3}}
+\newlabel{fig:dcg-example}{{5.3}{98}{The DCG Library example in the \tuprolog {} GUI (note the explicit library loading directive)}{figure.5.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.5.1}Predicates}{98}{subsection.5.5.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.5.2}Operators}{99}{subsection.5.5.2}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.6}{\ignorespaces DCGLibrary operators.}}{100}{table.5.6}}
+\newlabel{tab:dcglibrary-operators}{{5.6}{100}{DCGLibrary operators}{table.5.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.6}ISOIOLibrary}{100}{section.5.6}}
+\newlabel{sec:isoio-library}{{5.6}{100}{ISOIOLibrary\relax }{section.5.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.4}{\ignorespaces Comparison between the I/O predicates provided by IOLibrary and the ISO standard specification. Bold style indicates missing predicates, plain style indicates existing functionalities to be refactored, improved, or be provided with a different signature to be ISO-compliant.}}{101}{figure.5.4}}
+\newlabel{fig:isoiolibrary-table}{{5.4}{101}{Comparison between the I/O predicates provided by IOLibrary and the ISO standard specification. Bold style indicates missing predicates, plain style indicates existing functionalities to be refactored, improved, or be provided with a different signature to be ISO-compliant}{figure.5.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.6.1}Predicates}{102}{subsection.5.6.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.6.2}Options}{111}{subsection.5.6.2}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.7}{\ignorespaces Term writing rules: canonical form and operator notation.}}{112}{table.5.7}}
+\newlabel{tab:isoiolibrary-write-terms}{{5.7}{112}{Term writing rules: canonical form and operator notation}{table.5.7}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.8}{\ignorespaces The default configuration of the standard I/O streams.}}{114}{table.5.8}}
+\newlabel{tab:isoiolibrary-user-streams}{{5.8}{114}{The default configuration of the standard I/O streams}{table.5.8}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.7}SocketLibrary}{115}{section.5.7}}
+\newlabel{sec:socket-library}{{5.7}{115}{SocketLibrary\relax }{section.5.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.7.1}Predicates}{116}{subsection.5.7.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.7.2}Operators}{120}{subsection.5.7.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.7.3}Use from the Java side: term hierarchy extension}{120}{subsection.5.7.3}}
 \@setckpt{tuprolog-libraries}{
-\setcounter{page}{119}
+\setcounter{page}{122}
 \setcounter{equation}{0}
 \setcounter{enumi}{4}
 \setcounter{enumii}{0}
@@ -101,10 +106,10 @@
 \setcounter{paragraph}{0}
 \setcounter{subparagraph}{0}
 \setcounter{figure}{4}
-\setcounter{table}{6}
+\setcounter{table}{8}
 \setcounter{Item}{18}
 \setcounter{Hfootnote}{11}
-\setcounter{bookmark@seq@number}{77}
-\setcounter{FancyVerbLine}{21}
+\setcounter{bookmark@seq@number}{78}
+\setcounter{FancyVerbLine}{15}
 \setcounter{section@level}{2}
 }

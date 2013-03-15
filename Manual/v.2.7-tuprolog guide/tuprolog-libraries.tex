@@ -1468,11 +1468,11 @@ By suitably sequentialising the access to the producer's queue, the \texttt{mute
 %\end{figure}
 
 \begin{Verbatim}[frame=single, samepage=true]
-start(X):- thread_create( has_child(bob,X), ID1),
-           mutex_lock('mutex'),
-           thread_create( read_child(ID1,X), ID2),
-           loop(1,5,1, ID1),
-           mutex_unlock('mutex').
+start:- thread_create( has_child(bob,X), ID1),
+        mutex_lock('mutex'),
+        thread_create( read_child(ID1,X), ID2),
+        loop(1,5,1, ID1),
+        mutex_unlock('mutex').
            
 read_child(ID, X) :- mutex_lock('mutex'),
                      thread_read(ID, X),
@@ -1499,6 +1499,98 @@ In fact, \texttt{ID2}'s task is to retrieve the computed solution from \texttt{I
 
 With the explicit \texttt{mutex} semaphore, interactions are sequentialised: as long as the father holds the lock, the reader cannot retrieve any solution. Since the lock is released only after all the solutions have been explored, the reader will actually get only the last computed solution, \texttt{X / mary}.
 
+%-------------------------------
+\subsubsection{Flattening and manipulating lists}
+%-------------------------------
+
+Table \ref{tab:thread-exampleFlatList} on page \pageref{tab:thread-exampleFlatList} shows a sequential Prolog program that manipulates a list of (sub)lists. More precisely, it first flattens the list of lists into a single flat list, then sorts the obtained list and counts the occurrence of a given term in that list.
+
+\begin{table}\small
+\begin{Verbatim}[frame=single, samepage=true]
+start(L, 0, T) :- !.
+start([H|Tail], N, T) :- 
+    plain(H,L_plain),
+    bubble(L_plain,L_ord), 
+    occurr_count(T,H,Count), 
+    C is N-1, start(Tail,C, T).
+                         
+plain(L1,L2) :- plain(L1,[],L2).
+
+plain([],ACC,ACC).
+plain([H|REST],ACC,L2) :- 
+    H = [_|_],
+    plain(H,ACC,ACC1),
+    plain(REST,ACC1,L2).
+plain([H|REST],ACC,L2) :- 
+    append(ACC,[H],ACC1),
+    plain(REST,ACC1,L2).
+plain(X,ACC,L2) :-
+    append(ACC,[X],L2).
+
+bubble(L1,L2) :- bubble(L1,0,L2).
+
+bubble(L1,0,L2) :- 
+    sweep(L1,0,L2).
+bubble(L1,0,L2) :- 
+    sweep(L1,1,LTMP),
+    bubble(LTMP,0,L2).
+                   
+sweep([X|[]],0,[X|[]]).
+sweep([X,Y|REST1],CHANGED,[X|REST2]) :- 
+    X =< Y, sweep([Y|REST1],CHANGED,REST2).
+sweep([X,Y|REST1],1,[Y|REST2]) :- 
+    X > Y, sweep([X|REST1],_,REST2).
+
+occurr_count(T,L,N) :- occurr_count(T,L,0,N).
+
+occurr_count(_,[],ACC,ACC).
+occurr_count(T,[T|REST],ACC,N) :- 
+    ACC1 is ACC+1, occurr_count(T,REST,ACC1,N).
+occurr_count(T,[_|REST],ACC,N) :- occurr_count(T,REST,ACC,N).
+\end{Verbatim}
+\caption{The sequential version of the list manipulation program.
+         Query: \texttt{?- start([[[2,2],2,2,1],[4,[3],2],[9,8,9,2]], 3, 2).}}
+\label{tab:thread-exampleFlatList}
+\end{table}
+
+To exploit concurrency, the program needs to be restructured, distributing the responsibilities among different threads.
+As an example, we decided to delegate the list flattening and sorting to a child thread, maintaining the final occurrence counting on the main (father)'s thread: the result is shown in Table \ref{tab:thread-exampleFlatListConcurrent} on page \pageref{tab:thread-exampleFlatListConcurrent}, where the sequential and the concurrent versions are compared. The concurrent version showed a 16\% performance gain.
+
+\begin{table}\small
+\textit{Sequential version:}
+\begin{Verbatim}[frame=single, samepage=true]
+start(L, 0, T) :- !.
+start([H|Tail], N, T) :- 
+    plain(H,L_plain),
+    bubble(L_plain,L_ord), 
+    occurr_count(T,H,Count), 
+    C is N-1, start(Tail,C, T).
+...
+\end{Verbatim}
+    
+\textit{Concurrent version:}
+\begin{Verbatim}[frame=single, samepage=true]
+start(L, N, T) :- 
+    thread_create(firstResp(L, N), ID),
+    secondResp(L, N, T).
+    
+secondResp(L, 0, T):- !.
+secondResp([H|Tail], N, T) :- 
+    occurr_count(T,H,Count), 
+    C is N-1, secondResp(Tail,C, T).
+    
+firstResp(L, 0) :- !.
+firstResp([H|Tail], N) :- 
+    plain(H,L_plain),
+    bubble(L_plain,L_ord), 
+    C is N-1, firstResp(Tail,C).
+...
+\end{Verbatim}
+\caption{The sequential version (top) and the concurrent (bottom) version of the list manipulation program.
+         Query: \texttt{?- start([[[2,2],2,2,1],[4,[3],2],[9,8,9,2]], 3, 2).}}
+\label{tab:thread-exampleFlatListConcurrent}
+\end{table}
+
 
 
 
@@ -1517,7 +1609,7 @@ A DCG rule has the general form \verb|Head --> Body|: to distinguish terminal fr
 %
 The body can contain also executable blocks in parentheses, which are interpreted as normal Prolog rules.
 
-Here is a simple example (see also Figure \ref{fig:dcg-example}):
+Here is a simple example (see also Figure \ref{fig:dcg-example} on page \pageref{fig:dcg-example}):
 %
 \begin{verbatim}
     sentence --> noun_phrase, verb_phrase.
