@@ -1,0 +1,26 @@
+#summary Guide on how to synchronize a branch with the trunk in Subclipse 1.8
+
+<img src="http://tuprolog.googlecode.com/svn/wiki/screenshots/SynchronizationGuide/merge-dialog.tiff" width=75% />
+
+=Steps=
+  # Switch to a working copy of the branch in which you want to receive the changes
+  # Commit all the modification in the branch. There must be no pending modification.
+  # Left click on the project -> Team -> Merge
+  # In the Dialog:
+    * In the *From:* field enter the full folder URL of the trunk (https://tuprolog.googlecode.com/svn/2p/trunk)
+    * In the *From Revision* field, enter the revision number of the creation of the branch.
+    For example:
+    {{{
+Rev Comments
+39. Working on MyBranch 
+38. Working on trunk 
+37. Working on MyBranch 
+36. Create branch MyBranch 
+35. Working on trunk 
+34. Working on trunk 
+...
+}}}
+    In this case, if you want to port the changes made to the trunk into the MyBranch branch, you have to select the revision 36.
+    * Check the option *Use "From:" URL*
+    * Check the option *Merge to HEAD revision*
+    * Click on *Merge*
