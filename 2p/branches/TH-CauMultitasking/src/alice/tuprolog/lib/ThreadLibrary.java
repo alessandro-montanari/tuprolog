@@ -36,8 +36,8 @@ public class ThreadLibrary extends Library {
 	}
 	
 	//Crea un nuovo thread di identificatore id che comincia ad eseguire il goal dato
-	public boolean thread_create_2 (Term goal, Term id){
-		return engineManager.threadCreate(goal, id);
+	public boolean thread_create_2 (Term id, Term goal){
+		return engineManager.threadCreate(id, goal);
 	}
 	
 	/*Aspetta la terminazione del thread di identificatore id e ne raccoglie il risultato, 
@@ -127,54 +127,54 @@ public class ThreadLibrary extends Library {
 		return true;
 	}
 	
-	public boolean thread_send_msg_2(Term msg, Term id) throws PrologError{
+	public boolean thread_send_msg_2(Term id, Term msg) throws PrologError{
 		id=id.getTerm();
 		if (id instanceof Int) 
-			return engineManager.sendMsg(msg, ((Int)id).intValue());	
+			return engineManager.sendMsg(((Int)id).intValue(), msg);	
 		if (!id.isAtomic() || !id.isAtom()) 
 			throw PrologError.type_error(engine.getEngineManager(), 1,
                     "atom, atomic or integer", id);
-		return engineManager.sendMsg(msg, id.toString());
+		return engineManager.sendMsg(id.toString(), msg);
 	}
 	
-	public  boolean  thread_get_msg_2(Term msg, Term id) throws PrologError{
+	public  boolean  thread_get_msg_2(Term id, Term msg) throws PrologError{
 		id=id.getTerm();
 		if (id instanceof Int) 
-			return engineManager.getMsg(msg, ((Int)id).intValue());
+			return engineManager.getMsg(((Int)id).intValue(), msg);
 		if (!id.isAtom() || !id.isAtomic()) 
 			throw PrologError.type_error(engine.getEngineManager(), 1,
                     "atom, atomic or integer", id);
-		return engineManager.getMsg(msg,id.toString());
+		return engineManager.getMsg(id.toString(), msg);
 	}	
 	
-	public  boolean  thread_peek_msg_2(Term msg, Term id) throws PrologError{
+	public  boolean  thread_peek_msg_2(Term id, Term msg) throws PrologError{
 		id=id.getTerm();
 		if (id instanceof Int) 
-			return engineManager.peekMsg(msg, ((Int)id).intValue());
+			return engineManager.peekMsg(((Int)id).intValue(), msg);
 		if (!id.isAtom() || !id.isAtomic()) 
 			throw PrologError.type_error(engine.getEngineManager(), 1,
                     "atom, atomic or integer", id);
-		return engineManager.peekMsg(msg,id.toString());
+		return engineManager.peekMsg(id.toString(), msg);
 	}
 
-	public  boolean  thread_wait_msg_2(Term msg, Term id) throws PrologError{
+	public  boolean  thread_wait_msg_2(Term id, Term msg) throws PrologError{
 		id=id.getTerm();
 		if (id instanceof Int) 
-			return engineManager.waitMsg(msg, ((Int)id).intValue());
+			return engineManager.waitMsg(((Int)id).intValue(), msg);
 		if (!id.isAtom() || !id.isAtomic()) 
 			throw PrologError.type_error(engine.getEngineManager(), 1,
                     "atom, atomic or integer", id);
-		return engineManager.waitMsg(msg,id.toString());
+		return engineManager.waitMsg(id.toString(), msg);
 	}
 
-	public  boolean  thread_remove_msg_2(Term msg, Term id) throws PrologError{
+	public  boolean  thread_remove_msg_2(Term id, Term msg) throws PrologError{
 		id=id.getTerm();
 		if (id instanceof Int) 
-			return engineManager.removeMsg(msg, ((Int)id).intValue());
+			return engineManager.removeMsg(((Int)id).intValue(), msg);
 		if (!id.isAtom() || !id.isAtomic()) 
 			throw PrologError.type_error(engine.getEngineManager(), 1,
                     "atom, atomic or integer", id);
-		return engineManager.removeMsg(msg,id.toString());
+		return engineManager.removeMsg(id.toString(), msg);
 	}
 	
 	public boolean msg_queue_create_1(Term q) throws PrologError{
@@ -194,7 +194,7 @@ public class ThreadLibrary extends Library {
 		return true;
 	}
 	
-	public boolean msg_queue_size_2(Term n, Term id) throws PrologError{
+	public boolean msg_queue_size_2(Term id, Term n) throws PrologError{
 		id=id.getTerm();
 		int size;
 		if (id instanceof Int) 
@@ -265,7 +265,7 @@ public class ThreadLibrary extends Library {
 	
 	public String getTheory(){
 		return 
-		"thread_execute(GOAL, ID):- thread_create(GOAL, ID), '$next'(ID). \n" +
+		"thread_execute(ID, GOAL):- thread_create(ID, GOAL), '$next'(ID). \n" +
 		"'$next'(ID). \n"+
 		"'$next'(ID) :- '$thread_execute2'(ID). \n"+
 		"'$thread_execute2'(ID) :- not thread_has_next(ID),!,false. \n" +

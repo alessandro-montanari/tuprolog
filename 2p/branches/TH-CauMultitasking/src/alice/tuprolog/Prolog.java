@@ -403,7 +403,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 		if (g == null) return null;
 
 		SolveInfo sinfo = engineManager.solve(g);
-
+		
 		QueryEvent ev = new QueryEvent(this,sinfo);
 		notifyNewQueryResultAvailable(ev);
 

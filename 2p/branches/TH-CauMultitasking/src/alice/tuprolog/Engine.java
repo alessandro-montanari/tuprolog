@@ -93,6 +93,7 @@ public class Engine /*Castagna 06/2011*/implements IEngine/**/{
 			//log.println(currentContext);
 
 			manager.spy(action, this);
+			
 
 		} while (!(nextState instanceof StateEnd));
 		nextState.doJob(this);
