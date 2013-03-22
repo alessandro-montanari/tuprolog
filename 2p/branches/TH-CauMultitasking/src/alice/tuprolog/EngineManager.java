@@ -57,9 +57,11 @@ public class EngineManager implements java.io.Serializable {
 	public SolveInfo join(int id) {
 		EngineRunner er = findRunner(id);
 		if (er==null || er.isDetached()) return null;
-		System.out.println("Thread id "+runnerId()+" - prelevo la soluzione (join)");
+		/*toSPY
+		 * System.out.println("Thread id "+runnerId()+" - prelevo la soluzione (join)");*/
 		SolveInfo solution = er.read();
-		System.out.println("Soluzione: "+solution);
+		/*toSPY
+		 * System.out.println("Soluzione: "+solution);*/
 		removeRunner(id);
 		return solution;
 	}
@@ -67,9 +69,13 @@ public class EngineManager implements java.io.Serializable {
 	public SolveInfo read (int id) {
 		EngineRunner er = findRunner(id);
 		if (er==null || er.isDetached()) return null;
-		System.out.println("Thread id "+runnerId()+" - prelevo la soluzione (read) del thread di id: "+er.getId());
+		/*toSPY
+		 * System.out.println("Thread id "+runnerId()+" - prelevo la soluzione (read) del thread di id: "+er.getId());
+		 */
 		SolveInfo solution = er.read();
-		System.out.println("Soluzione: "+solution);
+		/*toSPY
+		 * System.out.println("Soluzione: "+solution);
+		 */
 		return solution;
 	}
 	
@@ -82,7 +88,9 @@ public class EngineManager implements java.io.Serializable {
 	public boolean nextSolution (int id){
 		EngineRunner er = findRunner(id);
 		if (er==null) return false;
-		System.out.println("Thread id "+runnerId()+" - next_solution: risveglio il thread di id: "+er.getId());
+		/*toSPY
+		 * System.out.println("Thread id "+runnerId()+" - next_solution: risveglio il thread di id: "+er.getId());
+		 */
 		boolean bool = er.nextSolution();
 		return bool;
 	}
@@ -356,7 +364,9 @@ public class EngineManager implements java.io.Serializable {
 			return mutexLock(name);
 		}
 		mutex.lock();
-		System.out.println("Thread id "+runnerId()+ " - mi sono impossessato del lock");
+		/*toSPY
+		 * System.out.println("Thread id "+runnerId()+ " - mi sono impossessato del lock");
+		 */
 		return true;
 	}
 
@@ -364,7 +374,9 @@ public class EngineManager implements java.io.Serializable {
 	public boolean mutexTryLock(String name){
 		ReentrantLock mutex=locks.get(name);
 		if (mutex==null) return false;
-		System.out.println("Thread id "+runnerId()+ " - provo ad impossessarmi del lock");
+		/*toSPY
+		 * System.out.println("Thread id "+runnerId()+ " - provo ad impossessarmi del lock");
+		 */
 		return mutex.tryLock();
 	}
 	
@@ -373,7 +385,9 @@ public class EngineManager implements java.io.Serializable {
 		if (mutex==null) return false;
 		try{
 			mutex.unlock();
-			System.out.println("Thread id "+runnerId()+ " - Ho liberato il lock");
+			/*toSPY
+			 * System.out.println("Thread id "+runnerId()+ " - Ho liberato il lock");
+			 */
 			return true;
 		}
 		catch(IllegalMonitorStateException e){
