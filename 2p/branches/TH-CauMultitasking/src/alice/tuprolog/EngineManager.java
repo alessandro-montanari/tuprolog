@@ -33,7 +33,7 @@ public class EngineManager implements java.io.Serializable {
 		
 	}
 	
-	public synchronized boolean threadCreate(Term goal, Term threadID) {
+	public synchronized boolean threadCreate(Term threadID, Term goal) {
 		if (goal == null) return false;
 		if (goal instanceof Var) 
 			goal = goal.getTerm();
@@ -94,7 +94,7 @@ public class EngineManager implements java.io.Serializable {
 		removeRunner(er.getId());
 	}
 	
-	public boolean sendMsg (Term msg, int dest){
+	public boolean sendMsg (int dest, Term msg){
 		EngineRunner er = findRunner(dest);
 		if (er==null) return false;
 		Term msgcopy = msg.copy(new LinkedHashMap<Var,Var>(), 0);
@@ -102,7 +102,7 @@ public class EngineManager implements java.io.Serializable {
 		return true;
 	}
 	
-	public boolean sendMsg(Term msg, String name) {
+	public boolean sendMsg(String name, Term msg) {
 		TermQueue queue = queues.get(name);
 		if (queue==null) return false;
 		Term msgcopy = msg.copy(new LinkedHashMap<Var,Var>(), 0);
@@ -110,13 +110,13 @@ public class EngineManager implements java.io.Serializable {
 		return true;
 	}
 	
-	public boolean getMsg(Term msg, int id){
+	public boolean getMsg(int id, Term msg){
 		EngineRunner er = findRunner(id);
 		if (er==null) return false;
 		return er.getMsg(msg);
 	}
 	
-	public boolean getMsg(Term msg, String name){
+	public boolean getMsg(String name, Term msg){
 		EngineRunner er=findRunner();
 		if (er==null) return false;
 		TermQueue queue = queues.get(name);
@@ -124,13 +124,13 @@ public class EngineManager implements java.io.Serializable {
 		return queue.get(msg, vm, er);
 	}
 	
-	public boolean waitMsg(Term msg, int id){
+	public boolean waitMsg(int id, Term msg){
 		EngineRunner er=findRunner(id);
 		if (er==null) return false;
 		return er.waitMsg(msg);
 	}	
 	
-	public boolean waitMsg(Term msg, String name){
+	public boolean waitMsg(String name, Term msg){
 		EngineRunner er=findRunner();
 		if (er==null) return false;
 		TermQueue queue=queues.get(name);
@@ -138,25 +138,25 @@ public class EngineManager implements java.io.Serializable {
 		return queue.wait(msg, vm, er);
 	}
 	
-	public boolean peekMsg(Term msg, int id){
-		EngineRunner er=findRunner(id);
+	public boolean peekMsg(int id, Term msg){
+		EngineRunner er = findRunner(id);
 		if (er==null) return false;
 		return er.peekMsg(msg);
 	}
 	
-	public boolean peekMsg(Term msg, String name){
-		TermQueue queue=queues.get(name);
+	public boolean peekMsg(String name, Term msg){
+		TermQueue queue = queues.get(name);
 		if (queue==null) return false;
 		return queue.peek(msg, vm);
 	}
 
-	public boolean removeMsg(Term msg, int id){
+	public boolean removeMsg(int id, Term msg){
 		EngineRunner er=findRunner(id);
 		if (er==null) return false;
 		return er.removeMsg(msg);
 	}
 	
-	public boolean removeMsg(Term msg, String name){
+	public boolean removeMsg(String name, Term msg){
 		TermQueue queue=queues.get(name);
 		if (queue==null) return false;
 		return queue.remove(msg, vm);
@@ -270,7 +270,7 @@ public class EngineManager implements java.io.Serializable {
 	}
 	
 	void spy(String action, Engine env) {
-		EngineRunner runner=findRunner();
+		EngineRunner runner = findRunner();
 		runner.spy(action, env);
 	}
 	
