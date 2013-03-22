@@ -566,7 +566,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	/**
 	 * Notifies a spy information event
 	 */
-	protected void spy(String s) {
+	protected synchronized void spy(String s) {
 		if (spy) {
 			notifySpy(new SpyEvent(this, s));
 		}
@@ -576,7 +576,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 * Notifies a spy information event
 	 * @param s TODO
 	 */
-	protected void spy(String s, Engine e) {
+	protected synchronized void spy(String s, Engine e) {
 		//System.out.println("spy: "+i+"  "+s+"  "+g);
 		if (spy) {
 			ExecutionContext ctx = e.currentContext;
