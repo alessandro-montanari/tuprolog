@@ -9,7 +9,7 @@
 \contentsline {subsection}{\numberline {3.1.1}Editing theories}{16}{subsection.3.1.1}
 \contentsline {subsection}{\numberline {3.1.2}Solving goals}{18}{subsection.3.1.2}
 \contentsline {subsection}{\numberline {3.1.3}Debugging support}{21}{subsection.3.1.3}
-\contentsline {subsection}{\numberline {3.1.4}Dynamic library management}{21}{subsection.3.1.4}
+\contentsline {subsection}{\numberline {3.1.4}Dynamic library management}{22}{subsection.3.1.4}
 \contentsline {section}{\numberline {3.2}\unhbox \voidb@x \hbox {{\sf {tu}}Prolog}{} for the Java Developer}{23}{section.3.2}
 \contentsline {section}{\numberline {3.3}\unhbox \voidb@x \hbox {{\sf {tu}}Prolog}{} for the .NET Developer}{30}{section.3.3}
 \contentsline {section}{\numberline {3.4}\unhbox \voidb@x \hbox {{\sf {tu}}Prolog}{} for the Android User}{30}{section.3.4}
@@ -113,14 +113,14 @@
 \contentsline {subsection}{\numberline {7.2.4}Registering object bindings}{160}{subsection.7.2.4}
 \contentsline {subsection}{\numberline {7.2.5}Capturing the Prolog output in Java}{163}{subsection.7.2.5}
 \contentsline {section}{\numberline {7.3}Augmenting Prolog via Java:\\developing new libraries}{164}{section.7.3}
-\contentsline {subsection}{\numberline {7.3.1}Syntactic conventions}{165}{subsection.7.3.1}
-\contentsline {subsubsection}{\numberline {7.3.1.1}Capturing exceptions raised in libraries}{169}{subsubsection.7.3.1.1}
+\contentsline {subsection}{\numberline {7.3.1}Syntactic conventions}{164}{subsection.7.3.1}
+\contentsline {subsubsection}{\numberline {7.3.1.1}Capturing exceptions raised in libraries}{166}{subsubsection.7.3.1.1}
 \contentsline {subsubsection}{\numberline {7.3.1.2}Capturing the Java output in Prolog}{169}{subsubsection.7.3.1.2}
 \contentsline {subsubsection}{\numberline {7.3.1.3}Naming issues}{169}{subsubsection.7.3.1.3}
-\contentsline {subsection}{\numberline {7.3.2}Hybrid Java+Prolog libraries}{173}{subsection.7.3.2}
+\contentsline {subsection}{\numberline {7.3.2}Hybrid Java+Prolog libraries}{169}{subsection.7.3.2}
 \contentsline {subsection}{\numberline {7.3.3}Library loading issues}{173}{subsection.7.3.3}
-\contentsline {subsection}{\numberline {7.3.4}Library Name}{175}{subsection.7.3.4}
-\contentsline {section}{\numberline {7.4}Augmenting Java via Prolog:\\the P@J framework}{176}{section.7.4}
+\contentsline {subsection}{\numberline {7.3.4}Library Name}{174}{subsection.7.3.4}
+\contentsline {section}{\numberline {7.4}Augmenting Java via Prolog:\\the P@J framework}{175}{section.7.4}
 \contentsline {subsection}{\numberline {7.4.1}Term taxonomy}{176}{subsection.7.4.1}
 \contentsline {subsection}{\numberline {7.4.2}Examples}{178}{subsection.7.4.2}
 \contentsline {chapter}{\numberline {8}Multi-paradigm programming in Prolog and .NET}{184}{chapter.8}
