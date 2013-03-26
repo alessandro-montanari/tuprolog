@@ -1116,9 +1116,9 @@ So, when the producer finds a solution, four situations can occur:
 \begin{itemize}
 %
 \item \bti{thread\_create/2}\\
-    \noindent\bt{thread\_create(+Query, -ThreadID)} is true if a new thread can be created to solve the given \bt{Query}; the unique ID of the newly-thread thread is unified with \bt{ThreadID}.
+    \noindent\bt{thread\_create(-ThreadID,+Query)} is true if a new thread can be created to solve the given \bt{Query}; the unique ID of the newly-thread thread is unified with \bt{ThreadID}.
 
-    \template{thread\_create(+term, -term)}
+    \template{thread\_create(-term, +term)}
 
 \item \bti{thread\_id/1}\\
     \noindent\bt{thread\_id(?ThreadID)} is true if the unique ID of the current thread can be unified with \bt{ThreadID}.
@@ -1170,11 +1170,11 @@ So, when the producer finds a solution, four situations can occur:
     Goal, ArgNo, ValidType, Culprit))} if \texttt{ThreadID} is not an integer. \texttt{Goal} is the goal where the problem occurred, \texttt{ValidType} is the expected type (integer),  \texttt{Culprit} is the wrong term actually found.
 
 \item \bti{thread\_execute/2}\\
-    \noindent\bt{thread\_execute(+Query, +ThreadID)} is the backtrackable version of \bt{thread\_create/2}. It must be followed by some read operation to retrieve the subsequent solutions computed by the thread.
+    \noindent\bt{thread\_execute(+ThreadID, +Query)} is the backtrackable version of \bt{thread\_create/2}. It must be followed by some read operation to retrieve the subsequent solutions computed by the thread.
     Care must be taken in using \bt{thread\_join/2} to retrieve alternative solutions (after the first one): on backtracking,
     \bt{thread\_execute} would fail, since \bt{thread\_join} removes the thread from the system.
 
-    \template{thread\_execute(+term, +number)}
+    \template{thread\_execute(+number, +term)}
 
     \exception{error(type\_error(ValidType, Culprit), type\_error(\\
     Goal, ArgNo, ValidType, Culprit))} if \texttt{ThreadID} is not an integer. \texttt{Goal} is the goal where the problem occurred, \texttt{ValidType} is the expected type (integer),  \texttt{Culprit} is the wrong term actually found.
@@ -1206,7 +1206,7 @@ Finally, messages read from a queue can both be removed from the queue, or left 
 \begin{itemize}
 %
 \item \bti{thread\_send\_msg/2}\\
-    \noindent\bt{thread\_send\_msg(+Msg, +QueueOrThreadID)} inserts a message in the queue identified by \texttt{QueueOrThreadID}. As a side effect, any thread suspended on that queue is awakened.
+    \noindent\bt{thread\_send\_msg(+QueueOrThreadID, +Msg)} inserts a message in the queue identified by \texttt{QueueOrThreadID}. As a side effect, any thread suspended on that queue is awakened.
 
     \template{thread\_send\_msg(+term, +term)}
 
@@ -1214,23 +1214,23 @@ Finally, messages read from a queue can both be removed from the queue, or left 
     Goal, ArgNo, ValidType, Culprit))} if \texttt{QueueOrThreadID} is neither an integer nor an atom. \texttt{Goal} is the goal where the problem occurred, \texttt{ValidType} is the expected type (integer or atom),  \texttt{Culprit} is the wrong term actually found.
 
 \item \bti{thread\_get\_msg/2}, \mbox{~~~}\bti{thread\_wait\_msg/2}\\
-    \noindent\bt{thread\_get\_msg(?Msg, +QueueOrThreadID)} and\\
-    \bt{thread\_wait\_msg(?Msg, +QueueOrThreadID)} look into the queue identified by \texttt{QueueOrThreadID}, for a message unifying with \bt{Msg}. If none exists, the primitives block until a message arrives. Their only difference is that \bt{thread\_get\_msg} removes the message from the queue while reading it, while \bt{thread\_wait\_msg} leaves it there.
+    \noindent\bt{thread\_get\_msg(+QueueOrThreadID, ?Msg)} and\\
+    \bt{thread\_wait\_msg(+QueueOrThreadID, ?Msg)} look into the queue identified by \texttt{QueueOrThreadID}, for a message unifying with \bt{Msg}. If none exists, the primitives block until a message arrives. Their only difference is that \bt{thread\_get\_msg} removes the message from the queue while reading it, while \bt{thread\_wait\_msg} leaves it there.
 
-    \template{thread\_get\_msg(?term, +term)}
+    \template{thread\_get\_msg(+term, ?term)}
 
-    \template{thread\_wait\_msg(?term, +term)}
+    \template{thread\_wait\_msg(+term, ?term)}
 
     \exception{error(type\_error(ValidType, Culprit), type\_error(\\
     Goal, ArgNo, ValidType, Culprit))} if \texttt{QueueOrThreadID} is neither an integer nor an atom. \texttt{Goal} is the goal where the problem occurred, \texttt{ValidType} is the expected type (integer or atom),  \texttt{Culprit} is the wrong term actually found.
 
 \item \bti{thread\_remove\_msg/2}, \mbox{~~~}\bti{thread\_peek\_msg/2}\\
-    \noindent\bt{thread\_remove\_msg(?Msg, +QueueOrThreadID)} and\\
-     \bt{thread\_peek\_msg(?Msg, +QueueOrThreadID)} look into the queue identified by \texttt{QueueOrThreadID}, for a message unifying with \bt{Msg}. If none exists, both primitives fail. Upon success, \bt{thread\_remove\_msg} removes the message from the queue, while \bt{thread\_peek\_msg} leaves it there.
+    \noindent\bt{thread\_remove\_msg(+QueueOrThreadID, ?Msg)} and\\
+     \bt{thread\_peek\_msg(+QueueOrThreadID, ?Msg)} look into the queue identified by \texttt{QueueOrThreadID}, for a message unifying with \bt{Msg}. If none exists, both primitives fail. Upon success, \bt{thread\_remove\_msg} removes the message from the queue, while \bt{thread\_peek\_msg} leaves it there.
 
-    \template{thread\_remove\_msg(?term, +term)}
+    \template{thread\_remove\_msg(+term, ?term)}
 
-    \template{thread\_peek\_msg(?term, +term)}
+    \template{thread\_peek\_msg(+term, ?term)}
 
     \exception{error(type\_error(ValidType, Culprit), type\_error(\\
     Goal, ArgNo, ValidType, Culprit))} if \texttt{QueueOrThreadID} is neither an integer nor an atom. \texttt{Goal} is the goal where the problem occurred, \texttt{ValidType} is the expected type (integer or atom),  \texttt{Culprit} is the wrong term actually found.
@@ -1252,9 +1252,9 @@ Finally, messages read from a queue can both be removed from the queue, or left 
     Goal, ArgNo, ValidType, Culprit))} if \texttt{Queue} is not an atom. \texttt{Goal} is the goal where the problem occurred, \texttt{ValidType} is the expected type (atom),  \texttt{Culprit} is the wrong term actually found.
 
 \item \bti{msg\_queue\_size/2}\\
-    \noindent\bt{msg\_queue\_size(?Size, +QueueOrThreadID)} unifies the number of elements in the queue \texttt{QueueOrThreadID} with \texttt{Size}.
+    \noindent\bt{msg\_queue\_size(+QueueOrThreadID, ?Size)} unifies the number of elements in the queue \texttt{QueueOrThreadID} with \texttt{Size}.
 
-    \template{msg\_queue\_size(?term, +atom)}
+    \template{msg\_queue\_size(+atom, ?term)}
 
     \exception{error(type\_error(ValidType, Culprit), type\_error(\\
     Goal, ArgNo, ValidType, Culprit))} if \texttt{QueueOrThreadID} is neither an integer number nor an atom. \texttt{Goal} is the goal where the problem occurred, \texttt{ValidType} is the expected type (integer or atom),  \texttt{Culprit} is the wrong term actually found.
@@ -1353,8 +1353,8 @@ X / 5040                      Y / 40320
 %
 To compute the two factorials concurrently, we can create two threads, one for each query, and then read their answers, as follows:
 \begin{verbatim}
-start(N,X,M,Y):- thread_create(fact(N,X),ID1),
-                 thread_create(fact(M,Y),ID2),
+start(N,X,M,Y):- thread_create(ID1, fact(N,X)),
+                 thread_create(ID2, fact(M,Y)),
                  thread_read(ID1, fact(N,X)),
                  thread_read(ID2, fact(M,Y)).
 \end{verbatim}
@@ -1378,12 +1378,12 @@ As a second example, let us consider the case of two threads that communicate vi
 
 \begin{verbatim}
 start(X):- msg_queue_create('MyQueue'),
-           thread_create(child(X),ID),
+           thread_create(ID, child(X)),
            thread_sleep(500),
-           thread_send_msg( m('important message'), 'MyQueue'),
+           thread_send_msg('MyQueue', m('important message')),
            thread_join(ID, child(X)).
 
-child(X):- thread_get_msg( m(X),'MyQueue').
+child(X):- thread_get_msg('MyQueue', m(X)).
 \end{verbatim}
 %
 The query \texttt{start(X)} succeeds unifying \texttt{X} with \texttt{'important message'}.
@@ -1407,22 +1407,22 @@ The third example is similar, but the father creates three children, with three 
 \end{figure}
 
 \begin{verbatim}
-start(X):- thread_create(thread1(ID1),  ID1),
+start(X):- thread_create(ID1, thread1(ID1)),
            thread_sleep(200),
-           thread_create(thread2(ID1),  ID2),
-           thread_create(thread3(ID1,X),ID3),
+           thread_create(ID2, thread2(ID1)),
+           thread_create(ID3, thread3(ID1,X)),
            thread_read(ID3, _),
            write('Father: done').
 
 thread1(ID):- tell('threadLog.txt'),
               write('ID1: waiting for message'),
-              thread_get_msg( m(X),ID),
+              thread_get_msg(ID, m(X)),
               write('ID1: message retrieved').
 
-thread2(ID):- thread_send_msg( m('critical message'), ID),
+thread2(ID):- thread_send_msg( ID, m('critical message')),
               write('ID2: message sent').		
 
-thread3(ID,X):- thread_peek_msg( m(X), ID),
+thread3(ID,X):- thread_peek_msg( ID, m(X)),
                 write('ID3: trying to get message').
 \end{verbatim}
 
@@ -1463,9 +1463,9 @@ By suitably sequentialising the access to the producer's queue, the \texttt{mute
 %\end{figure}
 
 \begin{Verbatim}[frame=single, samepage=true]
-start:- thread_create( has_child(bob,X), ID1),
+start:- thread_create(ID1, has_child(bob,X)),
         mutex_lock('mutex'),
-        thread_create( read_child(ID1,X), ID2),
+        thread_create(ID2, read_child(ID1,X)),
         loop(1,5,1, ID1),
         mutex_unlock('mutex').
 
@@ -1543,7 +1543,7 @@ occurr_count(T,[T|REST],ACC,N) :-
     ACC1 is ACC+1, occurr_count(T,REST,ACC1,N).
 occurr_count(T,[_|REST],ACC,N) :- occurr_count(T,REST,ACC,N).
 \end{Verbatim}
-\caption{The sequential version of the list manipulation program.
+\caption{The sequential version of the list manipulation program.\\
          Query: \texttt{?- start([[[2,2],2,2,1],[4,[3],2],[9,8,9,2]], 3, 2).}}
 \label{tab:thread-exampleFlatList}
 \end{table}
@@ -1566,7 +1566,7 @@ start([H|Tail], N, T) :-
 \textit{Concurrent version:}
 \begin{Verbatim}[frame=single, samepage=true]
 start(L, N, T) :-
-    thread_create(firstResp(L, N), ID),
+    thread_create(ID, firstResp(L, N)),
     secondResp(L, N, T).
 
 secondResp(L, 0, T):- !.
@@ -1581,7 +1581,7 @@ firstResp([H|Tail], N) :-
     C is N-1, firstResp(Tail,C).
 ...
 \end{Verbatim}
-\caption{The sequential version (top) and the concurrent (bottom) version of the list manipulation program.
+\caption{The sequential version (top) and the concurrent (bottom) version of the list manipulation program.\\
          Query: \texttt{?- start([[[2,2],2,2,1],[4,[3],2],[9,8,9,2]], 3, 2).}}
 \label{tab:thread-exampleFlatListConcurrent}
 \end{table}
