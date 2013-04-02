@@ -1,4 +1,4 @@
-package TestThread;
+package alice.tuprolog;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -21,7 +21,7 @@ import alice.tuprolog.Theory;
  * @author Eleonora Cau
  *
  */
-public class ThreadLibraryTest {
+public class ThreadLibraryTestCase {
 	
 	Prolog engine = new Prolog();
 	String theory;
