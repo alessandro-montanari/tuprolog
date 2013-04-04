@@ -366,7 +366,7 @@
 			<fileset dir="${build.unit.reports.dir}">
 				<include name="TEST-*.xml"/>
 			</fileset>
-			<report format="frames" todir="${build.unit.reports.dir}/html-report"/>
+			<report styledir="ant" format="frames" todir="${build.unit.reports.dir}/html-report"/>
 		</junitreport>
 		<echo>Look directory ${build.unit.reports.dir}/html-report</echo>
 	</target>
