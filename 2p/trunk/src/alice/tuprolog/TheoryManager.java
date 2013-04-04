@@ -203,7 +203,7 @@ public class TheoryManager implements Serializable {
 	 * Binds clauses in the database with the corresponding
 	 * primitive predicate, if any
 	 */
-	public synchronized void rebindPrimitives() {
+	public void rebindPrimitives() {
 		for (ClauseInfo d:dynamicDBase){
 			for(AbstractSubGoalTree sge:d.getBody()){
 				Term t = ((SubGoalElement)sge).getValue();
@@ -237,7 +237,8 @@ public class TheoryManager implements Serializable {
 		}
 	}
 
-	private synchronized boolean runDirective(Struct c) {
+
+	private boolean runDirective(Struct c) {
 		if ("':-'".equals(c.getName()) || ":-".equals(c.getName()) && c.getArity() == 1 && c.getTerm(0) instanceof Struct) {
 			Struct dir = (Struct) c.getTerm(0);
 			try {
@@ -255,7 +256,7 @@ public class TheoryManager implements Serializable {
 	/**
 	 * Gets a clause from a generic Term
 	 */
-	private Struct toClause(Struct t) {
+	private Struct toClause(Struct t) {		//PRIMITIVE
 		// TODO bad, slow way of cloning. requires approx twice the time necessary
 		t = (Struct) Term.createTerm(t.toString(), this.engine.getOperatorManager());
 		if (!t.isClause())
@@ -283,7 +284,7 @@ public class TheoryManager implements Serializable {
 	/**
 	 * add a goal eventually defined by last parsed theory.
 	 */
-	public void addStartGoal(Struct g) {
+	public synchronized void addStartGoal(Struct g) {
 		startGoalStack.push(g);
 	}
 

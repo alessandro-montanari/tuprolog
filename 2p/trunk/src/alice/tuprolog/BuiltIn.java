@@ -438,7 +438,7 @@ public class BuiltIn extends Library {
 		 // unify arg1 with a renamed copy of arg0
 		 arg0 = arg0.getTerm();
 		 arg1 = arg1.getTerm();
-		 int id = engineManager.env.nDemoSteps;
+		 int id = engineManager.getEnv().nDemoSteps;
 		 return unify(arg1, arg0.copy(new IdentityHashMap<Var,Var>(), id));
 	 }
 
