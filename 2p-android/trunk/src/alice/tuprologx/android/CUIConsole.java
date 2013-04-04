@@ -126,14 +126,12 @@ public class CUIConsole extends Automaton implements Serializable,
     }
 		try {
 			solution.setText("tuProlog "
-					+ alice.util.VersionInfo.getEngineVersion()
-					+ "."
 					+ tuPrologActivity
 							.getContext()
 							.getPackageManager()
 							.getPackageInfo(
 									tuPrologActivity.getContext()
-											.getPackageName(), 0).versionCode
+											.getPackageName(), 0).versionName
 					+ " " + new Date().toLocaleString() + "\n");
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
