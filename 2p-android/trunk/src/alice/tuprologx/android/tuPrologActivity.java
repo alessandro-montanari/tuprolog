@@ -65,14 +65,12 @@ public class tuPrologActivity extends Activity {
 		try {
 				alert.setMessage(""
 						+ "- tuProlog for Android - \n Version: "
-						+ alice.util.VersionInfo.getEngineVersion()
-						+ "."
 						+ tuPrologActivity
 								.getContext()
 								.getPackageManager()
 								.getPackageInfo(
 										tuPrologActivity.getContext()
-												.getPackageName(), 0).versionCode
+												.getPackageName(), 0).versionName
 						+ "\n\nhttp://tuprolog.alice.unibo.it");
 			} catch (NameNotFoundException e) {
 				// TODO Auto-generated catch block
