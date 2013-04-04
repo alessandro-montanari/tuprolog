@@ -1254,7 +1254,7 @@ Finally, messages read from a queue can both be removed from the queue, or left 
 \item \bti{msg\_queue\_size/2}\\
     \noindent\bt{msg\_queue\_size(+QueueOrThreadID, ?Size)} unifies the number of elements in the queue \texttt{QueueOrThreadID} with \texttt{Size}.
 
-    \template{msg\_queue\_size(+atom, ?term)}
+    \template{msg\_queue\_size(+term, ?atom)}
 
     \exception{error(type\_error(ValidType, Culprit), type\_error(\\
     Goal, ArgNo, ValidType, Culprit))} if \texttt{QueueOrThreadID} is neither an integer number nor an atom. \texttt{Goal} is the goal where the problem occurred, \texttt{ValidType} is the expected type (integer or atom),  \texttt{Culprit} is the wrong term actually found.

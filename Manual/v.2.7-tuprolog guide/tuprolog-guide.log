@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.11 (MiKTeX 2.9) (preloaded format=pdflatex 2013.3.26)  26 MAR 2013 18:21
+This is pdfTeX, Version 3.1415926-1.40.11 (MiKTeX 2.9) (preloaded format=pdflatex 2013.3.26)  4 APR 2013 18:29
 entering extended mode
 **E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog*guide/tuprolo
 g-guide.tex
@@ -2833,7 +2833,7 @@ LaTeX Warning: There were multiply-defined labels.
 Here is how much of TeX's memory you used:
  7529 strings out of 494019
  124891 string characters out of 3143861
- 211922 words of memory out of 3000000
+ 211923 words of memory out of 3000000
  10037 multiletter control sequences out of 15000+200000
  17992 words of font info for 63 fonts, out of 3000000 for 9000
  714 hyphenation exceptions out of 8191
@@ -2862,7 +2862,7 @@ pe1/public/amsfonts/cm/cmti10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type
 ublic/amsfonts/cm/cmtt10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/pub
 lic/amsfonts/cm/cmtt8.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public
 /amsfonts/cm/cmtt9.pfb>
-Output written on tuprolog-guide.pdf (229 pages, 4572574 bytes).
+Output written on tuprolog-guide.pdf (229 pages, 4572570 bytes).
 PDF statistics:
  2496 PDF objects out of 2984 (max. 8388607)
  565 named destinations out of 1000 (max. 500000)
