@@ -158,6 +158,7 @@ public boolean udp_receive(Term Socket, Term Data, Struct AddressFrom,
 		throw PrologError.instantiation_error(engine.getEngineManager(), 1);
 	}
 	byte[] address = new byte[4];
+	@SuppressWarnings("unused")
 	int port;
 
 	// Transform IP:Port to byte[] array and port number
