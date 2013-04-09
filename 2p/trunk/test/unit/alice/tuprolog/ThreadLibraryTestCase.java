@@ -478,21 +478,21 @@ public class ThreadLibraryTestCase {
 	}
 	
 	@Test
-	public void testFattoriale() throws InvalidTheoryException, MalformedGoalException, NoSolutionException{
-		theory = "start(N,X,M,Y):- thread_create(ID, fact1(N,X)), thread_create(ID2, fact1(M,Y)), thread_join(ID, fact1(N,X)), thread_join(ID2, fact1(M,Y)).\n" +
-				"fact1(0,1):-!.\n" +
-				"fact1(N,X):-M is N-1,fact1(M,Y),X is Y*N.";
-		engine.setTheory(new Theory(theory));
-		
-		SolveInfo sinfo = engine.solve("start(7,X,8,Y).");
-		assertTrue(sinfo.isSuccess());
-		
-		Term X = sinfo.getVarValue("X");
-		assertEquals(new Int(5040), X);
-		
-		Term Y = sinfo.getVarValue("Y");
-		assertEquals(new Int(40320), Y);
-	}
+    public void testFattoriale() throws InvalidTheoryException, MalformedGoalException, NoSolutionException{
+            theory = "start(N,X,M,Y):- thread_create(ID, fact1(N,X)), thread_join(ID, fact1(N,X)),thread_create(ID2, fact1(M,Y)), thread_join(ID2, fact1(M,Y)).\n" +
+                            "fact1(0,1):-!.\n" +
+                            "fact1(N,X):-M is N-1,fact1(M,Y),X is Y*N.";
+            engine.setTheory(new Theory(theory));
+            
+            SolveInfo sinfo = engine.solve("start(7,X,8,Y).");
+            assertTrue(sinfo.isSuccess());
+            
+            Term X = sinfo.getVarValue("X");
+            assertEquals(new Int(5040), X);
+            
+            Term Y = sinfo.getVarValue("Y");
+            assertEquals(new Int(40320), Y);
+    }
 	
 	@Test 
 	public void testMutex1() throws InvalidTheoryException, MalformedGoalException, NoSolutionException{

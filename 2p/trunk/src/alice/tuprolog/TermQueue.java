@@ -44,8 +44,7 @@ public class TermQueue {
 			found=engine.unify(t,msg);
 		}
 		if (remove) {
-			if(queue.remove(msg))
-				System.out.println("Elemento rimosso: "+msg);
+			queue.remove(msg);
 		}
 		return true;
 	}
