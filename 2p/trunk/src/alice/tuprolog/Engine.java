@@ -84,12 +84,12 @@ public class Engine /*Castagna 06/2011*/implements IEngine/**/{
 				nextState = manager.END_FALSE;
 				break;
 			}
-			//log.println(Thread.currentThread().getId()+" - IL PROSSIMO STATOè :");
+			//log.println(Thread.currentThread().getId()+" - IL PROSSIMO STATO :");
 			action = nextState.toString();
 			//log.println(nextState);
 
 			nextState.doJob(this);
-			//log.println("Abbiamo eseguito l'azione dello stato, il contesto di esecuzioneè");
+			//log.println("Abbiamo eseguito l'azione dello stato, il contesto di esecuzione");
 			//log.println(currentContext);
 
 			manager.spy(action, this);

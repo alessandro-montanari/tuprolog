@@ -122,7 +122,7 @@ public class ThreadLibraryTestCase {
 		Term Y = sinfo.getVarValue("Y");
 		assertEquals(Term.createTerm("genitore(b,b)"), Y);
 		
-		sinfo = engine.solve("thread_create(ID, genitore(bob,X)), thread_join(ID,X), thread_next_sol(ID).");	//il thread è stato rimosso
+		sinfo = engine.solve("thread_create(ID, genitore(bob,X)), thread_join(ID,X), thread_next_sol(ID).");	//il thread stato rimosso
 		assertFalse(sinfo.isSuccess());
 	}
 
@@ -153,7 +153,7 @@ public class ThreadLibraryTestCase {
 		Term X1 = sinfo.getVarValue("X1");
 		assertEquals(Term.createTerm("genitore(bob,a)"), X1);
 		
-		sinfo = engine.solve("thread_create(ID, genitore(bob,X)), thread_read(ID,X), thread_next_sol(ID).");	//Il thread non è stato rimosso
+		sinfo = engine.solve("thread_create(ID, genitore(bob,X)), thread_read(ID,X), thread_next_sol(ID).");	//Il thread non stato rimosso
 		assertTrue(sinfo.isSuccess());
 	}
 
@@ -233,7 +233,7 @@ public class ThreadLibraryTestCase {
 		Term X = sinfo.getVarValue("X");
 		assertEquals(new Struct("messaggio molto importante"), X);
 		
-		theory = "start(X) :- msg_queue_create('CODA'), thread_create(ID, thread1(X)), invio(ID, 'messaggio molto importante'), lettura(ID,X), thread_get_msg('CODA', a(X)).\n" +	//Posso nuovamente prelevare, in quanto il msg non è stato eliminato
+		theory = "start(X) :- msg_queue_create('CODA'), thread_create(ID, thread1(X)), invio(ID, 'messaggio molto importante'), lettura(ID,X), thread_get_msg('CODA', a(X)).\n" +	//Posso nuovamente prelevare, in quanto il msg non stato eliminato
 		"thread1(X) :- thread_wait_msg('CODA', a(X)). \n " +
 		"invio(ID, M):- thread_send_msg(ID, a(M)). \n" +		//Versione con ID
 		"lettura(ID, X):- thread_join(ID, thread1(X)). ";
@@ -284,7 +284,7 @@ public class ThreadLibraryTestCase {
 		SolveInfo sinfo = engine.solve("start(X).");
 		assertFalse(sinfo.isSuccess());
 		
-		theory = "start(X) :- msg_queue_create('CODA'), thread_create(ID, thread1(X)), invio(ID, 'messaggio molto importante'), lettura(ID,X), thread_get_msg('CODA', a(X)).\n" +	//Posso nuovamente prelevare, in quanto il msg non è stato rimosso
+		theory = "start(X) :- msg_queue_create('CODA'), thread_create(ID, thread1(X)), invio(ID, 'messaggio molto importante'), lettura(ID,X), thread_get_msg('CODA', a(X)).\n" +	//Posso nuovamente prelevare, in quanto il msg non stato rimosso
 		"thread1(X) :- thread_peek_msg('CODA', a(X)). \n " +
 		"invio(ID, M):- thread_send_msg(ID, a(M)). \n" +		//Versione con ID
 		"lettura(ID, X):- thread_join(ID, thread1(X)). ";
@@ -322,7 +322,7 @@ public class ThreadLibraryTestCase {
 		SolveInfo sinfo = engine.solve("start(X).");
 		assertTrue(sinfo.isSuccess());
 		
-		theory = "start(X) :- msg_queue_create('CODA'), thread_create(ID, thread1(X)), invio(ID, 'messaggio molto importante'), lettura(ID,X), thread_get_msg('CODA', a(X)).\n" +	//Posso nuovamente prelevare, in quanto il msg non è stato rimosso
+		theory = "start(X) :- msg_queue_create('CODA'), thread_create(ID, thread1(X)), invio(ID, 'messaggio molto importante'), lettura(ID,X), thread_get_msg('CODA', a(X)).\n" +	//Posso nuovamente prelevare, in quanto il msg non stato rimosso
 		"thread1(X) :- thread_wait_msg('CODA', a(X)). \n " +
 		"invio(ID, M):- thread_send_msg(ID, a(M)). \n" +		//Versione con ID
 		"lettura(ID, X):- thread_join(ID, thread1(X)). ";
@@ -345,7 +345,7 @@ public class ThreadLibraryTestCase {
 	}
 
 	/**
-	 * Il metodo peek non riesce a prelevare la soluzione perchè il messaggio è stato rimosso
+	 * Il metodo peek non riesce a prelevare la soluzione perch il messaggio stato rimosso
 	 * 
 	 * Test method for {@link alice.tuprolog.lib.ThreadLibrary#thread_remove_msg_2(alice.tuprolog.Term, alice.tuprolog.Term)}.
 	 * @throws InvalidTheoryException 
