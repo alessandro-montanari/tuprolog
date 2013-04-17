@@ -1,0 +1,65 @@
+C:\Users\Fabio\Desktop\Fabio\PrologTestSolution\PrologTestSolution\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Fabio\Desktop\Fabio\PrologTestSolution\PrologTestSolution\obj\x86\Debug\PrologTestSolution.Form1.resources
+C:\Users\Fabio\Desktop\Fabio\PrologTestSolution\PrologTestSolution\obj\x86\Debug\PrologTestSolution.Properties.Resources.resources
+C:\Users\Fabio\Desktop\Fabio\PrologTestSolution\PrologTestSolution\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\Fabio\Desktop\Fabio\PrologTestSolution\PrologTestSolution\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\Fabio\Desktop\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\PrologTestSolution.exe
+C:\Users\Fabio\Desktop\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\PrologTestSolution.pdb
+C:\Users\Fabio\Desktop\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.Core.dll
+C:\Users\Fabio\Desktop\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\tuprolog.dll
+C:\Users\Fabio\Desktop\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.Runtime.dll
+C:\Users\Fabio\Desktop\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.Util.dll
+C:\Users\Fabio\Desktop\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.Security.dll
+C:\Users\Fabio\Desktop\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.Text.dll
+C:\Users\Fabio\Desktop\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.XML.API.dll
+C:\Users\Fabio\Desktop\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.Naming.dll
+C:\Users\Fabio\Desktop\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.SwingAWT.dll
+C:\Users\Fabio\Desktop\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.Beans.dll
+C:\Users\Fabio\Desktop\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.Media.dll
+C:\Users\Fabio\Desktop\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.AWT.WinForms.dll
+C:\Users\Fabio\Desktop\Fabio\PrologTestSolution\PrologTestSolution\obj\x86\Debug\PrologTestSolution.exe
+C:\Users\Fabio\Desktop\Fabio\PrologTestSolution\PrologTestSolution\obj\x86\Debug\PrologTestSolution.pdb
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologTestSolution\PrologTestSolution\obj\x86\Debug\PrologTestSolution.exe
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologTestSolution\PrologTestSolution\obj\x86\Debug\PrologTestSolution.pdb
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologTestSolution\PrologTestSolution\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologTestSolution\PrologTestSolution\obj\x86\Debug\PrologTestSolution.Form1.resources
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologTestSolution\PrologTestSolution\obj\x86\Debug\PrologTestSolution.Properties.Resources.resources
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologTestSolution\PrologTestSolution\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologTestSolution\PrologTestSolution\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\PrologTestSolution.exe
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\PrologTestSolution.pdb
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.Core.dll
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\tuprolog.dll
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.Runtime.dll
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.Util.dll
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.Security.dll
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.Text.dll
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.XML.API.dll
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.Naming.dll
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.SwingAWT.dll
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.Beans.dll
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.Media.dll
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.AWT.WinForms.dll
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologTestSolution\PrologTestSolution\obj\x86\Debug\PrologTestSolution.exe
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologTestSolution\PrologTestSolution\obj\x86\Debug\PrologTestSolution.pdb
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\PrologTestSolution.exe
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\PrologTestSolution.pdb
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.Core.dll
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\tuprolog.dll
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.Runtime.dll
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.Util.dll
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.Security.dll
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.Text.dll
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.XML.API.dll
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.Naming.dll
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.SwingAWT.dll
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.Beans.dll
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.Media.dll
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.AWT.WinForms.dll
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologTestSolution\PrologTestSolution\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologTestSolution\PrologTestSolution\obj\x86\Debug\PrologTestSolution.Form1.resources
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologTestSolution\PrologTestSolution\obj\x86\Debug\PrologTestSolution.Properties.Resources.resources
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologTestSolution\PrologTestSolution\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologTestSolution\PrologTestSolution\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\fabio\Dropbox\Fabio Private Folder\Fabio\Fabio\PrologTestSolution\PrologTestSolution\obj\x86\Debug\PrologTestSolution.exe
+C:\Users\fabio\Dropbox\Fabio Private Folder\Fabio\Fabio\PrologTestSolution\PrologTestSolution\obj\x86\Debug\PrologTestSolution.pdb

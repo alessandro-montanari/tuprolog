@@ -1,0 +1,4 @@
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologTestSolution\VB2ClassLibrary\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologTestSolution\VB2ClassLibrary\obj\Debug\VB2ClassLibrary.Resources.resources
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologTestSolution\VB2ClassLibrary\obj\Debug\ResGen.read.1.tlog
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologTestSolution\VB2ClassLibrary\obj\Debug\ResGen.write.1.tlog
