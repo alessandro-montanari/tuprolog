@@ -1,0 +1,20 @@
+Basta distribuire il solo file "PrologGenerator.vsix"
+che si trova in "PrologVSExtension\PrologGenerator\bin\Debug"
+
+Tale file, che di fatto è uno zip, contiene tutto il necessario per installare l'estensione
+in una installazione di Visual Studio.
+
+In un pc che abbia già VS installato, l'estensione ".vsix" è riconosciuta: basta quindi
+un doppio clic per scatenare l'install del generatore.
+Ciò installa anche il tipo di file prolog, che permetterà, dopo, di scatenare il generatore
+a ogni salvataggio del file prolog.
+
+QUINDI:
+
+in VS basta creare una normale solution (progetto): al suo interno , si crea poi un file prolog 
+(da menu) usando il nuovo tipo di file che ora è previsto.
+
+Occorre ricordarsi di aggiungere al progetto due REFERENCE a dll esterne:
+- alla dll esterna di tuprolog 
+- e, poiché quest'ultimo dipende da IKCM, a IKVMcore.dll
+
