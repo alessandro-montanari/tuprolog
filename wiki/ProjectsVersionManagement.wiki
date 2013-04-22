@@ -21,7 +21,9 @@ http://code.google.com/p/tuprolog/wiki/GuidaPubblicazioneNuoveVersioniPluginEcli
 ----
 
 = Android =
-Modify the value of the attribute `android:versionCode` inside the file [http://code.google.com/p/tuprolog/source/browse/2p-android/trunk/AndroidManifest.xml AndroidManifest.xml]
+Modify the value of the attributes `android:versionCode` and `android:versionName` inside the file [http://code.google.com/p/tuprolog/source/browse/2p-android/trunk/AndroidManifest.xml AndroidManifest.xml]
 
-Note: in this way the specific number for the Adroid platform is independent from the Java platform and so it can be changed without modify and recompile the tuProlog engine.
+The versionName must be the complete xx.yy.nn version number, and the versionCode is instead obtained by concatenating xx+yy+nn.
+
+Note: in this way the specific number for the Adroid platform ("nn" part in the number) is independent from the Java platform and so it can be changed without modify and recompile the tuProlog engine.
 ----
