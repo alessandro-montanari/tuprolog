@@ -1,5 +1,7 @@
 #summary Here are reported all the informations needed to manage the repository
 
+<wiki:toc max_depth="3" />
+
 ==Introduction==
 Here we want to explain the structure of the repository for the project tuProlog In this document we will also explain the policies used to update the contents in the repository in case of bug fixes, releases, fixture implementations and so on.
 
