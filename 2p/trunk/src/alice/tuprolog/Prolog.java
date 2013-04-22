@@ -73,6 +73,9 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	/* listeners to query events */
 	private ArrayList<QueryListener> queryListeners;
 
+    /* path history for including documents */
+    private ArrayList<String> absolutePathList;
+
 
 	/**
 	 * Builds a prolog engine with default libraries loaded.
@@ -145,6 +148,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 		theoryListeners = new ArrayList<TheoryListener>();
 		queryListeners = new ArrayList<QueryListener>();
 		libraryListeners = new ArrayList<LibraryListener>();
+        absolutePathList = new ArrayList<String>();
 		initializeManagers();
 	}
 
@@ -213,6 +217,18 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 		return alice.util.VersionInfo.getEngineVersion();
 	}
 
+    /**
+     * Gets the last Element of the path list
+     */
+    public String getCurrentDirectory() {
+        String directory = "";
+        if(absolutePathList.isEmpty()) {
+            directory = System.getProperty("user.dir");
+        } else {
+            directory = absolutePathList.get(absolutePathList.size()-1);
+        }
+        return directory;
+    }
 
 
 	// theory management interface
@@ -972,6 +988,34 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 			ql.newQueryResultAvailable(e);
 		}
 	}
+
+
+    /**
+     * Append a new path to directory list
+     *
+     */
+    public void pushDirectoryToList(String path) {
+        absolutePathList.add(path);
+    }
+
+    /**
+     *
+     * Retract an element from directory list
+     */
+    public void popDirectoryFromList() {
+        if(!absolutePathList.isEmpty()) {
+            absolutePathList.remove(absolutePathList.size()-1);
+        }
+    }
+
+     /**
+       *
+       * Retract an element from directory list
+      */
+    public void resetDirectoryList(String path) {
+        absolutePathList = new ArrayList<String>();
+        absolutePathList.add(path);
+    }
 
 
 }

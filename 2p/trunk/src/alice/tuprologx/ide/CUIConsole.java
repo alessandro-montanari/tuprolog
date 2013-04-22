@@ -18,7 +18,7 @@ public class CUIConsole extends Automaton implements Serializable, OutputListene
 
 	BufferedReader  stdin;
     Prolog          engine;
-    boolean 		multithreading;
+
 
     static final String incipit =
         "tuProlog " + Prolog.getVersion() + " - DEIS,  University of Bologna at Cesena \n"+
@@ -31,7 +31,7 @@ public class CUIConsole extends Automaton implements Serializable, OutputListene
             System.exit(-1);
         }
         
-        multithreading = false; 
+
         engine = new Prolog();
         stdin = new BufferedReader(new InputStreamReader(System.in));
         engine.addWarningListener(this);
@@ -73,9 +73,9 @@ public class CUIConsole extends Automaton implements Serializable, OutputListene
     
 
     void solveGoal(String goal){
-    	SolveInfo info;
+
         try {
-        	info = engine.solve(goal);
+        	SolveInfo info = engine.solve(goal);
    
             /*Castagna 06/2011*/        	
         	//if (engine.isHalted())
@@ -148,19 +148,8 @@ public class CUIConsole extends Automaton implements Serializable, OutputListene
                     System.out.println("no.");
                     become("goalRequest");
                 } else {
-                	if (!engine.hasOpenAlternatives()) {	//MESSO IO
-                        String binds = info.toString();
-                        if (binds.equals("")) {
-                            System.out.println("yes.");
-                            engine.solveEnd();
-                        } else {
-                            System.out.println(solveInfoToString(info) + "\nyes.");
-                        }
-                        become("goalRequest");
-                    } else {
-                        System.out.print(solveInfoToString(info) + " ? ");
-                        become("getChoice");
-                    }
+                	System.out.print(solveInfoToString(info) + " ? ");
+                	become("getChoice");
                 }
             }catch (Exception ex){
                 System.out.println("no.");
