@@ -17,6 +17,7 @@
  */
 package alice.tuprolog;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -605,8 +606,13 @@ public class BuiltIn extends Library {
 	 public void include_1(Term theory) throws FileNotFoundException,
 	 InvalidTheoryException, IOException {
 		 theory = theory.getTerm();
-		 engine.addTheory(new Theory(new FileInputStream(alice.util.Tools
-				 .removeApices(theory.toString()))));
+         String path = alice.util.Tools.removeApices(theory.toString());
+         if(! new File(path).isAbsolute()) {
+            path = engine.getCurrentDirectory()  + File.separator + path;
+         }
+         engine.pushDirectoryToList(new File(path).getParent());
+		 engine.addTheory(new Theory(new FileInputStream(path)));
+         engine.popDirectoryFromList();
 	 }
 
 }
