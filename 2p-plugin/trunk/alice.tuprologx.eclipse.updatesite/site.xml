@@ -16,7 +16,7 @@
    <feature url="features/alice.tuprologx.eclipse_2.5.0.jar" id="alice.tuprologx.eclipse" version="2.5.0">
       <category name="tuProlog Plug-in Features"/>
    </feature>
-   <feature url="features/alice.tuprologx.eclipse_2.6.0.jar" id="alice.tuprologx.eclipse" version="2.6.0">
+   <feature url="features/alice.tuprologx.eclipse_2.7.0.jar" id="alice.tuprologx.eclipse" version="2.7.0">
       <category name="tuProlog Plug-in Features"/>
    </feature>
    <category-def name="tuProlog Plug-in Features" label="tuProlog Plug-in Features"/>
