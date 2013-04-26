@@ -1351,12 +1351,12 @@ yes                           yes
 X / 5040                      Y / 40320
 \end{verbatim}
 %
-To compute the two factorials concurrently, we can create two threads, one for each query, and then read their answers, as follows:
+To compute the two factorials concurrently, we can create two threads, one for each query, and then retrieve their answers, as follows:
 \begin{verbatim}
 start(N,X,M,Y):- thread_create(ID1, fact(N,X)),
                  thread_create(ID2, fact(M,Y)),
-                 thread_read(ID1, fact(N,X)),
-                 thread_read(ID2, fact(M,Y)).
+                 thread_join(ID1, fact(N,X)),
+                 thread_join(ID2, fact(M,Y)).
 \end{verbatim}
 %
 whose query would be like
@@ -1367,7 +1367,7 @@ X / 5040  Y / 40320
 \end{verbatim}
 %
 Since the two factorial goals are rather short here, the overhead of handling concurrency is (unexpectedly) greater than the advantage brought by concurrency, as confirmed by some simple performance measuring (+14\% execution time).
-However, the example shows how to create a pair of threads (via \texttt{thread\_create}), each identified by a unique identifier and devoted to solve a given goal, and how such identifier is reused to get the solution (\texttt{thread\_read} primitive).
+However, the example shows how to create a pair of threads (via \texttt{thread\_create}), each identified by a unique identifier and devoted to solve a given goal, and how such identifier is reused to get the solution (\texttt{thread\_join} primitive).
 
 %-------------------------------
 \subsubsection{Father and child communicating via a public queue}
