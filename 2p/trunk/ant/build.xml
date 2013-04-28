@@ -638,6 +638,8 @@
 	
 	<target name="12.tag" depends="01.set.classpath, 04.prepare, 08.package, 09.build.NET" description="Tags the code">
 		
+		<property name="TagMessage" value="Tag Java ${engine.version}.${JavaSpecific.version}"/>
+		
 		<input
 			message="You are tagging the project with version ${engine.version}.${JavaSpecific.version}, if it is OK insert password for ${username}:"
 			addproperty="password"
@@ -650,28 +652,65 @@
 			svnkit="true" 
 			javahl="false" />
 		
-		
+		<!-- DOC: http://subclipse.tigris.org/svnant/svntask.html -->
 		<svn refid="settings">
 			<copy
-				srcPath="." 
+				srcUrl="https://tuprolog.googlecode.com/svn/2p/trunk" 
 				destUrl="https://tuprolog.googlecode.com/svn/2p/tags/REL-${engine.version}.${JavaSpecific.version}"
-				message="Tag ${engine.version}.${JavaSpecific.version}"
+				revision="HEAD"
+				message="${TagMessage}" 
 				makeParents="true" >
 			</copy> 
 			
 			<import
-				path="./build/archives/2p.jar" 
+				path="${build.archives.dir}/2p.jar" 
 				url="https://tuprolog.googlecode.com/svn/2p/tags/REL-${engine.version}.${JavaSpecific.version}/build/archives/2p.jar"
-				message="Tag ${engine.version}.${JavaSpecific.version}"
+				message="${TagMessage}" 
 				recurse="false" >
 			</import> 
 			
 			<import
-				path="./build/archives/tuprolog.jar" 
+				path="${build.archives.dir}/tuprolog.jar" 
 				url="https://tuprolog.googlecode.com/svn/2p/tags/REL-${engine.version}.${JavaSpecific.version}/build/archives/tuprolog.jar"
-				message="Tag ${engine.version}.${JavaSpecific.version}"
+				message="${TagMessage}" 
+				recurse="false" > 
+			</import>
+			
+			<import
+				path="${build.archives.net.dir}/tuprolog.dll" 
+				url="https://tuprolog.googlecode.com/svn/2p/tags/REL-${engine.version}.${JavaSpecific.version}/build/archives/net/tuprolog.dll"
+				message="${TagMessage}" 
+				recurse="false" >
+			</import>
+			
+			<import
+				path="${build.archives.net.dir}/2p.exe" 
+				url="https://tuprolog.googlecode.com/svn/2p/tags/REL-${engine.version}.${JavaSpecific.version}/build/archives/net/2p.exe"
+				message="${TagMessage}" 
+				recurse="false" >
+			</import>  
+			
+			<import
+				path="${build.archives.net.dir}/javassist.dll" 
+				url="https://tuprolog.googlecode.com/svn/2p/tags/REL-${engine.version}.${JavaSpecific.version}/build/archives/net/javassist.dll"
+				message="${TagMessage}" 
+				recurse="false" >
+			</import>  
+			
+			<import
+				path="${build.archives.net.dir}/lib" 
+				url="https://tuprolog.googlecode.com/svn/2p/tags/REL-${engine.version}.${JavaSpecific.version}/build/archives/net/lib"
+				message="${TagMessage}" 
 				recurse="false" >
 			</import> 
+			
+			<import
+				path="${build.archives.net.dir}/test" 
+				url="https://tuprolog.googlecode.com/svn/2p/tags/REL-${engine.version}.${JavaSpecific.version}/build/archives/net/test"
+				message="${TagMessage}" 
+				recurse="false" >
+			</import> 
+
 		</svn>
 	</target>
 </project>
