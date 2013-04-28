@@ -35,6 +35,12 @@
     <StartupObject>NETFileRunner.NETFileRunner</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="fit">
+      <HintPath>lib\fit.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Core">
+      <HintPath>lib\IKVM.OpenJDK.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
