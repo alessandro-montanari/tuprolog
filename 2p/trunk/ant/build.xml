@@ -553,7 +553,7 @@
 				<arg value="-reference:${ikvm.dir}/bin/IKVM.Reflection.dll" />	<!-- Added by Mannino-->
 	            <arg value="-target:library" />
 	            <arg value="-compressresources" />
-	            <arg value="-out:${build.archives.net.dir}/test/2pWithTests.dll" />
+	            <arg value="-out:${build.archives.net.dir}/test/2pWithUnitTests.dll" />
 				<arg value="${build.archives.dir}/2p.jar"/>
 	            <arg value="${build.tests.dir}/unit-tests.jar"/>
 	        </exec>
