@@ -36,7 +36,7 @@ namespace NETFileRunner
             }
             else
             {
-                Console.WriteLine("Usage: MyFileRunner input-file output-file fixture-lib-file");
+                Console.WriteLine("Usage: NETFileRunner input-file output-file fixture-lib-file");
             }
         }
     }
