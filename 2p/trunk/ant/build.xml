@@ -413,11 +413,11 @@
 	 	
 	 		<delete dir="${build.archives.net.dir}"/>
  			<mkdir dir="${build.archives.net.dir}"/>
-	 		<mkdir dir="${build.archives.net.dir}/archives"/>
+	 		<!-- <mkdir dir="${build.archives.net.dir}/archives"/> -->
 	 		<mkdir dir="${build.archives.net.dir}/lib"/>
 	 		<mkdir dir="${build.archives.net.dir}/test"/>
 	 	
-	 		<copy todir="${build.archives.net.dir}/archives">
+	 		<copy todir="${build.archives.net.dir}">
 	 			<fileset dir="${ikvm.dir}/bin/">
 	 				<include name="IKVM.OpenJDK.XML.API.dll"/>
 	 				<include name="IKVM.OpenJDK.Security.dll"/>
@@ -468,7 +468,7 @@
 	 				<!-- <arg value="-debug"/> -->
  		            <arg value="-target:library" />
  		            <arg value="-compressresources" />
- 		            <arg value="-out:${build.archives.net.dir}/archives/javassist.dll" />
+ 		            <arg value="-out:${build.archives.net.dir}/javassist.dll" />
  		            <arg value="${lib.dir}/javassist.jar" />
 	 		</exec>
 	        
@@ -489,7 +489,7 @@
 	            <arg value="-target:winexe" />
 	            <arg value="-compressresources" />
 	            <arg value="-version:${engine.version}.${NETSpecific.version}" />
-	            <arg value="-out:${build.archives.net.dir}/archives/2p.exe" />
+	            <arg value="-out:${build.archives.net.dir}/2p.exe" />
 	            <arg value="${build.archives.dir}/2p.jar" />
 	        </exec>
 	
@@ -502,7 +502,7 @@
  		            <arg value="-target:library" />
  		            <arg value="-compressresources" />
  		            <arg value="-version:${engine.version}.${NETSpecific.version}" />
- 		            <arg value="-out:${build.archives.net.dir}/archives/tuprolog.dll" />
+ 		            <arg value="-out:${build.archives.net.dir}/tuprolog.dll" />
  		            <arg value="${build.archives.dir}/tuprolog.jar" />
 	 		</exec>
 	 	
@@ -636,7 +636,7 @@
 			<echo>Look directory ${build.release.dir}</echo>
 		</target>
 	
-	<target name="12.tag" depends="01.set.classpath, 04.prepare, 08.package" description="Tags the code">
+	<target name="12.tag" depends="01.set.classpath, 04.prepare, 08.package, 09.build.NET" description="Tags the code">
 		
 		<input
 			message="You are tagging the project with version ${engine.version}.${JavaSpecific.version}, if it is OK insert password for ${username}:"
