@@ -483,7 +483,7 @@
 	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Remoting.dll" />
 	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Misc.dll" />
 	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.SwingAWT.dll" />
-	            <arg value="-reference:${build.archives.net.dir}/archives/javassist.dll" />
+	            <arg value="-reference:${build.archives.net.dir}/javassist.dll" />
 				<!-- <arg value="-debug"/> -->
 		 		<arg value="-classloader:ikvm.runtime.ClassPathAssemblyClassLoader"/>
 	            <arg value="-target:winexe" />
@@ -546,7 +546,7 @@
 	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Text.dll" />
 	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Core.dll" />
 				<arg value="-reference:${build.archives.net.dir}/lib/junit.dll" />
-				<arg value="-reference:${build.archives.net.dir}/archives/2p.exe" />
+				<arg value="-reference:${build.archives.net.dir}/2p.exe" />
 	            <arg value="-target:library" />
 	            <arg value="-compressresources" />
 	            <arg value="-out:${build.archives.net.dir}/test/unit-tests.dll" />
@@ -559,7 +559,7 @@
 	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Core.dll" />
 				<arg value="-reference:${build.archives.net.dir}/lib/junit.dll" />
 				<arg value="-reference:${build.archives.net.dir}/lib/fit.dll" />
-				<arg value="-reference:${build.archives.net.dir}/archives/2p.exe" />
+				<arg value="-reference:${build.archives.net.dir}/2p.exe" />
 	            <arg value="-target:library" />
 	            <arg value="-compressresources" />
 	            <arg value="-out:${build.archives.net.dir}/test/fixtures.dll" />
