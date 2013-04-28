@@ -9,7 +9,7 @@ namespace NETFileRunner
 {
     public class NETFileRunner : FileRunner
     {
-        public MyFileRunner()
+        public NETFileRunner()
         {
             
         }
