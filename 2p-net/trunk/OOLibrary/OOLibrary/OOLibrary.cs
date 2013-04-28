@@ -24,7 +24,6 @@ using System.Text;
 using alice.tuprolog;
 using alice.tuprolog.lib;
 using System.Reflection;
-using util;
 using System.CodeDom.Compiler;
 using System.IO;
 using System.Threading;
@@ -153,7 +152,7 @@ namespace OOLibrary
                     // Convention already loaded
                     if (id.isAtom() || id.getTerm().isAtom())
                     {
-                        string key = Tools.RemoveApices(id.getTerm().ToString());
+                        string key = RemoveApices(id.getTerm().ToString());
                         object conv = this.getRegisteredDynamicObject((Struct)id);
                         if (conv != null && conv is Convention)
                         {
@@ -436,7 +435,7 @@ namespace OOLibrary
                     if (objIdTerm.getArity() == 1 && objIdTerm.getName().Equals("class"))
                     {
                         // Static method
-                        string className = Tools.RemoveApices(objIdTerm.getArg(0).ToString());
+                        string className = RemoveApices(objIdTerm.getArg(0).ToString());
                         Convention conv = FindConventionByClassName(className); 
 
                         if (conv != null)
@@ -565,7 +564,7 @@ namespace OOLibrary
                     if (objIdStruct.getArity() == 1 && objIdStruct.getName().Equals("class"))
                     {
                         // Static field or property
-                        string className = Tools.RemoveApices(objIdStruct.getArg(0).ToString());
+                        string className = RemoveApices(objIdStruct.getArg(0).ToString());
                         Convention conv = FindConventionByClassName(className);
 
                         if (conv != null)
@@ -746,7 +745,7 @@ namespace OOLibrary
                     if (objIdStruct.getArity() == 1 && objIdStruct.getName().Equals("class"))
                     {
                         // Static property or field
-                        string className = Tools.RemoveApices(objIdStruct.getArg(0).ToString());
+                        string className = RemoveApices(objIdStruct.getArg(0).ToString());
                         Convention conv = FindConventionByClassName(className);
 
                         if (conv != null)
@@ -981,6 +980,20 @@ namespace OOLibrary
             }
 
             return conv;
+        }
+
+        public static string RemoveApices(string st)
+        {
+            string result;
+            if (st.StartsWith("'") && st.EndsWith("'"))
+            {
+                result = st.Substring(1, st.Length - 2);
+            }
+            else
+            {
+                result = st;
+            }
+            return result;
         }
 
        
