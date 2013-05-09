@@ -112,7 +112,16 @@ public class Tokenizer extends StreamTokenizer implements Serializable {
         wordChars('A', 'Z');
         wordChars('_', '_');
         wordChars('0', '9'); // need to parse numbers as special words
-
+        
+//      wordChars('£', 'ù');
+        
+        wordChars('à','à');
+        wordChars('è','é');
+        wordChars('ì','ì');
+        wordChars('ò','ò');
+        wordChars('ù','ù');
+        
+        
         ordinaryChar('!');
 
         // symbols
@@ -135,6 +144,7 @@ public class Tokenizer extends StreamTokenizer implements Serializable {
         ordinaryChar('/');
         ordinaryChar('~');
 
+        
         // quotes
         ordinaryChar('\''); // must be parsed individually to handles \\ in quotes and character code constants
         ordinaryChar('\"'); // same as above?

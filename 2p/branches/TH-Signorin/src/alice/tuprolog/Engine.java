@@ -72,7 +72,7 @@ public class Engine /*Castagna 06/2011*/implements IEngine/**/{
 			action = nextState.toString();
 
 			nextState.doJob(this);
-
+			
 			manager.spy(action, this);
 
 		} while (!(nextState instanceof StateEnd));
@@ -123,5 +123,9 @@ public class Engine /*Castagna 06/2011*/implements IEngine/**/{
 		nDemoSteps = 1;
 		currentAlternative = null;
 	}
+	
+	 public String getNextStateName(){//beslmeisl
+		return nextState.stateName;
+	 }
 
 }

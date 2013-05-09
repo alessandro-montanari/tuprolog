@@ -1,8 +1,10 @@
 package alice.tuprologx.ide;
 
 import alice.tuprolog.event.*;
+import alice.tuprolog.structure.TermPanel;
 import alice.tuprolog.NoSolutionException;
 import alice.tuprolog.SolveInfo;
+import alice.tuprolog.Term;
 import alice.tuprolog.Var;
 
 import javax.swing.*;
@@ -59,11 +61,16 @@ public class ConsoleDialog
     /*Castagna 06/2011*/	
 	private JTextPane exception;
 	/**/
+	//creato da Emanuele Signorin
+    private TermPanel term;
+    
     private JButton bNext;
     private JButton bAccept;
     private JButton bStop;
     private JButton bClear;
     private JButton bExport;
+    
+    
 
     public ConsoleDialog(Console consoleManager)
     {
@@ -104,6 +111,13 @@ public class ConsoleDialog
 		exceptionEnabled = true;
 		exception = new JTextPane();
 		exception.setEditable(false);
+		
+		//Signorin
+		String s = "null";
+		term = new TermPanel(Term.createTerm(s));
+		tp.addTab("term", new JScrollPane(term));
+		
+		
 
 		//Get the exception text pane's document
 		StyledDocument doc = exception.getStyledDocument();
@@ -810,6 +824,12 @@ public class ConsoleDialog
 			}
 			bClear.setEnabled(false);
 		}		
+		
 	}
 	/**/
+	
+	public void setTermPanel(Term t)
+	{
+		term.setTerm(t);	
+	}
 }

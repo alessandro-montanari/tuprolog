@@ -84,6 +84,7 @@ public class TheoryManager implements Serializable {
 	 * inserting of a clause at the end of the dbase
 	 */
 	public synchronized void assertZ(Struct clause, boolean dyn, String libName, boolean backtrackable) {
+		
 		ClauseInfo d = new ClauseInfo(toClause(clause), libName);
 		String key = d.getHead().getPredicateIndicator();
 		if (dyn) {
