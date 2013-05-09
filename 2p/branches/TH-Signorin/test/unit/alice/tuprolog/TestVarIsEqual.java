@@ -103,6 +103,8 @@ public class TestVarIsEqual extends TestCase {
         + "\n" +    "list_append([],L,L).                                             "
         + "\n" +    "                                                                 "
         ;
+   
+
     
     core.setTheory(new Theory(theory));
     

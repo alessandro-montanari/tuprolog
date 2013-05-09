@@ -17,6 +17,7 @@
  */
 package alice.tuprolog;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -342,6 +343,8 @@ public class BuiltIn extends Library {
 	 static Term convertTermToGoal(Term term) {
 		 if (term instanceof Number)
 			 return null;
+		 if(term instanceof Var && ((Var)term).getLink() instanceof Number)
+			 return null;
 		 term = term.getTerm();
 		 if (term instanceof Var)
 			 return new Struct("call", term);
@@ -430,7 +433,8 @@ public class BuiltIn extends Library {
 		 }
 		 Term val1 = ((Struct) arg1).fromList();
 		 if (val1 == null)
-			 throw PrologError.type_error(engineManager, 2, "list", arg1);
+			 //throw PrologError.type_error(engineManager, 2, "list", arg1);
+			 return false;
 		 return (unify(arg0, val1));
 	 }
 
@@ -605,8 +609,15 @@ public class BuiltIn extends Library {
 	 public void include_1(Term theory) throws FileNotFoundException,
 	 InvalidTheoryException, IOException {
 		 theory = theory.getTerm();
-		 engine.addTheory(new Theory(new FileInputStream(alice.util.Tools
-				 .removeApices(theory.toString()))));
+//		 engine.addTheory(new Theory(new FileInputStream(alice.util.Tools
+//				 .removeApices(theory.toString()))));
+		 String path = alice.util.Tools.removeApices(theory.toString());
+		 if(! new File(path).isAbsolute()) {
+			 path = engine.getCurrentDirectory()  + File.separator + path;
+		 }
+		 engine.pushDirectoryToList(new File(path).getParent());
+		 engine.addTheory(new Theory(new FileInputStream(path)));
+		 engine.popDirectoryFromList();
 	 }
 
 }

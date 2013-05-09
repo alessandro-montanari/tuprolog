@@ -243,5 +243,11 @@ public class EngineManager implements java.io.Serializable {
         return sinfo.isHalted();
     }
     
+    /*
+     * Create for spyframe
+     */
+    boolean spying(){//beslmeisl
+        return mediator.isSpy();
+      }
     
 }

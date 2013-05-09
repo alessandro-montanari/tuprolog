@@ -19,6 +19,8 @@ package alice.tuprologx.ide;
 
 import javax.swing.*;
 
+import alice.tuprolog.Term;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.net.URL;
@@ -135,6 +137,7 @@ public class JavaInputField
      */
     public void solve()
     {
+    	
         if (getGoal().length()>0)//if the goal isn't empty
         {
             addGoalToHistory();
@@ -170,5 +173,6 @@ public class JavaInputField
         Font font = new Font(inputField.getFont().getName(),inputField.getFont().getStyle(),dimension);
         inputField.setFont(font);
     }
+    
 
 } // end JavaInputField class

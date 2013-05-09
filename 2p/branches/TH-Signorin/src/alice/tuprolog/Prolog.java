@@ -22,6 +22,7 @@ import java.io.*;
 
 import alice.tuprolog.event.*;
 import alice.tuprolog.interfaces.IProlog;
+import alice.tuprologx.ide.ToolBar;
 
 
 
@@ -73,6 +74,11 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	/* listeners to query events */
 	private ArrayList<QueryListener> queryListeners;
 
+	/* path history for including documents */
+	private ArrayList<String> absolutePathList;
+	
+	/* creato da Emanuele Signorin*/
+	private Term richiesta;
 
 
 	/**
@@ -146,6 +152,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 		theoryListeners = new ArrayList<TheoryListener>();
 		queryListeners = new ArrayList<QueryListener>();
 		libraryListeners = new ArrayList<LibraryListener>();
+		absolutePathList = new ArrayList<String>();
 		initializeManagers();
 	}
 
@@ -213,6 +220,28 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	public static String getVersion() {
 		return alice.util.VersionInfo.getEngineVersion();
 	}
+
+    /**
+     * Gets the last Element of the path list
+     */
+    public String getCurrentDirectory() {
+        String directory = "";
+        String s;
+        if(absolutePathList.isEmpty()) {
+        	if((s = ToolBar.getPath())!=null)
+        	{
+        		directory = s;
+        	}
+        	else
+        	{
+        		directory = System.getProperty("user.dir");
+        	}
+            //directory = System.getProperty("user.dir");
+        } else {
+            directory = absolutePathList.get(absolutePathList.size()-1);
+        }
+        return directory;
+    }
 
 
 
@@ -398,8 +427,11 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 		//System.out.println("ENGINE SOLVE #0: "+g);
 		if (g == null) return null;
 
+		//creato da Emanuele Signorin
+		richiesta = g;
+		
 		SolveInfo sinfo = engineManager.solve(g);
-
+		
 		QueryEvent ev = new QueryEvent(this,sinfo);
 		notifyNewQueryResultAvailable(ev);
 
@@ -973,5 +1005,50 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 		}
 	}
 
+    /**
+     * Append a new path to directory list
+     *
+     */
+    public void pushDirectoryToList(String path) {
+        absolutePathList.add(path);
+    }
+
+    /**
+     *
+     * Retract an element from directory list
+     */
+    public void popDirectoryFromList() {
+        if(!absolutePathList.isEmpty()) {
+            absolutePathList.remove(absolutePathList.size()-1);
+        }
+    }
+
+     /**
+       *
+       * put an element from directory list
+      */
+    public void resetDirectoryList(String path) {
+        absolutePathList = new ArrayList<String>();
+        absolutePathList.add(path);
+    }
+	
+	/*creato da Emanuele Signorin*/
+	public Term getRichiesta()
+	{
+		return this.richiesta;
+	}
+	
+	public Term termSolve(String st){
+		try{
+			Parser p = new Parser(opManager, st);
+			Term t = p.nextTerm(true);
+			return t;
+		}catch(InvalidTermException e)
+		{
+			String s = "null";
+			Term t = Term.createTerm(s);
+			return t;
+		}
+	}
 
 }

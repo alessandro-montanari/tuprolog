@@ -10,7 +10,12 @@ import java.awt.event.*;
 import java.awt.BorderLayout;
 import java.net.URL;
 
+import alice.tuprolog.InvalidTheoryException;
 import alice.tuprolog.Prolog;
+import alice.tuprolog.Term;
+import alice.tuprolog.Theory;
+import alice.tuprolog.structure.SpyFrame;
+import alice.tuprolog.structure.TermFrame;
 
 
 public class ToolBar extends JPanel
@@ -57,6 +62,10 @@ public class ToolBar extends JPanel
 	 * The IDE the toolbar belongs to, necessary to manage editor-related commands such as saving its content to the filesystem.
 	 */
     private IDE ide;
+    
+    /*creato da Emanuele Signorin*/
+    static private String path;
+    
     
     private JFrame parent;
     
@@ -179,8 +188,26 @@ public class ToolBar extends JPanel
                 viewAboutInformation();
             }
         });
-
         
+        //creato da Emanuele Signorin
+        JButton spy = new JButton("Spy");
+        
+        spy.setToolTipText("Spy Frame");
+        spy.setPreferredSize(new Dimension(32,32));
+        spy.addActionListener(new ActionListener()
+        {
+        	public void actionPerformed(ActionEvent event)
+            {
+                Theory teoria = engine.getTheory();
+                Term rich = engine.getRichiesta();
+                try {
+					SpyFrame sp = new SpyFrame(teoria, rich);
+				} catch (InvalidTheoryException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            }
+        }); 
 
 
         JPanel bottonsPanel = new JPanel();
@@ -192,6 +219,10 @@ public class ToolBar extends JPanel
         bottonsPanel.add(bDebug);
         bottonsPanel.add(bConfigure);
         bottonsPanel.add(bAbout);
+        /*
+         * 
+         */
+        bottonsPanel.add(spy);
 
         
         setLayout(new BorderLayout());
@@ -330,6 +361,9 @@ public class ToolBar extends JPanel
             fileIDE = fileManager.loadFile();
             if (fileIDE.getFilePath() != null) {
                 
+            	this.path = fileIDE.getFilePath();
+            	engine.resetDirectoryList(fileIDE.getFilePath());
+            	
                 /** this isn't correct with the tabbed theory visualization*/
                 //engine.setTheory(theory);
 
@@ -400,6 +434,7 @@ public class ToolBar extends JPanel
      */
     public void viewDebugInformation() {
         debugArea.setVisible(true);
+    	
     }
 
     public void configure()
@@ -427,5 +462,10 @@ public class ToolBar extends JPanel
     public FileIDE getFileIDE()
     {
         return fileIDE;
+    }
+    
+    public static String getPath()
+    {
+    	return path;
     }
 }
