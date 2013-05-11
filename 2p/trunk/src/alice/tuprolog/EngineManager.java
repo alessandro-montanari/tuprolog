@@ -16,10 +16,7 @@ public class EngineManager implements java.io.Serializable {
 	private Prolog vm;
 	private Hashtable<Integer, EngineRunner> runners;	//key: id; obj: runner
 	private Hashtable<Integer, Integer> threads;	//key: pid; obj: id
-	private int rootID;
-	private int rootPID;
-	private int baseID;
-	private int basePID;
+	private int rootID = 1;
 	
 	private Hashtable<String, TermQueue> queues;
 	private Hashtable<String, ReentrantLock> locks;
@@ -31,6 +28,9 @@ public class EngineManager implements java.io.Serializable {
 		queues =new Hashtable<String, TermQueue>();
 		locks = new Hashtable<String, ReentrantLock>();
 		
+		EngineRunner er = new EngineRunner(rootID);
+		er.initialize(vm);	
+		addRunner(er, rootID);
 	}
 	
 	public synchronized boolean threadCreate(Term threadID, Term goal) {
@@ -202,11 +202,11 @@ public class EngineManager implements java.io.Serializable {
 	
 	ExecutionContext getCurrentContext() {
 		EngineRunner runner=findRunner();
-		if(runner!=null)
-			return runner.getCurrentContext();
-		if(!runners.containsKey(baseID))
+		//if(runner!=null)
+		return runner.getCurrentContext();
+		/*if(!runners.containsKey(baseID))
 			libCall();
-		return runners.get(baseID).getCurrentContext();
+		return runners.get(baseID).getCurrentContext();*/
 	}
 	
 	boolean hasOpenAlternatives() {
@@ -226,28 +226,10 @@ public class EngineManager implements java.io.Serializable {
 	}
 	
 	public synchronized SolveInfo solve(Term query) {
-		rootPID = (int) Thread.currentThread().getId();
-		rootID = 1;
-		
-		EngineRunner er = new EngineRunner(rootID);
-		er.initialize(vm);
+		EngineRunner er = findRunner(rootID);
 		er.setGoal(query);
 		
-		addRunner(er, rootID);
-		addThread(rootPID, rootID);
-		
 		return er.solve();
-	}
-	
-	public synchronized void libCall() {
-		basePID = (int) Thread.currentThread().getId();
-		baseID = 0;
-		
-		EngineRunner er = new EngineRunner(baseID);
-		er.initialize(vm);
-		
-		addRunner(er, baseID);
-		addThread(basePID, baseID);
 	}
 	
 	public void solveEnd() {
@@ -296,17 +278,19 @@ public class EngineManager implements java.io.Serializable {
 	}
 	
 	private EngineRunner findRunner(){
-		int key = (int) Thread.currentThread().getId();
+		int pid = (int) Thread.currentThread().getId();
 		//if(key == rootPID) return runners.get(rootID);
 		int id = 0;
 		synchronized(threads){
-			if(threads.containsKey(key))
-				id = threads.get(key);
-			else
-				return runners.get(rootID);
-		}
+			if(threads.containsKey(pid)){
+				id = threads.get(pid);
+				synchronized(runners){
+					return runners.get(id);
+				}
+			}
+		}	
 		synchronized(runners){
-			return runners.get(id);
+			return runners.get(rootID);
 		}
 	}
 	

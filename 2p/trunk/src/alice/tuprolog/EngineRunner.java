@@ -30,7 +30,6 @@ public class EngineRunner implements java.io.Serializable, Runnable{
     private long pid;
     private boolean detached;
     private boolean solving;
-    private SolveInfo sinfo;
     private Term query;
     private TermQueue msgs;
     private ArrayList<Boolean> next;
@@ -45,6 +44,7 @@ public class EngineRunner implements java.io.Serializable, Runnable{
     private Engine last_env;
     /* Stack environments of nidicate solving */
     private LinkedList<Engine> stackEnv = new LinkedList<Engine>();
+    private SolveInfo sinfo;
     
     /**
 	 * States
@@ -178,11 +178,13 @@ public class EngineRunner implements java.io.Serializable, Runnable{
                     result.getResultDemo(),
                     result.getResultVars()
             );
-
+            if (!sinfo.hasOpenAlternatives()) 
+            	solveEnd();
+           return sinfo;
         } catch (Exception ex) {
             ex.printStackTrace();
+            return new SolveInfo(query);
         }
-        return sinfo;
     }
     
     /**
