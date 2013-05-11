@@ -202,11 +202,7 @@ public class EngineManager implements java.io.Serializable {
 	
 	ExecutionContext getCurrentContext() {
 		EngineRunner runner=findRunner();
-		//if(runner!=null)
 		return runner.getCurrentContext();
-		/*if(!runners.containsKey(baseID))
-			libCall();
-		return runners.get(baseID).getCurrentContext();*/
 	}
 	
 	boolean hasOpenAlternatives() {
