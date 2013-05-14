@@ -7,11 +7,10 @@
 \begin{enumerate}
   \item as a \textit{Prolog user}, you can exploit its Integrated Development
         Environment (IDE) and Graphical User Interface (GUI) to consult, edit, and run Prolog programs, as you would do with any other Prolog system---and you can do so in any of the supported platforms (Java, .NET, Android, Eclipse).
-  \item as a \textit{Java user}, you can include \tuprolog{} in any Java project,
-        thus bringing the power of Artificial Intelligence to the Java world; the \tuprolog{} API provides many classes and methods for exchanging data
-        between the Java and the Prolog worlds.
-        Though you can do so using your preferred IDE, the \tuprolog{} plugin
-        for the Eclipse platform is probably the most practical choice for this purpose, as the \tuprolog{} perspective provides all the views over the Prolog world in an Eclipse-compliant, effective way.
+  \item as a \textit{Java user}, you can include \tuprolog{} in any Java project, in Eclipse or any other IDE of your choice,
+        thus bringing the power of Artificial Intelligence to the Java world; the \tuprolog{} API provides many classes and methods for exchanging data between the Java and the Prolog worlds.
+        If your goal is to build a hybrid Java+Prolog application to be run from the Prolog side, the \tuprolog{} plugin
+        for Eclipse is probably the most practical choice, as the \tuprolog{} perspective provides all the views over the Prolog world in an Eclipse-compliant, effective way.
   \item as a \textit{.NET user}, analogously, you can add \tuprolog{} to any
         Visual Studio project (including the related IKVM libraries, as detailed in Chapter \ref{ch:mpp-in-dotnet}, or just manually compile your .NET application with the necessary DLL files in the build path. The \tuprolog{} API, which is nearly identical to the Java one, provides for proper data exchange
         between the .NET and the Prolog worlds.
@@ -258,9 +257,9 @@ The bottom icons in Figure \ref{fig:gui-library-manager} are used to load and st
 \label{sec:java-user-perspective}
 %=======================================================================
 
-As anticipated above, the Java developer can include \tuprolog{} in any of his projects, exploiting the \tuprolog{} API to access the Prolog engine(s) from his Java program..
-%
-The easiest way to do so it to exploit the Java plugin available for the Eclipse IDE, which adds a specific \textit{tuprolog perspective} specifically suited for the needs of the Java/Prolog user (Figure \ref{fig:tuprologPluginGUI}).
+As anticipated above, the Java developer can include \tuprolog{} in any of his projects, exploiting the \tuprolog{} API to access the Prolog engine(s) from his/her Java program: in fact, if your goal is just to embed intelligence in your Java application, all you need is adding the \texttt{tuprolog.jar} library (or the \texttt{2p.jar} library in the case you need also the extra classes) to your Java project, and develop normally---\tuprolog{} will be seen as any other referenced JAR archive.
+
+However, if your goal is to develop a hybrid Java+Prolog application to be run from the Prolog side -- that is, where Java objects and methods are called from a Prolog program -- the \tuprolog{} plugin for Eclipse is probably the best choice, since it adds a specific \textit{tuprolog perspective} specifically suited for the needs of the Java/Prolog user (Figure \ref{fig:tuprologPluginGUI}).
 
 \begin{figure}
   \includegraphics[width=300px]{images/tuprologPluginGUI.png}
