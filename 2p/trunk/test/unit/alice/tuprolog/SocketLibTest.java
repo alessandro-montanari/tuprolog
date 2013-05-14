@@ -73,6 +73,15 @@ public class SocketLibTest {
 		myThread.start(); 
 		Thread.sleep(1000);
 	} 
+	
+	@Test
+	public void testWrite_to_socket_2() throws InvalidTheoryException, MalformedGoalException, PrologError {
+		String theory="client(X,Y,Z):-tcp_socket_client_open('127.0.0.1:4444',Sock),write_to_socket(Sock,test1).";
+		engine2.setTheory(new Theory(theory));
+		SolveInfo goal=engine2.solve("client(X,Y,Z).");
+		assertTrue(goal.isSuccess());	
+	
+	}
 
 	@Test
 	public void testTcp_socket_client_open_2() throws PrologException, PrologError {
@@ -99,31 +108,20 @@ public class SocketLibTest {
         assertTrue(close);
 	}
 
-	@Test
-	public void testWrite_to_socket_2() throws InvalidTheoryException, MalformedGoalException, PrologError {
-		String theory="client(X,Y,Z):-tcp_socket_client_open('127.0.0.1:4444',Sock),write_to_socket(Sock,test1).";
+	/*@Test
+	public void testRead_from_socket_3() throws InvalidTheoryException, MalformedGoalException, PrologError, NoSolutionException, UnknownVarException {
+		
+			
+		String theory="client(X):-tcp_socket_client_open('127.0.0.1:4444',Sock),read_from_socket(Sock,X,[]).";
+		
 		engine2.setTheory(new Theory(theory));
-		SolveInfo goal=engine2.solve("client(X,Y,Z).");
-		assertTrue(goal.isSuccess());	
-	
+		SolveInfo goal=engine2.solve("client(X).");
+
+		assertTrue(goal.isSuccess());
+		System.out.println("I read"+ goal);
+			
 	}
-
-//	@Test
-//	public void testRead_from_socket_3() throws InvalidTheoryException, MalformedGoalException, PrologError, NoSolutionException, UnknownVarException {
-//		
-//			
-//		String theory="client(X):-tcp_socket_client_open('127.0.0.1:4444',Sock),read_from_socket(Sock,X,[]).";
-//		
-//		engine2.setTheory(new Theory(theory));
-//		SolveInfo goal=engine2.solve("client(X).");
-//
-//		assertTrue(goal.isSuccess());
-//		System.out.println("I read"+ goal);
-//		
-//		
-//		
-//	}
-
+*/
 	
 
 

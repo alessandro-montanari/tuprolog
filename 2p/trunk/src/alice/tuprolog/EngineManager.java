@@ -17,6 +17,7 @@ public class EngineManager implements java.io.Serializable {
 	private Hashtable<Integer, EngineRunner> runners;	//key: id; obj: runner
 	private Hashtable<Integer, Integer> threads;	//key: pid; obj: id
 	private int rootID = 1;
+	private EngineRunner er1;
 	
 	private Hashtable<String, TermQueue> queues;
 	private Hashtable<String, ReentrantLock> locks;
@@ -28,9 +29,9 @@ public class EngineManager implements java.io.Serializable {
 		queues =new Hashtable<String, TermQueue>();
 		locks = new Hashtable<String, ReentrantLock>();
 		
-		EngineRunner er = new EngineRunner(rootID);
-		er.initialize(vm);	
-		addRunner(er, rootID);
+		er1 = new EngineRunner(rootID);
+		er1.initialize(vm);	
+		addRunner(er1, rootID);
 	}
 	
 	public synchronized boolean threadCreate(Term threadID, Term goal) {
@@ -222,10 +223,10 @@ public class EngineManager implements java.io.Serializable {
 	}
 	
 	public synchronized SolveInfo solve(Term query) {
-		EngineRunner er = findRunner(rootID);
-		er.setGoal(query);
+		//EngineRunner er = findRunner(rootID);
+		er1.setGoal(query);
 		
-		return er.solve();
+		return er1.solve();
 	}
 	
 	public void solveEnd() {
@@ -251,8 +252,8 @@ public class EngineManager implements java.io.Serializable {
 	}
 	
 	public synchronized SolveInfo solveNext() throws NoMoreSolutionException {
-		EngineRunner er = findRunner(rootID);
-		return er.solveNext();
+		//EngineRunner er = findRunner(rootID);
+		return er1.solveNext();
 	}
 	
 	void spy(String action, Engine env) {
@@ -275,19 +276,14 @@ public class EngineManager implements java.io.Serializable {
 	
 	private EngineRunner findRunner(){
 		int pid = (int) Thread.currentThread().getId();
-		//if(key == rootPID) return runners.get(rootID);
-		int id = 0;
+		if(!threads.containsKey(pid))
+			return er1;
 		synchronized(threads){
-			if(threads.containsKey(pid)){
-				id = threads.get(pid);
-				synchronized(runners){
-					return runners.get(id);
-				}
+			synchronized(runners){
+				int id = threads.get(pid);
+				return runners.get(id);
 			}
 		}	
-		synchronized(runners){
-			return runners.get(rootID);
-		}
 	}
 	
 	//Ritorna l'identificativo del thread corrente

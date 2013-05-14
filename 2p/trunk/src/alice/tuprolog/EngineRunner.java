@@ -24,10 +24,10 @@ public class EngineRunner implements java.io.Serializable, Runnable{
     private TheoryManager    	theoryManager;
     private PrimitiveManager	primitiveManager;
     private LibraryManager   	libraryManager;
-    private EngineManager 		engineManager;
+    //private EngineManager 		engineManager;
 
     private int id;
-    private long pid;
+    //private long pid;
     private boolean detached;
     private boolean solving;
     private Term query;
@@ -91,7 +91,7 @@ public class EngineRunner implements java.io.Serializable, Runnable{
         theoryManager    = vm.getTheoryManager();
         primitiveManager = vm.getPrimitiveManager();
         libraryManager   = vm.getLibraryManager();
-        engineManager = vm.getEngineManager();
+        //engineManager = vm.getEngineManager();
         
         detached = false;
         solving = false;
@@ -238,10 +238,9 @@ public class EngineRunner implements java.io.Serializable, Runnable{
                     result.getResultVars()
             );
             
-            /*if (!sinfo.hasOpenAlternatives()){
-            	solveEnd();
-            	
-            }*/
+            if (!sinfo.hasOpenAlternatives()){
+            	solveEnd();           	
+            }
             return sinfo;
 
         } else
@@ -357,7 +356,7 @@ public class EngineRunner implements java.io.Serializable, Runnable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		engineManager.removeThread(pid);
+		//engineManager.removeThread(pid);
 	}    
 	
 	public int getId(){
