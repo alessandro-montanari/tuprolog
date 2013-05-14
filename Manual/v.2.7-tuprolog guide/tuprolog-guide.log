@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.11 (MiKTeX 2.9) (preloaded format=pdflatex 2013.3.26)  26 APR 2013 15:18
+This is pdfTeX, Version 3.1415926-1.40.11 (MiKTeX 2.9) (preloaded format=pdflatex 2013.3.26)  14 MAY 2013 16:16
 entering extended mode
 **E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog*guide/tuprolo
 g-guide.tex
@@ -429,17 +429,17 @@ File: images/tuprologIDE.png Graphic file (type png)
 File: images/tuprologCUI.png Graphic file (type png)
 
 <use images/tuprologCUI.png>
-Underfull \hbox (badness 10000) in paragraph at lines 58--60
+Underfull \hbox (badness 10000) in paragraph at lines 57--59
 
  []
 
-LaTeX Font Info:    Try loading font information for OMS+cmtt on input line 68.
+LaTeX Font Info:    Try loading font information for OMS+cmtt on input line 67.
 
-LaTeX Font Info:    No file OMScmtt.fd. on input line 68.
+LaTeX Font Info:    No file OMScmtt.fd. on input line 67.
 
 LaTeX Font Warning: Font shape `OMS/cmtt/m/n' undefined
 (Font)              using `OMS/cmsy/m/n' instead
-(Font)              for symbol `textbraceleft' on input line 68.
+(Font)              for symbol `textbraceleft' on input line 67.
 
 [14] [15 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog guide
 /images/tuprologIDE.png (PNG copy)> <E:/Home/Technologies/tuProlog/repo-google/
@@ -498,15 +498,14 @@ File: images/gui-config.png Graphic file (type png)
 <images/tuprologPluginGUI.png, id=1001, 745.5855pt x 434.8245pt>
 File: images/tuprologPluginGUI.png Graphic file (type png)
 
-<use images/tuprologPluginGUI.png>
-Overfull \hbox (6.3988pt too wide) in paragraph at lines 276--277
+<use images/tuprologPluginGUI.png> [23 <E:/Home/Technologies/tuProlog/repo-goog
+le/Manual/v.2.7-tuprolog guide/images/gui-config.png (PNG copy)>]
+Overfull \hbox (6.3988pt too wide) in paragraph at lines 275--276
 []\OT1/cmr/m/n/10.95 either se-lect \OT1/cmtt/m/n/10.95 New $\OML/cmm/m/it/10.9
 5 >$ \OT1/cmtt/m/n/10.95 Project \OT1/cmr/m/n/10.95 from the Pack-age Ex-plorer
 's con-text menu,
  []
 
-[23 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog guide/imag
-es/gui-config.png (PNG copy)>]
 <images/plugin1.png, id=1012, 277.035pt x 179.4705pt>
 File: images/plugin1.png Graphic file (type png)
  <use images/plugin1.png>
@@ -527,9 +526,9 @@ File: images/plugin5.png Graphic file (type png)
 File: images/plugin6.png Graphic file (type png)
 
 <use images/plugin6.png> [24 <E:/Home/Technologies/tuProlog/repo-google/Manual/
-v.2.7-tuprolog guide/images/tuprologPluginGUI.png (PNG copy)> <E:/Home/Technolo
-gies/tuProlog/repo-google/Manual/v.2.7-tuprolog guide/images/plugin1.png (PNG c
-opy)>] [25 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog gui
+v.2.7-tuprolog guide/images/tuprologPluginGUI.png (PNG copy)>] [25 <E:/Home/Tec
+hnologies/tuProlog/repo-google/Manual/v.2.7-tuprolog guide/images/plugin1.png (
+PNG copy)> <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog gui
 de/images/plugin2.png (PNG copy)> <E:/Home/Technologies/tuProlog/repo-google/Ma
 nual/v.2.7-tuprolog guide/images/plugin3.png (PNG copy)>] [26 <E:/Home/Technolo
 gies/tuProlog/repo-google/Manual/v.2.7-tuprolog guide/images/plugin4.png (PNG c
@@ -550,16 +549,15 @@ File: images/plugin10.png Graphic file (type png)
 
 <use images/plugin10.png> [27 <E:/Home/Technologies/tuProlog/repo-google/Manual
 /v.2.7-tuprolog guide/images/plugin6.png (PNG copy)> <E:/Home/Technologies/tuPr
-olog/repo-google/Manual/v.2.7-tuprolog guide/images/plugin7.png (PNG copy)>]
-[28 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog guide/imag
-es/plugin8.png (PNG copy)> <E:/Home/Technologies/tuProlog/repo-google/Manual/v.
-2.7-tuprolog guide/images/plugin9.png (PNG copy)>]
+olog/repo-google/Manual/v.2.7-tuprolog guide/images/plugin7.png (PNG copy)> <E:
+/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog guide/images/plug
+in8.png (PNG copy)>] [28 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.
+7-tuprolog guide/images/plugin9.png (PNG copy)>]
 <images/plugin11.png, id=1062, 274.02374pt x 87.32625pt>
 File: images/plugin11.png Graphic file (type png)
 
 <use images/plugin11.png> [29 <E:/Home/Technologies/tuProlog/repo-google/Manual
-/v.2.7-tuprolog guide/images/plugin10.png (PNG copy)> <E:/Home/Technologies/tuP
-rolog/repo-google/Manual/v.2.7-tuprolog guide/images/plugin11.png (PNG copy)>]
+/v.2.7-tuprolog guide/images/plugin10.png (PNG copy)>]
 <images/android1.png, id=1074, 289.08pt x 284.86424pt>
 File: images/android1.png Graphic file (type png)
 
@@ -568,18 +566,20 @@ File: images/android1.png Graphic file (type png)
 File: images/android2.png Graphic file (type png)
 
 <use images/android2.png>
-Overfull \hbox (43.9348pt too wide) in paragraph at lines 388--390
+Overfull \hbox (43.9348pt too wide) in paragraph at lines 387--389
 [][] [] 
  []
 
-[30] <images/android3.png, id=1086, 289.08pt x 271.0125pt>
+[30 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog guide/imag
+es/plugin11.png (PNG copy)>]
+<images/android3.png, id=1086, 289.08pt x 271.0125pt>
 File: images/android3.png Graphic file (type png)
 
 <use images/android3.png> <images/android4.png, id=1087, 289.08pt x 216.81pt>
 File: images/android4.png Graphic file (type png)
 
 <use images/android4.png>
-Overfull \hbox (43.9348pt too wide) in paragraph at lines 400--402
+Overfull \hbox (43.9348pt too wide) in paragraph at lines 399--401
 [][] [] 
  []
 
@@ -590,7 +590,7 @@ File: images/android6.png Graphic file (type png)
 File: images/android5.png Graphic file (type png)
 
 <use images/android5.png>
-Overfull \hbox (43.9348pt too wide) in paragraph at lines 406--408
+Overfull \hbox (43.9348pt too wide) in paragraph at lines 405--407
 [][] [] 
  []
 
@@ -601,21 +601,21 @@ File: images/android7.png Graphic file (type png)
 File: images/android8.png Graphic file (type png)
 
 <use images/android8.png>
-Overfull \hbox (43.9348pt too wide) in paragraph at lines 412--414
+Overfull \hbox (43.9348pt too wide) in paragraph at lines 411--413
 [][] [] 
  []
 
-) [31 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog guide/im
-ages/android1.png (PNG copy)> <E:/Home/Technologies/tuProlog/repo-google/Manual
-/v.2.7-tuprolog guide/images/android2.png (PNG copy)>] [32 <E:/Home/Technologie
-s/tuProlog/repo-google/Manual/v.2.7-tuprolog guide/images/android3.png (PNG cop
-y)> <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog guide/imag
-es/android4.png (PNG copy)> <E:/Home/Technologies/tuProlog/repo-google/Manual/v
-.2.7-tuprolog guide/images/android6.png (PNG copy)> <E:/Home/Technologies/tuPro
-log/repo-google/Manual/v.2.7-tuprolog guide/images/android5.png (PNG copy)>]
+[31 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog guide/imag
+es/android1.png (PNG copy)> <E:/Home/Technologies/tuProlog/repo-google/Manual/v
+.2.7-tuprolog guide/images/android2.png (PNG copy)>] [32 <E:/Home/Technologies/
+tuProlog/repo-google/Manual/v.2.7-tuprolog guide/images/android3.png (PNG copy)
+> <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog guide/images
+/android4.png (PNG copy)> <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2
+.7-tuprolog guide/images/android6.png (PNG copy)> <E:/Home/Technologies/tuProlo
+g/repo-google/Manual/v.2.7-tuprolog guide/images/android5.png (PNG copy)>]
 [33 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7-tuprolog guide/imag
 es/android7.png (PNG copy)> <E:/Home/Technologies/tuProlog/repo-google/Manual/v
-.2.7-tuprolog guide/images/android8.png (PNG copy)>] [34]
+.2.7-tuprolog guide/images/android8.png (PNG copy)>]) [34]
 ("E:\Home\Technologies\tuProlog\repo-google\Manual\v.2.7-tuprolog guide\tuprolo
 g-basics.tex"
 Chapter 4.
@@ -2862,7 +2862,7 @@ pe1/public/amsfonts/cm/cmti10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type
 ublic/amsfonts/cm/cmtt10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/pub
 lic/amsfonts/cm/cmtt8.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public
 /amsfonts/cm/cmtt9.pfb>
-Output written on tuprolog-guide.pdf (229 pages, 4572571 bytes).
+Output written on tuprolog-guide.pdf (229 pages, 4569841 bytes).
 PDF statistics:
  2496 PDF objects out of 2984 (max. 8388607)
  565 named destinations out of 1000 (max. 500000)
