@@ -48,7 +48,7 @@ public class ThreadLibraryTestCase {
 		SolveInfo sinfo = engine.solve("thread_id(ID).");	//unifica ad ID l'identificativo del thread corrente (Root)
 		assertTrue(sinfo.isSuccess());
 		Term id = sinfo.getVarValue("ID");
-		assertEquals(new Int(1), id);
+		assertEquals(new Int(0), id);
 	}
 
 	/**

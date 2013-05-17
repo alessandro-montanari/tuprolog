@@ -16,8 +16,9 @@ public class EngineManager implements java.io.Serializable {
 	private Prolog vm;
 	private Hashtable<Integer, EngineRunner> runners;	//key: id; obj: runner
 	private Hashtable<Integer, Integer> threads;	//key: pid; obj: id
-	private int rootID = 1;
+	private int rootID = 0;
 	private EngineRunner er1;
+	private int id = 0;
 	
 	private Hashtable<String, TermQueue> queues;
 	private Hashtable<String, ReentrantLock> locks;
@@ -31,15 +32,14 @@ public class EngineManager implements java.io.Serializable {
 		
 		er1 = new EngineRunner(rootID);
 		er1.initialize(vm);	
-		addRunner(er1, rootID);
 	}
 	
 	public synchronized boolean threadCreate(Term threadID, Term goal) {
+		id = id+1;
+		
 		if (goal == null) return false;
 		if (goal instanceof Var) 
 			goal = goal.getTerm();
-		
-		int id = runners.size()+1;
 		
 		EngineRunner er = new EngineRunner(id);
 		er.initialize(vm);
@@ -50,7 +50,7 @@ public class EngineManager implements java.io.Serializable {
 		addRunner(er, id);
 		Thread t = new Thread(er);
 		addThread(t.getId(), id);
-		
+	
 		t.start();
 		return true;
 	}
@@ -88,7 +88,7 @@ public class EngineManager implements java.io.Serializable {
 	
 	public boolean nextSolution (int id){
 		EngineRunner er = findRunner(id);
-		if (er==null) return false;
+		if (er==null || er.isDetached()) return false;
 		/*toSPY
 		 * System.out.println("Thread id "+runnerId()+" - next_solution: risveglio il thread di id: "+er.getId());
 		 */
@@ -100,7 +100,6 @@ public class EngineManager implements java.io.Serializable {
 		EngineRunner er= findRunner(id);
 		if (er==null) return;
 		er.detach();
-		removeRunner(er.getId());
 	}
 	
 	public boolean sendMsg (int dest, Term msg){
@@ -172,22 +171,20 @@ public class EngineManager implements java.io.Serializable {
 	}
 	
 	private void removeRunner(int id){
+		EngineRunner er=runners.get(id);
+		if (er==null) return;
 		synchronized (runners) {
-			EngineRunner er=runners.get(id);
-			if (er==null) return;
 			runners.remove(id);
+		}
+		int pid = er.getPid();
+		synchronized (threads) {
+			threads.remove(pid);
 		}
 	}
 	
 	private void addRunner(EngineRunner er, int id){
 		synchronized (runners){
 			runners.put(id, er);
-		}
-	}
-	
-	public void removeThread(long pid){
-		synchronized (threads) {
-			threads.remove(pid);
 		}
 	}
 	
@@ -223,26 +220,30 @@ public class EngineManager implements java.io.Serializable {
 	}
 	
 	public synchronized SolveInfo solve(Term query) {
-		//EngineRunner er = findRunner(rootID);
 		er1.setGoal(query);
 		
 		return er1.solve();
 	}
 	
 	public void solveEnd() {
-		EngineRunner er = findRunner();
-		er.solveEnd();
-		runners=new Hashtable<Integer,EngineRunner>();
-		threads=new Hashtable<Integer,Integer>();
-		queues =new Hashtable<String, TermQueue>();
-		locks = new Hashtable<String, ReentrantLock>();
+		er1.solveEnd();
+		if(runners.size()!=0){
+			java.util.Enumeration<EngineRunner> ers=runners.elements();
+			while (ers.hasMoreElements()) {
+				EngineRunner current=ers.nextElement();
+				current.solveEnd();		
+			}
+			runners=new Hashtable<Integer,EngineRunner>();
+			threads=new Hashtable<Integer,Integer>();
+			queues =new Hashtable<String, TermQueue>();
+			locks = new Hashtable<String, ReentrantLock>();
+			id = 0;
+		}
 	}
 	
 	public void solveHalt() {
-		EngineRunner er = findRunner();
-		if(er.getId() == rootID)
-			er.solveHalt();
-		else{
+		er1.solveHalt();
+		if(runners.size()!=0){
 			java.util.Enumeration<EngineRunner> ers=runners.elements();
 			while (ers.hasMoreElements()) {
 				EngineRunner current=ers.nextElement();
@@ -252,7 +253,6 @@ public class EngineManager implements java.io.Serializable {
 	}
 	
 	public synchronized SolveInfo solveNext() throws NoMoreSolutionException {
-		//EngineRunner er = findRunner(rootID);
 		return er1.solveNext();
 	}
 	
