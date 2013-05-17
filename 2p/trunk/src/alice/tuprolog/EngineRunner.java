@@ -27,7 +27,7 @@ public class EngineRunner implements java.io.Serializable, Runnable{
     //private EngineManager 		engineManager;
 
     private int id;
-    //private long pid;
+    private int pid;
     private boolean detached;
     private boolean solving;
     private Term query;
@@ -263,7 +263,6 @@ public class EngineRunner implements java.io.Serializable, Runnable{
 //        theoryManager.transEnd(sinfo.isSuccess());
 //        theoryManager.optimize();
         libraryManager.onSolveEnd();
-        //engineManager.removeThread(pid);
     }
     
     
@@ -344,6 +343,7 @@ public class EngineRunner implements java.io.Serializable, Runnable{
 	@Override
 	public void run() {
 		solving = true;
+		pid = (int) Thread.currentThread().getId();
 		
 		if (sinfo == null) {
 			threadSolve();
@@ -356,11 +356,14 @@ public class EngineRunner implements java.io.Serializable, Runnable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//engineManager.removeThread(pid);
 	}    
 	
 	public int getId(){
 		return id;
+	}
+	
+	public int getPid(){
+		return pid;
 	}
 	
 	public SolveInfo getSolution(){
