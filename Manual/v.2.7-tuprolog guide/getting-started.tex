@@ -54,6 +54,7 @@ Analogously, the command-line CUIconsole (available in Java only) can be launche
 
 
 \begin{figure}
+\centering
   \includegraphics[width=300px]{images/tuprologIDE.png}\\
   \includegraphics[width=300px]{images/tuprologCUI.png}\\
   \caption{The standard \tuprolog{} GUI and CUI.}\label{fig:tuprologGUICUI}
@@ -84,6 +85,7 @@ The \texttt{Agent} tool is invoked from the command line as follows:
 \noindent Quite obviously, in this case no second argument is required.
 
 \begin{figure}
+\centering
   \includegraphics[width=300px]{images/tuprologAgent.png}
   \caption{The \tuprolog{} Agent tool.}\label{fig:tuprologAgent}
 \end{figure}
@@ -125,7 +127,12 @@ Accordingly, the \textit{set theory} button uploads the text in the editor windo
 
 However, for the user convenience, a logical shortcut is provided that automatically uploads the current theory to the engine whenever a new query is issued: obviously, if the theory is invalid, the query will not be executed.
 %
-Manual uploading is still needed whenever the theory in the editor window is modified via other other means than the built-in editor---for instance, after a \predicate{consult/1} goal, or via other editors.
+Manual uploading is still needed whenever the theory in the editor window is modified via other other means than the built-in editor---for instance, after a \predicate{consult/1} goal\footnote{%
+  If a Prolog theory contains an \texttt{include} directive or a \texttt{consult} command to load other sub-files,
+  \tuprolog{} versions up to 2.6 require either the absolute sub-file name, or a relative path referred to the engine's
+  base folder. From version 2.7 on, an enhanced mechanism enables a Prolog file located in \texttt{someOtherFolder} (that is, a folder other than the current one) to consult/include another file from the current
+  folder by simply issuing a \texttt{consult(someOtherFile)} command, delegating the \tuprolog{} engine for searching the file in all the subfolders of the current working folder. See also Section \ref{ssec:relative-paths-consulting-subfiles-in-java-project}.
+}, or via other editors.
 
 The status bar at the bottom of the window reports information such as the cursor line number or syntax errors when setting an invalid theory.
 %
@@ -262,6 +269,7 @@ As anticipated above, the Java developer can include \tuprolog{} in any of his p
 However, if your goal is to develop a hybrid Java+Prolog application to be run from the Prolog side -- that is, where Java objects and methods are called from a Prolog program -- the \tuprolog{} plugin for Eclipse is probably the best choice, since it adds a specific \textit{tuprolog perspective} specifically suited for the needs of the Java/Prolog user (Figure \ref{fig:tuprologPluginGUI}).
 
 \begin{figure}
+\centering
   \includegraphics[width=300px]{images/tuprologPluginGUI.png}
   \caption{The \tuprolog{} plugin GUI for Eclipse.}\label{fig:tuprologPluginGUI}
 \end{figure}
@@ -280,31 +288,37 @@ To this end:%, three procedures are possible:
 In any case, a dialog appears (Figure \ref{fig:plugin2}) which prompts for the project name (default: \texttt{My\_Prolog\_Project}) and the desired Prolog libraries (the default set is proposed).
 
 \begin{figure}
+\centering
   \includegraphics[width=200px]{images/plugin1.png}
   \caption{The \tuprolog{} toolbar}\label{fig:plugin1}
 \end{figure}
 
 \begin{figure}
+\centering
   \includegraphics[width=200px]{images/plugin2.png}
   \caption{new \tuprolog{} project}\label{fig:plugin2}
 \end{figure}
 
 \begin{figure}
+\centering
   \includegraphics[width=200px]{images/plugin3.png}
   \caption{new \tuprolog{} file}\label{fig:plugin3}
 \end{figure}
 
 \begin{figure}
+\centering
   \includegraphics[width=200px]{images/plugin4.png}
   \caption{new \tuprolog{} file $>$ Browse...}\label{fig:plugin4}
 \end{figure}
 
 \begin{figure}
+\centering
   \includegraphics[width=200px]{images/plugin5.png}
   \caption{the \tuprolog{} perspective}\label{fig:plugin5}
 \end{figure}
 
 \begin{figure}
+\centering
   \includegraphics[width=200px]{images/plugin6.png}
   \caption{opening the \tuprolog{} perspective}\label{fig:plugin6}
 \end{figure}
@@ -316,21 +330,25 @@ The query can be written in the bottom console, and is executed either by pressi
 
 
 \begin{figure}
+\centering
   \includegraphics[width=4cm]{images/plugin7.png}
   \caption{executing queries, available views}\label{fig:plugin7}
 \end{figure}
 
 \begin{figure}
+\centering
   \includegraphics[width=200px]{images/plugin8.png}
   \caption{all variable bindings}\label{fig:plugin8}
 \end{figure}
 
 \begin{figure}
+\centering
   \includegraphics[width=200px]{images/plugin9.png}
   \caption{AST view (expanded)}\label{fig:plugin9}
 \end{figure}
 
 \begin{figure}
+\centering
   \includegraphics[width=200px]{images/plugin10.png}
   \caption{AST view (big term, expanded)}\label{fig:plugin10}
 \end{figure}
@@ -348,6 +366,7 @@ It is worth highlighting that multiple \tuprolog{}  engines can be handled simul
 Moreover, in case of undeclared terms, a direct warning is issued in the plugin editor  (Figure \ref{fig:plugin11}).
 
 \begin{figure}
+\centering
   \includegraphics[width=200px]{images/plugin11.png}
   \caption{warning for undeclared terms}\label{fig:plugin11}
 \end{figure}
@@ -384,6 +403,7 @@ Four buttons enable the user to execute a query, ask for the next solution (when
 The menu button triggers the pop-up shown in Figure \ref{fig:android12} (right), whose main feature is \textit{List Theories}.
 
 \begin{figure}
+\centering
   \includegraphics[width=200px]{images/android1.png}
   \includegraphics[width=200px]{images/android2.png}
   \caption{Home Activity (left) and its pop-up menu (right).}\label{fig:android12}
@@ -396,18 +416,21 @@ So, theories of interest must be first loaded into the theory database (Figure \
 More precisely, to add a theory to the database, the menu option \textit{Import Theory to Database} is provided (Figure \ref{fig:android34}, right): a new activity opens that lets you browser the device's file system (Figure \ref{fig:android56}, left). Only the files that can be actually selected for addition to the theory database are shown: after a theory is successfully imported, the activity remembers the path for the next time, so as to make it faster to import multiple files.
 
 \begin{figure}
+\centering
   \includegraphics[width=200px]{images/android3.png}
   \includegraphics[width=200px]{images/android4.png}
   \caption{Theory database (left) and context menu (right)}\label{fig:android34}
 \end{figure}
 
 \begin{figure}
+\centering
   \includegraphics[width=200px]{images/android6.png}
   \includegraphics[width=200px]{images/android5.png}
   \caption{Browsing theories (left) and theory operations (right)}\label{fig:android56}
 \end{figure}
 
 \begin{figure}
+\centering
   \includegraphics[width=200px]{images/android7.png}
   \includegraphics[width=200px]{images/android8.png}
   \caption{Theory editing (left) and query execution (right)}\label{fig:android78}

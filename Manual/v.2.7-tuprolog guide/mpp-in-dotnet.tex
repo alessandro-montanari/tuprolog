@@ -517,18 +517,21 @@ To create a .NET application using \tuprolog{}, do the following:\footnote{The e
 \end{enumerate}
 
 \begin{figure}
+\centering
   \includegraphics[width=12cm]{images/dotnet-visualstudio1}\\
   \includegraphics[width=12cm]{images/dotnet-visualstudio2}
   \caption{Creating a .NET application using \tuprolog{} in Visual Studio: new project.}\label{fig:dotnet-visualstudio1}
 \end{figure}
 
 \begin{figure}
+\centering
   \includegraphics[width=12cm]{images/dotnet-visualstudio3}\\
   \includegraphics[width=12cm]{images/dotnet-visualstudio5}
   \caption{Creating a .NET application using \tuprolog{} in Visual Studio: the user GUI}\label{fig:dotnet-visualstudio3}
 \end{figure}
 
 \begin{figure}
+\centering
   \includegraphics[width=12cm]{images/dotnet-visualstudio4}
   \caption{Creating a .NET application using \tuprolog{} in Visual Studio: the .NET handler of the \textit{OK} button.}\label{fig:dotnet-visualstudio4}
 \end{figure}
@@ -613,7 +616,8 @@ In static mode, the Prolog code is encapsulated in the .NET source when the C\# 
 
 By default, the generated class adopts the static mode, belongs to the same namespace as the .NET project that contains the Prolog source file, and has the same name as the Prolog source file: so, for instance, a Prolog source file named \texttt{Perm.pl} will lead to a class named \texttt{Perm.cs} belonging to a namespace named after the project name (e.g. \texttt{PrologTestSolution} in Figure \ref{fig:dotnet-codegen1and2} (top).
 %
-\begin{figure}\center
+\begin{figure}
+\centering
   \includegraphics[width=10cm]{images/dotnet-codegen1}\\
   \includegraphics[width=10cm]{images/dotnet-codegen2}
   \caption{Top: generation of a C\# class from the Prolog source (\texttt{Perm.pl}) shown on the left (default, static mode); the new class is named \texttt{Perm.cs}.

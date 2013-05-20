@@ -1,5 +1,5 @@
 %=======================================================================
-\chapter*{Appendix: version history}
+\chapter{Version history}
 \label{ch:version-history}
 %=======================================================================
 
@@ -299,9 +299,10 @@ Some minor bugs in \textit{ISOIOLibrary} have also been fixed.
 
 \subsection{From Version 2.6 to Version 2.7}
 
-Version 2.7 adds the new Socket library, providing support for both TCP and UDP sockets, both in synchronous and asynchronous mode, and embeds the refactored multi-threading-ready architecture, which makes it possible to explicitly create new threads to perform queries in an explicit parallelism perspective. New predicates are provided for explicit thread synchronization.
+Version 2.7, released on April 29, 2013, embeds the re-factored multi-threading-ready architecture, which makes it possible to explicitly create new threads to perform queries in an explicit parallelism perspective. New predicates are also provided for explicit thread synchronization.
+Moreover, it adds the new Socket library, which supports both TCP and UDP sockets, both in synchronous and asynchronous mode.
 
-Another major addition is the new support to .NET augmenting (Section \ref{sec:dotnet-pj}, i.e. the so-called P@J framework in .NET), where a brand new approach based on code generation has been implemented.
+As for the .NET version, another major addition is the new support to .NET augmenting (Section \ref{sec:dotnet-pj}, i.e. the so-called P@J framework in .NET), with a brand new approach based on code generation.
 
 %\textbf{To be confirmed:\textit{The support for handling the Standard Input from Java has been improved, enabling stdin (e.g. keyboard) input not only from the CUIConsole, but also from the \tuprolog{} GUI. This improvement also affects the Android and the Eclipse Plugin version.}}
 
@@ -333,7 +334,8 @@ The following people deserve a big thanks for their help and support in \tuprolo
   \item New class loading mechanism and register/1 predicate in 2.6.x: Michele Mannino
   \item New .NET augmenting (P@J for .NET) via Visual Studio code generators in 2.7: Fabio Gravina
   \item New \texttt{SocketLib} in 2.7: Adelina Benedetti
-  \item New \texttt{ThreadLib} in 2.7: Eleonora Cau
+  \item New Multi-threading architecture and new \texttt{ThreadLib} in 2.7: Eleonora Cau
+  \item Support for relative paths for the \texttt{consult} predicate in 2.7: Tobias Haupenthal
 \end{itemize}
 
 \noindent \textit{The \tuprolog{} development team}: \\

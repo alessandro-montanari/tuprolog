@@ -1181,7 +1181,7 @@ The \texttt{Prolog} class is the home of \tuprolog{} engines, so some further in
 
 \begin{itemize}
 \item engines support natively some \emph{directives}, that can be defined by means of the \texttt{:-/1} predicate in theory specification.
-    Directives are used to specify properties of clauses and engines (\texttt{solve/1}, \texttt{initialization/1}, \texttt{set\_prolog\_flag/1}, \texttt{load\_library/1}, \texttt{consult/1}), format and syntax of read-terms (\texttt{op/3}, \texttt{char\_conversion/2}).
+    Directives are used to specify properties of clauses and engines (\texttt{solve/1}, \texttt{initialization/1}, \texttt{set\_prolog\_flag/1}, \texttt{load\_library/1}, \texttt{include/1}), format and syntax of read-terms (\texttt{op/3}, \texttt{char\_conversion/2}).
 
 \item engines also support the dynamic definition and management of \emph{flags} (or property), used to describe some aspects of libraries and their built-ins.
     A flag is identified by a name (an alphanumeric atom), a list of possible values, a default value and a boolean value specifying if the flag value can be modified.
@@ -1277,23 +1277,23 @@ public class Main {
 
   public static void main(String[] args) throws InvalidTheoryException,
       MalformedGoalException, NoSolutionException, NoMoreSolutionException {
-      
-      Struct clause1 = new Struct(":-", new Struct("p",new Var("X")), 
+
+      Struct clause1 = new Struct(":-", new Struct("p",new Var("X")),
                                         new Struct("q",new Var("X")));
-      Struct clause2 = new Struct(":-", new Struct("q",new Int(0)), 
+      Struct clause2 = new Struct(":-", new Struct("q",new Int(0)),
                                         new Struct("true"));
       System.out.println(clause1 + " is a clause? " + clause1.isClause());
       System.out.println(clause2 + " is a clause? " + clause2.isClause());
 
       Prolog engine = new Prolog();
-      Struct clauseList = new Struct(clause1, 
+      Struct clauseList = new Struct(clause1,
                                      new Struct(clause2, new Struct()));
       System.out.println(clauseList + " is a list? " + clauseList.isList());
 
       Theory t = new Theory(clauseList);
       engine.addTheory(t);
       SolveInfo info = engine.solve("p(X).");
-      
+
       while (info.isSuccess()) { % taken from the previous example
         System.out.println("solution: " + info.getSolution() +
                            " - bindings: " + info);
@@ -1303,7 +1303,7 @@ public class Main {
           break;
         }
       }
-      
+
     }
 }
 \end{verbatim}
@@ -1383,9 +1383,8 @@ In order to make the example more complete, the engine is finally asked to solve
 \end{table}
 
 As a final example, Table \ref{tab:console-sample} shows a console-based Prolog interpreter: first a \tuprolog{} engine is created and initialized with a theory built from a text file (whose name is taken from the command line), then a classic read/solve loop is started.
-%
-For each goal read from the standard input, the \texttt{solve} method is invoked: if multiple solutions exist, the \texttt{solveNext} makes it possible to explore the open
-alternatives.
+
+For each goal read from the standard input, the \texttt{solve} method is invoked: if multiple solutions exist, the \texttt{solveNext} makes it possible to explore the open alternatives.
 %
 The loop ends when the \texttt{halt} predicate is typed in: the current theory is then saved to file (if any has been specified).
 Figure \ref{fig:console-interpreter} shows a sample session with this interpreter.
@@ -1396,6 +1395,55 @@ Figure \ref{fig:console-interpreter} shows a sample session with this interprete
   \caption{A sample session with the Console-based Interpreter.}
   \label{fig:console-interpreter}
 \end{figure}
+
+
+%-----------------------------------------------------------------------
+\subsection{Support to relative paths in consulting Prolog sub-files}
+\label{ssec:relative-paths-consulting-subfiles-in-java-project}
+%-----------------------------------------------------------------------
+
+When developing a Java project that needs to load some Prolog theory, the typical Java statement to do so is:
+
+\begin{verbatim}
+   Theory theory = new Theory(new FileInputStream("test.pl"));
+\end{verbatim}
+
+\noindent In this way, however, only the files on the root folder of the Java project can be found and located: files in any other folder require either an absolute path, or a relative path starting from the project base folder (like \texttt{src/prolog-folder/subfile.pl}).
+
+This is quite uncomfortable, as it can easily lead either to prevent project relocation (if absolute paths are used) or  obstruct the otherwise-natural idea to put all the Prolog files in a suitable \texttt{prolog-files} subfolder (due to the need to refer to the project base folder, which would call for relative paths like \texttt{src/prolog-folder/subfile.pl}).
+
+To overcome these limitations, \tuprolog{} 2.7 improves the default behaviour of the \texttt{consult} predicate by allowing
+paths to be specified that are \textit{relative to the folder of the Prolog file which is doing the call}.
+
+In this way, Prolog files can be placed in a suitable \texttt{prolog-files} subfolder, and properly referenced by other files in upper folders easily and directly. For instance, if the Java project structure is something like:
+
+\begin{verbatim}
+- src
+- prolog-folder/
+- main.pl
+- java-folder/
+...
+\end{verbatim}
+
+\noindent the \texttt{main.pl} file can now include \texttt{subfile.pl} in the \texttt{prolog-folder} subfolder via a simple \texttt{consult('subfile.pl')} command.
+%
+In order to exploit this mechanism from Java, statements like the previous:
+
+\begin{verbatim}
+   Theory theory = new Theory(new FileInputStream("test.pl"));
+\end{verbatim}
+
+\noindent must be replaced by:
+
+\begin{verbatim}
+   Theory theory = new Theory(":-consult('test.pl').");
+\end{verbatim}
+ 
+\noindent In this way, the file location process is delegated to the \tuprolog{} engine instead of depending on Java's built-in \texttt{FileInputStream} mechanism.
+
+As an aside, this improvement also covers the \tuprolog{} IDE, enabling the sub-inclusions of Prolog files from other Prolog files in different folders even in the interactive work sessions.
+So, for instance, after consulting from the IDE a prolog file located in \texttt{someOtherFolder} (that is, a folder other than the current one), you can use \texttt{consult(someOtherFile)} command to load a file from the current folder.
+
 
 %-----------------------------------------------------------------------
 \subsection{Registering object bindings}
@@ -1513,6 +1561,7 @@ A full example of this technique is reported in Table
     }
   }
 \end{verbatim}}
+\centering
   \includegraphics[width=12cm]{images/onOutput}
 \caption{Capturing the Prolog output from Java: a complete example.}
 \label{tab:capturing-output-complete}
@@ -1753,8 +1802,8 @@ Libraries can also inherit from each other: a library can well extend a user lib
     ~~public static void main(String[] args) throws Exception \{\\
 	~~~~Prolog engine = new Prolog();\\
 	~~~~Library lib2 = engine.loadLibrary("HybridLibrary");\\
-	~~~~SolveInfo res = engine.solve("myprint(henry).");
-	~~~~int count=0;
+	~~~~SolveInfo res = engine.solve("myprint(henry).");\\
+	~~~~int count=0;\\
 	~~~~while (engine.hasOpenAlternatives() \&\& count < 5)\{\\
 	~~~~~~~~count++;\\
 	~~~~~~~~res = engine.solveNext();\\
@@ -1809,7 +1858,9 @@ The suggested workaround was to \textit{avoid} launching \tuprolog{} as a runnab
 
 In \tuprolog{} 2.6, instead, the new \texttt{load\_library/2} predicate has been added, which takes the desired path list as an extra argument, making it possible to load libraries from virtually anywhere in the file system:
 
-\texttt{?- load\_library('TestLibrary',['C:/Users/Johnny/Desktop/TestProject/test', 'D:/MyLibrary.jar']).}
+\texttt{?- load\_library('TestLibrary',}\\
+\texttt{\mbox{~~~~~~}['C:/Users/Johnny/Desktop/TestProject/test',}\\
+\texttt{\mbox{~~~~~~~}'D:/MyLibrary.jar']).}
 
 \noindent Clearly, both the \texttt{'/'} and the \texttt{$\backslash$} file separators are supported, based on the execution platform.
 

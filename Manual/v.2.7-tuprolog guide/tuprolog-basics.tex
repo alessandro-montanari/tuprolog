@@ -182,9 +182,9 @@ A library can be loaded by means of the predicate \texttt{load\_library} (Prolog
 
 
 \item[Directives] |
-At the second level, directives can be given by means of the \bt{:-/1} predicate, which is natively supported by the engine, and can be used to configure and use a \tuprolog{} engine (\bt{set\_prolog\_flag/1}, \bt{load\_library/1}, \bt{consult/1}, \bt{solve/1}), format and syntax of read-terms\footnote{As specified by the ISO standard, a read-term is a Prolog term followed by an end token, composed by an optional layout text sequence and a dot.} (\bt{op/3}).
+At the second level, directives can be given by means of the \bt{:-/1} predicate, which is natively supported by the engine, and can be used to configure and use a \tuprolog{} engine (\bt{set\_prolog\_flag/1}, \bt{load\_library/1}, \bt{include/1}, \bt{solve/1}), format and syntax of read-terms\footnote{As specified by the ISO standard, a read-term is a Prolog term followed by an end token, composed by an optional layout text sequence and a dot.} (\bt{op/3}).
 %
-Directives are described in detail in the following sections.
+Directives are described in detail in Section \ref{ssec:directives}.
 
 \item[Flags] |
 At the third level, \tuprolog{} supports the dynamic definition of flags to describe relevant aspects of libraries, predicates and evaluable functors.
@@ -599,6 +599,11 @@ The standard directives are as follows:
 
 \item \bti{:- include/1}\\
      \noindent\bt{include(Filename)} immediately loads the theory contained in the file specified by \bt{Filename}. Again, errors in the file name do not raise exceptions: the directive simply fails, yielding no effect at all.
+     
+     Until \tuprolog{} 2.6, an \texttt{include} directive trying to load another Prolog file in a directory other than the
+     current one will fail, unless the absolute sub-file name, or a relative path referred to the engine's base folder is provided. From \tuprolog{} 2.7 on, an enhanced mechanism has been included that enables \tuprolog{} to look for Prolog 
+     files in all the subfolders of the project base folder. So, for instance, the file \texttt{someOtherFile} located in \texttt{someOtherFolder} (a folder other than the current one) can be loaded from the current folder by simply issuing 
+     a \texttt{consult(someOtherFile)} command. See also Section \ref{ssec:relative-paths-consulting-subfiles-in-java-project}.
 
      \template{include(@string)}
 
