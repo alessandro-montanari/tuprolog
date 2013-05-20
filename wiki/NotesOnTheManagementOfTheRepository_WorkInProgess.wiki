@@ -159,5 +159,21 @@ TODO
 ==Target Ant==
 TODO
 
+Per java il tutto è abbastanza semplice:
+  # aggiorna tutto quello che deve aggiornare, compresa la versione in VersionInfo e committa;
+  # fa girare il task "11.release.bin" per produrre lo zip da caricare nella sezione Downloads;
+  # per taggare, siccome dobbiamo generare i file exe e dll per .NET, deve impostare in ant/environment.properties la directory di installazione di IKVM, "ikvm.dir" e il nome utente su google code di chi esegue il tag, "username". A questo punto facendo girare il task "12.tag" le verrà chiesta la password per google code che trova qui (https://code.google.com/hosting/settings) e lui taggerà il codice che c'è nel trunk generando anche tutti i file che ci servono per gli altri progetti (exe, dll e jar). In questo passo non è necessario committare quando ha modificato environment.properties, quindi la sua mail non comparirà sul repo. Il nome della cartella generata nei tags sarà "REL-2.7.1".
+
+Per android ed il plugin il tutto è un po' meno automatico:
+  # modificare gli externals: se guarda le proprietà di svn sul trunk di android e sul progetto "alice.tuprologx.eclipse" vedrà gli externals nella forma "^/2p/tags/REL-2.7.0/build/archives/tuprolog.jar lib/tuprolog.jar". L'unica cosa da fare è cambiare lo 0 in 1. A questo punto si committa e si fa UPDATE per assicurarsi che il nuovo tuprolog.jar sia scaricato.
+  # modifica del numero di versione come descritto qui https://code.google.com/p/tuprolog/wiki/ProjectsVersionManagement e commit;
+    # per android una volta modificata la versione e committato, lui ha già rigenerato il nuovo apk;
+    # per il plugin bisogna seguire la guida di Lorena.
+
+Per .NET siamo ancora un po' indietro:
+  # modificare gli externals: anche qui se guarda le proprietà dei progetti "OOLibrary" e "NETFileRunner" sotto il trunk vedrà gli externals che puntano  ai tags di java, anche in questo caso basta modificare il numero di versione. Commit e UPDATE.
+  # build della OOLib: da visual studio si fa "Build All" per rigenerare le dll della libreria e delle convenzioni.
+  # composizione della release: qui c'è il buco. In pratica bisogna copiare i file di ikvm e le varie dll di tuprolog seguendo la struttura che vede nei tags di .NET (cartella build) per poi generare lo zip da caricare sul repo, farlo a mano è ovviamente una palla :) però ancora non c'è lo script che lo fa in automatico. In realtà non ci dovrebbe molto per farlo perché la struttura è già definita, è solo da fare delle gran copie di file via ant, appena ho un'attimo lo faccio.
+
 = Compilation Target for Android =
 At the moment (Nov-2012) the Android SDK is not capable to use java libraries compiled with target level 1.7, this will lead to a `JavaClassNotFoundException`. For this reason the default target level for the java project is set to 1.6 (file ant/environment.properties).
