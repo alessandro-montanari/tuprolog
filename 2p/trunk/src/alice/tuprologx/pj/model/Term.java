@@ -7,7 +7,16 @@ import alice.tuprologx.pj.annotations.*;
  * @author maurizio
  */
 public abstract class Term<X extends Term<?>> {
-	public abstract <Z> Z toJava();// {return null;}
+	
+	// Added by ED 2013-05-21 following MC suggestion
+	@SuppressWarnings("unchecked")
+	<S, T> T uncheckedCast(S s) {
+	     return (T)s;
+	}
+	// END ADDITION
+	
+	
+	public abstract <Z> Z toJava(); // {return null;}
 	public static <Z extends Term<?>> Z fromJava(Object o) {
 		if (o instanceof Integer) {
 			return (Z)new Int((Integer)o);
