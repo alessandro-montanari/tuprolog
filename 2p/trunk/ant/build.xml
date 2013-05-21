@@ -36,11 +36,6 @@
 				<fileset dir="${build.classes.dir}" includes="**/*"/>
 			</delete>
 			
-	    	<!-- Set the version in file Prolog.java from the version specified in file environment.properties 
-			<replace file="${src.dir}/alice/tuprolog/Prolog.java" token="@engine.version@" value="${engine.version}"/>
-	    	<replace file="${src.dir}/alice/util/JavaVersionInfo.java" token="@JavaSpecific.version@" value="${JavaSpecific.version}"/>
-	    	<replace file="${src.dir}/alice/util/NetVersionInfo.java" token="@NETSpecific.version@" value="${NETSpecific.version}"/> -->
-			
 			<javac destdir="${build.classes.dir}" debug="@{debug}"
 			deprecation="false" optimize="@{optimize}" failonerror="true" includeantruntime="false" target="${target}" source="${target}">
 	            <src path="${src.dir}"/>
@@ -51,11 +46,6 @@
 				<fileset dir="${src.dir}/alice/tuprologx/ide/img"/>
 			</copy>
 			
-	    	<!-- Set the keyword @version@ back into file Prolog.java so no modification is seen from subversion 
-			<replace file="${src.dir}/alice/tuprolog/Prolog.java" token="${engine.version}" value="@engine.version@"/>	
-	    	<replace file="${src.dir}/alice/util/JavaVersionInfo.java" token="${JavaSpecific.version}" value="@JavaSpecific.version@"/>
-	    	<replace file="${src.dir}/alice/util/NetVersionInfo.java" token="${NETSpecific.version}" value="@NETSpecific.version@"/> -->
-	    	
 	    </sequential>
 	</macrodef>
 	
