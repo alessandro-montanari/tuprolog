@@ -34,11 +34,11 @@ public class ConsoleDialog
     static final long serialVersionUID = 0;
     
     private static final int SOLUTION_INDEX = 0;
-    private static final int BINDINGS_INDEX = 1;
-    private static final int ALL_BINDINGS_INDEX = 2;
-    private static final int OUTPUT_INDEX = 3;
+    private static final int BINDINGS_INDEX = 2;
+    private static final int ALL_BINDINGS_INDEX = 3;
+    private static final int OUTPUT_INDEX = 4;
     /*Castagna 06/2011*/	
-	private static final int EXCEPTION_INDEX = 4;
+	private static final int EXCEPTION_INDEX = 5;
 	/**/
     
     private String statusMessage;
@@ -97,6 +97,12 @@ public class ConsoleDialog
         solution.setEditable(false);
         tp.addTab("solution", new JScrollPane(solution));
         
+        //Signorin
+      	String s = "null";
+      	term = new TermPanel(Term.createTerm(s));
+      	tp.addTab("call tree", new JScrollPane(term));
+
+        
         tableSolve = new PrologTable();
         tp.addTab("bindings",new JScrollPane(tableSolve));
 
@@ -112,13 +118,7 @@ public class ConsoleDialog
 		exception = new JTextPane();
 		exception.setEditable(false);
 		
-		//Signorin
-		String s = "null";
-		term = new TermPanel(Term.createTerm(s));
-		tp.addTab("term", new JScrollPane(term));
 		
-		
-
 		//Get the exception text pane's document
 		StyledDocument doc = exception.getStyledDocument();
 

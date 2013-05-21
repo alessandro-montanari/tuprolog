@@ -605,6 +605,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 */
 	protected void spy(String s, Engine e) {
 		//System.out.println("spy: "+i+"  "+s+"  "+g);
+		//try{
 		if (spy) {
 			ExecutionContext ctx = e.currentContext;
 			int i=0;
@@ -615,6 +616,10 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 			}
 			notifySpy(new SpyEvent(this, e, "spy: " + i + "  " + s + "  " + g));
 		}
+	//	}catch(NullPointerException ex )
+	//	{
+	//		System.out.println("CIao");
+	//	}
 	}
 
 
