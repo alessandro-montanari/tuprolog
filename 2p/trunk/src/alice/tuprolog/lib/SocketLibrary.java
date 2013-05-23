@@ -41,7 +41,7 @@ import alice.tuprolog.interfaces.*;
 
 public class SocketLibrary extends Library implements ISocketLib {
 	private String addrRegex;
-	private LinkedList<ThreadReader> readers;					// Active readers
+	private LinkedList<ThreadReader> readers;			// Active readers
 	private LinkedList<ServerSocket> serverSockets;		// Opened ServerSockets
 	private LinkedList<Socket> clientSockets;			// Opened Sockets
 
@@ -150,7 +150,7 @@ public boolean udp_socket_close_1(Term Socket) throws PrologError {
 	return true;
 }
 
-//udp recieve data
+//udp receive data
 @Override
 public boolean udp_receive(Term Socket, Term Data, Struct AddressFrom,
 		Struct Options) throws PrologError {
