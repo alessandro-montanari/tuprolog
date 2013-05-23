@@ -85,7 +85,7 @@ public class SocketLibTest {
 			
 		}; 
 		myThread.start(); 
-		Thread.sleep(1000);
+		Thread.sleep(500); //ED: was 1000
 	} 
 	
 	@Test
