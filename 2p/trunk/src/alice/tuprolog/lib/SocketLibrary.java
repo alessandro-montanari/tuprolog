@@ -305,8 +305,8 @@ public boolean tcp_socket_server_accept_3(Term ServerSock, Term Client_Addr, Ter
  * Create a Client_Socket and connect it to a specified address.
  * @throws PrologError if Socket is not a variable
  */
-public boolean tcp_socket_client_open_2(Struct Address, Term Socket) throws PrologError {
-	if (!(Socket.getTerm() instanceof alice.tuprolog.Var)) { // Socket has to be a variable
+public boolean tcp_socket_client_open_2(Struct Address, Term SocketTerm) throws PrologError {
+	if (!(SocketTerm.getTerm() instanceof alice.tuprolog.Var)) { // Socket has to be a variable
 		throw PrologError.instantiation_error(engine.getEngineManager(), 2);
 	}
 
@@ -323,10 +323,10 @@ public boolean tcp_socket_client_open_2(Struct Address, Term Socket) throws Prol
 	}
 	port = Integer.parseInt(split[split.length - 1]);
 
+	Socket s;
 	try {
-		Socket s=new Socket(InetAddress.getByAddress(address), port);
-		Client_Socket socket = new Client_Socket(s);
-		Socket.unify(this.getEngine(), socket);
+		s = new Socket(InetAddress.getByAddress(address), port);
+		SocketTerm.unify(this.getEngine(), new Client_Socket(s));
 		addClientSocket(s);
 	} catch (UnknownHostException e) {
 		// TODO Auto-generated catch block
