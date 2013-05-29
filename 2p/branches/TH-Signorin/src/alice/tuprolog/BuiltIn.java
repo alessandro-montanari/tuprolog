@@ -343,8 +343,8 @@ public class BuiltIn extends Library {
 	 static Term convertTermToGoal(Term term) {
 		 if (term instanceof Number)
 			 return null;
-		 if(term instanceof Var && ((Var)term).getLink() instanceof Number)
-			 return null;
+		/* if(term instanceof Var && ((Var)term).getLink() instanceof Number)
+			 return null;*/
 		 term = term.getTerm();
 		 if (term instanceof Var)
 			 return new Struct("call", term);
