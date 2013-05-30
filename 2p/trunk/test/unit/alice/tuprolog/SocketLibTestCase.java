@@ -1,138 +1,96 @@
 package alice.tuprolog;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
-import alice.tuprolog.lib.SocketLibrary;
-
+/**
+ * @author Eleonora Cau
+ *
+ */
 
 public class SocketLibTestCase {
-
-	private static Prolog engine1 = null;
-	private static Prolog engine2 = null;
-	private static Term socket  = new Var();       // ADDED BY ED 2013-05-23
 	
-	/*
-	@AfterClass 
-	public static void after() throws PrologError { // ED 2013
-		SocketLibrary lib1 = (SocketLibrary) engine1.getLibrary("alice.tuprolog.lib.SocketLibrary");
-        boolean closed = lib1.tcp_socket_server_close_1(socket);
-		System.out.println("[SocketLibTest] Server socket " + socket + " closed ? " + closed); 
+	Prolog engine = null;
+	String theory;
+	
+	
+	@Before
+	public void before() throws InvalidLibraryException, MalformedGoalException, NoSolutionException, UnknownVarException {
+		try {
+			engine = new Prolog();
+			engine.loadLibrary("alice.tuprolog.lib.SocketLibrary");
+			engine.loadLibrary("alice.tuprolog.lib.ThreadLibrary");
+		} catch (InvalidLibraryException e) {
+			e.printStackTrace();
+		}
 	}
-	*/
 	
-	@BeforeClass
-	public static void before() throws InterruptedException, InvalidTheoryException, MalformedGoalException {
-		engine1 = new Prolog();
-		engine2 = new Prolog();
+	@Test 
+	public void test_server_write() throws InvalidTheoryException, MalformedGoalException, NoSolutionException, UnknownVarException{
+		String theory = 
+		"server(Y):- thread_create(ID1, Y). \n"+
+		"doServer(S) :- tcp_socket_server_open('127.0.0.1:4444', S, []), " +
+					"tcp_socket_server_accept(S, '127.0.0.1:4444', ClientSock),  " +
+					"write_to_socket(ClientSock, 'msg inviato dal server'), " +
+					"thread_sleep(1), " +
+					"mutex_lock('mutex'), " +
+					"tcp_socket_server_close(S)," +
+					"mutex_unlock('mutex').\n" +
+		"client(X):- thread_create(ID2,X), " +
+					"thread_read(ID2,X).\n"+
+		"doClient(Sock, Msg) :- tcp_socket_client_open('127.0.0.1:4444',Sock), " +
+					"mutex_lock('mutex'), " +
+					"read_from_socket(Sock, Msg, []), " +
+					"mutex_unlock('mutex')." ;
 		
-		System.out.println("[SocketLibTest] Starting server configuration"); 
+		engine.setTheory(new Theory(theory));
 		
-		Thread myThread = new Thread() { 
-			public void run() { 
-				System.out.println("[SocketLibTest] Starting Server Thread"); 
-				SocketLibrary lib;
+		SolveInfo result = engine.solve("server(doServer(SS)), client(doClient(CS,Msg)).");	
+		assertTrue(result.isSuccess());
 
-				Struct Address = new Struct("127.0.0.1:4444");
-				//Term   socket  = new Var(); // COMMENTED OUT BY ED 2013-05-23
-				Struct Options = new Struct("[]");
-				Term   ClientSocket = new Var();
-				Term   Msg = new Var();
-				
-				try {			
-					engine1.loadLibrary("alice.tuprolog.lib.SocketLibrary");
-					engine2.loadLibrary("alice.tuprolog.lib.SocketLibrary");
-					lib = (SocketLibrary) engine1.getLibrary("alice.tuprolog.lib.SocketLibrary");
-									
-					if (!((Var)socket).isBound()){ 	// External If ADDED BY ED 2013-05-23
-						boolean so = lib.tcp_socket_server_open_3(Address, socket, Options); 
-						if (so)	{
-							// System.out.println("[SocketLibTest] Server listening at " + socket); 
-						}
-					}
-					System.out.println("[SocketLibTest] Server listening at " + socket);
-					
-					boolean ta = lib.tcp_socket_server_accept_3(socket, Address, ClientSocket);
-					if(ta) {
-						System.out.println("[SocketLibTest] Connection accepted from client " + ClientSocket);
-					}				
-					
-					boolean rd = lib.read_from_socket_3(ClientSocket, Msg, Options);
-					if(rd) {
-						System.out.println("[SocketLibTest] Client at " + ClientSocket + ", message read: " + Msg );
-					}
-				}
-				catch (InvalidLibraryException e1) {
-					System.out.println("[SocketLibTest] InvalidLibraryException");
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				catch (PrologError e) {
-					System.out.println("[SocketLibTest] PrologError");
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-			}
-			
-		}; 
-		myThread.start(); 
-		Thread.sleep(1000);
-	} 
+		/*Var clientSock = (Var) result.getTerm("CS");	
+		System.out.println("[SocketLibTest] Client Socket: "+ clientSock);
+		
+		Var serverSock = (Var) result.getTerm("SS");	
+		System.out.println("[SocketLibTest] Server Socket: "+ serverSock);*/
+		
+		Struct msg = (Struct) result.getTerm("Msg");	
+		assertEquals(Term.createTerm("'msg inviato dal server'"), msg);
 	
-	@Test
-	public void testWrite_to_socket_2() throws InvalidTheoryException, MalformedGoalException, PrologError, NoSolutionException, UnknownVarException {
-		String theory = "client(Sock) :- tcp_socket_client_open('127.0.0.1:4444',Sock), write_to_socket(Sock,test1).";
-		engine2.setTheory(new Theory(theory));
-		System.out.println("[SocketLibTest] Client1 connecting...");
-		SolveInfo result = engine2.solve("client(X).");
-		assertTrue(result.isSuccess());
-		Var clientsock1 = (Var)result.getTerm("X");
-		System.out.println("[SocketLibTest] Client1 connected successfully from socket "+ clientsock1);	
-	}
-
-	/* 
-	@Test
-	public void testTcp_socket_client_open_2() throws PrologException, PrologError {
-		String theory = "client(Sock):-tcp_socket_client_open('127.0.0.1:4444',Sock).";
-		engine2.setTheory(new Theory(theory));
-		System.out.println("[SocketLibTest] Client2 connecting...");
-		SolveInfo result = engine2.solve("client(X).");
-		assertTrue(result.isSuccess());
-		Var clientsock2 = (Var)result.getTerm("X");
-		System.out.println("[SocketLibTest] Client2 connected successfully from socket "+ clientsock2);	
-	}
-	*/
-
-	@Test
-	public void testTcp_socket_client_open_2() throws PrologException, PrologError {
-		System.out.println("[SocketLibTest] Client2 connecting...");
-		SolveInfo result = engine2.solve("tcp_socket_client_open('127.0.0.1:4444',Sock).");
-		assertTrue(result.isSuccess());
-		Var clientsock2 = (Var)result.getTerm("Sock");
-		System.out.println("[SocketLibTest] Client2 connected successfully from socket "+ clientsock2);	
 	}
 	
-	@Test
-	public void testTcp_socket_server_close_1() throws PrologError, InvalidTheoryException, MalformedGoalException {
-		Struct Address=new Struct("127.0.0.1:4441");
-        Term Socket= new Var();
-        Struct Options=new Struct("[]");
-                
-        SocketLibrary lib = (SocketLibrary) engine1.getLibrary("alice.tuprolog.lib.SocketLibrary");
-
-        System.out.println("[SocketLibTest] Testing socket server close");	
-        System.out.println("[SocketLibTest] Opening server socket");	
-        lib.tcp_socket_server_open_3(Address, Socket, Options);
-        System.out.println("[SocketLibTest] Server socket opened successfully at " + Socket);	
-
-		System.out.println("[SocketLibTest] Closing server socket");	
-        boolean close=lib.tcp_socket_server_close_1(Socket);
-        assertTrue(close);
-		System.out.println("[SocketLibTest] Server socket closed successfully");	
+	@Test 
+	public void test_client_write() throws InvalidTheoryException, MalformedGoalException, NoSolutionException, UnknownVarException{
+		String theory = 
+		"server(ID1):- thread_create(ID1, doServer(SS, Msg)). \n"+
+		"doServer(S, Msg) :- tcp_socket_server_open('127.0.0.1:4444', S, []), " +
+					"tcp_socket_server_accept(S, '127.0.0.1:4444', ClientSock), " +
+					"mutex_lock('mutex'), " +
+					"read_from_socket(ClientSock, Msg, []), " +
+					"mutex_unlock('mutex'), " +
+					"tcp_socket_server_close(S).\n" +
+		"client(X):- thread_create(ID2,X), " +
+					"thread_read(ID2,X).\n"+
+		"doClient(Sock) :- tcp_socket_client_open('127.0.0.1:4444',Sock),  " +
+					"write_to_socket(Sock, 'msg inviato dal client'), " +
+					"thread_sleep(1).\n" +
+		"read(ID1,Y):- thread_read(ID1,Y)." ;
+		engine.setTheory(new Theory(theory));
+		
+		SolveInfo result = engine.solve("server(ID1), client(doClient(CS)), read(ID1,doServer(SS,Msg)).");	
+		assertTrue(result.isSuccess());
+		
+		/*Var clientSock = (Var) result.getTerm("CS");	
+		System.out.println("[SocketLibTest] Client Socket: "+ clientSock);
+		
+		Var serverSock = (Var) result.getTerm("SS");	
+		System.out.println("[SocketLibTest] Server Socket: "+ serverSock);*/
+		
+		Struct msg = (Struct) result.getTerm("Msg");	
+		assertEquals(Term.createTerm("'msg inviato dal client'"), msg);
 	}
-
 }
+
