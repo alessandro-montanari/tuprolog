@@ -84,7 +84,7 @@
 		<echo message="{lib.dir} is '${lib.dir}'"/>
 		<echo message="{tmp.dir} is '${tmp.dir}'"/>
 		<echo message="{engine.version} is '${engine.version}'"/>
-		<echo message="{androidSpecific.version} is '{androidSpecific.version}'"/>
+		<echo message="{androidSpecific.version} is '${androidSpecific.version}'"/>
         <echo message=" "/>
 	</target>
 	
@@ -124,7 +124,7 @@
 		
 		<svn refid="settings">
 		    
-		    <!--  Real of the code -->
+		    <!--  Real tag of the code -->
 			<copy
 				srcUrl="https://tuprolog.googlecode.com/svn/2p-android/trunk" 
 				destUrl="https://tuprolog.googlecode.com/svn/2p-android/tags/REL-${engine.version}.${androidSpecific.version}"
