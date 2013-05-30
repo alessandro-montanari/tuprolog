@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: tuProlog Development Tools
-Bundle-SymbolicName: alice.tuprologx.eclipse;singleton:=true
+Bundle-SymbolicName: tuPrologPlugin;singleton:=true
 Bundle-Version: 2.7.0
 Bundle-Activator: alice.tuprologx.eclipse.TuProlog
 Bundle-Vendor: tuprolog team @ Alma mater Studiorum - Università di Bologna
