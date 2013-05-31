@@ -85,7 +85,7 @@ public class SpyFrame extends JFrame implements ActionListener, SpyListener{
     number.addActionListener(this);
     
   //Emanuele Signorin
-    go = new JButton("Go");
+    go = new JButton("Next");
     topp.add(go);
     go.addActionListener(this);
     
