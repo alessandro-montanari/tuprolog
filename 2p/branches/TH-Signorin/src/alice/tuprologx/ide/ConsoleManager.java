@@ -44,6 +44,7 @@ public class ConsoleManager
 
     public void solve()
     {
+    	
     	dialog.setTermPanel(engine.termSolve(getGoal()));
     	
         dialog.clearResults();
@@ -68,7 +69,6 @@ public class ConsoleManager
                 ide.enableTheoryCommands(false);
                 dialog.setStatusMessage("Solving...");
                 new EngineThread(engine, getGoal(), this).start();
-                
             }
             catch (Exception e)
             {

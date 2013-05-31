@@ -15,7 +15,6 @@ import alice.tuprolog.Prolog;
 import alice.tuprolog.Term;
 import alice.tuprolog.Theory;
 import alice.tuprolog.structure.SpyFrame;
-import alice.tuprolog.structure.TermFrame;
 
 
 public class ToolBar extends JPanel
@@ -63,10 +62,6 @@ public class ToolBar extends JPanel
 	 */
     private IDE ide;
     
-    /*creato da Emanuele Signorin*/
-    static private String path;
-    
-    
     private JFrame parent;
     
     private JButton bNew;
@@ -77,8 +72,11 @@ public class ToolBar extends JPanel
     private JButton bDebug;
     private JButton bConfigure;
     private JButton bAbout;
+    private JButton bSpy;
 
     protected FileIDE fileIDE;
+    
+    static private String path;
 
     
     public ToolBar(IDE ide, JFrame parent)
@@ -188,13 +186,12 @@ public class ToolBar extends JPanel
                 viewAboutInformation();
             }
         });
-        
-        //creato da Emanuele Signorin
-        JButton spy = new JButton("Spy");
-        
-        spy.setToolTipText("Spy Frame");
-        spy.setPreferredSize(new Dimension(32,32));
-        spy.addActionListener(new ActionListener()
+
+      //creato da Emanuele Signorin
+        bSpy = new JButton();
+        bSpy.setToolTipText("Spy Frame");
+        bSpy.setPreferredSize(new Dimension(32,32));
+        bSpy.addActionListener(new ActionListener()
         {
         	public void actionPerformed(ActionEvent event)
             {
@@ -207,7 +204,7 @@ public class ToolBar extends JPanel
 					e.printStackTrace();
 				}
             }
-        }); 
+        });
 
 
         JPanel bottonsPanel = new JPanel();
@@ -219,10 +216,7 @@ public class ToolBar extends JPanel
         bottonsPanel.add(bDebug);
         bottonsPanel.add(bConfigure);
         bottonsPanel.add(bAbout);
-        /*
-         * 
-         */
-        bottonsPanel.add(spy);
+        bottonsPanel.add(bSpy);
 
         
         setLayout(new BorderLayout());
@@ -360,10 +354,9 @@ public class ToolBar extends JPanel
         try {
             fileIDE = fileManager.loadFile();
             if (fileIDE.getFilePath() != null) {
-                
-            	this.path = fileIDE.getFilePath();
-            	engine.resetDirectoryList(fileIDE.getFilePath());
-            	
+            	path = fileIDE.getFilePath();
+                engine.resetDirectoryList(fileIDE.getFilePath());
+
                 /** this isn't correct with the tabbed theory visualization*/
                 //engine.setTheory(theory);
 
@@ -434,7 +427,6 @@ public class ToolBar extends JPanel
      */
     public void viewDebugInformation() {
         debugArea.setVisible(true);
-    	
     }
 
     public void configure()

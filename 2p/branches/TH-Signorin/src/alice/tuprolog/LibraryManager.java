@@ -73,6 +73,8 @@ public class LibraryManager {
 		LibraryEvent ev = new LibraryEvent(prolog, lib.getName());
 		prolog.notifyLoadedLibrary(ev);
 		return lib;
+		
+		
 	}   
 
 	/**
@@ -252,6 +254,8 @@ public class LibraryManager {
 			//            ex.printStackTrace();
 			throw new InvalidLibraryException(lib.getName(),-1,-1);
 		}
+		
+		
 	}
 
 

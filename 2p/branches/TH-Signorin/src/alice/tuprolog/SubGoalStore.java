@@ -8,11 +8,10 @@ public class SubGoalStore {
     private int index;
     private DefaultSubGoalId curSGId;
     private boolean fetched=false;
-    
 
     public SubGoalStore() {
         commaStruct = goals = new SubGoalTree();
-        index = 0;       
+        index = 0;
         curSGId = null;
     }
 
@@ -22,7 +21,6 @@ public class SubGoalStore {
     public boolean load(SubGoalTree subGoals) {
         commaStruct = subGoals;
         goals=commaStruct.copy();
-       
         return true;
 
     }
@@ -64,8 +62,7 @@ public class SubGoalStore {
             }
         } else {
 
-            AbstractSubGoalTree s = commaStruct.getChild(index);           
-            
+            AbstractSubGoalTree s = commaStruct.getChild(index);
             index++;
             if (s instanceof SubGoalTree) {
                 pushSubGoal((SubGoalTree) s);
@@ -86,7 +83,6 @@ public class SubGoalStore {
 
     public boolean haveSubGoals() {
         return (index < goals.size());
-
     }
 
     public String toString() {

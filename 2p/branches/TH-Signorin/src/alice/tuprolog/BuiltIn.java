@@ -39,6 +39,7 @@ public class BuiltIn extends Library {
 	private FlagManager flagManager;
 	private PrimitiveManager primitiveManager;
 	private OperatorManager operatorManager;
+	
 
 	public BuiltIn(Prolog mediator) {
 		super();
@@ -339,11 +340,12 @@ public class BuiltIn extends Library {
 	  * Note that a variable X and a term call(X) are converted to identical
 	  * bodies. Also note that if T is a number, then there is no goal which
 	  * corresponds to T.
+	 * @throws PrologError 
 	  */
-	 static Term convertTermToGoal(Term term) {
+	 static Term convertTermToGoal(Term term){
 		 if (term instanceof Number)
 			 return null;
-		/* if(term instanceof Var && ((Var)term).getLink() instanceof Number)
+		 /*if(term instanceof Var && ((Var)term).getLink() instanceof Number)
 			 return null;*/
 		 term = term.getTerm();
 		 if (term instanceof Var)
@@ -433,8 +435,8 @@ public class BuiltIn extends Library {
 		 }
 		 Term val1 = ((Struct) arg1).fromList();
 		 if (val1 == null)
-			 //throw PrologError.type_error(engineManager, 2, "list", arg1);
 			 return false;
+			 //throw PrologError.type_error(engineManager, 2, "list", arg1);
 		 return (unify(arg0, val1));
 	 }
 
@@ -442,7 +444,7 @@ public class BuiltIn extends Library {
 		 // unify arg1 with a renamed copy of arg0
 		 arg0 = arg0.getTerm();
 		 arg1 = arg1.getTerm();
-		 int id = engineManager.env.nDemoSteps;
+		 int id = engineManager.getEnv().nDemoSteps;
 		 return unify(arg1, arg0.copy(new IdentityHashMap<Var,Var>(), id));
 	 }
 
@@ -609,15 +611,13 @@ public class BuiltIn extends Library {
 	 public void include_1(Term theory) throws FileNotFoundException,
 	 InvalidTheoryException, IOException {
 		 theory = theory.getTerm();
-//		 engine.addTheory(new Theory(new FileInputStream(alice.util.Tools
-//				 .removeApices(theory.toString()))));
-		 String path = alice.util.Tools.removeApices(theory.toString());
-		 if(! new File(path).isAbsolute()) {
-			 path = engine.getCurrentDirectory()  + File.separator + path;
-		 }
-		 engine.pushDirectoryToList(new File(path).getParent());
+         String path = alice.util.Tools.removeApices(theory.toString());
+         if(! new File(path).isAbsolute()) {
+            path = engine.getCurrentDirectory()  + File.separator + path;
+         }
+         engine.pushDirectoryToList(new File(path).getParent());
 		 engine.addTheory(new Theory(new FileInputStream(path)));
-		 engine.popDirectoryFromList();
+         engine.popDirectoryFromList();
 	 }
 
 }

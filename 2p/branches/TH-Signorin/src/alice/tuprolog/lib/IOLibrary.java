@@ -363,12 +363,10 @@ public class IOLibrary extends Library {
         Struct goal = null;
         String path = alice.util.Tools.removeApices(((Struct) fileName).toString());
         if(! new File(path).isAbsolute()) {
-        path = engine.getCurrentDirectory()  + File.separator + path;
+            path = engine.getCurrentDirectory()  + File.separator + path;
         }
         try {
-//            goal = new Struct(alice.util.Tools.loadText(alice.util.Tools
-//                    .removeApices(((Struct) fileName).toString())));
-        	goal = new Struct(alice.util.Tools.loadText(path));
+            goal = new Struct(alice.util.Tools.loadText(path));
         } catch (IOException e) {
             throw PrologError.existence_error(engine.getEngineManager(), 1,
                     "stream", file_name, new Struct(e.getMessage()));
