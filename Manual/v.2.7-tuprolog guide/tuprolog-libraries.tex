@@ -1030,7 +1030,7 @@ The IOLibrary defines the classical Prolog I/O predicates; further ISO-compliant
 
 \item \bti{consult/1}\\
     \noindent\bt{consult(FileName)} is true iff \texttt{FileName} is an \textit{accessible} file containing a Prolog knowledge base, and as a side effect it consult that knowledge base, by adding it to current knowledge base.
-    
+
     The concept of \textit{accessible} file has evolved over the \tuprolog{} versions.
     As already discussed in Section \ref{ssec:directives} for the \texttt{include} directive, in \tuprolog{} versions up to 2.6, trying to load another Prolog file in a directory other than the current one would fail, unless the absolute sub-file name, or a relative path referred to the engine's base folder is provided. From \tuprolog{} 2.7 on, an enhanced mechanism has been included that enables \tuprolog{} to look for Prolog files in all the subfolders of the project base folder. So, for instance, the file \texttt{someOtherFile} located in \texttt{someOtherFolder} (a folder other than the current one) can be loaded from the current folder by simply issuing a \texttt{consult(someOtherFile)} command. See also Section \ref{ssec:relative-paths-consulting-subfiles-in-java-project}.
 
@@ -1480,13 +1480,14 @@ has_child(bob, alex).
 has_child(bob, anna).
 has_child(bob, mary).
 
-loop(I, To, Inc, ThreadId) :- Inc >= 0, I > To, !.
-loop(I, To, Inc, ThreadId) :- Inc < 0,  I < To, !.
-loop(I, To, Inc, ThreadId) :-
-  (thread_has_next(ThreadId) -> thread_next_sol(ThreadId),
-                                Next is I+Inc,
-                                loop(Next, To, Inc, ThreadId)
-                              ; !).
+loop(I, To, Inc, ThreadId) :- Inc >= 0, I > To, !. 
+loop(I, To, Inc, ThreadId) :- Inc < 0, I < To, !. 
+loop(I, To, Inc, ThreadId) :- thread_has_next(ThreadId), 
+                              !, 
+                              thread_next_sol(ThreadId), 
+                              Next is I+Inc,
+                              loop(Next, To, Inc, ThreadId).
+loop(I, To, Inc, ThreadId).
 \end{Verbatim}
 
 \label{fig:thread-exampleMutex}
