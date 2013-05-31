@@ -69,8 +69,6 @@ public class ConsoleDialog
     private JButton bStop;
     private JButton bClear;
     private JButton bExport;
-    
-    
 
     public ConsoleDialog(Console consoleManager)
     {
@@ -97,11 +95,9 @@ public class ConsoleDialog
         solution.setEditable(false);
         tp.addTab("solution", new JScrollPane(solution));
         
-        //Signorin
       	String s = "null";
       	term = new TermPanel(Term.createTerm(s));
       	tp.addTab("call tree", new JScrollPane(term));
-
         
         tableSolve = new PrologTable();
         tp.addTab("bindings",new JScrollPane(tableSolve));
@@ -117,8 +113,7 @@ public class ConsoleDialog
 		exceptionEnabled = true;
 		exception = new JTextPane();
 		exception.setEditable(false);
-		
-		
+
 		//Get the exception text pane's document
 		StyledDocument doc = exception.getStyledDocument();
 
@@ -824,7 +819,6 @@ public class ConsoleDialog
 			}
 			bClear.setEnabled(false);
 		}		
-		
 	}
 	/**/
 	

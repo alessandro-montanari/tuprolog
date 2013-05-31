@@ -5,7 +5,6 @@ import java.beans.PropertyChangeSupport;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 
 import alice.tuprolog.InvalidTheoryException;
@@ -156,7 +155,7 @@ public class TheoryEditor
      */
     public void setEngineTheory() {
         // insert a check on feededTheory? -> if true does not feed anything.
-        String theory = editArea.getTheory();		
+        String theory = editArea.getTheory();
         try {
             getEngine().setTheory(new Theory(theory));
             editArea.setDirty(false);

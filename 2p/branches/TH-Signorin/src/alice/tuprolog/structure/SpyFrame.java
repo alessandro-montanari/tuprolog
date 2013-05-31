@@ -1,6 +1,5 @@
 package alice.tuprolog.structure;
 
-
 import alice.tuprolog.*;
 import alice.tuprolog.event.*;
 import java.awt.*;
@@ -50,26 +49,7 @@ public class SpyFrame extends JFrame implements ActionListener, SpyListener{
           else if(",".equals(name)) name=" ";//don't want to build the ,-tree
           else name=null;//indicates that we have a normal compound
           int pos=sub.indexOf(ec.getCurrentGoal());
-//          if(bottom!=null) sub.set(pos, bottom);
-          if(bottom!=null)
-          {
-        	  if(pos==-1)
-        	  {
-        		  ArrayList<Term> prova=new ArrayList<Term>();
-        		  prova.add(0, bottom);
-        		  int conta = 1;
-        		  for(Term t : sub)
-        		  {
-        			  prova.add(conta, t);
-        			  conta++;
-        		  }
-        		  sub = prova;
-        	  }
-        	  else
-        	  {
-        		  sub.set(pos, bottom);
-        	  }
-          }
+          if(bottom!=null) sub.set(pos, bottom);
           if(name==null) bottom=sub.get(0);
           else{
             Term[] subt=new Term[sub.size()];
@@ -99,13 +79,12 @@ public class SpyFrame extends JFrame implements ActionListener, SpyListener{
     Container c=getContentPane();
     //Panel at NORTH containing the input of steps
     JPanel topp=new JPanel();
-    //topp.add(new JLabel("Press Enter to do "));
     topp.add(new JLabel("Number of steps "));
     number=new JTextField("1", 2);
     topp.add(number);
-    //topp.add(new JLabel(" steps."));
     number.addActionListener(this);
-    //Emanuele Signorin
+    
+  //Emanuele Signorin
     go = new JButton("Go");
     topp.add(go);
     go.addActionListener(this);
@@ -146,15 +125,15 @@ public class SpyFrame extends JFrame implements ActionListener, SpyListener{
         SolveInfo sinfo=prolog.solve(goal);
         if(sinfo!=null)
         {
-        while(sinfo.isSuccess())
-          try{
-            sol=sinfo.getSolution();
-            results.append("\nsolution: "+sol);
-            results.append("\ninfo:     "+sinfo);
-            if(sinfo.hasOpenAlternatives()) sinfo=prolog.solveNext();
-            else break;
-          } catch(Exception ex){System.out.println(ex);}
-        results.append("Halt.");
+        	while(sinfo.isSuccess())
+                try{
+                  sol=sinfo.getSolution();
+                  results.append("\nsolution: "+sol);
+                  results.append("\ninfo:     "+sinfo);
+                  if(sinfo.hasOpenAlternatives()) sinfo=prolog.solveNext();
+                  else break;
+                } catch(Exception ex){System.out.println(ex);}
+              results.append("Halt.");
         }
       }
     };

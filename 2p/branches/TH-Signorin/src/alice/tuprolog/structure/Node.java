@@ -1,6 +1,5 @@
 package alice.tuprolog.structure;
 
-
 import java.awt.Color;
 
 /**Nodes are the constituing element of a tree.
