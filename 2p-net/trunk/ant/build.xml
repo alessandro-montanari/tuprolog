@@ -1,0 +1,179 @@
+﻿<?xml version="1.0"?>
+
+<project name="tuProlog.NET build file" basedir="..">
+	
+	<path id="path.svnant">
+ 		<pathelement location="ant/lib/svnant.jar"/>
+ 		<pathelement location="ant/lib/svnClientAdapter.jar"/>
+		<pathelement location="ant/lib/svnkit-javahl16-1.7.9.jar"/>
+		<pathelement location="ant/lib/sqljet-1.1.7.jar"/>
+		<pathelement location="ant/lib/svnkit-1.7.9.jar"/>
+		<pathelement location="ant/lib/antlr-runtime-3.4.jar"/>
+		<pathelement location="ant/lib/sequence-library-1.0.2.jar"/>
+ 		<!-- ... -->
+	</path>
+	    
+	<typedef 
+	      resource="org/tigris/subversion/svnant/svnantlib.xml" 
+	      classpathref="path.svnant"	
+	/>
+	
+
+  <target name="00.init.properties" description="Sets up properties">
+	<echo message="Remember to set up the properties in the file ant/environment.properties !!!"/>
+	<!-- Environment properties -->
+	<property file="ant/environment.properties"/>
+	
+	<!-- Project structure -->
+	<property name="projects.root.dir" value="OOLibrary"/>
+	<property name="oolib.bin.dir" value="OOLibrary/OOLibrary/bin/Release"/>
+	<property name="oolib.lib.dir" value="OOLibrary/OOLibrary/lib"/>
+	<property name="conventions.bin.dir" value="OOLibrary/Conventions/bin/Release"/>
+	<property name="examples.dir" value="examples"/>
+	<property name="helper.dir" value="ant/HelperVersion"/>
+	
+	<!-- Compile the HelperVersion, I'm not sure we can use always the same without recompile it, TO CHECK -->
+	<copy todir="${helper.dir}">
+		<fileset dir="${oolib.lib.dir}">
+			<include name="2p.exe"/>
+		</fileset>
+	</copy>
+	
+	<copy todir="${helper.dir}">
+		<fileset dir="${ikvm.dir}/bin/">
+			<include name="IKVM.OpenJDK.Core.dll"/>
+			<include name="IKVM.Runtime.dll"/> 
+		</fileset>
+	</copy>
+	
+	<exec dir="${helper.dir}" executable="csc">
+		<arg value="/reference:2p.exe,IKVM.OpenJDK.Core.dll"/>
+		<arg value="HelperVersion.cs"/>
+	</exec>
+	<!-- ................ -->
+	
+	<exec outputproperty="complete.version" executable="${basedir}/${helper.dir}/HelperVersion.exe" />
+	
+	<loadresource property="engine.version">
+	  <propertyresource name="complete.version"/>
+	  <filterchain>
+	    <tokenfilter>
+	      <trim/>
+	      <replaceregex pattern="\.[0-9]+$" replace="" />
+	    </tokenfilter>
+	  </filterchain>
+	</loadresource>
+	
+	<loadresource property="netSpecific.version">
+	  <propertyresource name="complete.version"/>
+	  <filterchain>
+	    <tokenfilter>
+	      <trim/>
+	      <replaceregex pattern="^[0-9]+\.[0-9]+\." replace="" />
+	    </tokenfilter>
+	  </filterchain>
+	</loadresource>
+	
+	<property name="release.dir" value="2p.NET-${engine.version}.${netSpecific.version}"/>
+	<property name="release.lib.dir" value="${release.dir}/lib"/>
+  	
+  </target>
+	
+	<target name="01.release.bin" depends="00.init.properties" description="Creates the structure for the release">
+		<echo message="msbuild and csc have to be in the PATH"/>
+		
+		<delete dir="${release.dir}" />
+		<delete file="${release.dir}.zip"/>
+	    <mkdir dir="${release.dir}"/>
+		<mkdir dir="${release.lib.dir}"/>
+		
+		
+		
+		<!-- Copy examples -->
+		<!-- We have to use export because the "examples" folder is under version control and we don't 
+			want to copy the svn informations in the build -->
+		<!-- <copy todir="${release.dir}/examples">
+			<fileset dir="${examples.dir}"/>
+		</copy> -->
+		 <svnSetting
+	            id="settings"
+	            svnkit="true" 
+	            javahl="false" />
+	    
+	    <!-- DOC: http://subclipse.tigris.org/svnant/svntask.html -->
+	    <svn refid="settings">
+	        
+	        <export
+	            srcPath="${examples.dir}"
+	            destPath="${release.dir}/examples" />
+	        
+	     </svn>
+		
+		<!-- Compile OOLib and conventions -->
+		<exec dir="${projects.root.dir}" executable="msbuild">
+			<arg value="/property:Configuration=Release"/>
+			<arg value="/t:Clean"/>
+		</exec>
+		
+		<exec dir="${projects.root.dir}" executable="msbuild">
+			<arg value="/property:Configuration=Release"/>
+		</exec>
+		
+		<!-- Copy OOLib, conventions, javassist, 2p.exe and tuprolog.dll -->
+		<copy todir="${release.lib.dir}">
+			<fileset dir="${oolib.bin.dir}">
+				<include name="OOLibrary.dll"/>
+				<include name="javassist.dll"/>
+			</fileset>
+		</copy>
+		
+		<copy todir="${release.lib.dir}">
+			<fileset dir="${conventions.bin.dir}">
+				<include name="Conventions.dll"/>
+			</fileset>
+		</copy>
+		
+		<copy todir="${release.dir}">
+			<fileset dir="${oolib.lib.dir}">
+				<include name="tuprolog.dll"/>
+				<include name="2p.exe"/>
+			</fileset>
+		</copy>
+		
+		<!-- Copy config file -->
+		<copy todir="${release.dir}">
+			<fileset dir="${basedir}/ant">
+				<include name="2p.exe.config"/>
+			</fileset>
+		</copy>
+		
+		<!-- Copy the IKVM files -->
+		<copy todir="${release.lib.dir}">
+			<fileset dir="${ikvm.dir}/bin/">
+				<include name="IKVM.OpenJDK.XML.API.dll"/>
+				<include name="IKVM.OpenJDK.Security.dll"/>
+				<include name="IKVM.OpenJDK.Naming.dll"/>
+				<include name="IKVM.OpenJDK.Media.dll"/>
+				<include name="IKVM.AWT.WinForms.dll"/>
+				<include name="IKVM.OpenJDK.Beans.dll"/>
+				<include name="IKVM.OpenJDK.Corba.dll"/>
+				<include name="IKVM.OpenJDK.Remoting.dll"/>
+				<include name="IKVM.OpenJDK.Util.dll"/>
+				<include name="IKVM.OpenJDK.Text.dll"/>
+				<include name="IKVM.OpenJDK.Core.dll"/>
+				<include name="IKVM.OpenJDK.Misc.dll"/>
+				<include name="IKVM.OpenJDK.Tools.dll"/>
+				<include name="IKVM.OpenJDK.SwingAWT.dll"/>
+				<include name="IKVM.Runtime.dll"/> 
+				<include name="IKVM.Reflection.dll"/> <!-- Added by Mannino-->
+			</fileset>
+		</copy>
+		
+		<zip destfile="${release.dir}.zip" basedir="${release.dir}" />
+		
+	</target>
+  
+  
+  
+
+</project>
