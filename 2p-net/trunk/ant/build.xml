@@ -26,13 +26,15 @@
 	
 	<!-- Project structure -->
 	<property name="projects.root.dir" value="OOLibrary"/>
+  	<property name="doc.dir" value="doc"/>
 	<property name="oolib.bin.dir" value="OOLibrary/OOLibrary/bin/Release"/>
 	<property name="oolib.lib.dir" value="OOLibrary/OOLibrary/lib"/>
 	<property name="conventions.bin.dir" value="OOLibrary/Conventions/bin/Release"/>
 	<property name="examples.dir" value="examples"/>
+	<property name="licenses.dir" value="licenses"/>
 	<property name="helper.dir" value="ant/HelperVersion"/>
 	
-	<!-- Compile the HelperVersion, I'm not sure we can use always the same without recompile it, TO CHECK -->
+	<!-- Compile the HelperVersion, I'm not sure we can use always the same without recompile it, TO CHECK
 	<copy todir="${helper.dir}">
 		<fileset dir="${oolib.lib.dir}">
 			<include name="2p.exe"/>
@@ -50,7 +52,7 @@
 		<arg value="/reference:2p.exe,IKVM.OpenJDK.Core.dll"/>
 		<arg value="HelperVersion.cs"/>
 	</exec>
-	<!-- ................ -->
+	.............. -->
 	
 	<exec outputproperty="complete.version" executable="${basedir}/${helper.dir}/HelperVersion.exe" />
 	
@@ -73,6 +75,25 @@
 	    </tokenfilter>
 	  </filterchain>
 	</loadresource>
+  	
+  	<exec outputproperty="ikvm.version.complete" executable="${ikvm.dir}/bin/ikvm.exe">
+  		<arg value="-version"/>
+  	</exec>
+  	
+  	<loadresource property="ikvm.version">
+	  <propertyresource name="ikvm.version.complete"/>
+	  <filterchain>
+	  	<linecontains>
+        	<contains value="IKVM.OpenJDK.Core:"/>
+        </linecontains>
+	    <tokenfilter>
+	      	<replaceregex pattern="^.+:" replace="" />
+	      	<trim/>
+	    </tokenfilter>
+	  </filterchain>
+	</loadresource>
+  	
+  	<echo message="ikvm.version=${ikvm.version}"/> 
 	
 	<property name="release.dir" value="2p.NET-${engine.version}.${netSpecific.version}"/>
 	<property name="release.lib.dir" value="${release.dir}/lib"/>
@@ -86,6 +107,7 @@
 		<delete file="${release.dir}.zip"/>
 	    <mkdir dir="${release.dir}"/>
 		<mkdir dir="${release.lib.dir}"/>
+		<mkdir dir="${release.dir}/licenses"/>
 		
 		
 		
@@ -103,9 +125,9 @@
 	    <!-- DOC: http://subclipse.tigris.org/svnant/svntask.html -->
 	    <svn refid="settings">
 	        
-	        <export
-	            srcPath="${examples.dir}"
-	            destPath="${release.dir}/examples" />
+	        <export srcPath="${examples.dir}" destPath="${release.dir}/examples" />
+	    	
+	    	<export srcPath="${licenses.dir}}" destPath="${release.dir}/licenses" />
 	        
 	     </svn>
 		
@@ -146,6 +168,16 @@
 				<include name="2p.exe.config"/>
 			</fileset>
 		</copy>
+		
+		<!-- Copy manual -->
+		<copy todir="${release.dir}">
+			<fileset dir="${doc.dir}">
+				<include name="tuprolog-guide.pdf"/>
+			</fileset>
+		</copy>
+		
+		<!-- IKVM version -->
+		<touch file="${release.dir}/ikvm-version-${ikvm.version}"/>
 		
 		<!-- Copy the IKVM files -->
 		<copy todir="${release.lib.dir}">
