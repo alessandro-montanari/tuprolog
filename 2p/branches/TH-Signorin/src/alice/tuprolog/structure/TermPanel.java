@@ -1,5 +1,6 @@
 package alice.tuprolog.structure;
 
+
 import alice.tuprolog.Struct;
 import alice.tuprolog.Term;
 import alice.tuprolog.Var;

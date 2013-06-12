@@ -127,7 +127,6 @@ public class TestVarIsEqual extends TestCase {
     ;
     
   assertEquals("Var == should not succeed.", expected, sysoutListener.getAllOutput());
-  
   }
 
 }

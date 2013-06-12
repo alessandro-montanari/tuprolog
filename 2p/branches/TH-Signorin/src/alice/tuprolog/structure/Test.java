@@ -1,5 +1,6 @@
 package alice.tuprolog.structure;
 
+
 import alice.tuprolog.Engine;
 import alice.tuprolog.ExecutionContext;
 import alice.tuprolog.Prolog;
