@@ -77,7 +77,6 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
     /* path history for including documents */
     private ArrayList<String> absolutePathList;
 
-    /* Signorin */
     private Term richiesta;
 
 	/**
@@ -225,6 +224,11 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
      */
     public String getCurrentDirectory() {
         String directory = "";
+        /*if(absolutePathList.isEmpty()) {
+            directory = System.getProperty("user.dir");
+        } else {
+            directory = absolutePathList.get(absolutePathList.size()-1);
+        }*/
         String s;
         if(absolutePathList.isEmpty()) {
         	if((s = ToolBar.getPath())!=null)
@@ -425,8 +429,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 		//System.out.println("ENGINE SOLVE #0: "+g);
 		if (g == null) return null;
 
-		//creato da Emanuele Signorin
-		richiesta = g;
+		this.richiesta=g;
 		
 		SolveInfo sinfo = engineManager.solve(g);
 		
@@ -604,7 +607,6 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 */
 	protected synchronized void spy(String s, Engine e) {
 		//System.out.println("spy: "+i+"  "+s+"  "+g);
-		try{
 		if (spy) {
 			ExecutionContext ctx = e.currentContext;
 			int i=0;
@@ -614,10 +616,6 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 				g = ctx.fatherCtx.currentGoal.toString();
 			}
 			notifySpy(new SpyEvent(this, e, "spy: " + i + "  " + s + "  " + g));
-		}
-		}catch(NullPointerException ex)
-		{
-			
 		}
 	}
 
@@ -1030,20 +1028,19 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 
      /**
        *
-       * Put an element in a directory list
+       * Reset directory list
       */
     public void resetDirectoryList(String path) {
         absolutePathList = new ArrayList<String>();
         absolutePathList.add(path);
     }
     
-    /*creato da Emanuele Signorin*/
-	public Term getRichiesta()
-	{
-		return this.richiesta;
-	}
-	
-	public Term termSolve(String st){
+    public Term getRichiesta()
+    {
+    	return this.richiesta;
+    }
+
+    public Term termSolve(String st){
 		try{
 			Parser p = new Parser(opManager, st);
 			Term t = p.nextTerm(true);
@@ -1055,6 +1052,5 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 			return t;
 		}
 	}
-
 
 }

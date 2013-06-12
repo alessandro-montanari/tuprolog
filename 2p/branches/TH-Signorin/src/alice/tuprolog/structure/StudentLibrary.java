@@ -9,7 +9,7 @@ import alice.tuprolog.Term;
 //:-load_library('StudentLibrary').
 public class StudentLibrary extends Library{
 public boolean termframe_1(Term term){
- new TermFrame(term);
- return true;
+new TermFrame(term);
+return true;
 }
 }

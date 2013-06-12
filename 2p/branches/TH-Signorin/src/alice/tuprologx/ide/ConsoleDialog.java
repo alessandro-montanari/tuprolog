@@ -60,10 +60,10 @@ public class ConsoleDialog
     private JTextPane output;
     /*Castagna 06/2011*/	
 	private JTextPane exception;
+	
+	private TermPanel term;
 	/**/
-	//creato da Emanuele Signorin
-    private TermPanel term;
-    
+	
     private JButton bNext;
     private JButton bAccept;
     private JButton bStop;
@@ -95,7 +95,7 @@ public class ConsoleDialog
         solution.setEditable(false);
         tp.addTab("solution", new JScrollPane(solution));
         
-      	String s = "null";
+        String s = "null";
       	term = new TermPanel(Term.createTerm(s));
       	tp.addTab("call tree", new JScrollPane(term));
         

@@ -60,6 +60,8 @@ public class ToolBar extends JPanel
     /**
 	 * The IDE the toolbar belongs to, necessary to manage editor-related commands such as saving its content to the filesystem.
 	 */
+    static private String path;
+    
     private IDE ide;
     
     private JFrame parent;
@@ -75,8 +77,6 @@ public class ToolBar extends JPanel
     private JButton bSpy;
 
     protected FileIDE fileIDE;
-    
-    static private String path;
 
     
     public ToolBar(IDE ide, JFrame parent)
@@ -187,7 +187,6 @@ public class ToolBar extends JPanel
             }
         });
 
-      //creato da Emanuele Signorin
         bSpy = new JButton();
         urlImage = getClass().getResource("img/AlberoBinario.png");
         bSpy.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(urlImage)));
@@ -219,7 +218,7 @@ public class ToolBar extends JPanel
         bottonsPanel.add(bConfigure);
         bottonsPanel.add(bAbout);
         bottonsPanel.add(bSpy);
-
+        
         
         setLayout(new BorderLayout());
         add(bottonsPanel,BorderLayout.WEST);
@@ -462,4 +461,5 @@ public class ToolBar extends JPanel
     {
     	return path;
     }
+
 }
