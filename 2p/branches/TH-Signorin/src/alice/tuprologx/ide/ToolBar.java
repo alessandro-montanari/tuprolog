@@ -189,6 +189,8 @@ public class ToolBar extends JPanel
 
       //creato da Emanuele Signorin
         bSpy = new JButton();
+        urlImage = getClass().getResource("img/AlberoBinario.png");
+        bSpy.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(urlImage)));
         bSpy.setToolTipText("Spy Frame");
         bSpy.setPreferredSize(new Dimension(32,32));
         bSpy.addActionListener(new ActionListener()
