@@ -1,8 +1,10 @@
 package alice.tuprologx.ide;
 
 import alice.tuprolog.event.*;
+import alice.tuprolog.structure.TermPanel;
 import alice.tuprolog.NoSolutionException;
 import alice.tuprolog.SolveInfo;
+import alice.tuprolog.Term;
 import alice.tuprolog.Var;
 
 import javax.swing.*;
@@ -32,11 +34,11 @@ public class ConsoleDialog
     static final long serialVersionUID = 0;
     
     private static final int SOLUTION_INDEX = 0;
-    private static final int BINDINGS_INDEX = 1;
-    private static final int ALL_BINDINGS_INDEX = 2;
-    private static final int OUTPUT_INDEX = 3;
+    private static final int BINDINGS_INDEX = 2;
+    private static final int ALL_BINDINGS_INDEX = 3;
+    private static final int OUTPUT_INDEX = 4;
     /*Castagna 06/2011*/	
-	private static final int EXCEPTION_INDEX = 4;
+	private static final int EXCEPTION_INDEX = 5;
 	/**/
     
     private String statusMessage;
@@ -58,7 +60,10 @@ public class ConsoleDialog
     private JTextPane output;
     /*Castagna 06/2011*/	
 	private JTextPane exception;
+	
+	private TermPanel term;
 	/**/
+	
     private JButton bNext;
     private JButton bAccept;
     private JButton bStop;
@@ -89,6 +94,10 @@ public class ConsoleDialog
         solution = new JTextPane();
         solution.setEditable(false);
         tp.addTab("solution", new JScrollPane(solution));
+        
+        String s = "null";
+      	term = new TermPanel(Term.createTerm(s));
+      	tp.addTab("call tree", new JScrollPane(term));
         
         tableSolve = new PrologTable();
         tp.addTab("bindings",new JScrollPane(tableSolve));
@@ -812,4 +821,9 @@ public class ConsoleDialog
 		}		
 	}
 	/**/
+	
+	public void setTermPanel(Term t)
+	{
+		term.setTerm(t);	
+	}
 }

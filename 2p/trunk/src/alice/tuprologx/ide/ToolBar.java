@@ -10,7 +10,11 @@ import java.awt.event.*;
 import java.awt.BorderLayout;
 import java.net.URL;
 
+import alice.tuprolog.InvalidTheoryException;
 import alice.tuprolog.Prolog;
+import alice.tuprolog.Term;
+import alice.tuprolog.Theory;
+import alice.tuprolog.structure.SpyFrame;
 
 
 public class ToolBar extends JPanel
@@ -56,6 +60,8 @@ public class ToolBar extends JPanel
     /**
 	 * The IDE the toolbar belongs to, necessary to manage editor-related commands such as saving its content to the filesystem.
 	 */
+    static private String path;
+    
     private IDE ide;
     
     private JFrame parent;
@@ -68,6 +74,7 @@ public class ToolBar extends JPanel
     private JButton bDebug;
     private JButton bConfigure;
     private JButton bAbout;
+    private JButton bSpy;
 
     protected FileIDE fileIDE;
 
@@ -180,7 +187,25 @@ public class ToolBar extends JPanel
             }
         });
 
-        
+        bSpy = new JButton();
+        urlImage = getClass().getResource("img/AlberoBinario.png");
+        bSpy.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(urlImage)));
+        bSpy.setToolTipText("Spy Frame");
+        bSpy.setPreferredSize(new Dimension(32,32));
+        bSpy.addActionListener(new ActionListener()
+        {
+        	public void actionPerformed(ActionEvent event)
+            {
+                Theory teoria = engine.getTheory();
+                Term rich = engine.getRichiesta();
+                try {
+					SpyFrame sp = new SpyFrame(teoria, rich);
+				} catch (InvalidTheoryException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            }
+        });
 
 
         JPanel bottonsPanel = new JPanel();
@@ -192,7 +217,8 @@ public class ToolBar extends JPanel
         bottonsPanel.add(bDebug);
         bottonsPanel.add(bConfigure);
         bottonsPanel.add(bAbout);
-
+        bottonsPanel.add(bSpy);
+        
         
         setLayout(new BorderLayout());
         add(bottonsPanel,BorderLayout.WEST);
@@ -329,6 +355,7 @@ public class ToolBar extends JPanel
         try {
             fileIDE = fileManager.loadFile();
             if (fileIDE.getFilePath() != null) {
+            	path = fileIDE.getFilePath();
                 engine.resetDirectoryList(fileIDE.getFilePath());
 
                 /** this isn't correct with the tabbed theory visualization*/
@@ -429,4 +456,10 @@ public class ToolBar extends JPanel
     {
         return fileIDE;
     }
+    
+    public static String getPath()
+    {
+    	return path;
+    }
+
 }
