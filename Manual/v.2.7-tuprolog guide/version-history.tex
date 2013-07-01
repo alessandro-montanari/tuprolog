@@ -19,6 +19,7 @@
    2.4.0 RC5   & Swing & yes & -- & 693K (+600K javassist) & as above + Tail Recursion Optimisation\\
    2.5         & Swing & yes & -- & 693K (+600K javassist) & several bug fixes, uniform cross-platform behaviour and numbering scheme\\
    2.6         & Swing & yes & -- & 693K (+600K javassist) & new class loader to overcome previous limitations; new register/1 predicate\\
+   2.7         & Swing & yes & -- & 504K (+600K javassist) & new .NET augmenting (P@J for .NET) via Visual Studio code generators, \texttt{SocketLib}, new multi-threading architecture and \texttt{ThreadLib}, support for relative paths in the \texttt{consult} predicate\\
    \hline
  \end{tabular}
  \caption{Version comparison}\label{tab:version-history-comparison}
@@ -310,7 +311,6 @@ Among the bug fixes, an annoying bug on the \texttt{abolish/1} predicate has bee
 
 Other minor changes include the addition of the \texttt{serialVersionUID=1L} in \texttt{Struct}, \texttt{Term} and \texttt{Var} classes where it was missing, causing compilation problems on the Android platform.
 Some class methods have also been \texttt{synchronized} to make them work seamlessly with the new \texttt{SocketLib}.
-
 
 \section{Acknowledgments}
 
