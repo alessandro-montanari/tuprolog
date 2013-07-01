@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path=""/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="E:/Home/Technologies/tuProlog/JAVA version/2p-2.3.0 alpha/lib/javassist.jar"/>
+	<classpathentry kind="lib" path="E:/Home/Technologies/tuProlog/repo-google/2p/tags/REL-2.3.0-alpha/lib/javassist.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="output" path=""/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>
