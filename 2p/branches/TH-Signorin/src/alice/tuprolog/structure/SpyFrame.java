@@ -16,7 +16,9 @@ import javax.swing.*;
  * @author franz.beslmeisl at googlemail.com
  */
 public class SpyFrame extends JFrame implements ActionListener, SpyListener{
-  /**An anonymous singleton instance building a tree out of a list of ExecutionContexts. */
+
+	private static final long serialVersionUID = 1L;
+/**An anonymous singleton instance building a tree out of a list of ExecutionContexts. */
   public static final ToTree<List<ExecutionContext>> contexts2tree=new ToTree<List<ExecutionContext>>(){
     /**Constructs a tree using the information given in SpyEvents. Every entry
      * in the provided list is supposed to have a clause and some subgoals, one

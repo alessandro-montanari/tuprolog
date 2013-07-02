@@ -18,7 +18,10 @@ import javax.swing.*;
  * @author franz.beslmeisl at googlemail.com
  */
 public class TermPanel extends JPanel implements ActionListener{
-  /**Transforms prolog terms into trees.*/
+
+	private static final long serialVersionUID = 1L;
+
+/**Transforms prolog terms into trees.*/
   public static final ToTree<Term> term2tree=new ToTree<Term>(){
     @Override
     public Node makeTreeFrom(Term term){
@@ -88,15 +91,4 @@ public class TermPanel extends JPanel implements ActionListener{
     setTerm(term);
   }
 
-  /** Displays a prolog term generated out of a string.
-   * @param args array of length one containing the string.
-   */
-  public static void main(String[] args){
-    if(args.length!=1)
-      System.out.println("Pass exactly one prolog term!");
-    else{
-      TermPanel tf=new TermPanel(Term.createTerm(args[0]));
-      
-    }
-  }
 }

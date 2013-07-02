@@ -199,7 +199,7 @@ public class ToolBar extends JPanel
                 Theory teoria = engine.getTheory();
                 Term rich = engine.getRichiesta();
                 try {
-					SpyFrame sp = new SpyFrame(teoria, rich);
+					new SpyFrame(teoria, rich);
 				} catch (InvalidTheoryException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

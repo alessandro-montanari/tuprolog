@@ -16,7 +16,9 @@ import javax.swing.JComponent;
  * @author franz.beslmeisl at googlemail.com
  */
 public class Tree<T> extends JComponent{
-  public static final Font defaultfont=new Font(Font.SANS_SERIF, Font.PLAIN, 12);
+
+	private static final long serialVersionUID = 1L;
+public static final Font defaultfont=new Font(Font.SANS_SERIF, Font.PLAIN, 12);
   /**The totree to consult for constructing the tree.*/
   protected ToTree<T> totree;
   /** The font to be used for rendering the tree nodes.*/
