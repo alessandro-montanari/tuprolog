@@ -5,12 +5,11 @@ import alice.tuprolog.Engine;
 import alice.tuprolog.ExecutionContext;
 import alice.tuprolog.Prolog;
 import alice.tuprolog.SolveInfo;
-import alice.tuprolog.Term;
 import alice.tuprolog.Theory;
 import alice.tuprolog.event.*;
 import java.util.List;
-import java.util.Scanner;
-import javax.swing.JOptionPane;
+
+
 
 /**This is to be thrown away in the end.
  * 
@@ -18,7 +17,8 @@ import javax.swing.JOptionPane;
  */
 public class Test {
   public static void main(String[] args) throws Exception{
-    Scanner tast=new Scanner(System.in);
+	  
+	  //Scanner tast=new Scanner(System.in);
     Theory theo=new Theory(
           "mutter(anne,alice).\n"
         + "mutter(anne,louise).\n"
@@ -33,7 +33,7 @@ public class Test {
     System.out.println(theo);
     Prolog prolog=new Prolog();
     prolog.setTheory(theo);
-    Term sol;
+    //Term sol;
     final TermFrame tf=new TermFrame(null);
     tf.setBounds(300, 300, 300, 200);
     prolog.addSpyListener(new SpyListener(){
@@ -58,7 +58,7 @@ public class Test {
     prolog.setSpy(true);
     SolveInfo sinfo=prolog.solve(args[0]);
     while(sinfo.isSuccess()){
-      sol=sinfo.getSolution();
+      //sol=sinfo.getSolution();
       //tf.setTerm(sol);
       //System.out.println("solution: "+sol);
       //System.out.println("info:     "+sinfo);

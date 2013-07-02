@@ -224,11 +224,6 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
      */
     public String getCurrentDirectory() {
         String directory = "";
-        /*if(absolutePathList.isEmpty()) {
-            directory = System.getProperty("user.dir");
-        } else {
-            directory = absolutePathList.get(absolutePathList.size()-1);
-        }*/
         String s;
         if(absolutePathList.isEmpty()) {
         	if((s = ToolBar.getPath())!=null)
@@ -239,14 +234,17 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
         	{
         		directory = System.getProperty("user.dir");
         	}
-            //directory = System.getProperty("user.dir");
         } else {
             directory = absolutePathList.get(absolutePathList.size()-1);
         }
+
         return directory;
     }
 
 
+    
+    
+    
 	// theory management interface
 
 	/**
