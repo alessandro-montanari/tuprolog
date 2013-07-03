@@ -153,7 +153,7 @@ public class ToolBar extends JPanel
         bDebug=new JButton();
         urlImage = getClass().getResource("img/Debugger24.png");
         bDebug.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(urlImage)));
-        bDebug.setToolTipText("Wiev Debug Information");
+        bDebug.setToolTipText("View Debug Information");
         bDebug.setPreferredSize(new Dimension(32,32));
         bDebug.addActionListener(new ActionListener()
         {
