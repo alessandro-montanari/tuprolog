@@ -57,7 +57,7 @@ Analogously, the command-line CUIconsole (available in Java only) can be launche
 \centering
   \includegraphics[width=300px]{images/tuprologIDE.png}\\
   \includegraphics[width=300px]{images/tuprologCUI.png}\\
-  \caption{The standard \tuprolog{} GUI and CUI.}\label{fig:tuprologGUICUI}
+  \caption{The standard \tuprolog{} GUI and CUI. (The upper right button, opening the tree view window, ia present only from version 2.7.2 onwards.}\label{fig:tuprologGUICUI}
 \end{figure}
 
 The third form, available in Java only, is basically an auxiliary tool to batch-execute a Prolog program: it takes the name of a text file containing a Prolog theory as its first (mandatory) argument and optionally the goal to be solved as its second argument, then starts a new Prolog virtual machine, performs the demonstration, and ends.
@@ -104,14 +104,14 @@ Undo and Redo actions are supported through the usual \keycap{Ctrl}+\keycap{Z} a
 \begin{figure}
 \centering
 \includegraphics[width=7cm]{images/syntaxErrorFound}
-\caption{Syntax error found when setting a theory}
+\caption{Syntax error found when setting a theory.}
 \label{fig:syntax-error-found}
 \end{figure}
 
 \begin{figure}
 \centering
 \includegraphics[width=7cm]{images/setTheorySucceeded}
-\caption{Set theory operation succeeded}
+\caption{Set theory operation succeeded.}
 \label{fig:set-theory-succeeded}
 \end{figure}
 
@@ -163,21 +163,30 @@ Pressing the \keycap{Enter} key in the textfield has the same effect as pressing
 \label{fig:gui-bindings}
 \end{figure}
 
-The subsequent area below contains five panes:
+The subsequent area below contains six panes:
 %
 \begin{itemize}
-\item the \textit{solution pane} shows the query solutions (see Figure \ref{fig:gui-solutions}): proper control buttons are provided to iterate
-    through multiple solutions;
+\item the \textit{solution} pane shows the query solutions (see Figure \ref{fig:gui-solutions}): proper control buttons are provided to iterate through multiple solutions;
+
+\item the \textit{call tree} pane shows a graphical view of the last-solved query (see Figure \ref{fig:gui-calltree});
 
 \item the \textit{binding} and the \textit{all bindings} panes show the variable bindings in tabular form, for a single solution or for all solutions, respectively (see Figure \ref{fig:gui-bindings}); here, too, proper control buttons are provided to clear the bindings pane and export the tabular data in a convenient CSV format;
 
-\item the \textit{output pane} shows the output performed by the program via \texttt{write} and other console I/O predicates (Figure \ref{fig:gui-output}).
+\item the \textit{output} pane shows the output performed by the program via \texttt{write} and other console I/O predicates (Figure \ref{fig:gui-output}).
     Please note that output performed by Java methods -- that is, methods invoked on Java objects via \classname{JavaLibrary} -- are \textit{not} captured and displayed in this view: for further information on this topic, refer to Section \ref{sec:java-library}.
     %
     Again, control buttons are provided to clear the output pane.
 
 \item the \textit{exceptions} pane shows the exceptions raised during the query demonstration: if exceptions are triggered, it gains focus automatically and is color-highlighted for the user convenience (Figure \ref{fig:gui-exceptions}).
 \end{itemize}
+
+\begin{figure}
+\centering
+\includegraphics[width=7cm]{images/gui-calltree1}
+\includegraphics[width=7cm]{images/gui-calltree2}
+\caption{The call tree tab showing a graphical view of the last-solved query.}
+\label{fig:gui-calltree}
+\end{figure}
 
 \begin{figure}
 \centering
@@ -218,6 +227,20 @@ Figure \ref{fig:gui-debug} shows an example of spy information for a goal: by de
 \caption{Debug Information View after the execution of a goal.}
 \label{fig:gui-debug}
 \end{figure}
+
+As of \tuprolog{} 2.7.2, an alternative approach is provided by the \textit{Spy Frame} window, which can be opened clicking on the top-right, tree-like button (Figure \ref{fig:gui-spyframe}).
+This window makes it possible to graphically reproduce the solving process of a query step-by-step, \textit{after the query has been solved}: so, while the above debug view operates in real time, this view operates off-line; still, it can be very effective to understand where and how something went wrong.
+Each time the Next button is pressed, the simulation advances of \textit{N} steps, where \textit{N} is the number shown in the adjacent textfield (default, obviously, 1).
+Figure \ref{fig:gui-spyframe} shows some screenshots captured in different phases of a rather complex demonstration.
+
+\begin{figure}
+\centering
+\includegraphics[width=7cm]{images/gui-spyframe1}
+\includegraphics[width=7cm]{images/gui-spyframe2}
+\caption{The Spy Frame (new in \tuprolog{} 2.7.2) showing a step-by-step graphical view of the last-solved query.}
+\label{fig:gui-spyframe}
+\end{figure}
+
 
 %------------------------------------------------------
 \subsection{Dynamic library management}
