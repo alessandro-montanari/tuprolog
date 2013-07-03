@@ -33,6 +33,8 @@ public class SpyFrame extends JFrame implements ActionListener, SpyListener{
       return TermFrame.term2tree.makeTreeFrom(makeTermFrom(eclist));
     }
 
+    private ArrayList<Term> elementi;
+    
     Term makeTermFrom(List<ExecutionContext> eclist){
       int levels=eclist.size();
       if(levels<1) return null;
@@ -45,7 +47,20 @@ public class SpyFrame extends JFrame implements ActionListener, SpyListener{
           String name=s.getName();
           ArrayList<Term> sub=new ArrayList<Term>();
           for(AbstractSubGoalTree sgt: ec.getSubGoalStore().getSubGoals())
-            sub.add(((SubGoalElement)sgt).getValue());
+          {
+        	  if (sgt.isRoot())
+        	  {
+        		  cerca(sgt);
+        		  for (Term t : elementi)
+        		  {
+        			  sub.add(t);
+        		  }
+        	  }
+        	  else
+        	  {
+        		  sub.add(((SubGoalElement)sgt).getValue());
+        	  }
+          }
           if(":-".equals(name))
             sub.add(0, i+1<levels?eclist.get(i+1).getCurrentGoal():s.getArg(0));
           else if(",".equals(name)) name=" ";//don't want to build the ,-tree
@@ -61,6 +76,24 @@ public class SpyFrame extends JFrame implements ActionListener, SpyListener{
       }
       return bottom;//is at last the top
     }
+
+	private void cerca(AbstractSubGoalTree sgt) {
+		elementi=new ArrayList<Term>();
+		int dim = ((SubGoalTree)sgt).size();
+		for (int i=0; i<dim; i++)
+		{
+			AbstractSubGoalTree ab = ((SubGoalTree)sgt).getChild(i);
+			if (ab.isLeaf())
+			{
+				elementi.add(((SubGoalElement)ab).getValue());
+			}
+			else
+			{
+				cerca(ab);
+			}
+		}
+		
+	}
   };
   Prolog prolog;
   Thread pprocess;
