@@ -34,11 +34,11 @@ public class ConsoleDialog
     static final long serialVersionUID = 0;
     
     private static final int SOLUTION_INDEX = 0;
-    private static final int BINDINGS_INDEX = 2;
-    private static final int ALL_BINDINGS_INDEX = 3;
-    private static final int OUTPUT_INDEX = 4;
+    private static final int BINDINGS_INDEX = 1;
+    private static final int ALL_BINDINGS_INDEX = 2;
+    private static final int OUTPUT_INDEX = 3;
     /*Castagna 06/2011*/	
-	private static final int EXCEPTION_INDEX = 5;
+	private static final int EXCEPTION_INDEX = 4;
 	/**/
     
     private String statusMessage;
