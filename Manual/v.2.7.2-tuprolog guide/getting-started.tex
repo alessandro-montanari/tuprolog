@@ -52,12 +52,12 @@ Analogously, the command-line CUIconsole (available in Java only) can be launche
 
 \noindent The CUIconsole can be quitted issuing the standard \texttt{halt.} command.
 
-
+% ED 2.7.3
 \begin{figure}
 \centering
   \includegraphics[width=300px]{images/tuprologIDE.png}\\
   \includegraphics[width=300px]{images/tuprologCUI.png}\\
-  \caption{The standard \tuprolog{} GUI and CUI. (The upper right button, opening the tree view window, ia present only from version 2.7.2 onwards.}\label{fig:tuprologGUICUI}
+  \caption{The standard \tuprolog{} GUI and CUI. (The upper right button, opening SpyFrame window, is present only from version 2.7.2 onwards; the \textit{call tree} tab view in the bottom dialog is to be included in version 2.7.3).}\label{fig:tuprologGUICUI}
 \end{figure}
 
 The third form, available in Java only, is basically an auxiliary tool to batch-execute a Prolog program: it takes the name of a text file containing a Prolog theory as its first (mandatory) argument and optionally the goal to be solved as its second argument, then starts a new Prolog virtual machine, performs the demonstration, and ends.
@@ -152,14 +152,18 @@ Pressing the \keycap{Enter} key in the textfield has the same effect as pressing
 \begin{figure}
 \centering
 \includegraphics[width=7cm]{images/gui-solutions}
-\caption{The solutions tab showing the query solution.}
+\caption{The solutions tab showing the query solution.
+(The \textit{call tree} tab view is to be included in version 2.7.3).}
+% 2.7.3
 \label{fig:gui-solutions}
 \end{figure}
 
 \begin{figure}
 \centering
 \includegraphics[width=7cm]{images/gui-bindings}
-\caption{The bindings tab showing the bindings of query solution.}
+\caption{The bindings tab showing the bindings of query solution.
+(The \textit{call tree} tab view is to be included in version 2.7.3).}
+% 2.7.3
 \label{fig:gui-bindings}
 \end{figure}
 
@@ -168,7 +172,8 @@ The subsequent area below contains six panes:
 \begin{itemize}
 \item the \textit{solution} pane shows the query solutions (see Figure \ref{fig:gui-solutions}): proper control buttons are provided to iterate through multiple solutions;
 
-\item the \textit{call tree} pane shows a graphical view of the last-solved query (see Figure \ref{fig:gui-calltree});
+% 2.7.3
+% \item the \textit{call tree} pane shows a graphical view of the last-solved query (see Figure \ref{fig:gui-calltree});
 
 \item the \textit{binding} and the \textit{all bindings} panes show the variable bindings in tabular form, for a single solution or for all solutions, respectively (see Figure \ref{fig:gui-bindings}); here, too, proper control buttons are provided to clear the bindings pane and export the tabular data in a convenient CSV format;
 
@@ -180,25 +185,30 @@ The subsequent area below contains six panes:
 \item the \textit{exceptions} pane shows the exceptions raised during the query demonstration: if exceptions are triggered, it gains focus automatically and is color-highlighted for the user convenience (Figure \ref{fig:gui-exceptions}).
 \end{itemize}
 
-\begin{figure}
-\centering
-\includegraphics[width=7cm]{images/gui-calltree1}
-\includegraphics[width=7cm]{images/gui-calltree2}
-\caption{The call tree tab showing a graphical view of the last-solved query.}
-\label{fig:gui-calltree}
-\end{figure}
+% 2.7.3
+%\begin{figure}
+%\centering
+%\includegraphics[width=7cm]{images/gui-calltree1}
+%\includegraphics[width=7cm]{images/gui-calltree2}
+%\caption{The call tree tab showing a graphical view of the last-solved query.}
+%\label{fig:gui-calltree}
+%\end{figure}
 
 \begin{figure}
 \centering
 \includegraphics[width=7cm]{images/gui-output}
-\caption{The output tab showing the query printing.}
+\caption{The output tab showing the query printing.
+(The \textit{call tree} tab view is to be included in version 2.7.3).}
+% 2.7.3
 \label{fig:gui-output}
 \end{figure}
 
 \begin{figure}
 \centering
 \includegraphics[width=7cm]{images/gui-exceptions}
-\caption{The exceptions tab gaining focus and showing raised exceptions.}
+\caption{The exceptions tab gaining focus and showing raised exceptions.
+(The \textit{call tree} tab view is to be included in version 2.7.3).}
+% 2.7.3
 \label{fig:gui-exceptions}
 \end{figure}
 Query and answers are stored in chronological order, and can be explored by means of \keycap{Up} and \keycap{Down} arrow keys from the query input textfield.
@@ -228,9 +238,11 @@ Figure \ref{fig:gui-debug} shows an example of spy information for a goal: by de
 \label{fig:gui-debug}
 \end{figure}
 
-As of \tuprolog{} 2.7.2, an alternative approach is provided by the \textit{Spy Frame} window, which can be opened clicking on the top-right, tree-like button (Figure \ref{fig:gui-spyframe}).
-This window makes it possible to graphically reproduce the solving process of a query step-by-step, \textit{after the query has been solved}: so, while the above debug view operates in real time, this view operates off-line; still, it can be very effective to understand where and how something went wrong.
-Each time the Next button is pressed, the simulation advances of \textit{N} steps, where \textit{N} is the number shown in the adjacent textfield (default, obviously, 1).
+As of \tuprolog{} 2.7.2, an alternative approach is available via the \textit{Spy Frame} window, which can be opened clicking on the top-right, tree-like button (Figure \ref{fig:gui-spyframe}).
+This window makes it possible to \textit{graphically reproduce} the solving process of the query, step-by-step: so, while the above debug view operates in real time during the resolution, the SpyFrame operates \textit{after} the query has been solved, basically re-solving the same query one step at a time\footnote{%
+    SpyFrame exploits its own Prolog engine and execution thread for this purpose, so no side effects are caused in the main window even if the SpyFrame is closed unexpectedly.}
+%
+Each time the Next button is pressed, the simulation advances of \textit{N} steps, where \textit{N} is the number shown in the adjacent textfield (default 1).
 Figure \ref{fig:gui-spyframe} shows some screenshots captured in different phases of a rather complex demonstration.
 
 \begin{figure}
