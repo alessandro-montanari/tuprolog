@@ -1,10 +1,10 @@
 package alice.tuprologx.ide;
 
 import alice.tuprolog.event.*;
-import alice.tuprologx.spyframe.TermPanel;
+//import alice.tuprologx.spyframe.TermPanel;
 import alice.tuprolog.NoSolutionException;
 import alice.tuprolog.SolveInfo;
-import alice.tuprolog.Term;
+//import alice.tuprolog.Term;
 import alice.tuprolog.Var;
 
 import javax.swing.*;
@@ -55,7 +55,7 @@ public class ConsoleDialog
 
     private JTabbedPane tp;
     private JTextPane solution;
-    private TermPanel callTree;
+    //private TermPanel callTree;
     private PrologTable tableSolve;
     private PrologTable tableSolveAll;
     private JTextPane output;
@@ -94,11 +94,11 @@ public class ConsoleDialog
         solution = new JTextPane();
         solution.setEditable(false);
         tp.addTab("solution", new JScrollPane(solution));
-        
+        /*
         String s = "null";
       	callTree = new TermPanel(Term.createTerm(s));
       	tp.addTab("call tree", new JScrollPane(callTree));
-        
+        */
         tableSolve = new PrologTable();
         tp.addTab("bindings",new JScrollPane(tableSolve));
 
@@ -821,9 +821,9 @@ public class ConsoleDialog
 		}		
 	}
 	/**/
-	
+	/*
 	public void setTermPanel(Term t)
 	{
 		callTree.setTerm(t);	
-	}
+	}*/
 }
