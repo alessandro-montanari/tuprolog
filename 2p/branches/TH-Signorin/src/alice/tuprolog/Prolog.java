@@ -77,7 +77,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
     /* path history for including documents */
     private ArrayList<String> absolutePathList;
 
-    private Term richiesta;
+    private Term currentTerm;
 
 	/**
 	 * Builds a prolog engine with default libraries loaded.
@@ -429,7 +429,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 		//System.out.println("ENGINE SOLVE #0: "+g);
 		if (g == null) return null;
 
-		this.richiesta=g;
+		this.currentTerm=g;
 		
 		SolveInfo sinfo = engineManager.solve(g);
 		
@@ -1035,9 +1035,9 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
         absolutePathList.add(path);
     }
     
-    public Term getRichiesta()
+    public Term getTerm()
     {
-    	return this.richiesta;
+    	return this.currentTerm;
     }
 
     public Term termSolve(String st){

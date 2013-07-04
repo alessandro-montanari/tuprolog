@@ -1,7 +1,7 @@
 package alice.tuprologx.ide;
 
 import alice.tuprolog.event.*;
-import alice.tuprolog.structure.TermPanel;
+import alice.tuprologx.spyframe.TermPanel;
 import alice.tuprolog.NoSolutionException;
 import alice.tuprolog.SolveInfo;
 import alice.tuprolog.Term;
@@ -55,13 +55,13 @@ public class ConsoleDialog
 
     private JTabbedPane tp;
     private JTextPane solution;
+    private TermPanel callTree;
     private PrologTable tableSolve;
     private PrologTable tableSolveAll;
     private JTextPane output;
     /*Castagna 06/2011*/	
 	private JTextPane exception;
 	
-	private TermPanel term;
 	/**/
 	
     private JButton bNext;
@@ -96,8 +96,8 @@ public class ConsoleDialog
         tp.addTab("solution", new JScrollPane(solution));
         
         String s = "null";
-      	term = new TermPanel(Term.createTerm(s));
-      	tp.addTab("call tree", new JScrollPane(term));
+      	callTree = new TermPanel(Term.createTerm(s));
+      	tp.addTab("call tree", new JScrollPane(callTree));
         
         tableSolve = new PrologTable();
         tp.addTab("bindings",new JScrollPane(tableSolve));
@@ -824,6 +824,6 @@ public class ConsoleDialog
 	
 	public void setTermPanel(Term t)
 	{
-		term.setTerm(t);	
+		callTree.setTerm(t);	
 	}
 }
