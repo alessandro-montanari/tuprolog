@@ -196,8 +196,9 @@ public class ToolBar extends JPanel
         {
         	public void actionPerformed(ActionEvent event)
             {
+        		ConsoleManager consoleManager = JavaIDE.getConsoleManager();
                 Theory theory = engine.getTheory();
-                Term rich = engine.getTerm();
+                Term rich = engine.termSolve(consoleManager.getGoal());
                 try {
 					new SpyFrame(theory, rich);
 				} catch (InvalidTheoryException e) {

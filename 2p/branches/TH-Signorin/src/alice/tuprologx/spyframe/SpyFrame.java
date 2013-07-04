@@ -170,7 +170,7 @@ public class SpyFrame extends JFrame implements ActionListener, SpyListener{
                   if(sinfo.hasOpenAlternatives()) sinfo=prolog.solveNext();
                   else break;
                 } catch(Exception ex){System.out.println(ex);}
-              results.append("\nNo more solution.");
+              results.append("\nNo more solutions.");
               next.setEnabled(false);
               
         }
