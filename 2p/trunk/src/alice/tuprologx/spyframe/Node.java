@@ -1,4 +1,4 @@
-package alice.tuprolog.structure;
+package alice.tuprologx.spyframe;
 
 import java.awt.Color;
 

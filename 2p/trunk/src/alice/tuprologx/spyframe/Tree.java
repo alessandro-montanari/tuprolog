@@ -1,4 +1,4 @@
-package alice.tuprolog.structure;
+package alice.tuprologx.spyframe;
 
 
 import java.awt.*;
@@ -16,9 +16,7 @@ import javax.swing.JComponent;
  * @author franz.beslmeisl at googlemail.com
  */
 public class Tree<T> extends JComponent{
-  /**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 public static final Font defaultfont=new Font(Font.SANS_SERIF, Font.PLAIN, 12);
   /**The totree to consult for constructing the tree.*/

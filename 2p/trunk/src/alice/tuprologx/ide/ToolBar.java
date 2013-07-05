@@ -14,7 +14,7 @@ import alice.tuprolog.InvalidTheoryException;
 import alice.tuprolog.Prolog;
 import alice.tuprolog.Term;
 import alice.tuprolog.Theory;
-import alice.tuprolog.structure.SpyFrame;
+import alice.tuprologx.spyframe.SpyFrame;
 
 
 public class ToolBar extends JPanel
@@ -153,7 +153,7 @@ public class ToolBar extends JPanel
         bDebug=new JButton();
         urlImage = getClass().getResource("img/Debugger24.png");
         bDebug.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(urlImage)));
-        bDebug.setToolTipText("Wiev Debug Information");
+        bDebug.setToolTipText("View Debug Information");
         bDebug.setPreferredSize(new Dimension(32,32));
         bDebug.addActionListener(new ActionListener()
         {
@@ -196,11 +196,11 @@ public class ToolBar extends JPanel
         {
         	public void actionPerformed(ActionEvent event)
             {
-                Theory teoria = engine.getTheory();
-                Term rich = engine.getRichiesta();
+        		ConsoleManager consoleManager = JavaIDE.getConsoleManager();
+                Theory theory = engine.getTheory();
+                Term rich = engine.termSolve(consoleManager.getGoal());
                 try {
-                	new SpyFrame(teoria, rich);
-					//SpyFrame sp = new SpyFrame(teoria, rich);
+					new SpyFrame(theory, rich);
 				} catch (InvalidTheoryException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

@@ -1,4 +1,4 @@
-package alice.tuprolog.structure;
+package alice.tuprologx.spyframe;
 
 import alice.tuprolog.Struct;
 import alice.tuprolog.Term;
@@ -17,9 +17,7 @@ import javax.swing.*;
  * @author franz.beslmeisl at googlemail.com
  */
 public class TermFrame extends JFrame implements ActionListener{
-  /**
-	 * 
-	 */
+  
 	private static final long serialVersionUID = 1L;
 
 /**Transforms prolog terms into trees.*/
