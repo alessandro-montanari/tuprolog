@@ -1,4 +1,4 @@
-package alice.tuprolog.structure;
+package alice.tuprologx.spyframe;
 
 
 import alice.tuprolog.Struct;
@@ -18,9 +18,7 @@ import javax.swing.*;
  * @author franz.beslmeisl at googlemail.com
  */
 public class TermPanel extends JPanel implements ActionListener{
-  /**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
 /**Transforms prolog terms into trees.*/
@@ -54,7 +52,6 @@ public class TermPanel extends JPanel implements ActionListener{
 
   JTextField input;
   Tree<Term> ptt;
-
 
   /** Constructs a new TermFrame.
    *  @param term the prolog term to be displayed.
@@ -93,4 +90,5 @@ public class TermPanel extends JPanel implements ActionListener{
     }
     setTerm(term);
   }
+
 }

@@ -1,4 +1,4 @@
-package alice.tuprolog.structure;
+package alice.tuprologx.spyframe;
 
 import alice.tuprolog.*;
 import alice.tuprolog.event.*;
@@ -16,9 +16,7 @@ import javax.swing.*;
  * @author franz.beslmeisl at googlemail.com
  */
 public class SpyFrame extends JFrame implements ActionListener, SpyListener{
-  /**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 /**An anonymous singleton instance building a tree out of a list of ExecutionContexts. */
   public static final ToTree<List<ExecutionContext>> contexts2tree=new ToTree<List<ExecutionContext>>(){
@@ -35,6 +33,8 @@ public class SpyFrame extends JFrame implements ActionListener, SpyListener{
       return TermFrame.term2tree.makeTreeFrom(makeTermFrom(eclist));
     }
 
+    private ArrayList<Term> elementi;
+    
     Term makeTermFrom(List<ExecutionContext> eclist){
       int levels=eclist.size();
       if(levels<1) return null;
@@ -47,7 +47,22 @@ public class SpyFrame extends JFrame implements ActionListener, SpyListener{
           String name=s.getName();
           ArrayList<Term> sub=new ArrayList<Term>();
           for(AbstractSubGoalTree sgt: ec.getSubGoalStore().getSubGoals())
-            sub.add(((SubGoalElement)sgt).getValue());
+          {
+        	  if (sgt.isRoot())
+        	  {
+        		  //SubGoalTree
+        		  cerca(sgt);
+        		  for (Term t : elementi)
+        		  {
+        			  sub.add(t);
+        		  }
+        	  }
+        	  else
+        	  {
+        		  //SubGoalElement
+        		  sub.add(((SubGoalElement)sgt).getValue());
+        	  }
+          }
           if(":-".equals(name))
             sub.add(0, i+1<levels?eclist.get(i+1).getCurrentGoal():s.getArg(0));
           else if(",".equals(name)) name=" ";//don't want to build the ,-tree
@@ -63,12 +78,30 @@ public class SpyFrame extends JFrame implements ActionListener, SpyListener{
       }
       return bottom;//is at last the top
     }
+
+	private void cerca(AbstractSubGoalTree sgt) {
+		elementi=new ArrayList<Term>();
+		int dim = ((SubGoalTree)sgt).size();
+		for (int i=0; i<dim; i++)
+		{
+			AbstractSubGoalTree ab = ((SubGoalTree)sgt).getChild(i);
+			if (ab.isLeaf())
+			{
+				elementi.add(((SubGoalElement)ab).getValue());
+			}
+			else
+			{
+				cerca(ab);
+			}
+		}
+		
+	}
   };
   Prolog prolog;
   Thread pprocess;
   JTextField number;
   JTextArea results;
-  JButton go;
+  JButton next;
   int steps;
   Tree<List<ExecutionContext>> tree;
 
@@ -83,15 +116,15 @@ public class SpyFrame extends JFrame implements ActionListener, SpyListener{
     Container c=getContentPane();
     //Panel at NORTH containing the input of steps
     JPanel topp=new JPanel();
-    topp.add(new JLabel("Number of steps "));
+    
+    topp.add(new JLabel("Number of steps to jump"));
     number=new JTextField("1", 2);
     topp.add(number);
     number.addActionListener(this);
     
-  //Emanuele Signorin
-    go = new JButton("Next");
-    topp.add(go);
-    go.addActionListener(this);
+    next = new JButton("Next");
+    topp.add(next);
+    next.addActionListener(this);
     
     steps=1;
     c.add(topp, BorderLayout.NORTH);
@@ -137,7 +170,9 @@ public class SpyFrame extends JFrame implements ActionListener, SpyListener{
                   if(sinfo.hasOpenAlternatives()) sinfo=prolog.solveNext();
                   else break;
                 } catch(Exception ex){System.out.println(ex);}
-              results.append("Halt.");
+              results.append("\nNo more solutions.");
+              next.setEnabled(false);
+              
         }
       }
     };

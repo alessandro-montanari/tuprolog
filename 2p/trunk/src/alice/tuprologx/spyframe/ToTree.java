@@ -1,4 +1,4 @@
-package alice.tuprolog.structure;
+package alice.tuprologx.spyframe;
 
 /**Defines the construction of a tree.
  * @param <T> the type of some thing to make a tree out of.
