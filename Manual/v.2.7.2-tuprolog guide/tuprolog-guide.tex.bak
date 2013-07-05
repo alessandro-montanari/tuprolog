@@ -82,7 +82,7 @@
 \newcommand{\figref}[1]{\figurename~\ref{#1}}
 %******************************************************************************%
 \title{{\Huge{\bf{\tuprolog{} Manual\\\mbox{ }\\}}}
-        \tuprolog{} version: 2.7\\\mbox{ }\\
+        \tuprolog{} version: 2.7.1\\\mbox{ }\\
 {\small\today\\}
 }
 \author{ \mbox{ }\\ \textsc{Enrico Denti}\\Alma Mater Studiorum--Universit\`{a} di Bologna, Italy
