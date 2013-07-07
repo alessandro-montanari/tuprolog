@@ -34,7 +34,9 @@
 	<property name="licenses.dir" value="licenses"/>
 	<property name="helper.dir" value="ant/HelperVersion"/>
 	
-	<!-- Compile the HelperVersion, I'm not sure we can use always the same without recompile it, TO CHECK
+	<!-- Compile the HelperVersion, I'm not sure we can use always the same without recompile it, TO CHECK -->
+  	
+  	<!-- However, the new 2p.exe has to be copied in the HelperVersion directory -->
 	<copy todir="${helper.dir}">
 		<fileset dir="${oolib.lib.dir}">
 			<include name="2p.exe"/>
@@ -48,6 +50,7 @@
 		</fileset>
 	</copy>
 	
+  	<!--
 	<exec dir="${helper.dir}" executable="csc">
 		<arg value="/reference:2p.exe,IKVM.OpenJDK.Core.dll"/>
 		<arg value="HelperVersion.cs"/>
