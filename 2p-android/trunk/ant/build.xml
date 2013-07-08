@@ -3,10 +3,10 @@
 <project name="tuProlog Android build file" basedir="..">
 	
 	<path id="path.svnant">
- 		<pathelement location="libs/svnant.jar"/>
- 		<pathelement location="libs/svnClientAdapter.jar"/>
-		<pathelement location="libs/svnjavahl.jar"/>
-		<pathelement location="libs/svnkit.jar"/>
+ 		<pathelement location="ant/lib/svnant.jar"/>
+ 		<pathelement location="ant/lib/svnClientAdapter.jar"/>
+		<pathelement location="ant/lib/svnjavahl.jar"/>
+		<pathelement location="ant/lib/svnkit.jar"/>
  		<!-- ... -->
 	</path>
 	    
