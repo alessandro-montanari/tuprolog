@@ -1,4 +1,6 @@
-Guida alla pubblicazione delle nuove versioni del plug-in
+# Guida alla pubblicazione delle nuove versioni del plug-in Eclipse
+
+= Guida alla pubblicazione delle nuove versioni del plug-in =
 
 Quando si ha una nuova versione del plug-in non c’è bisogno di cambiare la versione direttamente nel manifest del plug-in stesso, verrà fatto tutto tramite la feature.
 
