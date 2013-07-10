@@ -1,4 +1,4 @@
-# Guida alla pubblicazione delle nuove versioni del plug-in Eclipse
+#summary Guida alla pubblicazione delle nuove versioni del plug-in Eclipse
 
 = Guida alla pubblicazione delle nuove versioni del plug-in =
 
