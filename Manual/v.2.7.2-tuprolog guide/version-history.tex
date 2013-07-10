@@ -20,7 +20,7 @@
    2.5         & Swing & yes & -- & 693K (+600K javassist) & several bug fixes, uniform cross-platform behaviour and numbering scheme\\
    2.6         & Swing & yes & -- & 693K (+600K javassist) & new class loader to overcome previous limitations; new register/1 predicate\\
    2.7         & Swing & yes & -- & 504K (+600K javassist) & new .NET augmenting (P@J for .NET) via Visual Studio code generators, \texttt{SocketLib}, new multi-threading architecture and \texttt{ThreadLib}, support for relative paths in the \texttt{consult} predicate\\
-   2.7.1       & Swing & yes & -- & 504K (+600K javassist) & many bug fixes, new SpyFrame and query tree view\\
+   2.7.2       & Swing & yes & -- & 504K (+600K javassist) & many bug fixes, new SpyFrame \\% and query tree view\\
    \hline
  \end{tabular}
  \caption{Version comparison}\label{tab:version-history-comparison}
@@ -313,9 +313,10 @@ Among the bug fixes, an annoying bug on the \texttt{abolish/1} predicate has bee
 Other minor changes include the addition of the \texttt{serialVersionUID=1L} in \texttt{Struct}, \texttt{Term} and \texttt{Var} classes where it was missing, causing compilation problems on the Android platform.
 Some class methods have also been \texttt{synchronized} to make them work seamlessly with the new \texttt{SocketLib}.
 
-\subsection{From Version 2.7 to Version 2.7.1}
+\subsection{From Version 2.7 to Version 2.7.2}
 
-This version fixes several minor open bugs and adds the new SpyFrame window (courtesy Franz Beslmeisl), and the related query tree view that provide a graphical view of the last-solved query, also enabling a step-by-step animated view of the solve tree, useful for debugging purposes.
+Released on July 10, 2013, this version fixes several open bugs, including the one that might cause the engine to be discarded after a query in some situations, and adds the new SpyFrame window (courtesy Franz Beslmeisl, with some adapting to the new architecture by Emanuele Signorin), %and the related query tree view that provide a graphical view of the last-solved query,
+that enables a step-by-step animated view of the solve tree, useful for debugging purposes.
 
 \section{Acknowledgments}
 
@@ -341,6 +342,8 @@ The following people deserve a big thanks for their help and support in \tuprolo
   \item New \texttt{SocketLib} in 2.7: Adelina Benedetti
   \item New Multi-threading architecture and new \texttt{ThreadLib} in 2.7: Eleonora Cau
   \item Support for relative paths for the \texttt{consult} predicate in 2.7: Tobias Haupenthal
+  \item Extensive bug fixing and GUI enhancements in 2.7.2: Emanuele Signorin
+  \item New \textit{SpyFrame} in 2.7.2: original code by Franz Beslmeisl (2012)
 \end{itemize}
 
 \noindent \textit{The \tuprolog{} development team}: \\

@@ -313,6 +313,9 @@ Among the bug fixes, an annoying bug on the \texttt{abolish/1} predicate has bee
 Other minor changes include the addition of the \texttt{serialVersionUID=1L} in \texttt{Struct}, \texttt{Term} and \texttt{Var} classes where it was missing, causing compilation problems on the Android platform.
 Some class methods have also been \texttt{synchronized} to make them work seamlessly with the new \texttt{SocketLib}.
 
+\subsection{From Version 2.7 to Version 2.7.2}
+
+This version fixes several minor open bugs and adds the new SpyFrame window (courtesy Franz Beslmeisl), and the related query tree view that provide a graphical view of the last-solved query, also enabling a step-by-step animated view of the solve tree, useful for debugging purposes.
 
 \section{Acknowledgments}
 
