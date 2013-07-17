@@ -4,7 +4,7 @@
 1
 1
 tuprolog-guide.tex
-35
+36
 8
 7
 
@@ -32,6 +32,9 @@ TeX:UNIX
 version-history.tex
 TeX:UNIX
 286371835 0 -1 21175 -1 22895 120 120 976 370 0 538 558 -1 -1 0 0 72 -1 -1 72 1 0 22895 -1   0
+:\Home\Ricerca\AlmaLiquid\almaliquid.bib
+BibTeX
+269485042 0 0 1 32 1 216 216 1257 701 0 25 576 -1 -1 0 0 -1 -1 -1 -1 1 0 1 32   0
 exceptions.tex
 TeX:UNIX
 286371835 0 -1 14734 -1 0 120 120 976 370 0 25 0 -1 -1 0 0 72 -1 -1 72 1 0 0 -1   0
