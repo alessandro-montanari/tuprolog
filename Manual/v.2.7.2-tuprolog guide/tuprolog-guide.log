@@ -1,8 +1,9 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2013.6.28)  10 JUL 2013 20:27
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2013.6.28)  7 OCT 2013 15:06
 entering extended mode
-**tuprolog-guide.tex
+**E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7.2-tuprolog*guide/tupro
+log-guide.tex
 
-("E:\Home\Technologies\tuProlog\repo-google\Manual\v.2.7.2-tuprolog guide\tupro
+("E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7.2-tuprolog guide/tupro
 log-guide.tex"
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
@@ -2557,256 +2558,260 @@ Overfull \hbox (4.50836pt too wide) in paragraph at lines 272--275
 means of its \OT1/cmtt/m/it/10.95 AssemblyQualifiedName\OT1/cmr/m/n/10.95 ---
  []
 
-[199]
-Overfull \hbox (9.71498pt too wide) in paragraph at lines 282--283
+[199] <images/dotnet-oolibrary.png, id=2129, 269.30801pt x 265.89906pt>
+File: images/dotnet-oolibrary.png Graphic file (type png)
+
+<use images/dotnet-oolibrary.png>
+Package pdftex.def Info: images/dotnet-oolibrary.png used on input line 280.
+(pdftex.def)             Requested size: 227.62204pt x 224.74939pt.
+
+Overfull \hbox (9.71498pt too wide) in paragraph at lines 288--289
 \OT1/cmr/m/n/10.95 Language con-ven-tions are [] means to sep-a-rate and em-bed
  the language-
  []
 
 
-Overfull \hbox (2.24684pt too wide) in paragraph at lines 301--301
+Overfull \hbox (2.24684pt too wide) in paragraph at lines 307--307
 []  \OT1/cmtt/m/n/10 public virtual string GetPropertyGetterName(string oldProp
 Name) ...[] 
  []
 
 
-Overfull \hbox (2.24684pt too wide) in paragraph at lines 301--301
+Overfull \hbox (2.24684pt too wide) in paragraph at lines 307--307
 []  \OT1/cmtt/m/n/10 public virtual string GetPropertySetterName(string oldProp
 Name) ...[] 
  []
 
-[200]
-Overfull \hbox (7.4968pt too wide) in paragraph at lines 341--341
+[200 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7.2-tuprolog guide/i
+mages/dotnet-oolibrary.png>] [201]
+Overfull \hbox (7.4968pt too wide) in paragraph at lines 347--347
 []  \OT1/cmtt/m/n/10 public bool method_call_3(Term objRef, Term methodName, Te
 rm resRef)[] 
  []
 
 
-Overfull \hbox (23.16661pt too wide) in paragraph at lines 354--355
+Overfull \hbox (23.16661pt too wide) in paragraph at lines 360--361
 \OT1/cmr/m/n/10.95 The \OT1/cmtt/m/n/10.95 dload[]convention[]3 \OT1/cmr/m/n/10
 .95 method is the di-rec-tive ver-sion of \OT1/cmtt/m/n/10.95 load[]convention[
 ]3\OT1/cmr/m/n/10.95 ),
  []
 
-[201]
-Overfull \hbox (33.74657pt too wide) in paragraph at lines 399--399
+[202]
+Overfull \hbox (33.74657pt too wide) in paragraph at lines 405--405
 []  \OT1/cmtt/m/n/10 class('VBStudent.Student,VBStudent') <- get_StaticProperty
  returns Value,[] 
  []
 
 
-Overfull \hbox (2.24684pt too wide) in paragraph at lines 399--399
+Overfull \hbox (2.24684pt too wide) in paragraph at lines 405--405
 []  \OT1/cmtt/m/n/10 class('VBStudent.Student, VBStudent').staticProperty <- ge
 t(Value),[] 
  []
 
-[202] [203]
-<images/dotnet-oolibrary-using-StringTokenizer.png, id=2160, 352.31625pt x 263.
+
+<images/dotnet-oolibrary-using-StringTokenizer.png, id=2158, 352.31625pt x 263.
 18324pt>
 File: images/dotnet-oolibrary-using-StringTokenizer.png Graphic file (type png)
 
  <use images/dotnet-oolibrary-using-StringTokenizer.png>
 Package pdftex.def Info: images/dotnet-oolibrary-using-StringTokenizer.png used
- on input line 446.
+ on input line 452.
 (pdftex.def)             Requested size: 312.9803pt x 233.79863pt.
 
-<images/dotnet-oolibrary-dynamiccompilation.png, id=2161, 352.31625pt x 317.385
+<images/dotnet-oolibrary-dynamiccompilation.png, id=2159, 352.31625pt x 317.385
 76pt>
 File: images/dotnet-oolibrary-dynamiccompilation.png Graphic file (type png)
  <use images/dotnet-oolibrary-dynamiccompilation.png>
 Package pdftex.def Info: images/dotnet-oolibrary-dynamiccompilation.png used on
- input line 447.
+ input line 453.
 (pdftex.def)             Requested size: 312.9803pt x 281.9494pt.
 
 
-LaTeX Warning: Float too large for page by 26.1478pt on input line 449.
+LaTeX Warning: Float too large for page by 26.1478pt on input line 455.
 
 
-Overfull \hbox (3.82077pt too wide) in paragraph at lines 475--475
+Overfull \hbox (3.82077pt too wide) in paragraph at lines 481--481
 [] \OT1/cmtt/m/n/9 new_object(CSConv, 'CStudent.Student, CStudent',[122345,'joh
 n',''], StudCS),[] 
  []
 
 
-Overfull \hbox (3.82077pt too wide) in paragraph at lines 475--475
+Overfull \hbox (3.82077pt too wide) in paragraph at lines 481--481
 [] \OT1/cmtt/m/n/9 new_object(FSConv, 'FStudent.Student, FStudent',[525718,'Mar
 y',''], StudFs),[] 
  []
 
 
-Overfull \hbox (13.27066pt too wide) in paragraph at lines 475--475
+Overfull \hbox (13.27066pt too wide) in paragraph at lines 481--481
 [] \OT1/cmtt/m/n/9 new_object(VBConv, 'VBStudent.Student, VBStudent',[987650,'J
 ean',''], StudVB),[] 
  []
 
-[204] [205 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7.2-tuprolog g
-uide/images/dotnet-oolibrary-using-StringTokenizer.png> <E:/Home/Technologies/t
-uProlog/repo-google/Manual/v.2.7.2-tuprolog guide/images/dotnet-oolibrary-dynam
-iccompilation.png>] [206]
-<images/dotnet-visualstudio1.png, id=2192, 350.5095pt x 235.47975pt>
+[203] [204] [205] [206 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7.
+2-tuprolog guide/images/dotnet-oolibrary-using-StringTokenizer.png> <E:/Home/Te
+chnologies/tuProlog/repo-google/Manual/v.2.7.2-tuprolog guide/images/dotnet-ool
+ibrary-dynamiccompilation.png>] [207]
+<images/dotnet-visualstudio1.png, id=2205, 350.5095pt x 235.47975pt>
 File: images/dotnet-visualstudio1.png Graphic file (type png)
 
 <use images/dotnet-visualstudio1.png>
-Package pdftex.def Info: images/dotnet-visualstudio1.png used on input line 521
+Package pdftex.def Info: images/dotnet-visualstudio1.png used on input line 527
 .
 (pdftex.def)             Requested size: 341.43306pt x 229.38522pt.
 
-<images/dotnet-visualstudio2.png, id=2193, 326.4195pt x 246.9225pt>
+<images/dotnet-visualstudio2.png, id=2206, 326.4195pt x 246.9225pt>
 File: images/dotnet-visualstudio2.png Graphic file (type png)
 
 <use images/dotnet-visualstudio2.png>
-Package pdftex.def Info: images/dotnet-visualstudio2.png used on input line 522
+Package pdftex.def Info: images/dotnet-visualstudio2.png used on input line 528
 .
 (pdftex.def)             Requested size: 341.43306pt x 258.28911pt.
 
-<images/dotnet-visualstudio3.png, id=2194, 331.83975pt x 114.4275pt>
+<images/dotnet-visualstudio3.png, id=2207, 331.83975pt x 114.4275pt>
 File: images/dotnet-visualstudio3.png Graphic file (type png)
 
 <use images/dotnet-visualstudio3.png>
-Package pdftex.def Info: images/dotnet-visualstudio3.png used on input line 528
+Package pdftex.def Info: images/dotnet-visualstudio3.png used on input line 534
 .
 (pdftex.def)             Requested size: 341.43306pt x 117.74464pt.
 
-<images/dotnet-visualstudio5.png, id=2195, 336.65775pt x 113.82526pt>
+<images/dotnet-visualstudio5.png, id=2208, 336.65775pt x 113.82526pt>
 File: images/dotnet-visualstudio5.png Graphic file (type png)
 
 <use images/dotnet-visualstudio5.png>
-Package pdftex.def Info: images/dotnet-visualstudio5.png used on input line 529
+Package pdftex.def Info: images/dotnet-visualstudio5.png used on input line 535
 .
 (pdftex.def)             Requested size: 341.43306pt x 115.43848pt.
 
-<images/dotnet-visualstudio4.png, id=2196, 365.56575pt x 456.5055pt>
+<images/dotnet-visualstudio4.png, id=2209, 365.56575pt x 456.5055pt>
 File: images/dotnet-visualstudio4.png Graphic file (type png)
 
 <use images/dotnet-visualstudio4.png>
-Package pdftex.def Info: images/dotnet-visualstudio4.png used on input line 535
+Package pdftex.def Info: images/dotnet-visualstudio4.png used on input line 541
 .
 (pdftex.def)             Requested size: 341.43306pt x 426.37074pt.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\\' on input line 541.
+(hyperref)                removing `\\' on input line 547.
 
 
-Overfull \hbox (1.07375pt too wide) in paragraph at lines 547--552
+Overfull \hbox (1.07375pt too wide) in paragraph at lines 553--558
 []\OT1/cmr/m/n/10.95 The ap-proach is the ba-si-cally same pre-sented in Sec-ti
 on []7.3[] (same method
  []
 
-[207] [208 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7.2-tuprolog g
-uide/images/dotnet-visualstudio1.png> <E:/Home/Technologies/tuProlog/repo-googl
-e/Manual/v.2.7.2-tuprolog guide/images/dotnet-visualstudio2.png>] [209 <E:/Home
-/Technologies/tuProlog/repo-google/Manual/v.2.7.2-tuprolog guide/images/dotnet-
-visualstudio3.png> <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7.2-tu
-prolog guide/images/dotnet-visualstudio5.png>] [210 <E:/Home/Technologies/tuPro
-log/repo-google/Manual/v.2.7.2-tuprolog guide/images/dotnet-visualstudio4.png>]
-<images/dotnet-testlibrary1.png, id=2229, 350.5095pt x 251.13824pt>
+<images/dotnet-testlibrary1.png, id=2216, 350.5095pt x 251.13824pt>
 File: images/dotnet-testlibrary1.png Graphic file (type png)
 
 <use images/dotnet-testlibrary1.png>
-Package pdftex.def Info: images/dotnet-testlibrary1.png used on input line 557.
+Package pdftex.def Info: images/dotnet-testlibrary1.png used on input line 563.
 
 (pdftex.def)             Requested size: 227.62204pt x 163.0923pt.
 
-<images/dotnet-testlibrary2.png, id=2230, 237.88875pt x 191.5155pt>
+<images/dotnet-testlibrary2.png, id=2217, 237.88875pt x 191.5155pt>
 File: images/dotnet-testlibrary2.png Graphic file (type png)
 
 <use images/dotnet-testlibrary2.png>
-Package pdftex.def Info: images/dotnet-testlibrary2.png used on input line 558.
+Package pdftex.def Info: images/dotnet-testlibrary2.png used on input line 564.
 
 (pdftex.def)             Requested size: 227.62204pt x 183.25955pt.
-
+ [208] [209 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7.2-tuprolog 
+guide/images/dotnet-visualstudio1.png> <E:/Home/Technologies/tuProlog/repo-goog
+le/Manual/v.2.7.2-tuprolog guide/images/dotnet-visualstudio2.png>] [210 <E:/Hom
+e/Technologies/tuProlog/repo-google/Manual/v.2.7.2-tuprolog guide/images/dotnet
+-visualstudio3.png> <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7.2-t
+uprolog guide/images/dotnet-visualstudio5.png>] [211 <E:/Home/Technologies/tuPr
+olog/repo-google/Manual/v.2.7.2-tuprolog guide/images/dotnet-visualstudio4.png>
+]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\\' on input line 575.
+(hyperref)                removing `\\' on input line 581.
 
-[211] [212 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7.2-tuprolog g
+[212] [213 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7.2-tuprolog g
 uide/images/dotnet-testlibrary1.png> <E:/Home/Technologies/tuProlog/repo-google
-/Manual/v.2.7.2-tuprolog guide/images/dotnet-testlibrary2.png>] [213] [214]
-<images/dotnet-codegen1.png, id=2261, 404.30292pt x 357.25925pt>
+/Manual/v.2.7.2-tuprolog guide/images/dotnet-testlibrary2.png>] [214]
+<images/dotnet-codegen1.png, id=2265, 404.30292pt x 357.25925pt>
 File: images/dotnet-codegen1.png Graphic file (type png)
 
 <use images/dotnet-codegen1.png>
-Package pdftex.def Info: images/dotnet-codegen1.png used on input line 621.
+Package pdftex.def Info: images/dotnet-codegen1.png used on input line 627.
 (pdftex.def)             Requested size: 284.52756pt x 251.43169pt.
 
-<images/dotnet-codegen2.png, id=2262, 402.93935pt x 277.48953pt>
+<images/dotnet-codegen2.png, id=2266, 402.93935pt x 277.48953pt>
 File: images/dotnet-codegen2.png Graphic file (type png)
 
 <use images/dotnet-codegen2.png>
-Package pdftex.def Info: images/dotnet-codegen2.png used on input line 622.
+Package pdftex.def Info: images/dotnet-codegen2.png used on input line 628.
 (pdftex.def)             Requested size: 284.52756pt x 195.94347pt.
  [215] [216 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7.2-tuprolog 
 guide/images/dotnet-codegen1.png> <E:/Home/Technologies/tuProlog/repo-google/Ma
-nual/v.2.7.2-tuprolog guide/images/dotnet-codegen2.png>] <images/dotnet-pipolo1
-.png, id=2275, 253.54726pt x 152.36925pt>
+nual/v.2.7.2-tuprolog guide/images/dotnet-codegen2.png>] [217]
+<images/dotnet-pipolo1.png, id=2284, 253.54726pt x 152.36925pt>
 File: images/dotnet-pipolo1.png Graphic file (type png)
 
 <use images/dotnet-pipolo1.png>
-Package pdftex.def Info: images/dotnet-pipolo1.png used on input line 678.
+Package pdftex.def Info: images/dotnet-pipolo1.png used on input line 684.
 (pdftex.def)             Requested size: 199.16928pt x 119.69614pt.
 
-Overfull \hbox (2.8994pt too wide) in paragraph at lines 682--687
+Overfull \hbox (2.8994pt too wide) in paragraph at lines 688--693
 \OT1/cmr/m/n/10.95 method that re-turn an in-stance of \OT1/cmtt/m/n/10.95 MyLi
 st\OT1/cmr/m/n/10.95 , while class \OT1/cmtt/m/n/10.95 B \OT1/cmr/m/n/10.95 pro
 -vides a \OT1/cmtt/m/n/10.95 PrintList
  []
 
-[217 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7.2-tuprolog guide/i
+[218 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7.2-tuprolog guide/i
 mages/dotnet-pipolo1.png>]
-<images/dotnet-pipolo5.png, id=2285, 289.68225pt x 83.1105pt>
+<images/dotnet-pipolo5.png, id=2294, 289.68225pt x 83.1105pt>
 File: images/dotnet-pipolo5.png Graphic file (type png)
 
 <use images/dotnet-pipolo5.png>
-Package pdftex.def Info: images/dotnet-pipolo5.png used on input line 714.
+Package pdftex.def Info: images/dotnet-pipolo5.png used on input line 720.
 (pdftex.def)             Requested size: 398.33858pt x 114.2931pt.
 
-Overfull \hbox (38.33858pt too wide) in paragraph at lines 714--715
+Overfull \hbox (38.33858pt too wide) in paragraph at lines 720--721
  [][] 
  []
 
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<images/dotnet-pipolo2.png, id=2288, 189.1065pt x 116.8365pt>
+<images/dotnet-pipolo2.png, id=2297, 189.1065pt x 116.8365pt>
 File: images/dotnet-pipolo2.png Graphic file (type png)
 
 <use images/dotnet-pipolo2.png>
-Package pdftex.def Info: images/dotnet-pipolo2.png used on input line 721.
+Package pdftex.def Info: images/dotnet-pipolo2.png used on input line 727.
 (pdftex.def)             Requested size: 256.0748pt x 158.22163pt.
 
-<images/dotnet-pipolo3.png, id=2289, 289.08pt x 238.491pt>
+<images/dotnet-pipolo3.png, id=2298, 289.08pt x 238.491pt>
 File: images/dotnet-pipolo3.png Graphic file (type png)
 
 <use images/dotnet-pipolo3.png>
-Package pdftex.def Info: images/dotnet-pipolo3.png used on input line 727.
+Package pdftex.def Info: images/dotnet-pipolo3.png used on input line 733.
 (pdftex.def)             Requested size: 369.88582pt x 305.1728pt.
 
-<images/dotnet-pipolo4.png, id=2290, 289.08pt x 183.68625pt>
+<images/dotnet-pipolo4.png, id=2299, 289.08pt x 183.68625pt>
 File: images/dotnet-pipolo4.png Graphic file (type png)
 
 <use images/dotnet-pipolo4.png>
-Package pdftex.def Info: images/dotnet-pipolo4.png used on input line 728.
+Package pdftex.def Info: images/dotnet-pipolo4.png used on input line 734.
 (pdftex.def)             Requested size: 369.88582pt x 235.0447pt.
 
-Overfull \hbox (9.88582pt too wide) in paragraph at lines 727--729
+Overfull \hbox (9.88582pt too wide) in paragraph at lines 733--735
  [][] 
  []
 
 
-Overfull \hbox (9.88582pt too wide) in paragraph at lines 727--729
+Overfull \hbox (9.88582pt too wide) in paragraph at lines 733--735
  [] 
  []
 
 
-LaTeX Warning: Float too large for page by 23.41725pt on input line 730.
+LaTeX Warning: Float too large for page by 23.41725pt on input line 736.
 
-[218]) [219 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7.2-tuprolog 
-guide/images/dotnet-pipolo5.png>] [220 <E:/Home/Technologies/tuProlog/repo-goog
-le/Manual/v.2.7.2-tuprolog guide/images/dotnet-pipolo2.png>] [221 <E:/Home/Tech
-nologies/tuProlog/repo-google/Manual/v.2.7.2-tuprolog guide/images/dotnet-pipol
-o3.png> <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7.2-tuprolog guid
-e/images/dotnet-pipolo4.png>]
+[219 <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7.2-tuprolog guide/i
+mages/dotnet-pipolo5.png>]) [220 <E:/Home/Technologies/tuProlog/repo-google/Man
+ual/v.2.7.2-tuprolog guide/images/dotnet-pipolo2.png>] [221 <E:/Home/Technologi
+es/tuProlog/repo-google/Manual/v.2.7.2-tuprolog guide/images/dotnet-pipolo3.png
+> <E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.7.2-tuprolog guide/imag
+es/dotnet-pipolo4.png>] [222]
 ("E:\Home\Technologies\tuProlog\repo-google\Manual\v.2.7.2-tuprolog guide\versi
 on-history.tex"
 Chapter 9.
@@ -2949,7 +2954,7 @@ Overfull \hbox (15.55211pt too wide) in paragraph at lines 44--45
 m/n/10.95 method to \OT1/cmtt/m/n/10.95 alice.tuprolog.SolveInfo
  []
 
-[222
+[223
 
 
 
@@ -2959,7 +2964,7 @@ Overfull \hbox (1.76622pt too wide) in paragraph at lines 75--76
  Benini) [Source-
  []
 
-[223]
+[224]
 Overfull \hbox (8.0113pt too wide) in paragraph at lines 87--88
 []\OT1/cmr/m/n/10.95 Removed al-ice.tuprolog.StructKey, since hash codes are st
 ored in \OT1/cmtt/m/n/10.95 String
@@ -2972,7 +2977,7 @@ Overfull \hbox (6.49599pt too wide) in paragraph at lines 101--102
 Forge bug 1622783] 
  []
 
-[224]
+[225]
 Overfull \hbox (7.60364pt too wide) in paragraph at lines 113--114
 []\OT1/cmr/m/n/10.95 No more \OT1/cmtt/m/n/10.95 NullPointerException \OT1/cmr/
 m/n/10.95 in \OT1/cmtt/m/n/10.95 SpyEvent#toString\OT1/cmr/m/n/10.95 . (Alex Be
@@ -2985,7 +2990,7 @@ Overfull \hbox (8.47191pt too wide) in paragraph at lines 138--139
 castelli, Nathan
  []
 
-[225]
+[226]
 Overfull \hbox (27.25241pt too wide) in paragraph at lines 152--153
 []\OT1/cmr/m/n/10.95 Removed \OT1/cmtt/m/n/10.95 '$asserta'/1 \OT1/cmr/m/n/10.9
 5 and \OT1/cmtt/m/n/10.95 '$assertz'/1\OT1/cmr/m/n/10.95 . Use \OT1/cmtt/m/n/10
@@ -2999,13 +3004,13 @@ Overfull \hbox (24.70729pt too wide) in paragraph at lines 156--157
 erm#isNumber\OT1/cmr/m/n/10.95 : use \OT1/cmtt/m/n/10.95 instanceof
  []
 
-[226] [227] [228] [229] [230]
+[227] [228] [229] [230] [231]
 Overfull \hbox (10.65788pt too wide) in paragraph at lines 304--306
 \OT1/cmr/m/n/10.95 Version 2.7, re-leased on April 29, 2013, em-beds the re-fac
 tored multi-threading-
  []
 
-[231]
+[232]
 Overfull \hbox (13.53226pt too wide) in paragraph at lines 332--333
 []\OT1/cmr/m/n/10.95 Performance gain in 2.3.1: Michael Gat-tavec-chia, Paolo C
 on-tessi, Lorenzo
@@ -3017,13 +3022,13 @@ Overfull \hbox (0.77252pt too wide) in paragraph at lines 340--341
 e in 2.6.x: Michele
  []
 
-) [232] [233]
+) [233] [234]
 ("E:\Home\Technologies\tuProlog\repo-google\Manual\v.2.7.2-tuprolog guide\tupro
 log-guide.bbl"
 Missing character: There is no Ð in font cmr10!
 )
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 126.
- [234
+ [235
 
 
 ]
@@ -3066,13 +3071,13 @@ LaTeX Warning: There were multiply-defined labels.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 126.
  ) 
 Here is how much of TeX's memory you used:
- 7844 strings out of 493921
- 129058 string characters out of 3144855
- 218869 words of memory out of 3000000
- 10382 multiletter control sequences out of 15000+200000
+ 7852 strings out of 493921
+ 129252 string characters out of 3144855
+ 218990 words of memory out of 3000000
+ 10387 multiletter control sequences out of 15000+200000
  17992 words of font info for 63 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
- 36i,11n,38p,897b,482s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 36i,11n,38p,969b,482s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb>
 <C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C
 :/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx9.pfb><C:/P
@@ -3097,9 +3102,9 @@ pe1/public/amsfonts/cm/cmti10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type
 ublic/amsfonts/cm/cmtt10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/pub
 lic/amsfonts/cm/cmtt8.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public
 /amsfonts/cm/cmtt9.pfb>
-Output written on tuprolog-guide.pdf (235 pages, 4645094 bytes).
+Output written on tuprolog-guide.pdf (236 pages, 4667934 bytes).
 PDF statistics:
- 2572 PDF objects out of 2984 (max. 8388607)
- 582 named destinations out of 1000 (max. 500000)
- 1658 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 2582 PDF objects out of 2984 (max. 8388607)
+ 584 named destinations out of 1000 (max. 500000)
+ 1663 words of extra memory for PDF output out of 10000 (max. 10000000)
 
