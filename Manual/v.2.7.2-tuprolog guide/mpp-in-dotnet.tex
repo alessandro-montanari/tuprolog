@@ -273,7 +273,13 @@ So, while .NET objects could be loaded and exploited via JavaLibrary ``as is'' (
 Moreover, the method name must be quoted, since the .NET conventions require the first letter to be capitalized.
 Last but not least, access to properties -- that the translated JavaLibrary does not know  as such -- must be mediated by the get/set methods added by the .NET compiler, with a loss both of expressiveness (the \texttt{Obj.Property} notation is lost) and of transparency (the compiler transformations must be known to bypass the problem).
 
-This is why the direct use of JavaLibrary is \textit{deprecated} in \tuprolog{}.NET, which provides a better alternative: \textit{OOLibrary}.
+This is why the direct use of JavaLibrary is \textit{deprecated} (actually, disabled) in \tuprolog{}.NET, which provides a better alternative: \textit{OOLibrary}. This new library is therefore loaded by default in place of its Java counterpart. As shown in Figure \ref{fig:dotnet-oolibrary}, to be compared with Figure \ref{fig:gui-library-manager} on page \pageref{fig:gui-library-manager}, the Library Manager dialog here lists OOLibrary, instead of JavaLibrary, as its first item.
+
+\begin{figure}
+\centering
+  \includegraphics[width=8cm]{images/dotnet-oolibrary}
+  \caption{Library manager in tuProlog.NET: notice the OOLibrary loaded instead of JavaLibrary.}\label{fig:dotnet-oolibrary}
+\end{figure}
 
 OOLibrary extends JavaLibrary by enabling \tuprolog{}.NET to interact with both Java and .NET software components. In principle, any .NET language can be supported, although the current distribution includes the support only for the most widely used .NET languages (C\#, F\# and VB.NET), other than Java itself; however, the support for other .NET languages can be easily added, by defining further \textit{language conventions}.
 

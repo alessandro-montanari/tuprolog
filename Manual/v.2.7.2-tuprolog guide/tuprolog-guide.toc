@@ -138,27 +138,27 @@
 \contentsline {section}{\numberline {8.4}Using .NET from Prolog: OOLibrary}{199}{section.8.4}
 \contentsline {subsubsection}{\numberline {8.4.0.1}Motivation}{199}{subsubsection.8.4.0.1}
 \contentsline {subsubsection}{\numberline {8.4.0.2}Language Conventions}{200}{subsubsection.8.4.0.2}
-\contentsline {subsubsection}{\numberline {8.4.0.3}OOLibrary: predicates}{201}{subsubsection.8.4.0.3}
-\contentsline {subsection}{\numberline {8.4.1}Examples}{202}{subsection.8.4.1}
-\contentsline {subsection}{\numberline {8.4.2}Handling .NET Exceptions}{206}{subsection.8.4.2}
+\contentsline {subsubsection}{\numberline {8.4.0.3}OOLibrary: predicates}{202}{subsubsection.8.4.0.3}
+\contentsline {subsection}{\numberline {8.4.1}Examples}{203}{subsection.8.4.1}
+\contentsline {subsection}{\numberline {8.4.2}Handling .NET Exceptions}{207}{subsection.8.4.2}
 \contentsline {section}{\numberline {8.5}Using Prolog from .NET: the API}{207}{section.8.5}
-\contentsline {section}{\numberline {8.6}Augmenting Prolog via .NET:\\developing new libraries}{207}{section.8.6}
-\contentsline {subsection}{\numberline {8.6.1}Capturing exceptions raised in .NET libraries}{211}{subsection.8.6.1}
-\contentsline {subsection}{\numberline {8.6.2}Capturing the .NET output in Prolog}{211}{subsection.8.6.2}
-\contentsline {section}{\numberline {8.7}Augmenting .NET via Prolog:\\the P@J framework revised}{213}{section.8.7}
-\contentsline {subsection}{\numberline {8.7.1}P@.NET via code generators}{214}{subsection.8.7.1}
-\contentsline {section}{\numberline {8.8}Putting everything together}{215}{section.8.8}
-\contentsline {subsection}{\numberline {8.8.1}Example: Multi-language TicTacToe}{218}{subsection.8.8.1}
-\contentsline {chapter}{\numberline {9}Version history}{222}{chapter.9}
-\contentsline {subsection}{\numberline {9.0.2}Version 2.0}{222}{subsection.9.0.2}
-\contentsline {subsection}{\numberline {9.0.3}From Version 2.0 to Version 2.0.1}{223}{subsection.9.0.3}
-\contentsline {subsection}{\numberline {9.0.4}From Version 2.0.1 to Version 2.1}{225}{subsection.9.0.4}
-\contentsline {subsection}{\numberline {9.0.5}From Version 2.1 to Version 2.2}{228}{subsection.9.0.5}
-\contentsline {subsection}{\numberline {9.0.6}From Version 2.2 to Version 2.3.0}{228}{subsection.9.0.6}
-\contentsline {subsection}{\numberline {9.0.7}From Version 2.3.0 to Version 2.3.1}{230}{subsection.9.0.7}
-\contentsline {subsection}{\numberline {9.0.8}From Version 2.3.1 to Version 2.4}{230}{subsection.9.0.8}
-\contentsline {subsection}{\numberline {9.0.9}From Version 2.4 to Version 2.5}{230}{subsection.9.0.9}
-\contentsline {subsection}{\numberline {9.0.10}From Version 2.5 to Version 2.6}{230}{subsection.9.0.10}
-\contentsline {subsection}{\numberline {9.0.11}From Version 2.6 to Version 2.7}{231}{subsection.9.0.11}
-\contentsline {subsection}{\numberline {9.0.12}From Version 2.7 to Version 2.7.2}{231}{subsection.9.0.12}
-\contentsline {section}{\numberline {9.1}Acknowledgments}{231}{section.9.1}
+\contentsline {section}{\numberline {8.6}Augmenting Prolog via .NET:\\developing new libraries}{208}{section.8.6}
+\contentsline {subsection}{\numberline {8.6.1}Capturing exceptions raised in .NET libraries}{212}{subsection.8.6.1}
+\contentsline {subsection}{\numberline {8.6.2}Capturing the .NET output in Prolog}{212}{subsection.8.6.2}
+\contentsline {section}{\numberline {8.7}Augmenting .NET via Prolog:\\the P@J framework revised}{212}{section.8.7}
+\contentsline {subsection}{\numberline {8.7.1}P@.NET via code generators}{215}{subsection.8.7.1}
+\contentsline {section}{\numberline {8.8}Putting everything together}{217}{section.8.8}
+\contentsline {subsection}{\numberline {8.8.1}Example: Multi-language TicTacToe}{219}{subsection.8.8.1}
+\contentsline {chapter}{\numberline {9}Version history}{223}{chapter.9}
+\contentsline {subsection}{\numberline {9.0.2}Version 2.0}{223}{subsection.9.0.2}
+\contentsline {subsection}{\numberline {9.0.3}From Version 2.0 to Version 2.0.1}{224}{subsection.9.0.3}
+\contentsline {subsection}{\numberline {9.0.4}From Version 2.0.1 to Version 2.1}{226}{subsection.9.0.4}
+\contentsline {subsection}{\numberline {9.0.5}From Version 2.1 to Version 2.2}{229}{subsection.9.0.5}
+\contentsline {subsection}{\numberline {9.0.6}From Version 2.2 to Version 2.3.0}{229}{subsection.9.0.6}
+\contentsline {subsection}{\numberline {9.0.7}From Version 2.3.0 to Version 2.3.1}{231}{subsection.9.0.7}
+\contentsline {subsection}{\numberline {9.0.8}From Version 2.3.1 to Version 2.4}{231}{subsection.9.0.8}
+\contentsline {subsection}{\numberline {9.0.9}From Version 2.4 to Version 2.5}{231}{subsection.9.0.9}
+\contentsline {subsection}{\numberline {9.0.10}From Version 2.5 to Version 2.6}{231}{subsection.9.0.10}
+\contentsline {subsection}{\numberline {9.0.11}From Version 2.6 to Version 2.7}{232}{subsection.9.0.11}
+\contentsline {subsection}{\numberline {9.0.12}From Version 2.7 to Version 2.7.2}{232}{subsection.9.0.12}
+\contentsline {section}{\numberline {9.1}Acknowledgments}{232}{section.9.1}
