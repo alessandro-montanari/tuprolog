@@ -18,18 +18,23 @@ namespace OOLibrary
             //dialog.ShowDialog();
 
             OOLibrary lib = new OOLibrary();
-            InputStream stream = new FileInputStream(@"C:\Users\ale\Desktop\tuProlog\NET\2.5.0\real-RELEASE\RELEASE\examples\.NET from Prolog\Test.pl");
+            InputStream stream = new FileInputStream(@"Test.pl");
             // InputStream stream = new FileInputStream("C:\\Users\\Administrator\\Desktop\\Test.pl");
             
             
             Prolog engine = new Prolog();
-            engine.unloadLibrary("alice.tuprolog.lib.JavaLibrary");
-            engine.loadLibrary(lib);
+            //engine.unloadLibrary("alice.tuprolog.lib.JavaLibrary");
+            //engine.loadLibrary(lib);
            
             Theory th = new Theory(stream);
             engine.addTheory(th);
-            SolveInfo info = engine.solve("testBasicsWithJava."); 
+            SolveInfo info = engine.solve("testInteroperation(X)."); 
             System.Console.WriteLine(info.isSuccess());
+            System.Console.WriteLine(info.isHalted());
+
+            //info = engine.solve("testBasicsWithJava.");
+            //System.Console.WriteLine(info.isSuccess());
+            //System.Console.WriteLine(info.isHalted());
 
 
             //java.util.List[] primitives = lib.getPrimitives();

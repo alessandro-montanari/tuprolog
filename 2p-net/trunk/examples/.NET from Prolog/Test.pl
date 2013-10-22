@@ -191,7 +191,7 @@ testInteroperation(Tot) :-
 	new_object(JavaConv,'javastudent.student',[311471,'javaName','javaSurname'],JavaStudent),
 	new_object(CSConv,'CStudent.Student, CStudent',[311471,'ale','monta'], CSStudent),
 	new_object(VBConv,'VBStudent.Student, VBStudent',[311471,'joe','smith'], VBStudent),
-	new_object(CSConv,'FStudent.Student, FStudent',[311471,'ale','monta'], FSStudent),
+	new_object(FSConv,'FStudent.Student, FStudent',[311471,'ale','monta'], FSStudent),
 	
 	JavaStudent <- getExams returns Ex1,
 	CSStudent.exams <- get(Ex2),
