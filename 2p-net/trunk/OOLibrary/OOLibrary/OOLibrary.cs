@@ -290,15 +290,6 @@ namespace OOLibrary
                 // Convention found
 
                 Struct revisedClassNameStruct = null;
-
-                Type classType = Type.GetType(conv.GetClassName(clName));
-
-                if (!IsBoundToConvention(classType))
-                {
-                    // The class is not link to the convention: link it!
-                    BindClassToConvention(classType, conv);
-                }
-
                 string revisedClassName = conv.GetClassName(clName);
                 revisedClassNameStruct = new Struct(revisedClassName);
 
@@ -328,12 +319,27 @@ namespace OOLibrary
                 }
                 
                 // Call the super class method after the modification of the names 
-                return base.java_object_3(revisedClassNameStruct, argl, id);
+                bool returnValue = base.java_object_3(revisedClassNameStruct, argl, id);
+
+                // If everything went fine, the type has been loaded correctly by the JavaLibrary class loader
+                // therefore we can bind the type to the convention
+                if (returnValue)
+                {
+                    Type classType = Type.GetType(revisedClassName);
+
+                    if (!IsBoundToConvention(classType))
+                    {
+                        // The class is not link to the convention: link it!
+                        BindClassToConvention(classType, conv);
+                    }
+                }
+
+                return returnValue;
             }
             else
             {
                 // Convention NOT found
-                // For arrays nothing to do: I guess thata the user used []
+                // For arrays nothing to do: I guess that the user used []
 
                 if (constrName != null && !constrName.Equals(String.Empty))
                 {
