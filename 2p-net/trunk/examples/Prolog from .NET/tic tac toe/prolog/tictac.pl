@@ -15,12 +15,9 @@ loadgameVB :- load_convention('Conventions.dll','Conventions.VBDotNetConvention'
 	new_object(VBConv, 'TTTVB.TicTacToe, TTTVB', [], Game),
 	go(Game).
 	
-%load_convention('Conventions.dll','Conventions.JavaConvention',JaConv),
 loadgameJava :- load_convention('Conventions.dll','Conventions.JavaConvention',JaConv),
 	set_classpath(['.']),
 	new_object(JaConv, 'TTTJava.JTicTacToe', [], Game),
-	Game <- getName returns Name,
-	write(Name),
 	go(Game).
 
 % predicati per accedere alla tavola di gioco, il secondo è usato dalla classe java
