@@ -32,15 +32,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="2p">
-      <HintPath>lib\2p.exe</HintPath>
+      <HintPath>..\..\lib\2p.exe</HintPath>
     </Reference>
-    <Reference Include="fit, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\fit.dll</HintPath>
+    <Reference Include="fit">
+      <HintPath>..\..\lib\fit.dll</HintPath>
     </Reference>
-    <Reference Include="IKVM.OpenJDK.Core, Version=7.0.4335.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\IKVM.OpenJDK.Core.dll</HintPath>
+    <Reference Include="IKVM.OpenJDK.Core">
+      <HintPath>..\..\lib\IKVM.OpenJDK.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

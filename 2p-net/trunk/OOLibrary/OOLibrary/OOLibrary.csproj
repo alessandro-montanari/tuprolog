@@ -51,13 +51,13 @@
     </StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="2p, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="2p, Version=2.7.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\2p.exe</HintPath>
+      <HintPath>..\..\lib\2p.exe</HintPath>
     </Reference>
-    <Reference Include="IKVM.OpenJDK.Core, Version=7.0.4335.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+    <Reference Include="IKVM.OpenJDK.Core, Version=7.2.4630.5, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\IKVM.OpenJDK.Core.dll</HintPath>
+      <HintPath>..\..\lib\IKVM.OpenJDK.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
