@@ -28,7 +28,7 @@
 	<property name="projects.root.dir" value="OOLibrary"/>
   	<property name="doc.dir" value="doc"/>
 	<property name="oolib.bin.dir" value="OOLibrary/OOLibrary/bin/Release"/>
-	<property name="oolib.lib.dir" value="OOLibrary/OOLibrary/lib"/>
+  	<property name="lib.dir" value="lib"/>
 	<property name="conventions.bin.dir" value="OOLibrary/Conventions/bin/Release"/>
 	<property name="examples.dir" value="examples"/>
 	<property name="licenses.dir" value="licenses"/>
@@ -38,7 +38,7 @@
   	
   	<!-- However, the new 2p.exe has to be copied in the HelperVersion directory -->
 	<copy todir="${helper.dir}">
-		<fileset dir="${oolib.lib.dir}">
+		<fileset dir="${lib.dir}">
 			<include name="2p.exe"/>
 		</fileset>
 	</copy>
@@ -138,12 +138,8 @@
 		
 		<!-- Change the reference to the libraries in the examples -->
 		<replace 	file="${release.dir}/examples/Prolog from .NET/DerivativeExample/DerivativeExample/DerivativeExample.csproj"
-					token="&lt;HintPath&gt;..\..\..\..\OOLibrary\Fixtures\lib\2p.exe&lt;/HintPath&gt;"
+					token="&lt;HintPath&gt;..\..\..\..\lib\2p.exe&lt;/HintPath&gt;"
 					value="&lt;HintPath&gt;..\..\..\..\2p.exe&lt;/HintPath&gt;"/>
-		
-		<replace 	file="${release.dir}/examples/Prolog from .NET/DerivativeExample/DerivativeExample/DerivativeExample.csproj"
-					token="&lt;HintPath&gt;..\..\..\..\OOLibrary\OOLibrary\lib\IKVM.OpenJDK.Core.dll&lt;/HintPath&gt;"
-					value="&lt;HintPath&gt;..\..\..\..\lib\IKVM.OpenJDK.Core.dll&lt;/HintPath&gt;"/>
 		
 		<!-- Compile OOLib and conventions -->
 		<exec dir="${projects.root.dir}" executable="msbuild">
@@ -170,7 +166,7 @@
 		</copy>
 		
 		<copy todir="${release.dir}">
-			<fileset dir="${oolib.lib.dir}">
+			<fileset dir="${lib.dir}">
 				<include name="tuprolog.dll"/>
 				<include name="2p.exe"/>
 			</fileset>
