@@ -136,6 +136,15 @@
 	        
 	     </svn>
 		
+		<!-- Change the reference to the libraries in the examples -->
+		<replace 	file="${release.dir}/examples/Prolog from .NET/DerivativeExample/DerivativeExample/DerivativeExample.csproj"
+					token="&lt;HintPath&gt;..\..\..\..\OOLibrary\Fixtures\lib\2p.exe&lt;/HintPath&gt;"
+					value="&lt;HintPath&gt;..\..\..\..\2p.exe&lt;/HintPath&gt;"/>
+		
+		<replace 	file="${release.dir}/examples/Prolog from .NET/DerivativeExample/DerivativeExample/DerivativeExample.csproj"
+					token="&lt;HintPath&gt;..\..\..\..\OOLibrary\OOLibrary\lib\IKVM.OpenJDK.Core.dll&lt;/HintPath&gt;"
+					value="&lt;HintPath&gt;..\..\..\..\lib\IKVM.OpenJDK.Core.dll&lt;/HintPath&gt;"/>
+		
 		<!-- Compile OOLib and conventions -->
 		<exec dir="${projects.root.dir}" executable="msbuild">
 			<arg value="/property:Configuration=Release"/>
