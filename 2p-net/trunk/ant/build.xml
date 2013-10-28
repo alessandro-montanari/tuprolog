@@ -50,12 +50,11 @@
 		</fileset>
 	</copy>
 	
-  	<!--
+  	
 	<exec dir="${helper.dir}" executable="csc">
 		<arg value="/reference:2p.exe,IKVM.OpenJDK.Core.dll"/>
 		<arg value="HelperVersion.cs"/>
 	</exec>
-	.............. -->
 	
 	<exec outputproperty="complete.version" executable="${basedir}/${helper.dir}/HelperVersion.exe" />
 	
