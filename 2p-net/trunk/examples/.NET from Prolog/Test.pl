@@ -1,6 +1,6 @@
-/* To run all the tests in this file rember to 
+/* If the OOLibrary is not loaded by default follow the following steps: 
 *	1) remove (or unload) the JavaLibrary
-*	2) load the OOLibrary using this string "OOLibrary.OOLibrary, OOLibrary"
+*	2) load the OOLibrary using this string "OOLibrary.OOLibrary, OOLibrary" and use the "Browse" button to select the correct dll file.
 */
 
 /* Basic conventions available (lib/Conventions.dll):
