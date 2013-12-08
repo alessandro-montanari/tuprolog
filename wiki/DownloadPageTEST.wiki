@@ -1,3 +1,20 @@
 #summary Test of the future Download page.
 
-[http://tuprolog.googlecode.com/svn/2p/tags/REL-2.7.2/build/archives/2p.jar 2p.jar]
+==Release 2.7.2==
+
+  * [http://tuprolog.googlecode.com/svn/2p/tags/REL-2.7.2/build/archives/2p.jar 2p.jar]
+  * [http://tuprolog.googlecode.com/svn/2p/tags/REL-2.7.2/build/archives/tuprolog.jar tuprolog.jar]
+
+----
+
+==Release 2.7.1==
+
+  * [http://tuprolog.googlecode.com/svn/2p/tags/REL-2.7.1/build/archives/2p.jar 2p.jar]
+  * [http://tuprolog.googlecode.com/svn/2p/tags/REL-2.7.1/build/archives/tuprolog.jar tuprolog.jar]
+
+----
+
+==Release 2.7.0==
+
+  * [http://tuprolog.googlecode.com/svn/2p/tags/REL-2.7.0/build/archives/2p.jar 2p.jar]
+  * [http://tuprolog.googlecode.com/svn/2p/tags/REL-2.7.0/build/archives/tuprolog.jar tuprolog.jar]
