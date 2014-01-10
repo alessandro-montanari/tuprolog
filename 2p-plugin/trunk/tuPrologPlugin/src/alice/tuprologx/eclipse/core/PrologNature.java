@@ -11,7 +11,7 @@ public class PrologNature implements IProjectNature {
 	/**
 	 * ID of this project nature
 	 */
-	public static final String NATURE_ID = "alice.tuprologx.eclipse.prologNature";
+	public static final String NATURE_ID = "tuPrologPlugin.prologNature";
 
 	private IProject project;
 

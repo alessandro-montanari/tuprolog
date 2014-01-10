@@ -5,7 +5,7 @@ import org.eclipse.ui.navigator.resources.ProjectExplorer;
 
 public class PrologPerspective implements IPerspectiveFactory {
 
-	public static String ID_PERSPECTIVE = "alice.tuprologx.eclipse.perspective.PrologPerspective";
+	public static String ID_PERSPECTIVE = "tuPrologPlugin.perspective.PrologPerspective";
 
 	public void createInitialLayout(IPageLayout layout) {
 

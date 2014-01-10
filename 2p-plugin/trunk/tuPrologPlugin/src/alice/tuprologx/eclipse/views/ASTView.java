@@ -18,6 +18,7 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.ISharedImages;
@@ -235,12 +236,12 @@ public class ASTView extends ViewPart implements IResourceChangeListener{
 	public void resourceChanged(IResourceChangeEvent event) {
 		updateTerms();
 		updateTree(theoryTerms);
-//		Display display = Display.getDefault();
-//		display.asyncExec(new Runnable() {
-//			
-//			public void run() {
+		Display display = Display.getDefault();
+		display.asyncExec(new Runnable() {
+			
+			public void run() {
 				viewer.setInput(theoryTerms);
-//			}
-//		});
+			}
+		});
 	}
 }

@@ -58,6 +58,7 @@ public class ViewSet implements Observer {
 			}});
 	}
 
+	@Override
 	public void update(Observable arg0, Object arg1){
 		if(queryList!=null){
 			queryList.update();

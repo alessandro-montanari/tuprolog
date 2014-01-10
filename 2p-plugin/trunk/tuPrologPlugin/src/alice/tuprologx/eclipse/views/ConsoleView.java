@@ -74,7 +74,8 @@ public class ConsoleView extends ViewPart{
 	{
 		super();
 	}
-
+	
+	@Override
 	public void createPartControl(Composite parent) {
 
 		GridData groupData = new GridData();

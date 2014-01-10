@@ -104,6 +104,7 @@ public class PrologProjectWizard extends Wizard implements INewWizard {
 			description.setNatureIds(newNatures);
 			project.setDescription(description, null);
 		} catch (CoreException e) {
+			e.printStackTrace();
 		}
 
 		monitor.worked(1);

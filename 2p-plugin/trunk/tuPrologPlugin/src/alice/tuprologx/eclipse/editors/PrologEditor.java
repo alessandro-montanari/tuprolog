@@ -64,6 +64,7 @@ public class PrologEditor extends TextEditor implements OperatorListener,
 //			getProject().build(IncrementalProjectBuilder.FULL_BUILD, PrologParser.BUILDER_ID, args, null);
 			getProject().build(IncrementalProjectBuilder.FULL_BUILD, PrologParser.BUILDER_ID, null, null);
 		} catch (CoreException e) {
+			e.printStackTrace();
 		}
 	}
 
