@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <plugin>
-     <extension
-         point="org.eclipse.ui.perspectiveExtensions">
-      <perspectiveExtension
-            targetID="alice.tuprologx.eclipse.perspective.PrologPerspective">
-         <newWizardShortcut
-               id="alice.tuprologx.eclipse.wizards.PrologProjectWizard">
+     <extension point="org.eclipse.ui.perspectiveExtensions">
+      
+      <perspectiveExtension targetID="tuPrologPlugin.perspective.PrologPerspective">
+         <newWizardShortcut id="alice.tuprologx.eclipse.wizards.PrologProjectWizard">
          </newWizardShortcut>
-         <newWizardShortcut
-               id="alice.tuprologx.eclipse.wizards.PrologWizard">
+         
+         <newWizardShortcut id="alice.tuprologx.eclipse.wizards.PrologWizard">
          </newWizardShortcut>
-         <perspectiveShortcut id="alice.tuprologx.eclipse.perspective.PrologPerspective"/>
+         
+         <perspectiveShortcut id="tuPrologPlugin.perspective.PrologPerspective"/>
       </perspectiveExtension>
 
    </extension>
@@ -78,7 +77,7 @@
             icon="icons/sample.gif"
             class="alice.tuprologx.eclipse.perspective.PrologPerspective"
             name="tuProlog"
-            id="alice.tuprologx.eclipse.perspective.PrologPerspective"/>
+            id="tuPrologPlugin.perspective.PrologPerspective"/>
    </extension>
    <extension
          point="org.eclipse.ui.preferencePages">
@@ -141,10 +140,10 @@
          </run>
       </runtime>
       <builder
-            id="alice.tuprologx.eclipse.prologBuilder">
+            id="tuPrologPlugin.prologBuilder">
       </builder>
       <builder
-            id="alice.tuprologx.eclipse.prologParser">
+            id="tuPrologPlugin.prologParser">
       </builder>
    </extension>
    
@@ -164,7 +163,7 @@
    <extension point="org.eclipse.ui.ide.projectNatureImages">
   		<image 
     	id="alice.tuprologx.eclipse.prologNatureImage"
-    	natureId="alice.tuprologx.eclipse.prologNature"
+    	natureId="tuPrologPlugin.prologNature"
     	icon="icons/cartella2prolog.gif">
   	</image>
  	</extension>

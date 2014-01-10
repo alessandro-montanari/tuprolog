@@ -13,7 +13,7 @@ import org.eclipse.swt.widgets.Display;
 
 public class PrologBuilder extends IncrementalProjectBuilder {
 
-	public static final String BUILDER_ID = "alice.tuprologx.eclipse.prologBuilder";
+	public static final String BUILDER_ID = "tuPrologPlugin.prologBuilder";
 	private ViewSet viewSet = new ViewSet();
 	private PrologEngine engine = null;
 	private static boolean alternativeBuild;
@@ -36,7 +36,7 @@ public class PrologBuilder extends IncrementalProjectBuilder {
 				// richiamo il refresh delle view
 				// utilizzo questo workaround per evitare che Eclipse
 				// interrompa il refresh per "recursive refresh"
-				// Questo metodo verrà chiamato non appena il display sarà
+				// Questo metodo verra' chiamato non appena il display sara'
 				// disponibile.
 				Display.getDefault().asyncExec(new Runnable() {
 					public void run() {
@@ -95,9 +95,9 @@ public class PrologBuilder extends IncrementalProjectBuilder {
 		PrologEngineFactory factory = PrologEngineFactory.getInstance();
 		for (int i = 0; i < factory.getProjectEngines(project.getName()).size(); i++) {
 			engine = factory.getEngine(project.getName(), i);
-			if (engine != null) { // è stato trovato un motore --> faccio
+			if (engine != null) { // e' stato trovato un motore --> faccio
 									// partire il build
-				// se l'ultimo build è stato effettuato con uno scope
+				// se l'ultimo build e' stato effettuato con uno scope
 				// alternativo ripristino la teoria
 				if (alternativeBuild) {
 					engine.addTheory(lastBuiltTheory);

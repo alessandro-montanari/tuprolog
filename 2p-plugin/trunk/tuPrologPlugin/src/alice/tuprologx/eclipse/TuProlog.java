@@ -50,7 +50,7 @@ public class TuProlog extends AbstractUIPlugin {
 		plugin = this;
 
 		/*
-		 * qui recuperare le proprietà persistenti, creare i motori richiamo un
+		 * qui recuperare le proprieta' persistenti, creare i motori richiamo un
 		 * metodo statico di una classe apposita per es.
 		 */
 		alice.tuprologx.eclipse.properties.PropertyManager.initializeWorkspace();
@@ -126,9 +126,9 @@ public class TuProlog extends AbstractUIPlugin {
 		else
 			input = ResourcesPlugin.getWorkspace().getRoot();
 		try {
-			workbench.showPerspective(PrologPerspective.ID_PERSPECTIVE, window,
-					input);
+			workbench.showPerspective(PrologPerspective.ID_PERSPECTIVE, window, input);
 		} catch (WorkbenchException e) {
+			e.printStackTrace();
 		}
 	}
 

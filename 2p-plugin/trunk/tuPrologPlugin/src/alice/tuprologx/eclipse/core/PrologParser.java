@@ -44,7 +44,7 @@ import alice.tuprologx.eclipse.views.ViewSet;
 
 public class PrologParser extends IncrementalProjectBuilder {
 
-	public static final String BUILDER_ID = "alice.tuprologx.eclipse.prologParser";
+	public static final String BUILDER_ID = "tuPrologPlugin.prologParser";
 	public static Vector<Theory> t;
 	private IParser parser;
 	private boolean correct = true;
@@ -224,7 +224,7 @@ public class PrologParser extends IncrementalProjectBuilder {
 	}
 	/////Marco Prati END/////
 	
-	// metodo che verifica se la risorsa è una teoria
+	// metodo che verifica se la risorsa e' una teoria
 	private boolean checkTheory(IResource resource) {
 		if (resource instanceof IFile && resource.getName().endsWith(".pl")) {
 			IFile file = (IFile) resource;
