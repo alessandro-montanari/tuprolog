@@ -129,7 +129,7 @@ public class tuPrologActivity extends Activity {
     tabHost.getTabWidget();
 
     CUIConsole.main(textView, editText, execute, solutionView, outputView,
-        next, toast);
+        next, toast, this);
 
   }
 
