@@ -93,18 +93,14 @@ For the sake of concreteness, Table \ref{tab:javalibrary-counter-example} report
 %        \noindent So, an entry like \texttt{'foo/bar/'} causes the \tuprolog{} class loader to look for \texttt{foo/bar/\textit{classname}.class}, while an entry like \texttt{'mylib.jar'} causes the
 %        \tuprolog{} class loader to look for \texttt{\textit{classname}.class} in the specified JAR.
 %        %
-%        In order to prevent a lot of boilerplate code to be unnecessarily repeated when the same paths are used often, 
-        
-        
-             Optionally, a \texttt{\textit{PathList}} can be specified, enabling the dynamic class loading from virtually any path.
-        
-        the \texttt{set\_classpath/1} and \texttt{get\_classpath/1} predicates are also available (see below for details), which
-        set the given path list into a \tuprolog{} engine permanently; so, if the required paths have been set via
-        \texttt{set\_classpath/1}, the standard \texttt{java\_object/3} predicate can be used transparently, with no need
-        of any further path specification---it will automatically look for classes in the specified paths.
-        %
+%        In order to prevent a lot of boilerplate code to be unnecessarily repeated when the same paths are used often,
+
+
+        It is worth highlighting that the class is searched in the current class path: if the class to be loaded is on a different path,
+        the \texttt{set\_classpath/1} (and the dual \texttt{get\_classpath/1}) predicates can be used to alter \emph{permanently} -- that
+        is, with a side effect on the engine's state -- the engine's current class path.
         Please note that such a permanent setting also affects the other JavaLibrary predicates, such as \texttt{as/2} (cast),
-        array predicates, etc.
+        array predicates, etc., and will \emph{not} be reset on backtracking.
 
         The reference to the newly-created object is bound to \texttt{\textit{ObjRef}},
         which is typically a ground Prolog term; alternatively, an unbound term
@@ -139,8 +135,10 @@ For the sake of concreteness, Table \ref{tab:javalibrary-counter-example} report
 
         The \texttt{returns} keyword is used to retrieve the value returned from non-void Java methods and bind it to a Prolog term: if the type of the returned value can be mapped onto a primitive Prolog data type (a number or a string), \texttt{\textit{Term}} is unified with the corresponding Prolog value; otherwise, \texttt{\textit{Term}} is handled as an object reference, that is, as a Prolog ground term\footnote{If it is not ground, it is automatically bound to a term like \texttt{\$obj\_N}.} bound to the Java object returned by the method.
 
-        Static methods can also be invoked, specifying one of the special terms \texttt{class(\textit{ClassName})} or \texttt{class(\textit{ClassName},\textit{PathList})} as the target \texttt{\textit{ObjRef}}.
-        As above, the optional \texttt{\textit{PathList}} argument specifies the paths where to search the classes to be loaded.
+        Static methods can also be invoked, specifying the special term \texttt{class(\textit{ClassName})}
+        % or \texttt{class(\textit{ClassName},\textit{PathList})}
+        as the target \texttt{\textit{ObjRef}}.
+        %The optional \texttt{\textit{PathList}} argument specifies the paths where to search the classes to be loaded.
 
         The call fails if \texttt{\textit{MethodName}} does not identify a valid method for the object (for the class, in the case of static methods), or arguments in \texttt{\textit{ArgList}} are invalid because of a wrong signature or because they are not ground.
 
@@ -182,9 +180,18 @@ For the sake of concreteness, Table \ref{tab:javalibrary-counter-example} report
 
         By writing so, the object represented by \texttt{\textit{ObjectRef}} is considered to belong to type \texttt{\textit{Type}}: the latter can be either a class name, as above, or a primitive Java type such as \texttt{int}.
 
-  \item [classpath specification, class loading and dynamic compilation]
+  \item [classpath specification and class loading]
 
-        The \texttt{set\_classpath/1} and \texttt{get\_classpath/1} respectively sets/gets the given path list into a \tuprolog{} engine permanently; accordingly, after a path has been set via \texttt{set\_classpath/1}, all the JavaLibrary predicates (object creation, method calling, etc) can be used transparently, with no need of any further path specification.
+        The \texttt{set\_classpath/1} and \texttt{get\_classpath/1} respectively sets/gets the given path list into a \tuprolog{} engine permanently; accordingly, after a path has been set via \texttt{set\_classpath/1}, all the JavaLibrary predicates (object creation, method calling, etc) will refer to that class path.
+
+        The following syntactic conventions apply:
+        \begin{itemize}
+          \item any path entry ending with \texttt{'/'} or \texttt{$\backslash$} is supposed to be a \textit{prefix} of the class name;
+          \item any path entry ending with \texttt{'.jar'} is supposed to be a JAR archive.
+        \end{itemize}
+        \noindent So, an entry like \texttt{'foo/bar/'} causes the \tuprolog{} class loader to look for \texttt{foo/bar/\textit{classname}.class}, while an entry like \texttt{'mylib.jar'} causes the \tuprolog{} class loader to look for \texttt{\textit{classname}.class} in the specified JAR.
+
+  \item [dynamic compilation]
 
         The \texttt{java\_class/4} creates, compiles and loads a new Java class from a source text:
 
@@ -445,7 +452,7 @@ Throughout this Section, only the exceptions specifically related to the JavaLib
 
 \begin{itemize}
 
-\item \bti{java\_object/3} and \bti{java\_object/4}\\
+\item \bti{java\_object/3}\\% and \bti{java\_object/4}\\
     \noindent \bt{java\_object(\textit{ClassName}, \textit{ArgList}, \textit{ObjectRef})} instantiates a new instance of class \bt{\textit{ClassName}} (full class name on the current class path) and initializes it via the Java constructor matching the arguments in \bt{\textit{ArgList}}; the newly created Java object is bound to the Prolog term \bt{\textit{ObjectRef}}, which can be any ground term (except for numbers) or a Prolog variable (in which case it is bound to an  automatically-generated ground term).
     By default, such a binding is \textit{not} undone on backtracking, unless the \texttt{java\_object\_backtrackable} flag is set to \texttt{true} (see Section \ref{ssec:creating-and-accessing-objects}).
     The \bti{java\_object/4} version takes a path list as an extra argument: such paths are also looked for the class file, in addition to the standard class path.
