@@ -92,7 +92,8 @@
 \contentsline {subsection}{\numberline {7.1.3}Predicates}{141}{subsection.7.1.3}
 \contentsline {subsubsection}{\numberline {7.1.3.1}Object creation, class compilation and method invocation}{141}{subsubsection.7.1.3.1}
 \contentsline {subsubsection}{\numberline {7.1.3.2}Array management}{144}{subsubsection.7.1.3.2}
-\contentsline {subsubsection}{\numberline {7.1.3.3}Helper predicates}{146}{subsubsection.7.1.3.3}
+\contentsline {subsubsection}{\numberline {7.1.3.3}Class path handling predicates}{146}{subsubsection.7.1.3.3}
+\contentsline {subsubsection}{\numberline {7.1.3.4}Helper predicates}{146}{subsubsection.7.1.3.4}
 \contentsline {subsection}{\numberline {7.1.4}Functors}{146}{subsection.7.1.4}
 \contentsline {subsection}{\numberline {7.1.5}Operators}{146}{subsection.7.1.5}
 \contentsline {subsection}{\numberline {7.1.6}Examples}{147}{subsection.7.1.6}
