@@ -185,9 +185,8 @@ Library.
    </license>
 
    <url>
-      <update label="tuProlog Plug-in Update Site" url="http://tuprolog.googlecode.com/svn/2p-plugin/trunk/alice.tuprologx.eclipse.updatesite/"/>
-      <discovery label="tuProlog in Sourseforge" url="https://tuprolog.svn.sourceforge.net/svnroot/tuprolog/Eclipse plugin/alice.tuprologx.eclipse.updatesite/"/>
-      <discovery label="tuProlog in Google code" url="http://tuprolog.googlecode.com/svn/2p-plugin/trunk/alice.tuprologx.eclipse.updatesite/"/>
+      <update label="tuProlog Plug-in Update Site" url="http://tuprolog.googlecode.com/svn/2p-plugin/trunk/tuPrologUpdateSite/"/>
+      <discovery label="tuProlog in Google code" url="http://tuprolog.googlecode.com/svn/2p-plugin/trunk/"/>
    </url>
 
    <plugin
