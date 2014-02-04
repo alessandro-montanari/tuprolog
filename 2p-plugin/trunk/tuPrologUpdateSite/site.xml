@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <description name="tuProlog Plug-in Update Site" url="http://tuprolog.googlecode.com/svn/2p-plugin/trunk/alice.tuprologx.eclipse.updatesite/">
+   <description name="tuProlog Plug-in Update Site" url="http://tuprolog.googlecode.com/svn/2p-plugin/trunk/tuPrologUpdateSite/">
       This in the Update Site of tuPtolog plug-in, it allows Update Manager to find newer 
       versions of plug-is and sugest user to install it.
    </description>
