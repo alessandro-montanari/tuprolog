@@ -318,6 +318,16 @@ Some class methods have also been \texttt{synchronized} to make them work seamle
 Released on July 10, 2013, this version fixes several open bugs, including the one that might cause the engine to be discarded after a query in some situations, and adds the new SpyFrame window (courtesy Franz Beslmeisl, with some adapting to the new architecture by Emanuele Signorin), %and the related query tree view that provide a graphical view of the last-solved query,
 that enables a step-by-step animated view of the solve tree, useful for debugging purposes.
 
+\subsection{From Version 2.7.2 to Version 2.8}
+
+Released on January 31, 2014, this version mainly adds the support for console (keyboard) input in IOLibrary/ISOIOLibrary both in the Java GUIConsole and in the Android app. Other minor items have been fixed.
+
+Moreover, the extra \texttt{\emph{PathList}} argument in JavaLibrary predicates, introduced in \tuprolog{} 2.6, has been \emph{deprecated} -- and therefore removed the manual. The preferred (and only) way to specify the class path for JavaLibrary predicates is now the \texttt{set\_classpath} predicate, and its dual \texttt{get\_classpath} predicate.
+The above change is motivated by the user's difficulties in understanding the (perhaps counter-intuitive, though conceptually sound) semantics of the lifetime of the classpath addition performed by such extra argument: in fact, since that addition was only valid for the specific operation, subsequent calls to Javalibrary methods using the created object might easily fail, if the extra argument was not specified again.
+While that semantics was coherent with the Prolog approach of avoiding side-effects operations whenever possible, it turned out to often be a nightmare from the practical viewpoint, since users ``expected'' the class path specification to remain inherently valid for an object once it had been created.
+Since the permanent, side-effect path modification was available through \texttt{set\_classpath}, we acknowledged that this approach was after all more ``natural'' for users because of the intrinsic ``permanent'' idea of class path as a ``system level'' specification: hance the deprecation of the extra argument in JavaLibrary predicates and their consequent deletion from the manual.
+
+
 \section{Acknowledgments}
 
 The following people deserve a big thanks for their help and support in \tuprolog{} development:
@@ -344,7 +354,8 @@ The following people deserve a big thanks for their help and support in \tuprolo
   \item Support for relative paths for the \texttt{consult} predicate in 2.7: Tobias Haupenthal
   \item Extensive bug fixing and GUI enhancements in 2.7.2: Emanuele Signorin
   \item New \textit{SpyFrame} in 2.7.2: original code by Franz Beslmeisl (2012)
-  \item Support for keyboard input in the GUIConsole and Android in 2.8: Mastrovito (2013)
+  \item Support for keyboard input in IOLibrary/ISOIOLibrary also on the GUIConsole and Android app in 2.8: Mirco Mastrovito (2013)
+  \item Extensive bug fix in the engine state machine, including assert/retract handling in 2.8: Roberta Calegari (2013)
 \end{itemize}
 
 \noindent \textit{The \tuprolog{} development team}: \\
