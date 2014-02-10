@@ -339,8 +339,8 @@ Throughout this Section, only the exceptions specifically related to the JavaLib
     Object creation
     &
     \texttt{java\_object(+\textit{ClassName}, +\textit{ArgList}, ?\textit{ObjRef})}\newline
-    \texttt{java\_object(+\textit{ClassName}, +\textit{ArgList}, ?\textit{ObjRef},
-    \mbox{~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~}+\textit{PathList})}\newline
+%    \texttt{java\_object(+\textit{ClassName}, +\textit{ArgList}, ?\textit{ObjRef},
+%    \mbox{~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~}+\textit{PathList})}\newline
     \texttt{java\_object(+\textit{ClassName}[], [+\textit{Len}], ?\textit{ObjRef})}
     \newline
     \newline
@@ -352,8 +352,8 @@ Throughout this Section, only the exceptions specifically related to the JavaLib
     Creates a Java object of class \textit{\texttt{ClassName}} calling the
     constructor matching the arguments in \textit{\texttt{ArgList}}; if
     \textit{\texttt{ClassName}} is followed by \texttt{[]}, an array is created.
-    The class \textit{\texttt{ClassName}} must be either in the current class path or
-    in the paths specified in \texttt{\textit{PathList}}.
+    The class \textit{\texttt{ClassName}} must be in the current class path.
+    % or in the paths specified in \texttt{\textit{PathList}}.
     On success, \textit{\texttt{ObjRef}} is bound to a term representing the
     object: if it was a variable, it is bound to a system-generated atom
     of the form \texttt{\$obj\_\textit{N}}.
@@ -380,7 +380,7 @@ Throughout this Section, only the exceptions specifically related to the JavaLib
     the return argument to the \texttt{\textit{Res}} term.
     \newline
     Static methods are invoked using \texttt{class(\textit{ClassName})}
-    or \texttt{class(\textit{ClassName}, \textit{PathList})}
+    %or \texttt{class(\textit{ClassName}, \textit{PathList})}
     as \texttt{\textit{TargetRef}}.
     \\\\\hline\\
     %--------------------------------------------------------------------------
@@ -455,12 +455,12 @@ Throughout this Section, only the exceptions specifically related to the JavaLib
 \item \bti{java\_object/3}\\% and \bti{java\_object/4}\\
     \noindent \bt{java\_object(\textit{ClassName}, \textit{ArgList}, \textit{ObjectRef})} instantiates a new instance of class \bt{\textit{ClassName}} (full class name on the current class path) and initializes it via the Java constructor matching the arguments in \bt{\textit{ArgList}}; the newly created Java object is bound to the Prolog term \bt{\textit{ObjectRef}}, which can be any ground term (except for numbers) or a Prolog variable (in which case it is bound to an  automatically-generated ground term).
     By default, such a binding is \textit{not} undone on backtracking, unless the \texttt{java\_object\_backtrackable} flag is set to \texttt{true} (see Section \ref{ssec:creating-and-accessing-objects}).
-    The \bti{java\_object/4} version takes a path list as an extra argument: such paths are also looked for the class file, in addition to the standard class path.
+    %The \bti{java\_object/4} version takes a path list as an extra argument: such paths are also looked for the class file, in addition to the standard class path.
 
     \template{java\_object(+class\_name, +arg\_list, ?object\_ref)}
 
-    \template{java\_object(+class\_name, +arg\_list, ?object\_ref, \\
-    \mbox{~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~}+path\_list)}
+    %\template{java\_object(+class\_name, +arg\_list, ?object\_ref, \\
+    %\mbox{~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~}+path\_list)}
 
     \exception{java.lang.ClassNotFoundException(Cause, Message, StackTrace)} if \bt{ClassName} does not identify a valid class name on the local file system.
 
@@ -471,7 +471,7 @@ Throughout this Section, only the exceptions specifically related to the JavaLib
     \exception{java.lang.Exception(Cause, Message, StackTrace)} if \texttt{ObjectRef} is already bound to another Java object.
 
 
-\item \bti{java\_object\_bt/3} and \bti{java\_object\_bt/4}\\
+\item \bti{java\_object\_bt/3} \\%and \bti{java\_object\_bt/4}\\
     everything as above, but the binding \textit{is} undone on backtracking.
 
 \item \bti{destroy\_object/1}\\
@@ -494,7 +494,8 @@ Throughout this Section, only the exceptions specifically related to the JavaLib
 
 \item \bti{java\_call/3}\\
     \noindent\bt{java\_call(ObjectRef, Method, ResultRef)} is the basic method implementing the infix \verb|<-/2| and (\verb|<-|,\texttt{returns})\texttt{/3} operators below. It is true iff \bt{ObjectRef} is a ground term bound to a Java object, and this provides a method \bt{Method} (that is, whose name is the functor name and whose arguments are the arguments of the compound term \bt{Method}); \bt{ResultRef} is a Prolog term bound to the returned value.
-    \texttt{\textit{ObjectRef}} takes the form \texttt{class(\textit{ClassName})} or \texttt{class(\textit{ClassName}, \textit{PathList})} for static methods.
+    \texttt{\textit{ObjectRef}} takes the form \texttt{class(\textit{ClassName})} %or \texttt{class(\textit{ClassName}, \textit{PathList})} 
+    for static methods.
 
     If needed, the Prolog anonymous variable \texttt{\_} can be used as an argument for the Java \texttt{null} value.
 
@@ -577,7 +578,7 @@ Throughout this Section, only the exceptions specifically related to the JavaLib
 \end{itemize}
 
 %---------------------------------------------------------------------
-\subsubsection{Helper predicates}
+\subsubsection{Class path handling predicates}
 %---------------------------------------------------------------------
 
 \begin{itemize}
@@ -590,7 +591,13 @@ Throughout this Section, only the exceptions specifically related to the JavaLib
     \noindent\bt{get\_classpath(PathList)} is true if \bt{PathList} is an unbound variable, which is unified with the list of strings representing the current class paths. No side effects occur on the \tuprolog{} class loader configuration.
 
     \template{get\_classpath(?path\_list)}
+\end{itemize}
 
+%---------------------------------------------------------------------
+\subsubsection{Helper predicates}
+%---------------------------------------------------------------------
+
+\begin{itemize}
 \item \bti{java\_object\_string/2}\\
     \noindent\bt{java\_object\_string(ObjectRef, String)} is true if
     \bt{String} is the string representation of the Java object bound to the term \texttt{ObjectRef}, according to the semantics of the object's own \texttt{toString} method.

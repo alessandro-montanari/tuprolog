@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2013.6.28)  15 JAN 2014 16:15
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2013.6.28)  10 FEB 2014 15:47
 entering extended mode
 **E:/Home/Technologies/tuProlog/repo-google/Manual/v.2.8-tuprolog*guide/tuprolo
 g-guide.tex
@@ -3004,14 +3004,14 @@ Overfull \hbox (10.65788pt too wide) in paragraph at lines 304--306
 tored multi-threading-
  []
 
-[232]
-Overfull \hbox (13.53226pt too wide) in paragraph at lines 342--343
+[232] [233]
+Overfull \hbox (13.53226pt too wide) in paragraph at lines 346--347
 []\OT1/cmr/m/n/10.95 Performance gain in 2.3.1: Michael Gat-tavec-chia, Paolo C
 on-tessi, Lorenzo
  []
 
-[233]
-Overfull \hbox (0.77252pt too wide) in paragraph at lines 350--351
+
+Overfull \hbox (0.77252pt too wide) in paragraph at lines 354--355
 []\OT1/cmr/m/n/10.95 New class load-ing mech-a-nism and reg-is-ter/1 pred-i-cat
 e in 2.6.x: Michele
  []
@@ -3096,7 +3096,7 @@ pe1/public/amsfonts/cm/cmti10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type
 ublic/amsfonts/cm/cmtt10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/pub
 lic/amsfonts/cm/cmtt8.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public
 /amsfonts/cm/cmtt9.pfb>
-Output written on tuprolog-guide.pdf (237 pages, 4753241 bytes).
+Output written on tuprolog-guide.pdf (237 pages, 4753775 bytes).
 PDF statistics:
  2610 PDF objects out of 2984 (max. 8388607)
  590 named destinations out of 1000 (max. 500000)
