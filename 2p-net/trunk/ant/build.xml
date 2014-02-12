@@ -98,7 +98,8 @@
   	
   	<echo message="ikvm.version=${ikvm.version}"/> 
 	
-	<property name="release.dir" value="2p.NET-${engine.version}.${netSpecific.version}"/>
+  	<property name="project.name" value="2p.NET-${engine.version}.${netSpecific.version}"/>
+	<property name="release.dir" value="release/${project.name}"/>
 	<property name="release.lib.dir" value="${release.dir}/lib"/>
   	
   </target>
@@ -107,14 +108,12 @@
 		<echo message="msbuild and csc have to be in the PATH"/>
 		
 		<delete dir="${release.dir}" />
-		<delete file="${release.dir}.zip"/>
+		<delete file="${project.name}.zip"/>
 	    <mkdir dir="${release.dir}"/>
 		<mkdir dir="${release.lib.dir}"/>
 		<mkdir dir="${release.dir}/licenses"/>
 		<mkdir dir="${release.dir}/doc"/>
-		
-		
-		
+				
 		<!-- Copy examples -->
 		<!-- We have to use export because the "examples" folder is under version control and we don't 
 			want to copy the svn informations in the build -->
@@ -222,11 +221,45 @@
 			</fileset>
 		</copy>
 		
-		<zip destfile="${release.dir}.zip" basedir="${release.dir}" />
+		<zip destfile="release/${project.name}.zip" basedir="${release.dir}" />
 		
 	</target>
-  
-  
-  
-
+	
+	<target name="02.tag" depends="01.release.bin" description="Tags the code">
+			
+			<property name="TagMessage" value="Tag .NET ${engine.version}.${netSpecific.version}"/>
+			
+			<input
+				message="You are tagging the project with version ${engine.version}.${netSpecific.version}, if it is OK insert password for ${username}:"
+				addproperty="password"
+			/>
+			
+			<svnSetting
+				id="settings"
+				username="${username}"
+				password="${password}"
+				svnkit="true" 
+				javahl="false" />
+			
+			<svn refid="settings">
+			    
+				<echo>Tagging the code...</echo>
+				<copy
+					srcUrl="https://tuprolog.googlecode.com/svn/2p-net/trunk" 
+					destUrl="https://tuprolog.googlecode.com/svn/2p-net/tags/REL-${engine.version}.${netSpecific.version}"
+					revision="HEAD"
+					message="${TagMessage}" 
+					makeParents="true" >
+				</copy> 
+				
+				<echo>Importing the release zip...</echo>
+				<import
+					path="release/${project.name}.zip" 
+					url="https://tuprolog.googlecode.com/svn/2p-net/tags/REL-${engine.version}.${netSpecific.version}/release/${project.name}.zip"
+					message="${TagMessage}" 
+					recurse="false" >
+				</import> 
+			
+			</svn>
+		</target>
 </project>
