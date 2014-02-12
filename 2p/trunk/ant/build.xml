@@ -163,7 +163,7 @@
 	    <property name="build.classes.dir" value="${build.dir}/classes"/>
 	    <property name="build.tests.dir" value="${build.dir}/tests"/>
 	    <property name="build.archives.dir" value="${build.dir}/archives"/>
-		<property name="build.release.dir" value="${build.dir}/release"/>
+		<property name="build.release.dir" value="release"/>
 		<property name="build.unit.reports.dir" value="${build.dir}/reports/unit"/>
 		<property name="build.fit.reports.dir" value="${build.dir}/reports/fit"/>
 		
@@ -632,7 +632,7 @@
 			<echo>Look directory ${build.release.dir}</echo>
 		</target>
 	
-	<target name="12.tag" depends="01.set.classpath, 04.prepare, 08.package, 09.build.NET" description="Tags the code">
+	<target name="12.tag" depends="01.set.classpath, 04.prepare, 08.package, 09.build.NET, 11.release.bin" description="Tags the code">
 		
 		<property name="TagMessage" value="Tag Java ${engine.version}.${JavaSpecific.version}"/>
 		
@@ -662,7 +662,7 @@
 		
 		<svn refid="settings">
 		    
-		    <!--  Real of the code -->
+		    <!--  Real tag of the code -->
 			<copy
 				srcUrl="https://tuprolog.googlecode.com/svn/2p/trunk" 
 				destUrl="https://tuprolog.googlecode.com/svn/2p/tags/REL-${engine.version}.${JavaSpecific.version}"
@@ -683,6 +683,7 @@
 				message="${TagMessage}" >
 			</import> 
 			
+			<!-- Import the files that are necessary for the other projects (plugin, android and .net) -->
 			<import
 				path="${build.archives.dir}/2p.jar" 
 				url="https://tuprolog.googlecode.com/svn/2p/tags/REL-${engine.version}.${JavaSpecific.version}/build/archives/2p.jar"
@@ -728,6 +729,14 @@
 			<import
 				path="${build.archives.net.dir}/test" 
 				url="https://tuprolog.googlecode.com/svn/2p/tags/REL-${engine.version}.${JavaSpecific.version}/build/archives/net/test"
+				message="${TagMessage}" 
+				recurse="false" >
+			</import> 
+			
+			<!-- Import the release zip -->
+			<import
+				path="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}.zip" 
+				url="https://tuprolog.googlecode.com/svn/2p/tags/REL-${engine.version}.${JavaSpecific.version}/release/2p-${engine.version}.${JavaSpecific.version}.zip"
 				message="${TagMessage}" 
 				recurse="false" >
 			</import> 
