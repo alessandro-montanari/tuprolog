@@ -97,6 +97,9 @@
 	</loadresource>
   	
   	<echo message="ikvm.version=${ikvm.version}"/> 
+  	
+  	<echo message="engine.version=${engine.version}"/>
+  	<echo message="netSpecific.version=${netSpecific.version}"/>
 	
   	<property name="project.name" value="2p.NET-${engine.version}.${netSpecific.version}"/>
 	<property name="release.dir" value="release/${project.name}"/>
@@ -241,9 +244,10 @@
 				svnkit="true" 
 				javahl="false" />
 			
+		    <echo>Tagging the code...</echo>
+			<!-- It is not possible to put echo messahes inside the svn tag -->
 			<svn refid="settings">
 			    
-				<echo>Tagging the code...</echo>
 				<copy
 					srcUrl="https://tuprolog.googlecode.com/svn/2p-net/trunk" 
 					destUrl="https://tuprolog.googlecode.com/svn/2p-net/tags/REL-${engine.version}.${netSpecific.version}"
@@ -252,7 +256,6 @@
 					makeParents="true" >
 				</copy> 
 				
-				<echo>Importing the release zip...</echo>
 				<import
 					path="release/${project.name}.zip" 
 					url="https://tuprolog.googlecode.com/svn/2p-net/tags/REL-${engine.version}.${netSpecific.version}/release/${project.name}.zip"
