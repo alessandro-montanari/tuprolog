@@ -662,7 +662,7 @@
 		
 		<svn refid="settings">
 		    
-		    <!--  Real tag of the code -->
+			<echo>Tagging the code...</echo>
 			<copy
 				srcUrl="https://tuprolog.googlecode.com/svn/2p/trunk" 
 				destUrl="https://tuprolog.googlecode.com/svn/2p/tags/REL-${engine.version}.${JavaSpecific.version}"
@@ -671,7 +671,7 @@
 				makeParents="true" >
 			</copy> 
 			
-			<!--  Change the project name -->
+			<echo>Changing the project name...</echo>
 			<delete
 			    url = "https://tuprolog.googlecode.com/svn/2p/tags/REL-${engine.version}.${JavaSpecific.version}/.project"
 			    message = "${TagMessage}">
@@ -683,21 +683,15 @@
 				message="${TagMessage}" >
 			</import> 
 			
-			<!-- Import the files that are necessary for the other projects (plugin, android and .net) -->
+			<echo>Importing the files that are necessary for the other projects...</echo>
 			<import
-				path="${build.archives.dir}/2p.jar" 
-				url="https://tuprolog.googlecode.com/svn/2p/tags/REL-${engine.version}.${JavaSpecific.version}/build/archives/2p.jar"
+				path="${build.archives.dir}" 
+				url="https://tuprolog.googlecode.com/svn/2p/tags/REL-${engine.version}.${JavaSpecific.version}/build/archives"
 				message="${TagMessage}" 
 				recurse="false" >
 			</import> 
-			
-			<import
-				path="${build.archives.dir}/tuprolog.jar" 
-				url="https://tuprolog.googlecode.com/svn/2p/tags/REL-${engine.version}.${JavaSpecific.version}/build/archives/tuprolog.jar"
-				message="${TagMessage}" 
-				recurse="false" > 
-			</import>
 			 
+			<!-- We don't want to copy all the IKVM libraries so we select only the three file needed -->
 			<import
 				path="${build.archives.net.dir}/tuprolog.dll" 
 				url="https://tuprolog.googlecode.com/svn/2p/tags/REL-${engine.version}.${JavaSpecific.version}/build/archives/net/tuprolog.dll"
@@ -733,7 +727,7 @@
 				recurse="false" >
 			</import> 
 			
-			<!-- Import the release zip -->
+			<echo>Importing the release zip...</echo>
 			<import
 				path="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}.zip" 
 				url="https://tuprolog.googlecode.com/svn/2p/tags/REL-${engine.version}.${JavaSpecific.version}/release/2p-${engine.version}.${JavaSpecific.version}.zip"
