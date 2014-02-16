@@ -44,7 +44,7 @@ import alice.tuprolog.Number;
 import alice.tuprolog.Struct;
 import alice.tuprolog.Term;
 import alice.tuprolog.Var;
-import alice.util.DynamicURLClassLoader;
+import alice.util.DynamicLoader;
 import alice.util.InspectionUtils;
 
 /**
@@ -85,17 +85,22 @@ public class JavaLibrary extends Library {
     private int id = 0;
     
     /**
-	 * ClassLoader at default configuration without URLs loaded.
+	 * @author Alessio Mercurio
+	 * 
+	 * used to manage two different classloaders, DynamicURLClassLoader and DexClassLoader.
 	 */
+    private DynamicLoader loader;
+    //private DynamicURLClassLoader classloader;
+     
     
-    private DynamicURLClassLoader classLoader = null;
     /**
      * library theory
      */
     
     public JavaLibrary()
     {
-    	classLoader = new DynamicURLClassLoader(new URL[]{}, this.getClass().getClassLoader());
+		//classLoader = new DynamicURLClassLoader(new URL[]{}, this.getClass().getClassLoader());
+    	loader = new DynamicLoader(this.getClass().getClassLoader());
     }
     
     public String getTheory() {
@@ -218,7 +223,7 @@ public class JavaLibrary extends Library {
             }
             // object creation with argument described in args
             try {
-            	Class<?> cl = Class.forName(clName, true, classLoader);
+            	Class<?> cl = Class.forName(clName, true, loader.getClassLoader());
                 Object[] args_value = args.getValues();
                 //
                 // Constructor co=cl.getConstructor(args.getTypes());
@@ -382,9 +387,25 @@ public class JavaLibrary extends Library {
                 getEngine().warn("(java compiler (javac) invocation failed)");
                 throw new JavaException(ex);
             }
-            try {
-                Class<?> the_class = Class.forName(fullClassName, true,
-                        new ClassLoader());
+            try 
+            {
+            	Class<?> the_class;
+            	
+            	/**
+            	 * @author Alessio Mercurio
+            	 * 
+            	 * On Dalvik VM we can only use the DexClassLoader.
+            	 */
+            	
+            	if (System.getProperty("java.vm.name").equals("Dalvik"))
+        		{
+            		the_class = Class.forName(fullClassName, true, loader.getClassLoader());
+        		}
+            	else
+            	{
+            		the_class = Class.forName(fullClassName, true, new ClassLoader());
+            	}
+                
                 if (bindDynamicObject(id, the_class))
                     return true;
                 else
@@ -492,7 +513,7 @@ public class JavaLibrary extends Library {
 						try {
 							String clName = alice.util.Tools
 									.removeApices(id.getArg(0).toString());
-							Class<?> cl = Class.forName(clName, true, classLoader);
+							Class<?> cl = Class.forName(clName, true, loader.getClassLoader());
 							
 							
 //							Method m = cl.getMethod(methodName, args.getTypes());
@@ -602,8 +623,8 @@ public class JavaLibrary extends Library {
         	if(!paths.isList())
         		throw new IllegalArgumentException();
         	String[] listOfPaths = getStringArrayFromStruct((Struct) paths);
-        	classLoader.removeAllURLs();
-        	classLoader.addURLs(getURLsFromStringArray(listOfPaths));
+        	loader.removeAllURLs();
+        	loader.addURLs(getURLsFromStringArray(listOfPaths));
         	return true;
     	}catch(IllegalArgumentException e)
         {
@@ -630,7 +651,7 @@ public class JavaLibrary extends Library {
     		paths = paths.getTerm();
     		if(!(paths instanceof Var))
     			throw new IllegalArgumentException();
-    		URL[] urls = classLoader.getURLs();
+    		URL[] urls = loader.getURLs();
         	String stringURLs = null;
         	Term pathTerm = null;
         	if(urls.length > 0)
@@ -739,7 +760,7 @@ public class JavaLibrary extends Library {
             	if(clName != null)
             	{
             		try {
-                        cl = Class.forName(clName, true, classLoader);
+                        cl = Class.forName(clName, true, loader.getClassLoader());
                     } catch (ClassNotFoundException ex) {
                         getEngine().warn("Java class not found: " + clName);
                         return false;
@@ -848,7 +869,7 @@ public class JavaLibrary extends Library {
             	if(clName != null)
             	{
             		try {
-                        cl = Class.forName(clName, true, classLoader);
+                        cl = Class.forName(clName, true, loader.getClassLoader());
                     } catch (ClassNotFoundException ex) {
                         getEngine().warn("Java class not found: " + clName);
                         return false;
@@ -1143,7 +1164,7 @@ public class JavaLibrary extends Library {
             } else if (obtype.equals("double")) {
                 array = new double[nargs];
             } else {
-                Class<?> cl = Class.forName(obtype, true, classLoader);
+                Class<?> cl = Class.forName(obtype, true, loader.getClassLoader());
                 array = Array.newInstance(cl, nargs);
             }
             return bindDynamicObject(id, array);
@@ -1354,7 +1375,7 @@ public class JavaLibrary extends Library {
                     } else {
                         values[i] = obj_to_cast;
                         try {
-                            types[i] = Class.forName(castTo_name, true, classLoader);
+                            types[i] = Class.forName(castTo_name, true, loader.getClassLoader());
                         } catch (ClassNotFoundException ex) {
                             getEngine().warn(
                                     "Java class not found: " + castTo_name);
@@ -1381,7 +1402,7 @@ public class JavaLibrary extends Library {
                         types[i] = java.lang.Boolean.TYPE;
                     } else {
                         try {
-                            types[i] = Class.forName(castTo_name, true, classLoader);
+                            types[i] = Class.forName(castTo_name, true, loader.getClassLoader());
                         } catch (ClassNotFoundException ex) {
                             getEngine().warn(
                                     "Java class not found: " + castTo_name);
