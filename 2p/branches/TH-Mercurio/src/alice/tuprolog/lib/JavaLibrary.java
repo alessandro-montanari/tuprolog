@@ -44,9 +44,10 @@ import alice.tuprolog.Number;
 import alice.tuprolog.Struct;
 import alice.tuprolog.Term;
 import alice.tuprolog.Var;
+import alice.util.DynamicDexManager;
 import alice.util.DynamicLoader;
+import alice.util.DynamicURLClassLoader;
 import alice.util.InspectionUtils;
-
 /**
  * 
  * This class represents a tuProlog library enabling the interaction with the
@@ -89,9 +90,7 @@ public class JavaLibrary extends Library {
 	 * 
 	 * used to manage two different classloaders, DynamicURLClassLoader and DexClassLoader.
 	 */
-    private DynamicLoader loader;
-    //private DynamicURLClassLoader classloader;
-     
+    private DynamicLoader dynamicLoader;     
     
     /**
      * library theory
@@ -99,8 +98,14 @@ public class JavaLibrary extends Library {
     
     public JavaLibrary()
     {
-		//classLoader = new DynamicURLClassLoader(new URL[]{}, this.getClass().getClassLoader());
-    	loader = new DynamicLoader(this.getClass().getClassLoader());
+    	if (System.getProperty("java.vm.name").equals("Dalvik"))
+		{
+			dynamicLoader = new DynamicDexManager("", "/data/data/alice.tuprologx.android/app_dex", null, getClass().getClassLoader());
+		} 
+		else
+		{
+			dynamicLoader = new DynamicURLClassLoader(new URL[] {}, getClass().getClassLoader());
+		}
     }
     
     public String getTheory() {
@@ -223,7 +228,7 @@ public class JavaLibrary extends Library {
             }
             // object creation with argument described in args
             try {
-            	Class<?> cl = Class.forName(clName, true, loader.getClassLoader());
+            	Class<?> cl = Class.forName(clName, true, dynamicLoader.getClassLoader());
                 Object[] args_value = args.getValues();
                 //
                 // Constructor co=cl.getConstructor(args.getTypes());
@@ -399,7 +404,7 @@ public class JavaLibrary extends Library {
             	
             	if (System.getProperty("java.vm.name").equals("Dalvik"))
         		{
-            		the_class = Class.forName(fullClassName, true, loader.getClassLoader());
+            		the_class = Class.forName(fullClassName, true, dynamicLoader.getClassLoader());
         		}
             	else
             	{
@@ -513,7 +518,7 @@ public class JavaLibrary extends Library {
 						try {
 							String clName = alice.util.Tools
 									.removeApices(id.getArg(0).toString());
-							Class<?> cl = Class.forName(clName, true, loader.getClassLoader());
+							Class<?> cl = Class.forName(clName, true, dynamicLoader.getClassLoader());
 							
 							
 //							Method m = cl.getMethod(methodName, args.getTypes());
@@ -623,8 +628,8 @@ public class JavaLibrary extends Library {
         	if(!paths.isList())
         		throw new IllegalArgumentException();
         	String[] listOfPaths = getStringArrayFromStruct((Struct) paths);
-        	loader.removeAllURLs();
-        	loader.addURLs(getURLsFromStringArray(listOfPaths));
+        	dynamicLoader.removeAllURLs();
+        	dynamicLoader.addURLs(getURLsFromStringArray(listOfPaths));
         	return true;
     	}catch(IllegalArgumentException e)
         {
@@ -651,7 +656,7 @@ public class JavaLibrary extends Library {
     		paths = paths.getTerm();
     		if(!(paths instanceof Var))
     			throw new IllegalArgumentException();
-    		URL[] urls = loader.getURLs();
+    		URL[] urls = dynamicLoader.getURLs();
         	String stringURLs = null;
         	Term pathTerm = null;
         	if(urls.length > 0)
@@ -760,7 +765,7 @@ public class JavaLibrary extends Library {
             	if(clName != null)
             	{
             		try {
-                        cl = Class.forName(clName, true, loader.getClassLoader());
+                        cl = Class.forName(clName, true, dynamicLoader.getClassLoader());
                     } catch (ClassNotFoundException ex) {
                         getEngine().warn("Java class not found: " + clName);
                         return false;
@@ -869,7 +874,7 @@ public class JavaLibrary extends Library {
             	if(clName != null)
             	{
             		try {
-                        cl = Class.forName(clName, true, loader.getClassLoader());
+                        cl = Class.forName(clName, true, dynamicLoader.getClassLoader());
                     } catch (ClassNotFoundException ex) {
                         getEngine().warn("Java class not found: " + clName);
                         return false;
@@ -1164,7 +1169,7 @@ public class JavaLibrary extends Library {
             } else if (obtype.equals("double")) {
                 array = new double[nargs];
             } else {
-                Class<?> cl = Class.forName(obtype, true, loader.getClassLoader());
+                Class<?> cl = Class.forName(obtype, true, dynamicLoader.getClassLoader());
                 array = Array.newInstance(cl, nargs);
             }
             return bindDynamicObject(id, array);
@@ -1375,7 +1380,7 @@ public class JavaLibrary extends Library {
                     } else {
                         values[i] = obj_to_cast;
                         try {
-                            types[i] = Class.forName(castTo_name, true, loader.getClassLoader());
+                            types[i] = Class.forName(castTo_name, true, dynamicLoader.getClassLoader());
                         } catch (ClassNotFoundException ex) {
                             getEngine().warn(
                                     "Java class not found: " + castTo_name);
@@ -1402,7 +1407,7 @@ public class JavaLibrary extends Library {
                         types[i] = java.lang.Boolean.TYPE;
                     } else {
                         try {
-                            types[i] = Class.forName(castTo_name, true, loader.getClassLoader());
+                            types[i] = Class.forName(castTo_name, true, dynamicLoader.getClassLoader());
                         } catch (ClassNotFoundException ex) {
                             getEngine().warn(
                                     "Java class not found: " + castTo_name);
