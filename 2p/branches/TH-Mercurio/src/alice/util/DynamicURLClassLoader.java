@@ -19,7 +19,7 @@ import java.util.Hashtable;
  * 
  */
 
-public class DynamicURLClassLoader extends ClassLoader{
+public class DynamicURLClassLoader extends ClassLoader implements DynamicLoader{
 	private ArrayList<URL> listURLs = null;
 	private Hashtable<String, Class<?>> classCache = new Hashtable<String, Class<?>>();
 	
@@ -240,5 +240,11 @@ public class DynamicURLClassLoader extends ClassLoader{
 		if(classCache.contains(cls))
 			classCache.remove(cls.getName());
 		classCache.put(cls.getName(), cls);
+	}
+
+	@Override
+	public ClassLoader getClassLoader()
+	{
+		return this;
 	}
 }

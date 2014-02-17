@@ -3,8 +3,6 @@ package alice.util;
 import java.net.URL;
 import java.util.ArrayList;
 
-import android.util.Log;
-
 import dalvik.system.DexClassLoader;
 
 /**
@@ -17,7 +15,7 @@ import dalvik.system.DexClassLoader;
  *
  */
 
-public class DynamicDexClassLoader
+public class DynamicDexManager implements DynamicLoader
 {
 	private ArrayList<URL> listURLs = null;
 	private String optimizedDirectory;
@@ -25,9 +23,8 @@ public class DynamicDexClassLoader
 	private ClassLoader parent;
 	private String dexPath;
 	private DexClassLoader classLoader;
-
 	
-	public DynamicDexClassLoader(String dexPath, String optimizedDirectory, String libraryPath, ClassLoader parent)
+	public DynamicDexManager(String dexPath, String optimizedDirectory, String libraryPath, ClassLoader parent)
 	{
 		
 		setDexPath(dexPath);
@@ -45,7 +42,8 @@ public class DynamicDexClassLoader
 		classLoader = new DexClassLoader( dexPath, optimizedDirectory, libraryPath, parent);
 	}
 	
-	public DexClassLoader getClassLoader()
+	@Override
+	public ClassLoader getClassLoader()
 	{
 		return classLoader;
 	}
