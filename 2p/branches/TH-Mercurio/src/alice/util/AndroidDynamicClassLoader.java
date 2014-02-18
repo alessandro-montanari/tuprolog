@@ -51,7 +51,7 @@ public class AndroidDynamicClassLoader extends AbstractDynamicClassLoader
 	}
 
 	public Class<?> findClass(String className) throws ClassNotFoundException
-	{
+	{		
 		setDexPath(createPathString());
 		
 		classLoader = new DexClassLoader(dexPath, "/data/data/alice.tuprologx.android/app_dex", null, getParent());
