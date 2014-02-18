@@ -160,7 +160,7 @@ public class tuPrologActivity extends Activity {
      *  
      */
     
-    dexOutputDir = getDir("dex", 0);
+    dexOutputDir = this.getApplicationContext().getDir("dex", 0);
     CUIConsole.libraryManager.setOptimizedDirectory(dexOutputDir.getAbsolutePath());
     CUIConsole.engine.getLibraryManager().setOptimizedDirectory(dexOutputDir.getAbsolutePath());
   }
