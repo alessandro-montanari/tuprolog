@@ -1,5 +1,7 @@
 package alice.tuprologx.android;
 
+import java.io.File;
+
 import alice.tuprolog.InvalidTheoryException;
 import alice.tuprolog.Theory;
 import android.app.Activity;
@@ -30,10 +32,18 @@ public class tuPrologActivity extends Activity {
   private TextView outputView;
   private Toast toast;
   private static final int ACTIVITY_SELECT = 2;
-
+  private static final int ACTIVITY_LIBRARY = 3;
+  
   private TheoryDbAdapter mDbHelper;
 
   private static tuPrologActivity context;
+  
+  /**
+   * @author Alessio Mercurio
+   * 
+   * Directory used by DexClassLoader. 
+   */
+  private File dexOutputDir ;
 
   public tuPrologActivity() {
     context = this;
@@ -58,6 +68,16 @@ public class tuPrologActivity extends Activity {
       Intent i = new Intent(this, TheoriesDatabaseActivity.class);
       startActivityForResult(i, ACTIVITY_SELECT);
       return true;
+
+    /**
+     * @author Alessio Mercurio
+     * LibraryManager menu item.
+     */
+    case R.id.library_manager:
+    	Intent i2 = new Intent(this, LibraryManagerActivity.class);
+    	startActivityForResult(i2, ACTIVITY_LIBRARY);
+    	return true;
+      
     case R.id.about:
       AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
@@ -131,6 +151,18 @@ public class tuPrologActivity extends Activity {
     CUIConsole.main(textView, editText, execute, solutionView, outputView,
         next, toast, this);
 
+    
+    /**	
+     *  @author Alessio Mercurio
+     * 
+     *  Create and set the optimized files directory into the Android LibraryManager and Java LibraryManager.
+     *  This is the directory where optimized dex files should be written; must not be null.
+     *  
+     */
+    
+    dexOutputDir = getDir("dex", 0);
+    CUIConsole.libraryManager.setOptimizedDirectory(dexOutputDir.getAbsolutePath());
+    CUIConsole.engine.getLibraryManager().setOptimizedDirectory(dexOutputDir.getAbsolutePath());
   }
 
   @Override

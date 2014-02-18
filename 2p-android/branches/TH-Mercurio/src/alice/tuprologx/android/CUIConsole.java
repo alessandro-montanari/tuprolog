@@ -44,6 +44,14 @@ public class CUIConsole extends Automaton implements Serializable,
   private static final long serialVersionUID = 1L;
   public static Prolog engine;
   private SolveInfo info;
+  
+  /** 
+   * @author Alessio Mercurio
+   * 
+   * Android LibraryManager
+   */
+  public static LibraryManager libraryManager;
+
 
   private static TextView textView;
   private static AutoCompleteTextView editText;
@@ -65,6 +73,14 @@ public class CUIConsole extends Automaton implements Serializable,
     engine.addOutputListener(this);
     engine.addSpyListener(this);
     engine.addExceptionListener(this);
+    
+    /**
+     * @author Alessio Mercurio
+     * 
+     * LibraryManager initialization
+     */
+    libraryManager = new LibraryManager();
+    libraryManager.setEngine(engine);
 
     textView = tv;
     editText = et;
