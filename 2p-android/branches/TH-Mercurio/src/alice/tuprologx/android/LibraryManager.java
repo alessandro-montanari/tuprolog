@@ -3,6 +3,7 @@ package alice.tuprologx.android;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.StringTokenizer;
 
 import dalvik.system.DexClassLoader;
 
@@ -84,6 +85,39 @@ public class LibraryManager implements LibraryListener
 		return (engine.getLibrary(libraryClassname) != null);
 	}
 
+	/**
+     * Add a library to the manager.
+     *
+     * @param libraryClassname The name of the library to be added.
+     * @throws ClassNotFoundException if the library class cannot be found.
+     * @throws InvalidLibraryException if the library is not a valid tuProlog library.
+     */
+	public void addLibrary(String libraryClassname) throws ClassNotFoundException, InvalidLibraryException 
+	{
+        if (libraryClassname.equals(""))
+            throw new ClassNotFoundException();
+        /** 
+         * check for classpath without uppercase at the first char of the last word
+         */
+        StringTokenizer st=new StringTokenizer(libraryClassname,".");
+        String str=null;
+        while(st.hasMoreTokens())
+            str=st.nextToken();
+        if ((str.charAt(0)>'Z') ||(str.charAt(0)<'A'))
+            throw new ClassNotFoundException();
+
+        Library lib = null;
+        try
+        {
+        	lib = (Library) Class.forName(libraryClassname).newInstance();
+        	libraries.add(lib.getName());
+        }
+        catch(Exception ex)
+        {
+        	throw new InvalidLibraryException(libraryClassname,-1,-1);
+        }
+    }
+	
 	/**
      * Add a library to the manager.
      *
@@ -251,6 +285,10 @@ public class LibraryManager implements LibraryListener
 							.getExternalLibraryURL(libraryName);
 
 					addLibrary(libraryName, url.getPath());
+				}
+				else
+				{
+					addLibrary(libraryName);
 				}
 			} catch (ClassNotFoundException e)
 			{
