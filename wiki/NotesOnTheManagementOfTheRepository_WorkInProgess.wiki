@@ -49,8 +49,10 @@ Before describing how to manage the different kind of branches used in our struc
 As explained before, the usefulness of the branches is that your are “disconnected” from the trunk so you let the other developers work without any problems. This is of course a nice feature but lets consider this scenario: while you are working on your branch the code in the trunk is changed a lot, very deeply, when you have to reintegrate your work into the trunk you will recognize that your new feature is not working anymore in the new version of the application or you have a lot of conflicts to resolve. This is a typical problem that you will encounter if you work on your own branch in total isolation. The best way to handle this is to replicate the changes made in the trunk to your own branch, just to make sure they mesh well with your changes. Subversion is aware of the history of your branch and knows when it is divided away from the trunk. To replicate the latest trunk changes to your branch, first make sure your working copy of the branch is “clean”—that it has no local modifications reported by svn status. Then simply run:
 
 {{{
-$ svn merge ^/calc/trunk 
---- Merging r345 through r356 into '.': U button.c U integer.c $
+$ svn merge ^/2p/trunk 
+--- Merging r345 through r356 into '.': 
+      U Theory.java 
+      U Struct.java $
 }}}
 
 This basic syntax—`svn <merge> <URL>`—tells Subversion to merge all recent changes from the URL to the current working directory (which is typically the root of your working copy). Also notice that we're using the caret (^) syntax to avoid having to type out the entire /trunk URL.
@@ -58,115 +60,118 @@ This basic syntax—`svn <merge> <URL>`—tells Subversion to merge all recent c
 
 {{{
 $ svn commit -m 
-"Merged latest trunk changes to my-calc-branch.”.
+"Merged latest trunk changes to TH-Montanari.”.
 }}}
 
 [https://code.google.com/p/tuprolog/wiki/HOWTOBranchSynchronization Here] it is possible to find a guide that explains how to synchronize a branch using the Subclipse 1.8 plugin for Eclipse. 
 
-Given the past experience with the tuProlog project we think that it is not mandatory to impose a fixed period for branch synchronization (like once a week or something similar). However, there are situations where a branch synchronization is needed to simplify the successive reintegration of the branch. For example when there is overlapping between the work of two or more developers and one of the branches is reintegrated into te trunk: in that case it is necessary to synchronize the other branches. Another example is when there is a long-lived branch: in this case in fact it is possible that many other branches have been reintegrated in the trunk and if the long-lived branch is not synchronized often, its successive merge with the trunk could be difficult because they are too far apart.
+Given the past experience with the tuProlog project we think that it is not mandatory to impose a fixed period for branch synchronization (like once a week or something similar). However, there are situations where a branch synchronization is needed to simplify the successive reintegration of the branch. For example when there is overlapping between the work of two or more developers and one of the branches is reintegrated into te trunk: in that case it is necessary to synchronize the other branches. Another example is when there is a long-lived branch: in this case in fact it is possible that many other branches have been reintegrated in the trunk and if the long-lived branch is not synchronized often, its successive merge with the trunk could be difficult because they are too far apart. It is responsibility of who manages the repository to detect these situations and request a branch synchronization to the developers that are working on active branches.
  
 ===Reintegrating a Branch===
-This is the operation that you have to do when your work on your own branch is finished and you have to make your changes available to the others developers. The process is simple. First, bring your branch in sync with the trunk again, just as you've been doing all along. Now, you use svn merge with the --reintegrate option to replicate your branch changes back into the trunk. *You'll need a working copy of /trunk*. Your trunk working copy cannot have any local edits or be at mixed-revisions. While these are typically best practices for merging, they are required when using the --reintegrate option.
-Once you have a clean working copy of the trunk, you're ready to merge your branch back into it:
+This is the operation that has to be done when the work on a branch is finished and it is necessary to make the changes available to the others developers, merging the branch with the trunk. The process is simple. First, bring the branch in sync with the trunk again, just as you've been doing all along. Now, you use svn merge with the --reintegrate option to replicate your branch changes back into the trunk. *You will need a working copy of the trunk to do that*. Your trunk working copy cannot have any local edits or be at mixed-revisions. While these are typically best practices for merging, they are required when using the --reintegrate option.
+Once you have a clean working copy of the trunk, you are ready to merge the branch back into it:
 
 {{{
 $ svn update # (make sure the working copy is up to date)
-$ svn merge --reintegrate ^/calc/branches/my-calc-branch 
---- Merging differences between repository URLs into '.': U button.c U integer.c U Makefile U.
+$ svn merge --reintegrate ^/2p/branches/TH-Montanari
+--- Merging differences between repository URLs into '.': 
+       U Theory.java 
+       U Struct.java 
+       U ant.xml.
 $ # build, test, verify, ...
-$ svn commit -m "Merge my-calc-branch back into trunk!" Sending	. Sending	button.c . button.c README
+$ svn commit -m "Merge TH-Montanari back into trunk!" 
+         Sending	Theory.java 
 	 ...
 	Committed revision 391.
 }}}
 
-Your branch has now been remerged back into the main line of development. By specifying the --reintegrate option, you're asking Subversion to carefully replicate only those changes unique to your branch. (And in fact, it does this by comparing the latest trunk tree with the latest branch tree: the resulting difference is exactly your branch changes!).
-Now that your private branch is merged to trunk, you may wish to remove it from the repository:
+The branch has now been remerged back into the main line of development. By specifying the --reintegrate option, you are asking Subversion to carefully replicate only those changes unique to your branch. (And in fact, it does this by comparing the latest trunk tree with the latest branch tree: the resulting difference is exactly the branch changes).
+Now that the branch is merged into the trunk, you may wish to remove it from the repository:
 
 {{{
-$ svn delete ^/calc/branches/my-calc-branch \ -m "Remove my-calc-branch, reintegrated with trunk in r391."
+$ svn delete ^/2p/branches/TH-Montanari -m "Remove TH-Montanari, reintegrated with trunk in r391."
 Committed revision 392.
 }}}
 
-*This operation is not totally destructive, indeed even though your branch is no longer visible in the /branches directory, its existence is still an immutable part of the repository's history*. A simple svn log command on the /branches URL will show the entire history of your branch. Your branch can even be resurrected at some point, should you desire (see the section called “Resurrecting Deleted Items” in the SVN book).
-Once a --reintegrate merge is done from branch to trunk, the branch is no longer usable for further work. It's not able to correctly absorb new trunk changes, nor can it be properly reintegrated to trunk again. For this reason, if you want to keep working on your feature branch, we recommend destroying it and then re-creating it from the trunk. There is another way of making the branch usable again after reintegration, without deleting the branch. See the section called “Keeping a Reintegrated Branch Alive” in the SVN book.
+*This operation is not totally destructive, indeed even though the branch is no longer visible in the /branches directory, its existence is still an immutable part of the repository's history*. A simple svn log command on the /branches URL will show the entire history of the branch. The branch can even be resurrected at some point (see the section called “Resurrecting Deleted Items” in the SVN book).
 
-*In summary, for reintegrate a branch:*
-	1	make the last synchronization with the trunk;
-	2	get a working copy of the trunk and update it;
-	3	merge the branch with the working copy;
-	4	commit the changes;
-	5	delete the branch.
+*In summary, to reintegrate a branch:*
+  # make the last synchronization with the trunk;
+  # get a working copy of the trunk and update it;
+  # merge the branch with the working copy;
+  # commit the changes;
+  # delete the branch.
+
+[https://code.google.com/p/tuprolog/wiki/HOWTOBranchReintegration Here] it is possible to find a guide that explains how to reintegrate a branch using the Subclispe 1.8 plugin for Eclipse.
+
+The following sections describe the three categories of branches used during the work on tuProlog: bug fix, experimental and thesis. These conventions have been developed in order to understand immediately from the name of the branch which is its purpose.
 
 ===Bug Fix Branches===
-When a bug is recognized, if that bug is easy to solve and can be solved with just one commit, it is possible to fix it directly from where it was discovered (trunk or branch) but if the bug is more complex and require quite time and work to be fixed, the better way is to create a new branch and develop the solution on that branch. For this kind of branches we chose the following template for the name of the relative directory "BUG-[bug ID]", where bug ID  is the Identification Number of the bug in the bug tracker. An example:
-
-{{{
-/
-	trunk/
-	branches/
-		BUG-3456/
-	tags/
-}}}
-
-The bug branch can be used like any other branch and when the work is finished it has to be reintegrated into the trunk or into the branch as described in the section 3.2.
-Sometimes could be useful to tag the situation of the project before and after the solution of the bug, this topic is better explained in section 4.3.
-
-We recall here the best procedure for handle a bug:
-  # after the discovery insert a detailed description in the bug traker;
-  # create one or more test that expose the bug;
-  # create a bug branch for fixing it;
-  # reintegrate the branch when the work is finished.
-
-===Experimental Branches===
-The experimental branches are intended to use when a new technology or a new approach is going to take place in the project, since this could be a dangerous operation and we don’t want to compromise the work in the trunk, a new branch is the right solution. In this case the template is the following: "TRY-[keywords of the exepriment]", where with some keywords you have to describe what is going to change, for example:
-
-{{{
-/
-	trunk/
-	branches/
-		BUG-3456/
-		TRY-JDK1.7/
-		TRY-generics/
-	tags/
-}}}
-
-An experimental branch can be abandoned (or deleted) or reintegrate into the trunk
-
-===Thesis Branches===
-Since most of the work on the tuProlog engine is made by students as thesis work, a kind of branch for this particular case is provided. Usually a thesis on tuProlog is like trying a new technology or a new approach to solve a problem or to improve the quality of the engine so this kind of branch is like an experimental branch but a new template for the name is used in order to let the professors to find the right directory immediately. The template is: "TB-[surname of the student]". An example:
-
-{{{
-/
-	trunk/
-	branches/
-		BUG-3456/
-		TRY-JDK1.7/
-		TRY-generics/
-		TB-montanari/
-	tags/
-}}}
-
-A thesis branch should also contain a document where the purpose of the thesis is reported, in order to let the people involved to better understand in which direction the work is going on.
-
-When the work is finished it will be integrate into the trunk if it is good enough otherwise the branch can be deleted or maintained if future work will take place. In any case a thesis tag should be made. 
-
-
-==Tags Management==
-Exactly as a branch, a tag is a copy of the trunk (or of a branch) in a specific moment, the only difference is that we decide (SVN convention) to never commit to a tag. In this way it will remain a snapshot of our project in a certain moment forever. This seems to be redundant since in a version control repository each change is tracked (revisions), this is true, but the reason why we use tags instead of revisions to track releases is that it's not so easy to remember that release 1.0 of a piece of software is a particular subdirectory of revision 4822, coping the state of the software in a certain directory makes it a trivial task. So the gold rule for the tags is: never commit to one of them.
-
-===Release Tags===
-These kind of tags mark the release (and state) of our code at that release point. Release tags are always copies of the corresponding release branch, the template for the name of the relative directory is: REL-[version number], where the version number is the same as in the release branch. Here an example:
+When a bug is recognized, if that bug is easy to solve and can be solved with just *one commit*, it is possible to fix it directly from where it was discovered (trunk or branch) but if the bug is more complex and requires more time and work to be fixed, the better way is to create a new branch and develop the solution on that branch. For this kind of branches we chose the following template for the name of the relative directory "BUG-[bug ID]", where bug ID  is the Identification Number of the bug in the bug tracker or a name that recalls the bug itself. An example:
 
 {{{
 /2p
 	/trunk
 	/branches
-		/RB-2.3.0
+		/BUG-3456
+	/tags
+}}}
+
+The bug branch can be used like any other branch and when the work is finished it has to be reintegrated into the trunk or into the branch as described in the previous sections
+
+We recall here the best procedure to handle a bug:
+  # after the discovery insert a detailed description in the bug traker;
+  # create one or more tests that expose the bug;
+  # create a bug branch to fix it;
+  # reintegrate the branch when the work is finished.
+
+===Experimental Branches===
+The experimental branches are intended to be used when there is the necessity to try a new technology or when a student works on a specific project related to tuProlog (called "Attività Progettuale" in italian). Since this could be a dangerous operation and we do not want to compromise the work in the trunk, a new branch is the right solution. In this case the template is the following: "TRY-[keywords of the exepriment]", where with some keywords you have to describe what is going to change, for example:
+
+{{{
+/2p
+	/trunk
+	/branches
+		/BUG-3456
+		/TRY-JDK1.7
+		/TRY-generics
+	/tags
+}}}
+
+An experimental branch can be abandoned (or deleted) or reintegrated into the trunk
+
+===Thesis Branches===
+Since most of the work on the tuProlog engine is made by students as thesis work, a kind of branch for this particular case is provided. Usually a thesis on tuProlog is like trying a new technology or a new approach to solve a problem or to improve the quality of the engine so this kind of branch is like an experimental branch but a new template for the name is used in order to let the professors to find the right directory immediately. The template is: "TH-[surname of the student]". An example:
+
+{{{
+/2p
+	/trunk
+	/branches
+		/BUG-3456
+		/TRY-JDK1.7
+		/TRY-generics
+		/TH-Montanari
+	/tags
+}}}
+
+To enable the student as a committer on the tuProlog repository, the student must have a google account and he has to be added in the [https://code.google.com/p/tuprolog/people/list People section] giving him the "Committer" role. The "Duties" filed should contain a short description of the thesis and the URL of the branch associated to the student, in order to let the people involved in the project to better understand in which direction the work is going on.
+
+When the work is finished the branch will be reintegrated into the trunk if it is good enough otherwise the branch can be deleted or maintained if future work will take place. 
+
+==Tags Management==
+Exactly as a branch, a tag is a copy of the trunk (or of a branch) in a specific moment, the only difference is that we decided (SVN convention) to never commit to a tag. In this way it will remain a snapshot of our project in a certain moment forever. This seems to be redundant since in a version control repository each change is tracked (revisions), this is true, but the reason why we use tags instead of revisions to track releases is that it's not so easy to remember that release 1.0 of a piece of software is a particular subdirectory of revision 4822, coping the state of the software in a certain directory makes it a trivial task. So the gold rule for the tags is: *never commit to one of them*.
+
+===Release Tags===
+These kind of tags mark the release (and state) of our code at that release point. The template for the name of the relative directory is: "REL-[version number]", where the version number is defined by the rules described [https://code.google.com/p/tuprolog/wiki/ProjectsVersionManagement Here]. Here is reported an example:
+
+{{{
+/2p
+	/trunk
+	/branches
 	/tags
 		/REL-2.3.0
 }}}
 
-Now the circle is closed: develop in the trunk - create a release branch - brand the software and make it releasable - create a release tag.
 
 ==Relationships between projects==
 TODO
