@@ -162,7 +162,7 @@ When the work is finished the branch will be reintegrated into the trunk if it i
 Exactly as a branch, a tag is a copy of the trunk (or of a branch) in a specific moment, the only difference is that we decided (SVN convention) to never commit to a tag. In this way it will remain a snapshot of our project in a certain moment forever. This seems to be redundant since in a version control repository each change is tracked (revisions), this is true, but the reason why we use tags instead of revisions to track releases is that it's not so easy to remember that release 1.0 of a piece of software is a particular subdirectory of revision 4822, coping the state of the software in a certain directory makes it a trivial task. So the gold rule for the tags is: *never commit to one of them*.
 
 ===Release Tags===
-These kind of tags mark the release (and state) of our code at that release point. The template for the name of the relative directory is: "REL-[version number]", where the version number is defined by the rules described [https://code.google.com/p/tuprolog/wiki/ProjectsVersionManagement Here]. Here is reported an example:
+These kind of tags mark the release (and state) of our code at that release point. The template for the name of the relative directory is: "REL-[`version number`]", where the version number is defined by the rules described [https://code.google.com/p/tuprolog/wiki/ProjectsVersionManagement Here]. Here is reported an example:
 
 {{{
 /2p
@@ -174,14 +174,30 @@ These kind of tags mark the release (and state) of our code at that release poin
 
 
 ==Relationships between projects==
-TODO
+tuProlog is a characteristic project consisting of four sub-projects: the java version, the android version, the Eclipse plugin and the .NET version. 
 
 
-===Externals===
+
+
+===Enforce Dependencies using svn:externals===
 TODO
 
-==Target Ant==
+(External to the guide)
+
+===Impact on the Repository Management===
+
+
+
+==Management Automation using Ant==
 TODO
+
+===Java===
+
+===Android===
+
+===Eclipse===
+
+===.NET===
 
 Per java il tutto è abbastanza semplice:
   # aggiorna tutto quello che deve aggiornare, compresa la versione in VersionInfo e committa;
