@@ -1,0 +1,3 @@
+#summary Guide on how to reintegrate a branch with the trunk in Subclipse 1.8.
+
+TODO
