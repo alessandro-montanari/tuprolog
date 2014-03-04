@@ -174,9 +174,10 @@ These kind of tags mark the release (and state) of our code at that release poin
 
 
 ==Relationships between projects==
-tuProlog is a characteristic project consisting of four sub-projects: the java version, the android version, the Eclipse plugin and the .NET version. 
+tuProlog is a characteristic project consisting of four sub-projects: the Java SE version, the Android version, the Eclipse plugin and the .NET version. The Java version is the actual implementation of the Prolog engine (in addition to the user interface for Java SE), while the Android version and the Eclipse plugin are simply the implementations of the user interfaces for the respective platforms. The Android version and the Eclipse plugin use the core of the engine, written in java, as a library and build around it the user interface: an Android app and a plugin respectively. For the .NET version the situation is slightly different. In fact the .NET version is obtained automatically converting the java bytecode into .NET bytecode using the tool [http://www.ikvm.net/ IKVM.NET]: the result of the conversion is a working executable file. The only code implemented specifically for the .NET platform is the OOLibrary that is the counterpart of the JavaLibrary on the Java platform (please refer to the manual for more informations on these libraries).
 
-
+<img src="http://code.google.com/p/tuprolog/source/browse/wiki/images/NotesOnTheManagementOfTheRepository/tuPrologVersions.png"/>
+In more 
 
 
 ===Enforce Dependencies using svn:externals===
