@@ -185,16 +185,34 @@ As described in the previous section, three projects out of four depends on the 
 
 During the design of the repository structure we had in mind two goals: simplicity and immediacy. Because we did not want to incur in the problems mentioned above and even because the majority of developers are students, we tried to design the repository in a way that the projects, after the checkout, could be used immediately, limiting the operations from the developers as much as possible. Therefore *we decided to put the required files (2p.jar and tuprolog.jar) directly on the repository and using externals definitions to link them to the projects that require them*. This way, when a developer checks out the Android project for example, the file tuprolog.jar will be downloaded automatically and copied in the "libs" folder, so the developer is immediately ready to start his work. This is slightly against the "SVN best practices" that discourage to put binaries on the repository because it should be used only for code. In these situations the SVN book advices to setup externals definitions so as to download the code necessary to compile the other project. This means, for example, that if a developer has to work on the Android version an externals definition is needed to download the entire Java version, otherwise the Android app will not compile. This complicates the use of the project because the developer has to deal with may files that are not directly related to his project and it is necessary that also the code downloaded (the Java version in the example above) compiles, so this requires to download also its dependencies and setup the IDE to correctly compile it (classpath, etc.).
 
-After the decision to put the binaries on the repository there was another question to answer, where can we put those files? 
+After the decision to put the binaries on the repository there was another question to answer, where can we put those files? The fundamental idea is that the projects that depend from the tuProlog core are released immediately after the release of a new tuProlog version. In fact in that moment the new tuprolog.jar file is available and the other projects can be built in order to incorporate the new core. Therefore there is a "virtual link" between each project and a specific version of the core, something like: the current version of the Andorid app is "linked" to tuProlog version 2.8 because it uses its core (this is also reflected in the scheme that we adopted for the [http://code.google.com/p/tuprolog/wiki/ProjectsVersionManagement version numbering]). In order to keep this link as visible as possible, to eventually simplify the analysis of older versions of the project, we decided to put the binary files (2p.jar and tuprolog.jar) in the tags folder. Moreover, the tags folder is by definition "untouchable" so it represents a good place where to put binary files that must not be modified. *When a version of the core is tagged with a x.y.z as version number, the two files are generated and copied in the folder /2p/tags/REL-x.y.z/build/archives/* (look at the following sections for more information on the automatization of this process using Ant). At this point, in the projects that requires tuprolog.jar (Android and Eclipse) is used an externals definition on the root folder of the project in the trunk in oder to checkout the required file in the "lib" folder of the project. 
+
+Example: 
+  * in the folder /2p/tags/REL-2.8.0/build/archives/ there are the files, 2p.jar and tuprolog.jar;
+  * in the root folder of the Android project in the trunk (/2p-android/trunk) is used the following "svn:externals" property
+{{{
+^/2p/tags/REL-2.8.0/build/archives/tuprolog.jar libs/tuprolog.jar
+}}}
+This property says that the file `^`/2p/tags/REL-2.8.0/build/archives/tuprolog.jar (note the use of the `^` character that is used in replacement of the entire URL of the repository) has to be copied in the folder "libs" upon checkout. This way, when the developer checks out the Android project, subversion will also automatically download tuprolog.jar inside "libs". Moreover, this use of the property makes immediately recognizable to which version of the core the current Android app is linked.
+
+In a similar way externals definitions are used to copy the tuProlog manual into the working copy, ensuring in this way that the developer obtain everything he needs with a single checkout.
+
+To summarize:
+  * the files required by the projects are placed in binary format in the repository;
+  * the binaries are placed in the tags folder;
+  * using "svn:externals" the binaries are copied automatically where required.
+
+====.NET Special Considerations====
+
+
 
 (External to the guide)
 
 ===Impact on the Repository Management===
-
+(tags)
 
 
 ==Management Automation using Ant==
-TODO
 
 ===Java===
 
