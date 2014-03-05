@@ -162,7 +162,7 @@ When the work is finished the branch will be reintegrated into the trunk if it i
 Exactly as a branch, a tag is a copy of the trunk (or of a branch) in a specific moment, the only difference is that we decided (SVN convention) to never commit to a tag. This way it will remain a snapshot of our project in a certain moment forever. This seems to be redundant since in a version control repository each change is tracked (revisions), this is true, but the reason why we use tags instead of revisions to track releases is that it's not so easy to remember that release 1.0 of a piece of software is a particular subdirectory of revision 4822, coping the state of the software in a certain directory makes it a trivial task. So the gold rule for the tags is: *never commit to one of them*.
 
 ===Release Tags===
-These kind of tags mark the release (and state) of our code at that release point. The template for the name of the relative directory is: "REL-[`version number`]", where the version number is defined by the rules described [https://code.google.com/p/tuprolog/wiki/ProjectsVersionManagement Here]. Here is reported an example:
+These kind of tags mark the release (and state) of our code at that the release point. The template for the name of the relative directory is: "REL-[`version number`]", where the version number is defined by the rules described [https://code.google.com/p/tuprolog/wiki/ProjectsVersionManagement Here]. Here is reported an example:
 
 {{{
 /2p
@@ -172,7 +172,7 @@ These kind of tags mark the release (and state) of our code at that release poin
 		/REL-2.3.0
 }}}
 
-(CARTELLA release POPOLATA CON GLI ZIP QUANDO SI TAGGA)
+During the tag operation performed using the Ant script discussed below, the folder `^`/2p/tags/REL-x.y.z/release is automatically populated with the zip file containing the actual release. This file represents the the release that has to be distributed to the users therefore it can be linked on the Apice website.
 
 
 ==Relationships between projects==
@@ -205,7 +205,7 @@ To summarize:
   * using "svn:externals" the binaries are copied automatically where required.
 
 ====.NET Special Considerations====
-For the . NET version of tuProlog is slightly different than the Android and Eclipse version. In fact, in .NET the file tuprolog.jar is not used as a library, as in Android and Eclipse, but it is used to generate the actual .NET version simply converting the java bytecode to .NET bytecode using IKVM.NET. This means that there is nothing on the .NET side that uses tuprolog.jar, instead the OOLibrary and the examples on the .NET side uses tuprolog.dll and 2p.exe. At this point the question was, if it would be better to link the files tuprolog.jar and 2p.jar inside the .NET projects and in this case the developer would have to produce tuprolog.dll and 2p.exe by himself, or produce automatically those files when a new tuProlog version for Java is tagged and link those files inside the .NET projects, in this way the developer, upon a single checkout, obtains everything he needs to work. We chose the second alternative because it was the best choice to keep the complexity low. In fact, probably some developers will work only on the OOLibrary or on future libraries and they do not need any knowledge about how the .NET version is created and about IKVM.NET, therefore generating the exe and dll files in advance permits to let the the developers focus on what they have to do, without bothering about the generation of these files.
+The situation for the . NET version of tuProlog is slightly different than the Android and Eclipse version. In fact, in .NET the file tuprolog.jar is not used as a library, as in Android and Eclipse, but it is used to generate the actual .NET version simply converting the java bytecode to .NET bytecode using IKVM.NET. This means that there is nothing on the .NET side that uses tuprolog.jar, instead the OOLibrary and the examples on the .NET side uses tuprolog.dll and 2p.exe. At this point the question was, if it would be better to link the files tuprolog.jar and 2p.jar inside the .NET projects and in this case the developer would have to produce tuprolog.dll and 2p.exe by himself, or produce automatically those files when a new tuProlog version for Java is tagged and link those files inside the .NET projects, in this way the developer, upon a single checkout, obtains everything he needs to work. We chose the second alternative because it was the best choice to keep the complexity low. In fact, probably some developers will work only on the OOLibrary or on future libraries and they do not need any knowledge about how the .NET version is created and about IKVM.NET, therefore generating the exe and dll files in advance permits to let the the developers focus on what they have to do, without bothering about the generation of these files.
 
 In more details, when a new tag for the Java version is created, using the Ant script discussed below, IKVM.NET is used to generate some .NET files, in particular:
   * 2p.exe, tuprolog.dll and javassist.dll generated from 2p.jar, tuprolog.jar and javassist.jar respectively. They are placed in the folder `^`/2p/tags/REL-x.y.z/build/archives/net/.
@@ -233,11 +233,11 @@ For example, the tag of the Java version 2.8.0 looks like this:
                           /fixtures.dll  
 }}}
 
-At this point, similarly to what is already done for Android and Eclipse, those files are linked to the "lib" folder on the .NET trunk (`^`/2p-net/trunk/lib) using externals definitions, so the projects on the .NET side (OOLibrary and examples) can reference them and the developer does not need to generate them manually.
+At this point, similarly to what is already done for Android and Eclipse, those files are linked to the "lib" folder in the .NET trunk (`^`/2p-net/trunk/lib) using externals definitions, so the projects on the .NET side (OOLibrary and examples) can reference them and the developer does not need to generate them manually.
 
 This solution is a bit "dirty" because in the tags for the Java version are placed .NET files, but in this way we are more uniform with the management of the dependencies for the other projects (Android and Eclipse) and simplify the work of the .NET developers.
 
-In addition to dependencies analyzed before, the .NET projects depend also on the IKVM.NET libraries. In this case we adopted a similar approach: the IKVM.NET libraries are copied in the "ikvm" folder (`^`/2p-net/ikvm) keeping the version number:
+In addition to the dependencies analyzed before, the .NET projects depend also on the IKVM.NET libraries. In this case we adopted a similar approach: the IKVM.NET libraries are copied in the "ikvm" folder (`^`/2p-net/ikvm) keeping the version number:
 {{{
 /2p-net
   /ikvm
@@ -246,12 +246,17 @@ In addition to dependencies analyzed before, the .NET projects depend also on th
     /ikvm-7.2.4630.5
 }}}
 
-Using externals definitions the required libraries are linked in the "lib" folder in the trunk (`^`/2p-net/trunk/lib) and referenced by the .NET projects. In this way we void coping the IKVM.NET libraries directly into the projects saving in this way space on the repository because the required libraries are a discrete number. Moreover, looking at the `snv:externals` property, it is always possible to understand which version of IKVM.NET is being used.
+Using externals definitions the required libraries are linked in the "lib" folder in the trunk (`^`/2p-net/trunk/lib) and referenced by the .NET projects. In this way we avoid coping the IKVM.NET libraries directly into the projects saving in this way space on the repository because the required libraries are a discrete number. Moreover, looking at the `snv:externals` property, it is always possible to understand which version of IKVM.NET is being used.
 
 ===Impact on the Repository Management===
-(tags)
+The use of externals definitions has several implications on the repository management. We would like to discuss these implications distinguishing three moments.
 
-(new version of ikvm)
+
+====New Java Version====
+
+====New IKVM.NET Version====
+
+====New Manual Version====
 
 
 ==Management Automation using Ant==
