@@ -172,20 +172,22 @@ These kind of tags mark the release (and state) of our code at that release poin
 		/REL-2.3.0
 }}}
 
+(CARTELLA release POPOLATA CON GLI ZIP QUANDO SI TAGGA)
+
 
 ==Relationships between projects==
 tuProlog is a characteristic project consisting of four sub-projects: the Java SE version, the Android version, the Eclipse plugin and the .NET version. The Java version is the actual implementation of the Prolog engine (in addition to the user interface for Java SE), while the Android version and the Eclipse plugin are simply the implementations of the user interfaces for the respective platforms. The Android version and the Eclipse plugin use the core of the engine, written in java, as a library and build around it the user interface: an Android app and a plugin respectively. For the .NET version the situation is slightly different. In fact the .NET version is obtained automatically converting the java bytecode into .NET bytecode using the tool [http://www.ikvm.net/ IKVM.NET]: the result of the conversion is a working executable file. The only code implemented specifically for the .NET platform is the OOLibrary that is the counterpart of the JavaLibrary on the Java platform (please refer to the manual for more informations on these libraries). 
 
-In more detail, the Android version and the Eclipse plugin have as dependency the file tuprolog.jar, produced by the Java version. This file contains only the core of the tuProlog engine (the Java SE UI is contained in the file 2p.jar). The files 2p.jar and tuprolog.jar are used as input to the IKVM.NET tool to produce the files 2p.exe and tuprolog.ddl. After the conversion with IKVM.NET the files 2p.exe and tuprolog.dll are already the .NET version, the only code that is added (in C#) is the implementation of the OOLibrary. The image below should clarify the situations. 
+In more detail, the Android version and the Eclipse plugin have as dependency the file tuprolog.jar, produced by the Java version. This file contains only the core of the tuProlog engine (the Java SE UI is contained in the file 2p.jar). The files 2p.jar and tuprolog.jar are used as input to the IKVM.NET tool to produce the files 2p.exe and tuprolog.dll. After the conversion with IKVM.NET the files 2p.exe and tuprolog.dll are already the .NET version, the only code that is added (in C#) is the implementation of the OOLibrary. The image below should clarify the situation. 
 
 <img src="http://tuprolog.googlecode.com/svn/wiki/images/NotesOnTheManagementOfTheRepository/tuPrologVersions.png" height="50%" width="50%"/>
 
 ===Enforce Dependencies using svn:externals===
-As described in the previous section, three projects out of four depends on the two files, 2p.jar and tuprolog.jar. This dependency as to be reflected on the repository as well in order to ensure that the developers have everything they need to start working immediately after the checkout, without the need to download additional software using other checkout commands and set-up references. Subversion offers a mechanism called Externals Definitions that can be used to achieve this. An externals definition is a link to a resource on the repository (or on another repository) that can be attached to any versioned directory using the `svn:externals` property. When the folder that contains the property is checked out, Subversion will read the property and checkout also the resources referenced by it. This way, to build a working copy that consists of many resources in different locations on the repository, it is not necessary to do several checkout manually but, once the externals definitions are in place, everything happens automatically upon a single checkout operation.
+As described in the previous section, three projects out of four depends on two files, 2p.jar and tuprolog.jar. This dependency as to be reflected on the repository as well in order to ensure that the developers have everything they need to start working immediately after the checkout, without the need to download additional software using other checkout commands and set-up references. Subversion offers a mechanism called *Externals Definitions* that can be used to achieve this. An externals definition is a link to a resource on the repository (or on another repository) that can be attached to any versioned directory using the `svn:externals` property. When the folder that contains the property is checked out, Subversion will read the property and checkout also the resources referenced by it. This way, to build a working copy that consists of many resources in different locations on the repository, it is not necessary to do several checkout manually but, once the externals definitions are in place, everything happens automatically upon a single checkout operation.
 
-During the design of the repository structure we had in mind two goals: simplicity and immediacy. Because we did not want to incur in the problems mentioned above and even because the majority of developers are students, we tried to design the repository in a way that the projects, after the checkout, could be used immediately, limiting the operations from the developers as much as possible. Therefore *we decided to put the required files (2p.jar and tuprolog.jar) directly on the repository and using externals definitions to link them to the projects that require them*. This way, when a developer checks out the Android project for example, the file tuprolog.jar will be downloaded automatically and copied in the "libs" folder, so the developer is immediately ready to start his work. This is slightly against the "SVN best practices" that discourage to put binaries on the repository because it should be used only for code. In these situations the SVN book advices to setup externals definitions so as to download the code necessary to compile the other project. This means, for example, that if a developer has to work on the Android version an externals definition is needed to download the entire Java version, otherwise the Android app will not compile. This complicates the use of the project because the developer has to deal with may files that are not directly related to his project and it is necessary that also the code downloaded (the Java version in the example above) compiles, so this requires to download also its dependencies and setup the IDE to correctly compile it (classpath, etc.).
+During the design of the repository structure we had in mind two goals: simplicity and immediacy. We did not want to incur in the problems mentioned above because the majority of developers are students, so we tried to design the repository in a way that the projects, after the checkout, could be used immediately, limiting the operations from the developers as much as possible. Therefore *we decided to put the required files (2p.jar and tuprolog.jar) directly on the repository and use externals definitions to link them to the projects that require them*. This way, when a developer checks out the Android project for example, the file tuprolog.jar will be automatically downloaded and copied in the "libs" folder, so the developer is immediately ready to start his work. This is slightly against the "SVN best practices" that discourage to put binaries on the repository because it should be used only for code. In these situations the SVN book advices to setup externals definitions so as to download the code necessary to compile the other project. This means, for example, that if a developer has to work on the Android version an externals definition is needed to download the entire Java version, otherwise the Android app will not compile. This complicates the use of the project because the developer has to deal with may files that are not directly related to his project and it is necessary that also the code downloaded (the Java version in the example above) compiles, so this requires to download also its dependencies and setup the IDE to correctly compile it (classpath, etc.).
 
-After the decision to put the binaries on the repository there was another question to answer, where can we put those files? The fundamental idea is that the projects that depend from the tuProlog core are released immediately after the release of a new tuProlog version. In fact in that moment the new tuprolog.jar file is available and the other projects can be built in order to incorporate the new core. Therefore there is a "virtual link" between each project and a specific version of the core, something like: the current version of the Andorid app is "linked" to tuProlog version 2.8 because it uses its core (this is also reflected in the scheme that we adopted for the [http://code.google.com/p/tuprolog/wiki/ProjectsVersionManagement version numbering]). In order to keep this link as visible as possible, to eventually simplify the analysis of older versions of the project, we decided to put the binary files (2p.jar and tuprolog.jar) in the tags folder. Moreover, the tags folder is by definition "untouchable" so it represents a good place where to put binary files that must not be modified. *When a version of the core is tagged with a x.y.z as version number, the two files are generated and copied in the folder /2p/tags/REL-x.y.z/build/archives/* (look at the following sections for more information on the automatization of this process using Ant). At this point, in the projects that requires tuprolog.jar (Android and Eclipse) is used an externals definition on the root folder of the project in the trunk in oder to checkout the required file in the "lib" folder of the project. 
+After the decision to put the binaries on the repository there was another question to answer, where can we put those files? The fundamental idea is that the projects that depend from the tuProlog core are released immediately after the release of a new tuProlog version. In fact in that moment the new tuprolog.jar file is available and the other projects can be built in order to incorporate the new core. Therefore there is a "virtual link" between each project and a specific version of the core, something like: the current version of the Android app is "linked" to tuProlog version 2.8 because it uses its core (this is also reflected in the scheme that we adopted for the [http://code.google.com/p/tuprolog/wiki/ProjectsVersionManagement version numbering]). In order to keep this link as visible as possible, to eventually simplify the analysis of older versions of the project, we decided to put the binary files (2p.jar and tuprolog.jar) in the tags folder. Moreover, the tags folder is by definition "untouchable" so it represents a good place where to put binary files that must not be modified. *When a version of the core is tagged with x.y.z as version number, the two files are generated and copied in the folder /2p/tags/REL-x.y.z/build/archives/* (look at the following sections for more information on the automatization of this process using Ant). At this point, in the projects that requires tuprolog.jar (Android and Eclipse) is used an externals definition on the root folder of the project in the trunk in oder to checkout the required file in the "lib" folder of the project ("libs" folder for Android). 
 
 Example: 
   * in the folder /2p/tags/REL-2.8.0/build/archives/ there are the files, 2p.jar and tuprolog.jar;
@@ -193,9 +195,9 @@ Example:
 {{{
 ^/2p/tags/REL-2.8.0/build/archives/tuprolog.jar libs/tuprolog.jar
 }}}
-This property says that the file `^`/2p/tags/REL-2.8.0/build/archives/tuprolog.jar (note the use of the `^` character that is used in replacement of the entire URL of the repository) has to be copied in the folder "libs" upon checkout. This way, when the developer checks out the Android project, subversion will also automatically download tuprolog.jar inside "libs". Moreover, this use of the property makes immediately recognizable to which version of the core the current Android app is linked.
+This property says that the file `^`/2p/tags/REL-2.8.0/build/archives/tuprolog.jar (note the use of the `^` character in replacement of the entire URL of the repository) has to be copied in the folder "libs" upon checkout. This way, when the developer checks out the Android project, subversion will also automatically download tuprolog.jar inside "libs". Moreover, this use of the property makes immediately recognizable to which version of the core the current Android app is linked.
 
-In a similar way externals definitions are used to copy the tuProlog manual into the working copy, ensuring in this way that the developer obtain everything he needs with a single checkout.
+In a similar way externals definitions are used to copy the tuProlog manual into the working copy ("doc" folder), ensuring in this way that the developer obtain everything he needs with a single checkout.
 
 To summarize:
   * the files required by the projects are placed in binary format in the repository;
@@ -203,13 +205,53 @@ To summarize:
   * using "svn:externals" the binaries are copied automatically where required.
 
 ====.NET Special Considerations====
+For the . NET version of tuProlog is slightly different than the Android and Eclipse version. In fact, in .NET the file tuprolog.jar is not used as a library, as in Android and Eclipse, but it is used to generate the actual .NET version simply converting the java bytecode to .NET bytecode using IKVM.NET. This means that there is nothing on the .NET side that uses tuprolog.jar, instead the OOLibrary and the examples on the .NET side uses tuprolog.dll and 2p.exe. At this point the question was, if it would be better to link the files tuprolog.jar and 2p.jar inside the .NET projects and in this case the developer would have to produce tuprolog.dll and 2p.exe by himself, or produce automatically those files when a new tuProlog version for Java is tagged and link those files inside the .NET projects, in this way the developer, upon a single checkout, obtains everything he needs to work. We chose the second alternative because it was the best choice to keep the complexity low. In fact, probably some developers will work only on the OOLibrary or on future libraries and they do not need any knowledge about how the .NET version is created and about IKVM.NET, therefore generating the exe and dll files in advance permits to let the the developers focus on what they have to do, without bothering about the generation of these files.
 
+In more details, when a new tag for the Java version is created, using the Ant script discussed below, IKVM.NET is used to generate some .NET files, in particular:
+  * 2p.exe, tuprolog.dll and javassist.dll generated from 2p.jar, tuprolog.jar and javassist.jar respectively. They are placed in the folder `^`/2p/tags/REL-x.y.z/build/archives/net/.
+  * fit.dll and junit.exe generated from fit.jar and junit.jar. They are placed in `^`/2p/tags/REL-x.y.z/build/archives/net/lib/.
+  * 2pWithUnitTests.dll and fixtures.dll. They are required to run the Java tests on the .NET platform (refer to Montanari's thesis) and are placed in `^`/2p/tags/REL-x.y.z/build/archives/net/test/.
 
+For example, the tag of the Java version 2.8.0 looks like this:
+{{{
+/2p
+  /tags
+      /REL-2.8.0
+          /build
+              /archives
+                  /2p.jar
+                  /tuprolog.jar
+                  /net
+                      /2p.exe
+                      /tuprolog.dll
+                      /javassist.dll
+                      /lib
+                          /fit.dll
+                          /junit.exe
+                      /test
+                          /2pWithUnitTests.dll
+                          /fixtures.dll  
+}}}
 
-(External to the guide)
+At this point, similarly to what is already done for Android and Eclipse, those files are linked to the "lib" folder on the .NET trunk (`^`/2p-net/trunk/lib) using externals definitions, so the projects on the .NET side (OOLibrary and examples) can reference them and the developer does not need to generate them manually.
+
+This solution is a bit "dirty" because in the tags for the Java version are placed .NET files, but in this way we are more uniform with the management of the dependencies for the other projects (Android and Eclipse) and simplify the work of the .NET developers.
+
+In addition to dependencies analyzed before, the .NET projects depend also on the IKVM.NET libraries. In this case we adopted a similar approach: the IKVM.NET libraries are copied in the "ikvm" folder (`^`/2p-net/ikvm) keeping the version number:
+{{{
+/2p-net
+  /ikvm
+    /ikvm-7.0.4335.0
+    /ikvm-7.1.4532.2
+    /ikvm-7.2.4630.5
+}}}
+
+Using externals definitions the required libraries are linked in the "lib" folder in the trunk (`^`/2p-net/trunk/lib) and referenced by the .NET projects. In this way we void coping the IKVM.NET libraries directly into the projects saving in this way space on the repository because the required libraries are a discrete number. Moreover, looking at the `snv:externals` property, it is always possible to understand which version of IKVM.NET is being used.
 
 ===Impact on the Repository Management===
 (tags)
+
+(new version of ikvm)
 
 
 ==Management Automation using Ant==
