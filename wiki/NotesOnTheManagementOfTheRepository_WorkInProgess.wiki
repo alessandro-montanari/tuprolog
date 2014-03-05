@@ -277,12 +277,12 @@ To this value:
 }}}
 Even in this case it is necessary to do an UPDATE of the working copy to replace the old files.
 
-Exactly as in the two cases above, when a new version of thr tuProlog manual is available it is necessary to change the value of the svn properties to download it from the new location.
+Exactly as in the two cases above, when a new version of the tuProlog manual is available it is necessary to change the value of the svn properties to download it from the new location.
 
-*We remember that the `svn:properties` are always attached to the trunk folder of each project that requires it*.
+*We remember that the `svn:externals` properties are always attached to the trunk folder of each project that requires it*.
 
 ==Management Automation using Ant==
-[http://ant.apache.org/ Apache Ant] is extensively used in tuProlog to automate tasks that regards both the development of the projects, as explained [http://code.google.com/p/tuprolog/wiki/GuideOnTheDevelopmentOfTheProjects here], and the management of the repository. This section will focus only on the Ant targets that must be used to manage the repository. In particular, all tuProlog versions have an Ant target that must be used to tag the code. This target must be used because it performs two important tasks: it creates all the files that are necessary to the other projects (2p.jar, tuprolog.jar, 2p.exe, etc.) and it changes the name of the projects in the file ".project" so when different tags are imported into Eclipse there are no name conflicts.
+[http://ant.apache.org/ Apache Ant] is extensively used in tuProlog to automate tasks that regards both the development of the projects, as explained [http://code.google.com/p/tuprolog/wiki/GuideOnTheDevelopmentOfTheProjects here], and the management of the repository. This section will focus only on the Ant targets that must be used to manage the repository. In particular, all tuProlog projects have an Ant target that must be used to tag the code. This target must be used because it performs three important tasks: it creates all the files that are necessary to the other projects (2p.jar, tuprolog.jar, 2p.exe, etc.), it copies the release zip into the tag folder for Java and .NET and it changes the name of the projects in the file ".project" so when different tags are imported into Eclipse there are no name conflicts.
 
 ===Java===
 The Java version of tuProlog contains many Ant targets to build the engine, to test it, etc. but only one must be used to manage the repository. This target is called "12.tag" and, as the name suggests it tags the current working copy on the repository. In more detail the target performs the following operations:
@@ -293,7 +293,7 @@ The Java version of tuProlog contains many Ant targets to build the engine, to t
     # it changes the name of the Eclipse project in the ".project" file. This renaming is done in order to avoid name conflicts when many tags are imported in Eclipse.
     # it imports all the files created in the previous steps inside the correct folders.
 
-Since this target has to build also the .NET files it must to be executed on a Windows machine where it is available a copy of the IKVM.NET binaries. In order to work correctly the target requires two properties that are defined in the file ant/environment.properties: the path to the IKVM.NET folder in the local filesystem and the Google Code user name that has to be used to tag the code.
+Since this target has to build also the .NET files it must to be executed on a Windows machine where it is available a copy of the IKVM.NET binaries. In order to work correctly the target requires two properties that are defined in the file ant/environment.properties: the path to the IKVM.NET folder in the local filesystem and the Google Code username that has to be used to tag the code.
 
 The steps to be performed to tag the Java version are the following:
   # modify the version number in the file [http://code.google.com/p/tuprolog/source/browse/2p/trunk/src/alice/util/VersionInfo.java VersionInfo.java] as specified [http://code.google.com/p/tuprolog/wiki/ProjectsVersionManagement here];
@@ -301,7 +301,7 @@ The steps to be performed to tag the Java version are the following:
   # run the target "12.tag", it will request the password for the specified user and the password can be found at this address https://code.google.com/hosting/settings.
 
 ===Android===
-Similarly to the java version, also the Android version has an Ant target that must be used to tag the code. The target is called "03.tag" and a part from tagging the code it only changes the name of the project in ".project" file.
+Similarly to the java version, also the Android version has an Ant target that must be used to tag the code. The target is called "03.tag" and apart from tagging the code it only changes the name of the project in ".project" file.
 
 The steps to be performed to tag the Android version are the following:
   # modify the value of the `svn:externals` property to refer to the new version of the core as explained before;
@@ -329,9 +329,3 @@ The steps to be performed to tag the .NET version are the following:
   # commit, update and verify that everything works as expected;
   # in the file ant/environment.properties setup the path to the IKVM.NET folder and the Google Code username.
   # run the target "02.tag", it will request the password for the specified user and the password can be found at this address https://code.google.com/hosting/settings.
-
-
-
-
-= Compilation Target for Android =
-At the moment (Nov-2012) the Android SDK is not capable to use java libraries compiled with target level 1.7, this will lead to a `JavaClassNotFoundException`. For this reason the default target level for the java project is set to 1.6 (file ant/environment.properties).
