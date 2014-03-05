@@ -1,4 +1,4 @@
-#summary Here are reported all the informations needed to manage the repository
+#summary Here are reported all the informations needed to manage the repository.
 
 <wiki:toc max_depth="3" />
 
@@ -172,7 +172,7 @@ These kind of tags mark the release (and state) of our code at that the release 
 		/REL-2.3.0
 }}}
 
-During the tag operation performed using the Ant script discussed below, the folder `^`/2p/tags/REL-x.y.z/release is automatically populated with the zip file containing the actual release. This file represents the the release that has to be distributed to the users therefore it can be linked on the Apice website.
+During the tag operation performed using the Ant script discussed below, the folder `^`/2p/tags/REL-x.y.z/release, for the Java and .NET project, is automatically populated with the zip file containing the actual release. This file represents the release that has to be distributed to the users therefore it can be linked on the Apice website.
 
 
 ==Relationships between projects==
@@ -202,7 +202,8 @@ In a similar way externals definitions are used to copy the tuProlog manual into
 To summarize:
   * the files required by the projects are placed in binary format in the repository;
   * the binaries are placed in the tags folder;
-  * using "svn:externals" the binaries are copied automatically where required.
+  * using `svn:externals` the binaries are copied automatically where required;
+  * the `svn:externals` properties are always attached to the "trunk" folder of the project.
 
 ====.NET Special Considerations====
 The situation for the . NET version of tuProlog is slightly different than the Android and Eclipse version. In fact, in .NET the file tuprolog.jar is not used as a library, as in Android and Eclipse, but it is used to generate the actual .NET version simply converting the java bytecode to .NET bytecode using IKVM.NET. This means that there is nothing on the .NET side that uses tuprolog.jar, instead the OOLibrary and the examples on the .NET side uses tuprolog.dll and 2p.exe. At this point the question was, if it would be better to link the files tuprolog.jar and 2p.jar inside the .NET projects and in this case the developer would have to produce tuprolog.dll and 2p.exe by himself, or produce automatically those files when a new tuProlog version for Java is tagged and link those files inside the .NET projects, in this way the developer, upon a single checkout, obtains everything he needs to work. We chose the second alternative because it was the best choice to keep the complexity low. In fact, probably some developers will work only on the OOLibrary or on future libraries and they do not need any knowledge about how the .NET version is created and about IKVM.NET, therefore generating the exe and dll files in advance permits to let the the developers focus on what they have to do, without bothering about the generation of these files.
@@ -249,43 +250,85 @@ In addition to the dependencies analyzed before, the .NET projects depend also o
 Using externals definitions the required libraries are linked in the "lib" folder in the trunk (`^`/2p-net/trunk/lib) and referenced by the .NET projects. In this way we avoid coping the IKVM.NET libraries directly into the projects saving in this way space on the repository because the required libraries are a discrete number. Moreover, looking at the `snv:externals` property, it is always possible to understand which version of IKVM.NET is being used.
 
 ===Impact on the Repository Management===
-The use of externals definitions has several implications on the repository management. We would like to discuss these implications distinguishing three moments.
+The use of externals definitions has several implications on the repository management. We would like to discuss these implications distinguishing three moments:
+  * release of a new tuProlog core;
+  * release of a new IKVM.NET version;
+  * release of a new tuProlog manual version.
 
+In the first case, when a new tuProlog core is released it is necessary to test it also on the other platforms and release them as well. To do this it is necessary to create the Java tag using the Ant script and then change the values of the `svn:externals` in the other projects to link the new files. For example if the value of the property for the Android project is:
+{{{
+^/2p/tags/REL-2.8.0/build/archives/tuprolog.jar libs/tuprolog.jar
+}}}
+After the the tag of the release 2.9.0 it should be changed to:
+{{{
+^/2p/tags/REL-2.9.0/build/archives/tuprolog.jar libs/tuprolog.jar
+}}}
+After the commit of this change it is necessary to do an UPDATE of the working copy, in this way Subversion replaces the old tuprolog.jar with the new one. If the application works correctly even with the new core it can be tagged and released. In the rare case that a new tuProlog core is released while some branches are still active, the more conservative choice is to modify the externals definitions also on the branches and resolve the problems that could arise from this change directly in the branch. If the externals definition is not changed in the branch, probably an svn conflict regarding the value of the property will arise when the branch is reintegrated in the trunk and the problems due to the new version of the core could be more difficult to solve, because maybe the developer that was working on the branch is not available anymore.
 
-====New Java Version====
+Similarly, when a new version of IKVM.NET is released it is necessary to copy the libraries in the "ikvm" folder (`^`/2p-net/ikvm) and change the value of the `svn:externals` property on the .NET trunk. For example from this value:
+{{{
+^/2p-net/ikvm/ikvm-7.2.4630.5/bin/IKVM.OpenJDK.Core.dll IKVM.OpenJDK.Core.dll
+...
+}}}
+To this value:
+{{{
+^/2p-net/ikvm/ikvm-7.3.0.0/bin/IKVM.OpenJDK.Core.dll IKVM.OpenJDK.Core.dll
+...
+}}}
+Even in this case it is necessary to do an UPDATE of the working copy to replace the old files.
 
-====New IKVM.NET Version====
+Exactly as in the two cases above, when a new version of thr tuProlog manual is available it is necessary to change the value of the svn properties to download it from the new location.
 
-====New Manual Version====
-
+*We remember that the `svn:properties` are always attached to the trunk folder of each project that requires it*.
 
 ==Management Automation using Ant==
+[http://ant.apache.org/ Apache Ant] is extensively used in tuProlog to automate tasks that regards both the development of the projects, as explained [http://code.google.com/p/tuprolog/wiki/GuideOnTheDevelopmentOfTheProjects here], and the management of the repository. This section will focus only on the Ant targets that must be used to manage the repository. In particular, all tuProlog versions have an Ant target that must be used to tag the code. This target must be used because it performs two important tasks: it creates all the files that are necessary to the other projects (2p.jar, tuprolog.jar, 2p.exe, etc.) and it changes the name of the projects in the file ".project" so when different tags are imported into Eclipse there are no name conflicts.
 
 ===Java===
+The Java version of tuProlog contains many Ant targets to build the engine, to test it, etc. but only one must be used to manage the repository. This target is called "12.tag" and, as the name suggests it tags the current working copy on the repository. In more detail the target performs the following operations:
+  # it builds the files tuprolog.jar and 2p.jar that have to be copied in the tag because are used by the other projects;
+  # it builds the files tuprolog.dll, 2p.exe and the other .NET files that are used by the .NET projects;
+  # it builds the release zip file that has to be copied in the "release" folder inside the tag;
+  # it finally tags the code and during the tag it performs these other operations:
+    # it changes the name of the Eclipse project in the ".project" file. This renaming is done in order to avoid name conflicts when many tags are imported in Eclipse.
+    # it imports all the files created in the previous steps inside the correct folders.
+
+Since this target has to build also the .NET files it must to be executed on a Windows machine where it is available a copy of the IKVM.NET binaries. In order to work correctly the target requires two properties that are defined in the file ant/environment.properties: the path to the IKVM.NET folder in the local filesystem and the Google Code user name that has to be used to tag the code.
+
+The steps to be performed to tag the Java version are the following:
+  # modify the version number in the file [http://code.google.com/p/tuprolog/source/browse/2p/trunk/src/alice/util/VersionInfo.java VersionInfo.java] as specified [http://code.google.com/p/tuprolog/wiki/ProjectsVersionManagement here];
+  # in the file ant/environment.properties setup the path to the IKVM.NET folder and the Google Code username.
+  # run the target "12.tag", it will request the password for the specified user and the password can be found at this address https://code.google.com/hosting/settings.
 
 ===Android===
+Similarly to the java version, also the Android version has an Ant target that must be used to tag the code. The target is called "03.tag" and a part from tagging the code it only changes the name of the project in ".project" file.
+
+The steps to be performed to tag the Android version are the following:
+  # modify the value of the `svn:externals` property to refer to the new version of the core as explained before;
+  # commit, update and verify that everything works as expected;
+  # modify the version number in the file [http://code.google.com/p/tuprolog/source/browse/2p-android/trunk/AndroidManifest.xml AndroidManifest.xml] as specified [http://code.google.com/p/tuprolog/wiki/ProjectsVersionManagement here];
+  # run the application in the emulator to be sure that the apk file is generated;
+  # in the file ant/environment.properties setup the Google Code username.
+  # run the target "03.tag", it will request the password for the specified user and the password can be found at this address https://code.google.com/hosting/settings.
 
 ===Eclipse===
+Exactly as for the Android version, the Eclipse version has an Ant target called "03.tag" that tags the code and changes the name of the project in ".project". It requires to set up the Google Code username in the file ant/environment.properties.
+
+The steps to be performed to tag the Eclipse version are the following:
+  # modify the value of the `svn:externals` property to refer to the new version of the core as explained before;
+  # commit, update and verify that everything works as expected;
+  # follow [http://code.google.com/p/tuprolog/wiki/GuidaPubblicazioneNuoveVersioniPluginEclipse this guide] to publish the new version of the plugin;
+  # in the file ant/environment.properties setup the Google Code username.
+  # run the target "03.tag", it will request the password for the specified user and the password can be found at this address https://code.google.com/hosting/settings.
 
 ===.NET===
+In the .NET version, the Ant target is called "02.tag" and it is responsible of tagging the code and coping in the tag folder also the release zip file.
 
-Per java il tutto è abbastanza semplice:
-  # aggiorna tutto quello che deve aggiornare, compresa la versione in VersionInfo e committa;
-  # fa girare il task "11.release.bin" per produrre lo zip da caricare nella sezione Downloads;
-  # per taggare, siccome dobbiamo generare i file exe e dll per .NET, deve impostare in ant/environment.properties la directory di installazione di IKVM, "ikvm.dir" e il nome utente su google code di chi esegue il tag, "username". A questo punto facendo girare il task "12.tag" le verrà chiesta la password per google code che trova qui (https://code.google.com/hosting/settings) e lui taggerà il codice che c'è nel trunk generando anche tutti i file che ci servono per gli altri progetti (exe, dll e jar). In questo passo non è necessario committare quando ha modificato environment.properties, quindi la sua mail non comparirà sul repo. Il nome della cartella generata nei tags sarà "REL-2.7.1".
-
-Per android ed il plugin il tutto è un po' meno automatico:
-  # modificare gli externals: se guarda le proprietà di svn sul trunk di android e sul progetto "alice.tuprologx.eclipse" vedrà gli externals nella forma "^/2p/tags/REL-2.7.0/build/archives/tuprolog.jar lib/tuprolog.jar". L'unica cosa da fare è cambiare lo 0 in 1. A questo punto si committa e si fa UPDATE per assicurarsi che il nuovo tuprolog.jar sia scaricato.
-  # modifica del numero di versione come descritto qui https://code.google.com/p/tuprolog/wiki/ProjectsVersionManagement e commit;
-    # per android una volta modificata la versione e committato, lui ha già rigenerato il nuovo apk;
-    # per il plugin bisogna seguire la guida di Lorena.
-
-Per .NET siamo ancora un po' indietro:
-  # modificare gli externals: anche qui se guarda le proprietà dei progetti "OOLibrary" e "NETFileRunner" sotto il trunk vedrà gli externals che puntano  ai tags di java, anche in questo caso basta modificare il numero di versione. Commit e UPDATE.
-  # build della OOLib: da visual studio si fa "Build All" per rigenerare le dll della libreria e delle convenzioni.
-  # composizione della release: qui c'è il buco. In pratica bisogna copiare i file di ikvm e le varie dll di tuprolog seguendo la struttura che vede nei tags di .NET (cartella build) per poi generare lo zip da caricare sul repo, farlo a mano è ovviamente una palla :) però ancora non c'è lo script che lo fa in automatico. In realtà non ci dovrebbe molto per farlo perché la struttura è già definita, è solo da fare delle gran copie di file via ant, appena ho un'attimo lo faccio.
-
-
+The steps to be performed to tag the .NET version are the following:
+  # modify the value of the `svn:externals` property to refer to the new version of the core (2p.exe, tuprolog.dll, etc.) as explained before;
+  # commit, update and verify that everything works as expected;
+  # in the file ant/environment.properties setup the path to the IKVM.NET folder and the Google Code username.
+  # run the target "02.tag", it will request the password for the specified user and the password can be found at this address https://code.google.com/hosting/settings.
 
 
 
