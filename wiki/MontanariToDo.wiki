@@ -10,3 +10,6 @@ ikvm branch
 
 da rivedere
   * sezione download sul repo e aggiunta download automatica (ant? http://code.google.com/p/ant-googlecode/) (vedi mail "meditazione").
+
+maven
+  * punto d'inizio --> http://stackoverflow.com/questions/1280470/maven-repository-for-google-code-project
