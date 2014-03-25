@@ -4,9 +4,9 @@
 1
 1
 tuprolog-guide.tex
-35
+36
+10
 9
-8
 
 tuprolog-guide.tex
 TeX:UNIX
@@ -34,7 +34,10 @@ TeX:UNIX
 17936379 0 -1 5196 -1 0 90 90 976 337 0 25 0 -1 -1 0 0 72 -1 -1 72 1 0 0 -1   0
 version-history.tex
 TeX:UNIX
-286371835 0 -1 23555 -1 23565 120 120 976 370 0 367 630 -1 -1 0 0 72 -1 -1 72 1 0 23565 -1   0
+17936379 0 -1 23555 -1 23565 120 120 976 370 0 385 630 -1 -1 0 0 72 -1 -1 72 1 0 23565 -1   0
+C:\Users\Enrico Denti\Downloads\Nome-medaglione.tex
+TeX:IT:UNIX
+286371835 1 -1 802 -1 894 243 243 1587 732 0 547 -1458 -1 -1 0 0 -1 -1 -1 -1 1 0 894 -1   0
 C:\Users\Enrico Denti\AppData\Roaming\WinEdt Team\WinEdt 7\ConfigEx\MainMenu.ini
 DATA:INI:EDT
 269485050 2 3926 30 3926 36 243 243 1587 732 1 393 468 -1 -1 0 0 -1 -1 -1 -1 1 0 36 3926   0
