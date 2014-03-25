@@ -138,10 +138,12 @@
 	     </svn>
 		
 		<!-- Change the reference to the libraries in the examples -->
+		<!-- Derivative -->
 		<replace 	file="${release.dir}/examples/Prolog from .NET/DerivativeExample/DerivativeExample/DerivativeExample.csproj"
 					token="&lt;HintPath&gt;..\..\..\..\lib\2p.exe&lt;/HintPath&gt;"
 					value="&lt;HintPath&gt;..\..\..\..\2p.exe&lt;/HintPath&gt;"/>
 		
+		<!-- Simple TicTacToe -->
 		<replace 	file="${release.dir}/examples/Prolog from .NET/tic tac toe/main/tictactoe.csproj"
 					token="&lt;HintPath&gt;..\..\..\..\lib\2p.exe&lt;/HintPath&gt;"
 					value="&lt;HintPath&gt;..\..\..\..\2p.exe&lt;/HintPath&gt;"/>
@@ -153,6 +155,19 @@
 		<replace 	file="${release.dir}/examples/Prolog from .NET/tic tac toe/main/tictactoe.csproj"
 					token="&lt;HintPath&gt;..\..\..\..\OOLibrary\OOLibrary\bin\Release\OOLibrary.dll&lt;/HintPath&gt;"
 					value="&lt;HintPath&gt;..\..\..\..\lib\OOLibrary.dll&lt;/HintPath&gt;"/>
+
+		<!-- Distributed TicTacToe -->
+		<replace 	file="${release.dir}/examples/Prolog from .NET/DistributedTicTacToe/TicTacToeClient/WindowsGame1/WindowsGame1/TicTacToe.csproj"
+					token="&lt;HintPath&gt;..\..\..\..\..\..\lib\2p.exe&lt;/HintPath&gt;"
+					value="&lt;HintPath&gt;..\..\..\..\..\..\2p.exe&lt;/HintPath&gt;"/>
+		
+		<replace 	file="${release.dir}/examples/Prolog from .NET/DistributedTicTacToe/TicTacToeClient/WindowsGame1/WindowsGame1/TicTacToe.csproj"
+					token="&lt;HintPath&gt;..\..\..\..\..\..\OOLibrary\Conventions\bin\Release\Conventions.dll&lt;/HintPath&gt;"
+					value="&lt;HintPath&gt;..\..\..\..\..\..\lib\Conventions.dll&lt;/HintPath&gt;"/>
+		
+		<replace 	file="${release.dir}/examples/Prolog from .NET/DistributedTicTacToe/TicTacToeClient/WindowsGame1/WindowsGame1/TicTacToe.csproj"
+					token="&lt;HintPath&gt;..\..\..\..\..\..\OOLibrary\OOLibrary\bin\Release\OOLibrary.dll&lt;/HintPath&gt;"
+					value="&lt;HintPath&gt;..\..\..\..\..\..\lib\OOLibrary.dll&lt;/HintPath&gt;"/>
 		
 		<!-- Compile OOLib and conventions -->
 		<exec dir="${projects.root.dir}" executable="msbuild">
@@ -221,6 +236,11 @@
 				<include name="IKVM.OpenJDK.SwingAWT.dll"/>
 				<include name="IKVM.Runtime.dll"/> 
 				<include name="IKVM.Reflection.dll"/> <!-- Added by Mannino-->
+			</fileset>
+			
+			<!-- Copy also tuprolog.jar needed for the examples -->
+			<fileset dir="${lib.dir}"
+				<include name="tuprolog.jar"/>
 			</fileset>
 		</copy>
 		
