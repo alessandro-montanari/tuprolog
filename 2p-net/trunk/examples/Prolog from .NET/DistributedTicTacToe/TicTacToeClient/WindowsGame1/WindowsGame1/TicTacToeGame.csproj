@@ -179,7 +179,7 @@ call Compile.bat
 copy "$(SolutionDir)..\TicTacToeServer\bin\Board.class" "$(SolutionDir)asset\Board.class"
 copy "$(SolutionDir)..\TicTacToeServer\bin\Client.class" "$(SolutionDir)asset\Client.class"
 copy "$(SolutionDir)..\TicTacToeServer\bin\ServerTicTacToe.class" "$(SolutionDir)asset\ServerTicTacToe.class"
-copy "$(SolutionDir)..\TicTacToeServer\bin\ServerTicTacToeImpl.class" "$(SolutionDir)asset\ServerTicTacToeImpl.class"
+copy "$(SolutionDir)..\TicTacToeServer\bin\ServerTicTacToeImpl_Stub.class" "$(SolutionDir)asset\ServerTicTacToeImpl_Stub.class"
 copy "$(SolutionDir)asset\*.*" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
   <!--
