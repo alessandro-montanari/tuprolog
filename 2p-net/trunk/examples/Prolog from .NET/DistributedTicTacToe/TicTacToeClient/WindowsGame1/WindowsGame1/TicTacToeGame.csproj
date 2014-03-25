@@ -174,7 +174,13 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy "$(SolutionDir)asset\*.*" "$(TargetDir)"</PostBuildEvent>
+    <PostBuildEvent>cd "$(SolutionDir)..\TicTacToeServer"
+call Compile.bat
+copy "$(SolutionDir)..\TicTacToeServer\bin\Board.class" "$(SolutionDir)asset\Board.class"
+copy "$(SolutionDir)..\TicTacToeServer\bin\Client.class" "$(SolutionDir)asset\Client.class"
+copy "$(SolutionDir)..\TicTacToeServer\bin\ServerTicTacToe.class" "$(SolutionDir)asset\ServerTicTacToe.class"
+copy "$(SolutionDir)..\TicTacToeServer\bin\ServerTicTacToeImpl.class" "$(SolutionDir)asset\ServerTicTacToeImpl.class"
+copy "$(SolutionDir)asset\*.*" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
   <!--
       To modify your build process, add your task inside one of the targets below and uncomment it. 
