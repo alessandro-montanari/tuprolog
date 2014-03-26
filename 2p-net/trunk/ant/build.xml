@@ -238,9 +238,10 @@
 				<include name="IKVM.Reflection.dll"/> <!-- Added by Mannino-->
 			</fileset>
 			
-			<!-- Copy also tuprolog.jar needed for the examples -->
+			<!-- Copy also tuprolog.jar needed for the examples and the README -->
 			<fileset dir="${lib.dir}">
 				<include name="tuprolog.jar"/>
+				<include name="README.txt"/>
 			</fileset>
 		</copy>
 		
