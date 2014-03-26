@@ -17,6 +17,7 @@ public class UserContextInputStream extends InputStream {
 	private InputStream result;
 	/**
 	 * Changed from a single EventListener to multiple (ArrayList) ReadListeners
+	 *
 	 */
 	private ArrayList<ReadListener> readListeners;
 	/***/
