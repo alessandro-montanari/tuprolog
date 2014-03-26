@@ -43,8 +43,6 @@ public class IOLibrary extends Library {
     private Random gen = new Random();
     
     /**
-     * Matteo Librenti 03/2014
-     * 
      * Added the variable consoleExecution
      */
     public static final String consoleExecution = "console";

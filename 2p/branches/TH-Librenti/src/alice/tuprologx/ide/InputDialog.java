@@ -16,7 +16,6 @@ import alice.tuprolog.event.ReadListener;
 import alice.tuprolog.lib.UserContextInputStream;
 
 /**
- * Matteo Librenti 03/2014
  * 
  * This class has been changed from JDialog to JPanel
  * to be inserted inside the ConsoleDialog
