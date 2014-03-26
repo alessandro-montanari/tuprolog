@@ -42,6 +42,14 @@ public class IOLibrary extends Library {
     protected OutputStream outputStream = System.out;
     private Random gen = new Random();
     
+    /**
+     * Matteo Librenti 03/2014
+     * 
+     * Added the variable consoleExecution
+     */
+    public static final String consoleExecution = "console";
+    /***/
+    
     public static final String graphicExecution = "graphic";
 
     public IOLibrary() {
