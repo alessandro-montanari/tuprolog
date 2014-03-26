@@ -115,8 +115,6 @@ public class ConsoleDialog
         tp.addTab("output",new JScrollPane(output));
         
         /**
-         * Matteo Librenti 03/2014
-         * 
          * Added an input tab ("input") to tp (JTabbedPane)
          */
         tp.add("input", new JScrollPane());
@@ -214,8 +212,6 @@ public class ConsoleDialog
     }
     
     /**
-     * Matteo Librenti 03/2014
-     * 
      * Method to insert an InputDialog inside the ConsoleDialog
      */
     public void setInputDialog(InputDialog input)
@@ -372,9 +368,7 @@ public class ConsoleDialog
         
     }
     
-    /**
-     * Matteo Librenti 03/2014
-     * 
+    /** 
      * Implemented the method readCalled because the consoleDialog is
      * a ReadListener.
      * When it is called a read operation the input tab is selected
@@ -382,6 +376,7 @@ public class ConsoleDialog
     public void readCalled(ReadEvent event) {
     	tp.setSelectedIndex(INPUT_INDEX);
     }
+    /***/
     
     /*Castagna 06/2011*/  	
 	public void onException(ExceptionEvent event) {

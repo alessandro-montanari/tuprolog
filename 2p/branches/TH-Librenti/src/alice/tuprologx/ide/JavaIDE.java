@@ -162,8 +162,6 @@ public class JavaIDE
         IOLibrary IO = (IOLibrary)engine.getLibrary("alice.tuprolog.lib.IOLibrary");
         IO.setExecutionType(IOLibrary.graphicExecution); // Matteo Librenti 03/2014 (change from IO.graphicExecution to IOLibrary.graphicExecution)
         /**
-         * Matteo Librenti 03/2014
-         * 
          * consoleDialog is registered as a listener for a read operation
          * and input (InputDialog) is added inside of consoleDialog
          */
