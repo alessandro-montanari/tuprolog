@@ -107,7 +107,7 @@ public class UserContextInputStream extends InputStream {
 						e.printStackTrace();
 					}
 		        } while (i < 0x20 && i >= -1);	
-		}	
+		}
 		return i;					
 	}
 	
@@ -124,7 +124,7 @@ public class UserContextInputStream extends InputStream {
 		
 	}
 	
-	public void addReadListener(ReadListener r)
+	public void setReadListener(ReadListener r)
 	{
 		this.readListeners.add(r);
 	}
