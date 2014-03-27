@@ -182,12 +182,12 @@ public class StateEnd extends State {
 	    	
 	    	if(lSolVar.size()>0 && lgoalBOVar.size()>0 && !varList.isGround() &&!goalBO.isGround()){
 		    	for (int i=0; i<bag.size();i++) {
-		    		System.out.println("BAG SIZE "+bag.size());
+		    		//System.out.println("BAG SIZE "+bag.size());
 		    		Var resVar = (Var)bag.get(i);
-		    		System.out.println("SOSTITUZIONE VAR "+resVar);
+		    		//System.out.println("SOSTITUZIONE VAR "+resVar);
 		    		Term t = resVar.getLink();
 		    		if(t==null){
-		    			System.out.println("----link null");
+		    			//System.out.println("----link null");
 		    			t=resVar;
 		    		}
 		    		//System.out.println("----link NOT null"+t);
@@ -196,27 +196,27 @@ public class StateEnd extends State {
 		    		for(int y=0; y<a.length;y++){
 		    			Var vv=(Var)a[y];
 		    			Var vv_link=structValue(vv,i);
-		    			System.out.println("NOME di vv_link "+vv_link);
+		    			//System.out.println("NOME di vv_link "+vv_link);
 		    			if(vv_link.isEqual(t)){
-		    				System.out.println("NOME della BAG "+vv.getName());
-		    				System.out.println("NOME di vv "+vv);
+		    				//System.out.println("NOME della BAG "+vv.getName());
+		    				//System.out.println("NOME di vv "+vv);
 		    				if(bagVarName==null){
 		    					bagVarName=vv.getOriginalName();
 		    					goalSolution=vv;
 		    				}
 		    				//sostituzione delle var nella Struct della sol
-		    				System.out.println("Sostituisco vv_link"+vv_link.getLink());
-		    				System.out.println("Sostituisco vv "+vv_link);
+		    				//System.out.println("Sostituisco vv_link"+vv_link.getLink());
+		    				//System.out.println("Sostituisco vv "+vv_link);
 		    				if(vv_link.getLink()!=null){
 		    					Struct s = substituteVar((Struct)vv_link.getLink(),lSolVar,lgoalBOVar);
-		    					System.out.println("****Nuovo link della var "+vv.getOriginalName()+" link "+s);	    	
+		    					//System.out.println("****Nuovo link della var "+vv.getOriginalName()+" link "+s);	    	
 		    				}
 		    				else{
 		    					int index = lSolVar.indexOf(resVar.getName());
-		    					System.out.println("Index i "+i);
+		    					//System.out.println("Index i "+i);
 		    					//come mai era lgoalBOVar ????
 		    					setStructValue(vv,i,new Var(lgoalBOVar.get(index)));
-		    					System.out.println("****Nuovo link della var "+vv.getOriginalName()+" valore "+vv);
+		    					//System.out.println("****Nuovo link della var "+vv.getOriginalName()+" valore "+vv);
 		    				}
 		    			}
 		   			}
@@ -241,7 +241,7 @@ public class StateEnd extends State {
 		        		}
 		    		}*/
 		    	}
-		    	System.out.println("La variabile da sostituire è "+bagVarName+" con valore "+goalSolution);
+		    	//System.out.println("La variabile da sostituire è "+bagVarName+" con valore "+goalSolution);
 		    	for(int j=0; j<vars.size(); j++){
 		    		Var vv=(Var)vars.get(j);
 		    		if(vv.getOriginalName().equals(bagVarName)){
@@ -249,7 +249,7 @@ public class StateEnd extends State {
 		    			// qui sarebbe bello fare un set del nome
 		    			solVar.setName(vv.getOriginalName());
 		    			solVar.rename(0, 0);
-		    			System.out.println("Sol var "+solVar.getOriginalName()+" nome "+solVar.getName()+" con valore "+solVar.getLink());
+		    			//System.out.println("Sol var "+solVar.getOriginalName()+" nome "+solVar.getName()+" con valore "+solVar.getLink());
 		    			vars.set(j, solVar);
 		    			break;
 		    		}
@@ -326,18 +326,18 @@ public class StateEnd extends State {
     public void setStructValue (Var v, int i, Var v1){ 	
     	Struct s=new Struct();
     	while(v.getLink()!=null){ 
-    		System.out.println("+++ cerco il valore v "+v+" link "+v.getLink());
+    		//System.out.println("+++ cerco il valore v "+v+" link "+v.getLink());
     		if(v.getLink()instanceof Var){
-    			System.out.println("+++ il link è var");
+    			//System.out.println("+++ il link è var");
     			v=(Var)v.getLink();
     		}
     		else if(v.getLink()instanceof Struct){
     			s=((Struct)v.getLink());
-    			System.out.println("+++ s "+s);
+    			//System.out.println("+++ s "+s);
     			//devo prendere l'i_esimo elemento della lista quindi scorro
-    			System.out.println("+++devo prendere l'i_esimo elemento della lista quindi scorro");
+    			//System.out.println("+++devo prendere l'i_esimo elemento della lista quindi scorro");
     			while(i>0){
-    				System.out.println("+++ s "+s.getArg(1));
+    				//System.out.println("+++ s "+s.getArg(1));
     				if(s.getArg(1) instanceof Struct)
     					s=(Struct)s.getArg(1);
     				else if (s.getArg(1) instanceof Var){
@@ -388,33 +388,33 @@ public class StateEnd extends State {
 		Term tt=null;
 		if(s.getArity()>1)
 			tt = s.getArg(1);
-		System.out.println("Substitute var ---Termine "+t+" e termine "+tt);
+		//System.out.println("Substitute var ---Termine "+t+" e termine "+tt);
 		if(tt!=null && tt instanceof Var){
 			int index = lSol.indexOf(((Var) tt).getName());
-			System.out.println("Substitute var ---Indice di tt in lSol "+index);
+			//System.out.println("Substitute var ---Indice di tt in lSol "+index);
 			s.setArg(1, new Var(lgoal.get(index)));
 			if(t instanceof Var){
 				int index1 = lSol.indexOf(((Var) t).getName());
-				System.out.println("Substitute var ---Indice di t in lSol "+index1);
+				//System.out.println("Substitute var ---Indice di t in lSol "+index1);
 				s.setArg(0, new Var(lgoal.get(index1)));
 			}
 			if(t instanceof Struct){
-				System.out.println("Substitute var-------Trovata struct ");
+				//System.out.println("Substitute var-------Trovata struct ");
 				Struct s1 = substituteVar((Struct)t,lSol,lgoal);
-				System.out.println("Substitute var ---t è struct ritorno s1 "+s1);
+				//System.out.println("Substitute var ---t è struct ritorno s1 "+s1);
 				s.setArg(0, s1);
 			}
 		}
 		else{
 			if(t instanceof Var){
 				int index1 = lSol.indexOf(((Var) t).getName());
-				System.out.println("Substitute var ---Indice di t in lSol "+index1);
+				//System.out.println("Substitute var ---Indice di t in lSol "+index1);
 				s.setArg(0, new Var(lgoal.get(index1)));
 			}
 			if(t instanceof Struct){
-				System.out.println("Substitute var-------Trovata struct ");
+				//System.out.println("Substitute var-------Trovata struct ");
 				Struct s1 = substituteVar((Struct)t,lSol,lgoal);
-				System.out.println("Substitute var ---t è struct ritorno s1 "+s1);
+				//System.out.println("Substitute var ---t è struct ritorno s1 "+s1);
 				s.setArg(0, s1);
 			}
 		}
