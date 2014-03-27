@@ -488,6 +488,10 @@ public class Var extends Term {
 			 return tt.isEqual(t);
 		 }
 	 }
+	 
+	 public void setName(String s){
+		 this.name=s;
+	 }
 
 	 /**
 	  * Gets the string representation of this variable.

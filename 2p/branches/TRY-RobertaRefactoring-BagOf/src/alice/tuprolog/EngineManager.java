@@ -3,6 +3,7 @@ package alice.tuprolog;
 //import java.io.File;
 //import java.io.IOException;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -406,5 +407,39 @@ public class EngineManager implements java.io.Serializable {
 		EngineRunner er=findRunner();
 		er.identify(t);
 	}	
+	
+	public boolean getRelinkVar(){
+		EngineRunner r = this.findRunner();
+		return r.getRelinkVar();
+	}
+	
+	public void setRelinkVar(boolean b){
+		EngineRunner r = this.findRunner();
+		r.setRelinkVar(b);
+	}
+	public ArrayList<Term> getBagOFres(){
+		EngineRunner r = this.findRunner();
+		return r.getBagOFres();
+	}
+    public void setBagOFres(ArrayList<Term> l){
+    	EngineRunner r = this.findRunner();
+		r.setBagOFres(l);
+	}
+    public Term getBagOFvarSet(){
+    	EngineRunner r = this.findRunner();
+		return r.getBagOFvarSet();
+	}
+    public void setBagOFvarSet(Term l){
+    	EngineRunner r = this.findRunner();
+		r.setBagOFvarSet(l);
+	}
+    public Term getBagOFgoal(){
+    	EngineRunner r = this.findRunner();
+		return r.getBagOFgoal();
+	}
+    public void setBagOFgoal(Term l){
+    	EngineRunner r = this.findRunner();
+    	r.setBagOFgoal(l);
+	}
 }
 
