@@ -165,7 +165,7 @@ public class JavaIDE
          * consoleDialog is registered as a listener for a read operation
          * and input (InputDialog) is added inside of consoleDialog
          */
-        IO.getUserContextInputStream().addReadListener(consoleDialog);
+        IO.getUserContextInputStream().setReadListener(consoleDialog);
         InputDialog input = new InputDialog(IO.getUserContextInputStream());
         consoleDialog.setInputDialog(input);
         /***/

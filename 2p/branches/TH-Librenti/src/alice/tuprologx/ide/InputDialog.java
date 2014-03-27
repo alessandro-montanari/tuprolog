@@ -31,7 +31,7 @@ public class InputDialog extends JPanel{
 	{
 		initComponent();
 		stream = str;
-		stream.addReadListener(new ReadListener(){
+		stream.setReadListener(new ReadListener(){
 			@Override
 			public void readCalled(ReadEvent event) {
 				setVisible(true);

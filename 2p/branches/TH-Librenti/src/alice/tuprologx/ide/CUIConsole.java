@@ -10,7 +10,6 @@ import alice.tuprolog.event.SpyEvent;
 import alice.tuprolog.event.SpyListener;
 import alice.tuprolog.event.WarningEvent;
 import alice.tuprolog.event.WarningListener;
-import alice.tuprolog.lib.IOLibrary;
 
 import java.io.*;
 
