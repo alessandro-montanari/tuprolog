@@ -27,7 +27,7 @@ public class EventListener implements SpyListener, OutputListener/*Castagna06/20
 
 	public void onOutput(OutputEvent arg0) {
 		// TODO Auto-generated method stub
-		output = arg0.getMsg();
+		output += arg0.getMsg(); /* Modified to fix nl bug*/
 	}
 
 	public String getSpy() {

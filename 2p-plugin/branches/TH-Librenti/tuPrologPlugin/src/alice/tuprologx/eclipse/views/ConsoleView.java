@@ -120,7 +120,7 @@ public class ConsoleView extends ViewPart{
 		CTabItem Output = new CTabItem(notebook,SWT.NONE);
 		Output.setImage(TuProlog.getIconFromResources("sample.gif"));
 		Output.setText("Output");
-
+		
 		/*Castagna 06/2011*/
 		CTabItem Exception = new CTabItem(notebook,SWT.NONE);
 		Exception.setImage(TuProlog.getIconFromResources("exception.gif"));
@@ -372,9 +372,9 @@ public class ConsoleView extends ViewPart{
 		outputViewer.setLayout(tabLayout);
 		Label outputLabel = new Label(outputViewer,SWT.NONE);
 		outputLabel.setText("Output: ");
-		output = new Text(outputViewer, SWT.MULTI | SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY | SWT.SCROLL_LINE);
+		output = new Text(outputViewer, SWT.MULTI | SWT.BORDER | SWT.READ_ONLY | SWT.SCROLL_LINE); /* Eliminate SWT.SINGLE to fix nl bug*/
 		output.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-
+		
 		/*Castagna 06/2011*/
 		SashForm sashException = new SashForm(notebook, SWT.HORIZONTAL);
 		sashException.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
