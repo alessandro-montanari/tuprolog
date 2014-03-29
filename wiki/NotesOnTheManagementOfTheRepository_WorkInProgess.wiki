@@ -331,3 +331,16 @@ The steps to be performed to tag the .NET version are the following:
   # commit, update and verify that everything works as expected;
   # in the file ant/environment.properties setup the path to the IKVM.NET folder and the Google Code username.
   # run the target "02.tag", it will request the password for the specified user and the password can be found at this address https://code.google.com/hosting/settings.
+
+===Summary of the available Ant Targets for each platform===
+||Project||Build||Test||Deploy/Release||Tag||
+||Java||X||X||X||X||
+||Android|| ||`*`|| ||X||
+||Eclipse|| ||`*`|| ||X||
+||.NET||X|| ||X||X||
+
+X = there is an Ant Target to do it
+
+`<empty>` = there is NOT an Ant Target to do it
+
+`*` = tests for Android and the Plugin do not exists
