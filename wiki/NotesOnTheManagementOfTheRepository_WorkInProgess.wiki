@@ -343,4 +343,4 @@ X = there is an Ant Target to do it
 
 `<empty>` = there is NOT an Ant Target to do it
 
-`*` = tests for Android and the Plugin do not exists
+`*` = tests for Android and the Plugin do not exist
