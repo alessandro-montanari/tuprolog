@@ -34,21 +34,19 @@ import java.io.*;
 @SuppressWarnings("serial")
 public class IOLibrary extends Library {
 
+	/**
+     * Added the variable consoleExecution
+     */
+    public static final String consoleExecution = "console"; 
+    /***/
+    public static final String graphicExecution = "graphic";
 	
 	protected UserContextInputStream input;
-    protected String inputStreamName = "stdin";
+    protected String inputStreamName = consoleExecution; /*Changed from "stdin" to consoleExecution*/
     protected InputStream inputStream = System.in;
     protected String outputStreamName = "stdout";
     protected OutputStream outputStream = System.out;
     private Random gen = new Random();
-    
-    /**
-     * Added the variable consoleExecution
-     */
-    public static final String consoleExecution = "console";
-    /***/
-    
-    public static final String graphicExecution = "graphic";
 
     public IOLibrary() {
         gen.setSeed(System.currentTimeMillis());
@@ -71,9 +69,9 @@ public class IOLibrary extends Library {
     {
     	InputStream result = null;
     	
-    	if(inputStreamName.compareTo("stdin") == 0)
+    	if(inputStreamName.compareTo(consoleExecution) == 0)
     		result = System.in;
-    	else if (inputStreamName.compareTo("graphic") == 0)
+    	else if (inputStreamName.compareTo(graphicExecution) == 0)
     		result = input;
     	return result;
     }

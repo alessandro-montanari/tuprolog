@@ -31,7 +31,6 @@ public class ISOIOLibrary extends Library{
     protected String inputStreamName = null;
     protected String outputStreamName = null;
     protected IOLibrary IOLib = null;
-    
     private int flag = 0;
     private int write_flag = 1;
 
@@ -879,7 +878,7 @@ public class ISOIOLibrary extends Library{
     public boolean peek_char_1(Term in_char)throws PrologError{
         initLibrary();
         Struct s_or_a = new Struct(inputStream.toString());
-        if(inputStreamName.equals("stdin")){
+        if(inputStreamName.equals(IOLibrary.consoleExecution)){ /*Changed from "stdin" to IOLibrary.consoleExecution*/
             inputStream.mark(5);
             boolean var = get_char_2(s_or_a,in_char);
             try {
@@ -972,7 +971,7 @@ public class ISOIOLibrary extends Library{
     public boolean peek_code_1(Term char_code)throws PrologError{
         initLibrary();
         Struct stream = new Struct(inputStream.toString());
-        if(inputStreamName.equals("stdin")){
+        if(inputStreamName.equals(IOLibrary.consoleExecution)){ /*Changed from "stdin" to IOLibrary.consoleExecution*/
             inputStream.mark(5);
             boolean var = get_code_2(stream,char_code);
             try {
@@ -1961,7 +1960,7 @@ public class ISOIOLibrary extends Library{
         propertyInput.put("mode", new Struct("read"));
         propertyInput.put("alias", new Struct("user_input"));
         //per essere coerente con la rappresentazione in IOLibrary dove stdin ? inputStreamName
-        propertyInput.put("file_name", new Struct("stdin"));
+        propertyInput.put("file_name", new Struct(IOLibrary.consoleExecution)); /*Changed from "stdin" to IOLibrary.consoleExecution*/
         propertyInput.put("eof_action", new Struct("reset"));
         propertyInput.put("type", new Struct("text"));
         Hashtable<String, Term> propertyOutput = new Hashtable<String, Term>(10);
