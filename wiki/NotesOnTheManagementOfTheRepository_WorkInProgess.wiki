@@ -90,6 +90,8 @@ $ svn commit -m "Merge TH-Montanari back into trunk!"
 	Committed revision 391.
 }}}
 
+Before committing, it is necessary to test the new version of the trunk and compare the results with the previous ones. For the Java version of tuProlog are available some Ant targets that can be used to automatize the test process, for the other projects these targets are not available yet so the test has to be done manually.
+
 The branch has now been remerged back into the main line of development. By specifying the --reintegrate option, you are asking Subversion to carefully replicate only those changes unique to your branch. (And in fact, it does this by comparing the latest trunk tree with the latest branch tree: the resulting difference is exactly the branch changes).
 Now that the branch is merged into the trunk, you may wish to remove it from the repository:
 
@@ -100,10 +102,11 @@ Committed revision 392.
 
 *This operation is not totally destructive, indeed even though the branch is no longer visible in the /branches directory, its existence is still an immutable part of the repository's history*. A simple svn log command on the /branches URL will show the entire history of the branch. The branch can even be resurrected at some point (see the section called “Resurrecting Deleted Items” in the SVN book).
 
-*In summary, to reintegrate a branch:*
+In summary, to reintegrate a branch:
   # make the last synchronization with the trunk;
   # get a working copy of the trunk and update it;
   # merge the branch with the working copy;
+  # test the code;
   # commit the changes;
   # delete the branch.
 
