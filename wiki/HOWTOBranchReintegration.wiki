@@ -1,3 +1,18 @@
 #summary Guide on how to reintegrate a branch with the trunk in Subclipse 1.8.
 
-TODO
+<img src="http://tuprolog.googlecode.com/svn/wiki/screenshots/SynchronizationGuide/reintegration-dialog.png" width=50%/>
+
+=Steps=
+  # Switch to a working copy of the trunk
+  # Commit all the modification in the trunk. There must be no pending modification.
+  # Left click on the project -> Team -> Merge
+  # In the Dialog:
+    * In the *From:* field enter the full folder URL of the trunk (https://tuprolog.googlecode.com/svn/2p/trunk)
+    * Check the option *Merge from HEAD revision*
+    * Uncheck the option *Use "From:" URL*
+      * In the filed right below enter the full folder URL of the branch
+    * Check the option *Merge to HEAD revision*
+    * Click on *Merge*
+
+=Reference=
+http://help.collab.net/index.jsp?topic=/org.tigris.subclipse.doc/topics/toc.html
