@@ -81,9 +81,9 @@ public class StateEnd extends State {
 	    	 * servirebbe esempio con 2 bag */
 	    	for (int i=0; i<bag.size();i++) {
 	    		Var resVar = (Var)bag.get(i);
-	    		System.out.println("RESVAR BAG "+resVar); 
+	    		//System.out.println("RESVAR BAG "+resVar); 
 	    		Term t = resVar.getLink();
-	    		System.out.println("RESVAR BAG LINK "+resVar);
+	    		//System.out.println("RESVAR BAG LINK "+resVar);
 	    		if(t!=null){
 	    			if(t instanceof Struct){
 	    				Struct t1 = ((Struct)t);
@@ -98,9 +98,9 @@ public class StateEnd extends State {
 	    			else if(t instanceof Var){
 	    				while(t!=null && t instanceof Var){
 		    				resVar = (Var)t;
-		    	    		System.out.println("---RESVAR BAG  VAR "+resVar); 
+		    	    		//System.out.println("---RESVAR BAG  VAR "+resVar); 
 		    	    		t = resVar.getLink();
-		    	    		System.out.println("---RESVAR BAG LINK "+resVar);	
+		    	    		//System.out.println("---RESVAR BAG LINK "+resVar);	
 	    				}
 	    				lSolVar.add(((Var)resVar).getName());
 	    				bag.set(i, resVar);
