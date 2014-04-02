@@ -7,7 +7,7 @@
   # Commit all the modification in the trunk. There must be no pending modification.
   # Left click on the project -> Team -> Merge
   # In the Dialog:
-    * In the *From:* field enter the full folder URL of the trunk This depends on the platform (Java, Android, Eclipse or .NET).
+    * In the *From:* field enter the full folder URL of the trunk. This depends on the platform (Java, Android, Eclipse or .NET).
     * Check the option *Merge from HEAD revision*
     * Uncheck the option *Use "From:" URL*
       * In the filed right below enter the full folder URL of the branch
