@@ -440,8 +440,8 @@ public class ConsoleDialog
         for (int i = 0; i < querySolutions.length; i++) {
             SolveInfo s = querySolutions[i].getSolveInfo();
             if (s.isSuccess()) {
-                System.out.println("s.toString() "+s.toString()+" lunghezza "+s.toString().length()); 
-                System.out.println("querySolutionsString.get(i) "+querySolutionsString.get(i)+" lunghezza "+querySolutionsString.get(i).length());
+                //System.out.println("s.toString() "+s.toString()+" lunghezza "+s.toString().length()); 
+                //System.out.println("querySolutionsString.get(i) "+querySolutionsString.get(i)+" lunghezza "+querySolutionsString.get(i).length());
                 if (s.toString().length()<querySolutionsString.get(i).length()){
                 	buffer.append(querySolutionsString.get(i)).append("\nSolution: ");
                 }
@@ -450,8 +450,6 @@ public class ConsoleDialog
                 
                 try {
                     buffer.append(s.getSolution().toString());
-                    //consoleManager.
-                    //engineRunner.getEngineMan().getRelinkVar()
                 } catch (NoSolutionException e) {
                 }
                 buffer.append("\n\n");
