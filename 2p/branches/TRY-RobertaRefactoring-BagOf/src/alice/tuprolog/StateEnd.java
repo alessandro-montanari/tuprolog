@@ -57,8 +57,8 @@ public class StateEnd extends State {
     void doJob(Engine e) {
         vars = new ArrayList<Var>();
         goal = (Struct)e.startGoal.copyResult(e.goalVars,vars);
-        System.out.println("STAMPO LE VAR del GOAL****"+e.goalVars);
-        System.out.println("STATE END "+vars+ " GOAL "+goal);  
+        System.out.println("STATE END: STAMPO LE VAR del GOAL****"+e.goalVars);
+        System.out.println("STATE END: STATE END "+vars+ " GOAL "+goal);  
         
         if(this.endState==EngineRunner.TRUE || this.endState==EngineRunner.TRUE_CP)
         	relinkVar(e);      
@@ -73,10 +73,10 @@ public class StateEnd extends State {
 	    	 * memorizzate nell'ArrayList<String> lSolVar
 	    	 * lSolVar = [H_e2301, H_e2302, H_e2303, H_e2304, H_e2305, H_e2306, H_e2307, H_e2308]
 	    	 */
-	    	System.out.println("Le var del risultato sono "+(c.getEngineMan()).getBagOFres());     	
+	    	System.out.println("STATE END relinkvar(): Le var del risultato sono "+(c.getEngineMan()).getBagOFres());     	
 	    	ArrayList<Term> bag = (c.getEngineMan()).getBagOFres();
 	    	ArrayList<String> lSolVar=new ArrayList<String>() ;
-	    	System.out.println("Le var del risultato sono BAG "+bag); 
+	    	//System.out.println("Le var del risultato sono BAG "+bag); 
 	    	/*NB lSolVar ha lunghezza multipla di lGoal var, se ho più soluzioni si ripete 
 	    	 * servirebbe esempio con 2 bag */
 	    	for (int i=0; i<bag.size();i++) {
@@ -98,9 +98,9 @@ public class StateEnd extends State {
 	    			else if(t instanceof Var){
 	    				while(t!=null){
 		    				resVar = (Var)t;
-		    	    		System.out.println("---RESVAR BAG "+resVar); 
+		    	    		//System.out.println("---RESVAR BAG "+resVar); 
 		    	    		t = resVar.getLink();
-		    	    		System.out.println("---RESVAR BAG LINK "+resVar);	
+		    	    		//System.out.println("---RESVAR BAG LINK "+resVar);	
 	    				}
 	    				lSolVar.add(((Var)resVar).getName());
 	    				bag.set(i, resVar);
@@ -115,9 +115,9 @@ public class StateEnd extends State {
 	    	 * memorizzate nell'ArrayList<String> lgoalBOVar
 	    	 * lgoalBOVar = [Z_e0, X_e73, Y_e74, V_e59, WithRespectTo_e31, U_e588, V_e59, H_e562, X_e73, Y_e74, F_e900]
 	    	 */
-	    	System.out.println("il goal interno bag of è "+(c.getEngineMan()).getBagOFgoal());
+	    	//System.out.println("il goal interno bag of è "+(c.getEngineMan()).getBagOFgoal());
 	    	Var goalBO = (Var)(c.getEngineMan()).getBagOFgoal();
-	    	System.out.println("il goal interno bag of è var con link "+goalBO.getLink());
+	    	//System.out.println("il goal interno bag of è var con link "+goalBO.getLink());
 	    	ArrayList<String> lgoalBOVar=new ArrayList<String>() ; 
 	    	Term goalBOvalue = goalBO.getLink();
 	    	if(goalBOvalue instanceof Struct){
@@ -128,7 +128,7 @@ public class StateEnd extends State {
 	    			lgoalBOVar.add(l_temp.get(w));
 	    		}
 	    	}//esistono casi in cui il goal non sia STRUCT ????
-	    	System.out.println("le variabili nella goal della bagof sono lgoalBOVar "+lgoalBOVar);
+	    	//System.out.println("le variabili nella goal della bagof sono lgoalBOVar "+lgoalBOVar);
 	    	
 	    	/*
 	    	 * STEP3: prendere il set di variabili libere della bagof
@@ -139,12 +139,12 @@ public class StateEnd extends State {
 	    	 * mette quindi in lGoalVar le variabili che compaiono in goalVars e sono anche libere 
 	    	 * per la bagof c.getEngineMan().getBagOFvarSet()
 	    	 */
-	    	System.out.println("Le var della bagof sono "+c.getEngineMan().getBagOFvarSet());
+	    	//System.out.println("Le var della bagof sono "+c.getEngineMan().getBagOFvarSet());
 	    	Var v=(Var)c.getEngineMan().getBagOFvarSet();
 	    	Struct varList=(Struct)v.getLink(); //lista delle variabili nel goal bagof con nomi interni alla bagof
 	    	ArrayList<String> lGoalVar=new ArrayList<String>() ; //lista delle variabili nel goal bagof con nomi goal
 	    	//ArrayList<String> lGoalVar_copy=new ArrayList<String>() ; //????????mi serve la copia per sostituire le var sia nel goal originale che nel risultato
-	    	System.out.println("Lista variabili goal bagof nomi interni alla bagof varList "+varList);
+	    	//System.out.println("Lista variabili goal bagof nomi interni alla bagof varList "+varList);
 	    	Object[] a=(e.goalVars).toArray();
 	    	for (java.util.Iterator<? extends Term> it = varList.listIterator(); it.hasNext();) {
 	    		Term var=it.next();
@@ -155,7 +155,7 @@ public class StateEnd extends State {
 	    			}
 	    		}
 	    	}
-	    	System.out.println("Lista variabili goal bagof nomi goal lGoalVar "+lGoalVar);
+	    	//System.out.println("Lista variabili goal bagof nomi goal lGoalVar "+lGoalVar);
 	    	
 	    	/*
 	    	 * STEP4: pulisco lgoalBOVar lasciando solo i nomi che compaiono effettivamente in 
@@ -163,7 +163,7 @@ public class StateEnd extends State {
 	    	 * goal della bagof
 	    	 */
 	    	lgoalBOVar.retainAll(lGoalVar);
-	    	System.out.println("Lista variabili goal bagof nomi goal pulite da template lgoalBOVar "+lgoalBOVar);
+	    	//System.out.println("Lista variabili goal bagof nomi goal pulite da template lgoalBOVar "+lgoalBOVar);
 	    	if(lGoalVar.size()>lgoalBOVar.size()){
 	    		System.out.println("Entro nell'if ");
 	    		for(int h=0; h<lGoalVar.size(); h++)
@@ -205,8 +205,8 @@ public class StateEnd extends State {
 		    					goalSolution=vv;
 		    				}
 		    				//sostituzione delle var nella Struct della sol
-		    				//System.out.println("Sostituisco vv_link"+vv_link.getLink());
-		    				//System.out.println("Sostituisco vv "+vv_link);
+		    				System.out.println("Sostituisco vv_link "+vv_link.getLink());
+		    				System.out.println("Sostituisco vv "+vv_link);
 		    				if(vv_link.getLink()!=null){
 		    					Struct s = substituteVar((Struct)vv_link.getLink(),lSolVar,lgoalBOVar);
 		    					//System.out.println("****Nuovo link della var "+vv.getOriginalName()+" link "+s);	    	
@@ -259,8 +259,8 @@ public class StateEnd extends State {
 	    
 	    
 	    
-	    System.out.println("----goal vars a[y] dopo sostituzione "+e.goalVars);
-	    System.out.println("----dopo sostituzione STATE END "+vars+ " GOAL "+goal);  
+	    //System.out.println("----goal vars a[y] dopo sostituzione "+e.goalVars);
+	    //System.out.println("----dopo sostituzione STATE END "+vars+ " GOAL "+goal);  
 		    c.getEngineMan().setRelinkVar(false);
 		    c.getEngineMan().setBagOFres(null);
 		    c.getEngineMan().setBagOFgoal(null);
@@ -385,21 +385,23 @@ public class StateEnd extends State {
     
     public Struct substituteVar (Struct s, ArrayList<String> lSol, ArrayList<String> lgoal){ 	
 		Term t = s.getArg(0);
+		//System.out.println("STATE END Substitute var ---Termine "+t);
 		Term tt=null;
 		if(s.getArity()>1)
 			tt = s.getArg(1);
 		//System.out.println("Substitute var ---Termine "+t+" e termine "+tt);
 		if(tt!=null && tt instanceof Var){
 			int index = lSol.indexOf(((Var) tt).getName());
-			//System.out.println("Substitute var ---Indice di tt in lSol "+index);
+			System.out.println("Substitute var ---Indice di tt in lSol "+index);
 			s.setArg(1, new Var(lgoal.get(index)));
 			if(t instanceof Var){
 				int index1 = lSol.indexOf(((Var) t).getName());
 				//System.out.println("Substitute var ---Indice di t in lSol "+index1);
 				s.setArg(0, new Var(lgoal.get(index1)));
 			}
-			if(t instanceof Struct){
-				//System.out.println("Substitute var-------Trovata struct ");
+			if(t instanceof Struct && ((Struct)t).getArity()>0){
+				//System.out.println("Substitute var-------Trovata struct t "+t);
+				//System.out.println("Substitute var-------Trovata struct t arity "+((Struct)t).getArity());
 				Struct s1 = substituteVar((Struct)t,lSol,lgoal);
 				//System.out.println("Substitute var ---t è struct ritorno s1 "+s1);
 				s.setArg(0, s1);

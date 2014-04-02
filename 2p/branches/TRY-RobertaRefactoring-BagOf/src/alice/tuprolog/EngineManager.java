@@ -223,7 +223,11 @@ public class EngineManager implements java.io.Serializable {
 	public synchronized SolveInfo solve(Term query) {
 		er1.setGoal(query);
 		
-		return er1.solve();
+		SolveInfo s = er1.solve();
+		System.out.println("ENGINE MAN solve(Term) risultato: "+s);
+		return s;
+		
+		//return er1.solve();
 	}
 	
 	public void solveEnd() {
