@@ -68,7 +68,7 @@ $ svn commit -m
 "Merged latest trunk changes to TH-Montanari.”.
 }}}
 
-[https://code.google.com/p/tuprolog/wiki/HOWTOBranchSynchronization Here] it is possible to find a guide that explains how to synchronize a branch using the Subclipse 1.8 plugin for Eclipse. 
+[https://code.google.com/p/tuprolog/wiki/HOWTOBranchSynchronization Here] it is possible to find a guide that explains how to synchronize a branch using the Subclipse 1.8 plugin for Eclipse and [http://code.google.com/p/tuprolog/wiki/HOWTOBranchSynchronization_Tortoise here] there is the same guide for TortoiseSVN.
 
 Given the past experience with the tuProlog project we think that it is not mandatory to impose a fixed period for branch synchronization (like once a week or something similar). However, there are situations where a branch synchronization is needed to simplify the successive reintegration of the branch. For example when there is overlapping between the work of two or more developers and one of the branches is reintegrated into te trunk: in that case it is necessary to synchronize the other branches. Another example is when there is a long-lived branch: in this case in fact it is possible that many other branches have been reintegrated in the trunk and if the long-lived branch is not synchronized often, its successive merge with the trunk could be difficult because they are too far apart. It is responsibility of who manages the repository to detect these situations and request a branch synchronization to the developers that are working on active branches.
  
