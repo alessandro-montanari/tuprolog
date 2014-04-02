@@ -24,3 +24,6 @@ Rev Comments
     * Check the option *Use "From:" URL*
     * Check the option *Merge to HEAD revision*
     * Click on *Merge*
+
+=Reference=
+http://help.collab.net/index.jsp?topic=/org.tigris.subclipse.doc/topics/toc.html
