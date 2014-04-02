@@ -7,7 +7,7 @@
   # Commit all the modification in the branch. There must be no pending modification.
   # Left click on the project -> Team -> Merge
   # In the Dialog:
-    * In the *From:* field enter the full folder URL of the trunk (https://tuprolog.googlecode.com/svn/2p/trunk)
+    * In the *From:* field enter the full folder URL of the trunk. This depends on the platform (Java, Android, Eclipse or .NET).
     * In the *From Revision* field, enter the revision number of the creation of the branch.
     For example:
     {{{
