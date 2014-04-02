@@ -10,7 +10,6 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.*;
 import cli.System.Reflection.Assembly;
-import dalvik.system.DexClassLoader;
 
 import alice.tuprolog.event.LibraryEvent;
 import alice.tuprolog.event.WarningEvent;
@@ -136,6 +135,7 @@ public class LibraryManager
 				dexPath = paths[0];
 
 				/**
+				 * Description of DexClassLoader
 			     * A class loader that loads classes from .jar files containing a classes.dex entry. 
 			     * This can be used to execute code not installed as part of an application.
 			     * @param dexPath jar file path where is contained the library.
@@ -143,12 +143,20 @@ public class LibraryManager
 			     * @param libraryPath the list of directories containing native libraries, delimited by File.pathSeparator; may be null
 			     * @param parent the parent class loader
 			     */
-				loader = new DexClassLoader(dexPath,
-						this.getOptimizedDirectory(), null, getClass()
-								.getClassLoader());
-				// lib = (Library) loader.loadClass(className).newInstance();
-				lib = (Library) Class.forName(className, true, loader)
-						.newInstance();
+				/**
+				 * Here before we were using directly the class DexClassLoader referencing android.jar that
+				 * contains all the stub classes of Android.
+				 * This caused the need to have the file android.jar in the classpath even during the execution
+				 * on the Java SE platform even if it is clearly useless. Therefore we decided to remove this 
+				 * reference and instantiate the DexClassLoader through reflection.
+				 * This is simplified by the fact that, a part the constructor, we do not use any specific method 
+				 * of DexClassLoader but we use it as any other ClassLoader.
+				 * A similar approach has been adopted also in the class AndroidDynamicClassLoader.
+				 */
+				loader = (ClassLoader) Class.forName("dalvik.system.DexClassLoader")
+											.getConstructor(String.class, String.class, String.class, ClassLoader.class)
+											.newInstance(dexPath, this.getOptimizedDirectory(), null, getClass().getClassLoader());
+				lib = (Library) Class.forName(className, true, loader).newInstance();
 			} else
 			{
 				urls = new URL[paths.length];
@@ -182,8 +190,7 @@ public class LibraryManager
 						{
 							asm = Assembly.LoadFrom(paths[i]);
 							loader = new AssemblyCustomClassLoader(asm, urls);
-							lib = (Library) Class.forName(className, true,
-									loader).newInstance();
+							lib = (Library) Class.forName(className, true, loader).newInstance();
 							if (lib != null)
 							{
 								classFound = true;

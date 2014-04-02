@@ -2,12 +2,10 @@ package alice.util;
 
 import java.net.URL;
 
-import dalvik.system.DexClassLoader;
-
 public class AndroidDynamicClassLoader extends AbstractDynamicClassLoader
 {
 	private String dexPath;
-	private DexClassLoader classLoader;
+	private ClassLoader classLoader;
 	
 	public AndroidDynamicClassLoader()
 	{
@@ -54,7 +52,17 @@ public class AndroidDynamicClassLoader extends AbstractDynamicClassLoader
 	{		
 		setDexPath(createPathString());
 		
-		classLoader = new DexClassLoader(dexPath, "/data/data/alice.tuprologx.android/app_dex", null, getParent());
+		try {
+			/**
+			 * More informations on the use of reflection here can be found in the class LibraryManager
+			 * in the method loadLibrary(Strin, String[]).
+			 */
+			classLoader = (ClassLoader) Class.forName("dalvik.system.DexClassLoader")
+											 .getConstructor(String.class, String.class, String.class, ClassLoader.class)
+											 .newInstance(dexPath, "/data/data/alice.tuprologx.android/app_dex", null, getParent());
+		} catch (Exception e) {
+			throw new ClassNotFoundException(className);
+		}
 		
 		return classLoader.loadClass(className);
 	}
