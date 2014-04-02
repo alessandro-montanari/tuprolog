@@ -1399,9 +1399,9 @@ public class BasicLibrary extends Library {
     }
     
     public boolean $wt_unify_6(Term witness, Term wtList, Term tList, Term varSet,Term temp, Term goal) {
-    	//System.out.println("witness "+witness);
-    	//System.out.println("wtList "+wtList);
-    	//System.out.println("varSet "+varSet);
+    	System.out.println("witness "+witness);
+    	System.out.println("wtList "+wtList);
+    	System.out.println("varSet "+varSet);
     	System.out.println("template "+temp);
     	
     	//se ci sono variabili libere nel goal alla fine il risultato deve essere relinked
@@ -1409,11 +1409,8 @@ public class BasicLibrary extends Library {
     	java.util.Iterator<? extends Term> it1 = freeVarList.listIterator();
     	if (it1.hasNext()) {
     		(engine.getEngineManager()).setRelinkVar(true);
-    		ArrayList<String> l = new ArrayList<String>(); 
-    		/*for (java.util.Iterator<? extends Term> it = freeVarList.listIterator(); it.hasNext();) {
-    			//costruisco lista delle variabili da relinkare con i loro nomi
-    			l.add(((Var)it.next()).getName());
-    		}*/
+    		//ArrayList<String> l = new ArrayList<String>(); 
+    		
     		(engine.getEngineManager()).setBagOFvarSet(varSet);
     		(engine.getEngineManager()).setBagOFgoal(goal);
     	}
@@ -1424,28 +1421,30 @@ public class BasicLibrary extends Library {
         Struct list = (Struct) wtList.getTerm();
         Struct varList = (Struct) varSet.getTerm();
         String goalString = goal.toString();
-        //System.out.println("goal string "+goalString);
-        //engine
-        //Struct startGoal = (Struct)(query).copyGoal(goalVars,0);
-        //System.out.println("termini wtList "+list);
+        System.out.println("goal string "+goalString);
+        
+        System.out.println("termini wtList "+list);
         Struct result = new Struct();
         for (java.util.Iterator<? extends Term> it = list.listIterator(); it.hasNext();) {
             Struct element = (Struct) it.next();
-            //System.out.println("termine wtList "+element);
+            System.out.println("termine wtList "+element);
             Term w = element.getArg(0);
             Term t = element.getArg(1);
-            //System.out.println("termine W wtList "+w);
-            //System.out.println("termine T wtList "+t);
+            System.out.println("termine W wtList "+w);
+            System.out.println("termine T wtList "+t);
             if (unify(witness, w)){
-            	//System.out.println("=====witness  "+witness+" unifica con w "+w+" metto t nel risultato "+t);
+            	System.out.println("=====witness  "+witness+" unifica con w "+w+" metto t nel risultato "+t);
             	result.append(t);
-            	//Struct s = new Struct("bound",varSet,t);
+            	System.out.println("=====****result  "+result);
             	ArrayList<Term> l = (engine.getEngineManager()).getBagOFres();
             	if(l==null)
             		l=new ArrayList<Term>();
             	l.add(t);
+            	for(int m=0; m<l.size(); m++){
+            		System.out.println("=====****elemento lista engine.getEngineManager()).getBagOFres()  "+l.get(m));
+            	}
             	(engine.getEngineManager()).setBagOFres(l);
-                //System.out.println("Ho unificato witness con w appendo t al risultato ");
+                System.out.println("Ho unificato witness con w appendo t al risultato ");
             }
         } 
         return unify(tList, result);
