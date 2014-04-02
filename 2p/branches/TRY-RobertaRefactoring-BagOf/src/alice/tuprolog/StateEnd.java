@@ -81,13 +81,13 @@ public class StateEnd extends State {
 	    	 * servirebbe esempio con 2 bag */
 	    	for (int i=0; i<bag.size();i++) {
 	    		Var resVar = (Var)bag.get(i);
-	    		//System.out.println("RESVAR BAG "+resVar); 
+	    		System.out.println("RESVAR BAG "+resVar); 
 	    		Term t = resVar.getLink();
-	    		//System.out.println("RESVAR BAG LINK "+resVar);
+	    		System.out.println("RESVAR BAG LINK "+resVar);
 	    		if(t!=null){
 	    			if(t instanceof Struct){
 	    				Struct t1 = ((Struct)t);
-	    				//System.out.println("RESVAR BAG LINK è STRUCT "+t1);
+	    				System.out.println("RESVAR BAG LINK è STRUCT "+t1);
 	    				//uso lista temporanea per aggiustare ordine, dalla struct con findvar escono al contrario
 	    				ArrayList<String> l_temp=new ArrayList<String>();
 	    				l_temp= findVar(t1,l_temp);
@@ -96,11 +96,11 @@ public class StateEnd extends State {
 	    				}
 	    			}
 	    			else if(t instanceof Var){
-	    				while(t!=null){
+	    				while(t!=null && t instanceof Var){
 		    				resVar = (Var)t;
-		    	    		//System.out.println("---RESVAR BAG "+resVar); 
+		    	    		System.out.println("---RESVAR BAG è VAR "+resVar); 
 		    	    		t = resVar.getLink();
-		    	    		//System.out.println("---RESVAR BAG LINK "+resVar);	
+		    	    		System.out.println("---RESVAR BAG LINK "+resVar);	
 	    				}
 	    				lSolVar.add(((Var)resVar).getName());
 	    				bag.set(i, resVar);
