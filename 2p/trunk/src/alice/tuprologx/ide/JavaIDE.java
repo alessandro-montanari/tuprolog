@@ -160,8 +160,8 @@ public class JavaIDE
         
         //Aggiunto Mastrovito 12/2013
         IOLibrary IO = (IOLibrary)engine.getLibrary("alice.tuprolog.lib.IOLibrary");
-        IO.setExecutionType(IO.graphicExecution);
-        InputDialog f = new InputDialog(IO.getUserContextInputStream());
+        IO.setExecutionType(IOLibrary.graphicExecution);
+        // InputDialog f = new InputDialog(IO.getUserContextInputStream()); // commented out by ED on Apr 3rd 2014, not used
     }
     
     public static ConsoleManager getConsoleManager()
