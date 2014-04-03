@@ -1138,12 +1138,12 @@ public class BasicLibrary extends Library {
                 + "'$s_next'(Witness, WT_List, S_Next) :- copy_term(Witness, W2), '$s_next0'(W2, WT_List, S_Next), !. \n"
                 
                 /*Roberta Calegari Sep 2013*/
-                +"bagof(Template, Goal, Instances) :-\n"
+                +"bagof(Template, Goal, Instances) :- \n"
                 + "all_solutions_predicates_guard(Template, Goal, Instances), \n"
                 + "free_variables_set(Goal, Template, Set), \n"
                 + "Witness =.. [witness | Set], \n"
                 + "iterated_goal_term(Goal, G), \n"
-                +"all_solutions_predicates_guard(Template, G, Instances), \n"
+                +"all_solutions_predicates_guard(Template, G, Instances),"
                 + "'splitAndSolve'(Witness, S, Instances,Set,Template,G,Goal). \n"  
                 /*INIT utility function used by bagof*/
                 +"count([],0). \n"
@@ -1166,6 +1166,7 @@ public class BasicLibrary extends Library {
                 +"list_to_term(E, GoalE), \n"
                 +"findall(Witness + Template, GoalE, S), \n"
                 +"'bag0'(Witness, S, Instances,Set,Template,GoalE). \n"
+                
                 +"splitSemicolon(';'(G1,Gs),[G1|Ls]) :-!, splitSemicolon(Gs,Ls). \n"
                 +"splitSemicolon(G1,[G1]). \n"
                 +"aggregateSubgoals(Template, List, OutputList) :- \n"
@@ -1197,7 +1198,9 @@ public class BasicLibrary extends Library {
                 +"S==[] -> fail, !; \n"
                 +"'$wt_list'(S, WT_List), \n"
                 +"'$wt_unify'(Witness, WT_List, T_List,Set,Template,Goal), \n"
-                +"Instances = T_List. \n"
+                +"Instances = T_List, \n"
+                +"write('T_List: '),write(T_List). \n"
+                
                 +"'bag0'(Witness, S, Instances,Set,Template,Goal) :- \n"
                 +"'$wt_list'(S, WT_List), \n"
                 +"'$s_next'(Witness, WT_List, S_Next),  \n"
