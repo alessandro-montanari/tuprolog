@@ -36,6 +36,7 @@ public class InputDialog extends JPanel{
 			public void readCalled(ReadEvent event) {
 				setVisible(true);
 				inputText.requestFocus();
+				inputText.setCaretPosition(0);
 			}
 		});
 	}
