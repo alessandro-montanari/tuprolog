@@ -493,6 +493,7 @@ public class BasicLibrary extends Library {
     public boolean term_greater_than_2(Term arg0, Term arg1) throws PrologError {
         arg0 = arg0.getTerm();
         arg1 = arg1.getTerm();
+        //System.out.println("Confronto "+arg0+" con "+arg1);
         return arg0.isGreater(arg1);
     }
 
@@ -1145,6 +1146,10 @@ public class BasicLibrary extends Library {
                 + "iterated_goal_term(Goal, G), \n"
                 +"all_solutions_predicates_guard(Template, G, Instances),"
                 + "'splitAndSolve'(Witness, S, Instances,Set,Template,G,Goal). \n"  
+                //+ "'splitAndSolve'(Witness, S, Instances1,Set,Template,G,Goal),"
+                //+"write('  Instances: '),write(Instances),"
+                //+"write('  Instances1: '),write(Instances1),"
+                //+"Instances=Instances1. \n"
                 /*INIT utility function used by bagof*/
                 +"count([],0). \n"
                 +"count([T1|Ts],N):- count(Ts,N1), N is (N1+1). \n"
@@ -1197,9 +1202,10 @@ public class BasicLibrary extends Library {
                 +"'bag0'(Witness, S, Instances,Set,Template,Goal) :- \n"
                 +"S==[] -> fail, !; \n"
                 +"'$wt_list'(S, WT_List), \n"
-                +"'$wt_unify'(Witness, WT_List, T_List,Set,Template,Goal), \n"
-                +"Instances = T_List, \n"
-                +"write('T_List: '),write(T_List). \n"
+                +"'$wt_unify'(Witness, WT_List, Instances,Set,Template,Goal). \n"
+                //+"'$wt_unify'(Witness, WT_List, T_List,Set,Template,Goal), \n"
+                //+"Instances = T_List. \n"
+                //+"write('T_List: '),write(T_List). \n"
                 
                 +"'bag0'(Witness, S, Instances,Set,Template,Goal) :- \n"
                 +"'$wt_list'(S, WT_List), \n"
@@ -1402,11 +1408,12 @@ public class BasicLibrary extends Library {
     }
     
     public boolean $wt_unify_6(Term witness, Term wtList, Term tList, Term varSet,Term temp, Term goal) {
-    	System.out.println("witness "+witness);
+    	/*System.out.println("witness "+witness);
     	System.out.println("wtList "+wtList);
+    	System.out.println("tList "+tList+" "+((Var)tList).getLink());
     	System.out.println("varSet "+varSet);
     	System.out.println("template "+temp);
-    	
+    	*/
     	//se ci sono variabili libere nel goal alla fine il risultato deve essere relinked
     	Struct freeVarList = (Struct) varSet.getTerm();
     	java.util.Iterator<? extends Term> it1 = freeVarList.listIterator();
@@ -1416,44 +1423,55 @@ public class BasicLibrary extends Library {
     		
     		(engine.getEngineManager()).setBagOFvarSet(varSet);
     		(engine.getEngineManager()).setBagOFgoal(goal);
+    		if ((engine.getEngineManager()).getBagOFbag()==null)
+    			(engine.getEngineManager()).setBagOFbag(tList);
+    		System.out.println("tlist settata nella Bag of Bag "+tList);
+    		
     	}
     		
     	
-    	System.out.println("template "+temp);
-    	System.out.println("goal "+goal);
+    	//System.out.println("template "+temp);
+    	//System.out.println("goal "+goal);
         Struct list = (Struct) wtList.getTerm();
         Struct varList = (Struct) varSet.getTerm();
-        String goalString = goal.toString();
-        System.out.println("goal string "+goalString);
+        //String goalString = goal.toString();
+        //System.out.println("goal string "+goalString);
         
-        System.out.println("termini wtList "+list);
+        //System.out.println("termini wtList "+list);
         Struct result = new Struct();
         for (java.util.Iterator<? extends Term> it = list.listIterator(); it.hasNext();) {
             Struct element = (Struct) it.next();
-            System.out.println("termine wtList "+element);
+            //System.out.println("termine wtList "+element);
             Term w = element.getArg(0);
             Term t = element.getArg(1);
-            System.out.println("termine W wtList "+w);
-            System.out.println("termine T wtList "+t);
+            //System.out.println("termine W wtList "+w);
+            //System.out.println("termine T wtList "+t);
             if (unify(witness, w)){
-            	System.out.println("=====witness  "+witness+" unifica con w "+w+" metto t nel risultato "+t);
+            	//System.out.println("=====witness  "+witness+" unifica con w "+w+" metto t nel risultato "+t);
             	result.append(t);
-            	System.out.println("=====****result  "+result);
+            	//System.out.println("=====****result  "+result);
             	ArrayList<Term> l = (engine.getEngineManager()).getBagOFres();
-            	if(l==null)
+            	ArrayList<String> lString = (engine.getEngineManager()).getBagOFresString();
+            	if(l==null){
             		l=new ArrayList<Term>();
-            	l.add(t);
-            	for(int m=0; m<l.size(); m++){
-            		System.out.println("=====****elemento lista engine.getEngineManager()).getBagOFres()  "+l.get(m));
+            		lString=new ArrayList<String>();
             	}
+            	l.add(t);
+            	//if(t instanceof Var)
+            	lString.add(t.toString());
+            	/*for(int m=0; m<l.size(); m++){
+            		System.out.println("=====****elemento lista engine.getEngineManager()).getBagOFres()  "+l.get(m));
+            	}*/
             	(engine.getEngineManager()).setBagOFres(l);
-                System.out.println("Ho unificato witness con w appendo t al risultato ");
+            	(engine.getEngineManager()).setBagOFresString(lString);
+                //System.out.println("Ho unificato witness con w appendo t al risultato ");
             }
         } 
         return unify(tList, result);
     }
 
-    public boolean $s_next0_3(Term witness, Term wtList, Term sNext) {
+   
+  public boolean $s_next0_3(Term witness, Term wtList, Term sNext) {
         Struct list = (Struct) wtList.getTerm();
         Struct result = new Struct();
         for (java.util.Iterator<? extends Term> it = list.listIterator(); it.hasNext();) {
