@@ -28,8 +28,10 @@ public class EngineRunner implements java.io.Serializable, Runnable{
     
     private boolean relinkVar = false;
 	private ArrayList<Term> bagOFres;
+	private ArrayList<String> bagOFresString;
 	private Term bagOFvarSet;
 	private Term bagOfgoal;
+	private Term bagOfBag;
 
     private int id;
     private int pid;
@@ -50,6 +52,7 @@ public class EngineRunner implements java.io.Serializable, Runnable{
     /* Stack environments of nidicate solving */
     private LinkedList<Engine> stackEnv = new LinkedList<Engine>();
     private SolveInfo sinfo;
+    private String sinfoSetOf;
     
     /**
          * States
@@ -182,6 +185,8 @@ public class EngineRunner implements java.io.Serializable, Runnable{
                     result.getResultDemo(),
                     result.getResultVars()
             );
+            if(this.sinfoSetOf!=null)
+            	sinfo.setSetOfSolution(sinfoSetOf);
             if (!sinfo.hasOpenAlternatives()) 
                 solveEnd();
            return sinfo;
@@ -239,6 +244,8 @@ public class EngineRunner implements java.io.Serializable, Runnable{
                     result.getResultDemo(),
                     result.getResultVars()
             );
+            if(this.sinfoSetOf!=null)
+            	sinfo.setSetOfSolution(sinfoSetOf);
             
             if (!sinfo.hasOpenAlternatives()){
                 solveEnd();             
@@ -449,11 +456,18 @@ public class EngineRunner implements java.io.Serializable, Runnable{
         public void setRelinkVar(boolean b){
     		this.relinkVar=b;
     	}
+        
         public ArrayList<Term> getBagOFres(){
     		return this.bagOFres;
     	}
         public void setBagOFres(ArrayList<Term> l){
     		this.bagOFres=l;
+    	}
+        public ArrayList<String> getBagOFresString(){
+    		return this.bagOFresString;
+    	}
+        public void setBagOFresString(ArrayList<String> l){
+    		this.bagOFresString=l;
     	}
         public Term getBagOFvarSet(){
     		return this.bagOFvarSet;
@@ -467,7 +481,26 @@ public class EngineRunner implements java.io.Serializable, Runnable{
         public void setBagOFgoal(Term l){
     		this.bagOfgoal=l;
     	}
+        public Term getBagOFBag(){
+    		return this.bagOfBag;
+    	}
+        public void setBagOFBag(Term l){
+    		this.bagOfBag=l;
+    	}
         public EngineManager getEngineMan(){
     		return this.engineManager;
     	}
+        public String getSetOfSolution() {
+        	if(sinfo!=null)
+        		return sinfo.getSetOfSolution();
+        	else return null;
+        }
+        public void setSetOfSolution(String s) {
+        	if(sinfo!=null)
+        		sinfo.setSetOfSolution(s);
+        	this.sinfoSetOf=s;
+        }
+        public void clearSinfoSetOf() {
+        	this.sinfoSetOf=null;
+        }
 }

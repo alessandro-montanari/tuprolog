@@ -442,12 +442,16 @@ public class ConsoleDialog
             if (s.isSuccess()) {
                 //System.out.println("s.toString() "+s.toString()+" lunghezza "+s.toString().length()); 
                 //System.out.println("querySolutionsString.get(i) "+querySolutionsString.get(i)+" lunghezza "+querySolutionsString.get(i).length());
-                if (s.toString().length()<querySolutionsString.get(i).length()){
+            	
+            	if (s.toString().length()<querySolutionsString.get(i).length()){
                 	buffer.append(querySolutionsString.get(i)).append("\nSolution: ");
                 }
                 else
                 	buffer.append(s.toString()).append("\nSolution: ");
                 
+            	if(s.getSetOfSolution()!=null)
+                	buffer.append(s.getSetOfSolution()).append("\nSolution: ");
+            	
                 try {
                     buffer.append(s.getSolution().toString());
                 } catch (NoSolutionException e) {
