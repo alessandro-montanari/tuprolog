@@ -560,7 +560,22 @@ demonstration process.
 
 \item \bti{quicksort/3}\\
     \noindent\bt{quicksort(List, ComparisonPredicate, SortedList)} is true iff\\
-    \bt{SortedList} contains the same elements as \bt{List}, but sorted according to the criterion defined by \bt{ComparisonPredicate}.
+    \bt{SortedList} contains the same elements as \bt{List}, but sorted according to the criterion defined by \bt{ComparisonPredicate}, which can be
+    one of the following: \verb|'=:='/2| (expression equality), \verb|'=\\='/2| (expression inequality), 
+    
+    "'=:='(X,Y):- expression_equality(X,Y). \n"
+               + "'=\\='(X,Y):- not expression_equality(X,Y). \n"
+               + "'>'(X,Y):- expression_greater_than(X,Y). \n"
+               + "'<'(X,Y):- expression_less_than(X,Y). \n"
+               + "'>='(X,Y):- expression_greater_or_equal_than(X,Y). \n"
+               + "'=<'(X,Y):- expression_less_or_equal_than(X,Y). \n"
+               + "'=='(X,Y):- term_equality(X,Y).\n"
+               + "'\\=='(X,Y):- not term_equality(X,Y).\n"
+               + "'@>'(X,Y):- term_greater_than(X,Y).\n"
+               + "'@<'(X,Y):- term_less_than(X,Y).\n"
+               + "'@>='(X,Y):- not term_less_than(X,Y).\n"
+               + "'@=<'(X,Y):- not term_greater_than(X,Y).\n" 
+
 
     \template{element(@list, @pred, -list)}
 \end{itemize}
@@ -825,7 +840,7 @@ The full list of ISOLibrary flags, with their admissible and default values, is 
 
 %-----------------------------------------------------------------------
 \section{IOLibrary}
-\Label{Sec:Io-Library}
+\label{sec:io-library}
 %-----------------------------------------------------------------------
 
 \noindent \emph{Library Dependencies}: BasicLibrary.
@@ -844,8 +859,8 @@ The IOLibrary defines the classical Prolog I/O predicates; further ISO-compliant
 
 \item \bti{see/1}\\
     \noindent\bt{see(StreamName)} is used to create/open an input stream; the predicate is true iff \bt{StreamName} is a string representing the name of a file to be created or accessed as input stream, or the string \texttt{stdin} selecting current standard input as input stream.
-    
-    NB: from \tuprolog{} 2.8, the \texttt{graphic} atom is also allowed to set the input from the user GUI. 
+
+    NB: from \tuprolog{} 2.8, the \texttt{graphic} atom is also allowed to set the input from the user GUI.
     Please note that such a choice somehow hardwires your code to work under the \tuprolog{} GUIConsole or
     Android app only.
 
@@ -1732,8 +1747,11 @@ The ISO standard does not specify whether the stream terms must result from an e
 Moreover, each stream can be associated to a \textit{stream alias}---an atom used to refer to the stream. The association between a stream and its alias is created when the stream is opened, and automatically canceled when the stream is closed.
 The same stream can be associated to multiple aliases simultaneously.
 %
-Two pre-defined streams exist that are always automatically open: the standard input (alias \texttt{user\_input}) and the standard output
-(alias \texttt{user\_output}). Such streams must never be closed.
+Two pre-defined streams exist that are always automatically open: the standard input (alias \texttt{user\_input}) and the standard output (alias \texttt{user\_output}). Such streams must never be closed.
+
+    NB: from \tuprolog{} 2.8, the \texttt{graphic} atom is also allowed to set the input from the user GUI.
+    Please note that such a choice somehow hardwires your code to work under the \tuprolog{} GUIConsole or
+    Android app only.
 
 The ISO standard also introduces the concepts of \textit{current input stream} and \textit{current output stream}: initially, they default to the standard input and standard output above, but can be reassigned at any time via the \texttt{set\_input/1} e and \texttt{set\_output/1} predicates.
 However, when such an input/output stream is closed, the current input/output stream must be re-set to its default value (i.e., the standard input/output, respectively).
