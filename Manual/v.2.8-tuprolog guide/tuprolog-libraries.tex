@@ -560,9 +560,12 @@ demonstration process.
 
 \item \bti{quicksort/3}\\
     \noindent\bt{quicksort(List, ComparisonPredicate, SortedList)} is true iff\\
-    \bt{SortedList} contains the same elements as \bt{List}, but sorted according to the criterion defined by \bt{ComparisonPredicate}.
+    \bt{SortedList} contains the same elements as \bt{List}, but sorted according to the criterion defined by \bt{ComparisonPredicate}, which can be
+    one of the following: \verb|'=:='/2| (expression equality), \verb|'=\\='/2| (expression inequality), \verb|'>'/2| (greater than), \verb|'<'/2| (less than), 
+    \verb|'>='/2| (greater than or equals to), \verb|'=<'/2| (equals to or less than), \verb|'=='/2| (term equality), \verb|'\\=='/2| (term inequality), 
+    \verb|'@>'/2| (term greater than), \verb|'@<'/2| (term less than), \verb|'@>='/2| (term greater than or equals to), \verb|'@=<'/2| (term equals to or less than).
 
-    \template{element(@list, @pred, -list)}
+    \template{quicksort(@list, @pred, -list)}
 \end{itemize}
 
 %---------------------------------------------------------------------
@@ -844,8 +847,8 @@ The IOLibrary defines the classical Prolog I/O predicates; further ISO-compliant
 
 \item \bti{see/1}\\
     \noindent\bt{see(StreamName)} is used to create/open an input stream; the predicate is true iff \bt{StreamName} is a string representing the name of a file to be created or accessed as input stream, or the string \texttt{stdin} selecting current standard input as input stream.
-    
-    NB: from \tuprolog{} 2.8, the \texttt{graphic} atom is also allowed to set the input from the user GUI. 
+
+    NB: from \tuprolog{} 2.8, the \texttt{graphic} atom is also allowed to set the input from the user GUI.
     Please note that such a choice somehow hardwires your code to work under the \tuprolog{} GUIConsole or
     Android app only.
 
@@ -1734,7 +1737,7 @@ The same stream can be associated to multiple aliases simultaneously.
 %
 Two pre-defined streams exist that are always automatically open: the standard input (alias \texttt{user\_input}) and the standard output (alias \texttt{user\_output}). Such streams must never be closed.
 
-    NB: from \tuprolog{} 2.8, the \texttt{graphic} atom is also allowed to set the input from the user GUI. 
+    NB: from \tuprolog{} 2.8, the \texttt{graphic} atom is also allowed to set the input from the user GUI.
     Please note that such a choice somehow hardwires your code to work under the \tuprolog{} GUIConsole or
     Android app only.
 
