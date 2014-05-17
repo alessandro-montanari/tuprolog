@@ -402,7 +402,7 @@ public class ISOIOLibrary extends Library{
                     in = null;
                     if(in_name.equals(inputStreamName)){
                         //Rimosso Mastrovito <inputStreamName = "stdin";>
-                        inputStream = IOLib.getInputStreamByContext(inputStreamName); //Modificato Mastrovito < = System.in >
+                        inputStream = IOLib.getStandardInputStream();
                     }
                 }
                 else{
@@ -456,7 +456,7 @@ public class ISOIOLibrary extends Library{
             }
             if(in_name.equals(inputStreamName)){
             	//Rimosso Mastrovito <inputStreamName = "stdin";>
-                inputStream = IOLib.getInputStreamByContext(inputStreamName); //Modificato Mastrovito < = System.in >
+                inputStream = IOLib.getStandardInputStream();
             }
             inputStreams.remove(in);
         }
@@ -878,7 +878,7 @@ public class ISOIOLibrary extends Library{
     public boolean peek_char_1(Term in_char)throws PrologError{
         initLibrary();
         Struct s_or_a = new Struct(inputStream.toString());
-        if(inputStreamName.equals(IOLibrary.consoleExecution)){ /*Changed from "stdin" to IOLibrary.consoleExecution*/
+        if(inputStreamName.equals("stdin")){
             inputStream.mark(5);
             boolean var = get_char_2(s_or_a,in_char);
             try {
@@ -971,7 +971,7 @@ public class ISOIOLibrary extends Library{
     public boolean peek_code_1(Term char_code)throws PrologError{
         initLibrary();
         Struct stream = new Struct(inputStream.toString());
-        if(inputStreamName.equals(IOLibrary.consoleExecution)){ /*Changed from "stdin" to IOLibrary.consoleExecution*/
+        if(inputStreamName.equals("stdin")){
             inputStream.mark(5);
             boolean var = get_code_2(stream,char_code);
             try {
@@ -1960,7 +1960,7 @@ public class ISOIOLibrary extends Library{
         propertyInput.put("mode", new Struct("read"));
         propertyInput.put("alias", new Struct("user_input"));
         //per essere coerente con la rappresentazione in IOLibrary dove stdin ? inputStreamName
-        propertyInput.put("file_name", new Struct(IOLibrary.consoleExecution)); /*Changed from "stdin" to IOLibrary.consoleExecution*/
+        propertyInput.put("file_name", new Struct("stdin"));
         propertyInput.put("eof_action", new Struct("reset"));
         propertyInput.put("type", new Struct("text"));
         Hashtable<String, Term> propertyOutput = new Hashtable<String, Term>(10);
