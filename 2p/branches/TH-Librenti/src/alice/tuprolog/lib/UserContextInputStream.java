@@ -13,7 +13,6 @@ public class UserContextInputStream extends InputStream {
 	private boolean avalaible;
 	private boolean start;
 	private int i;
-	private String context;	
 	private InputStream result;
 	/**
 	 * Changed from a single EventListener to multiple (ArrayList) ReadListeners
@@ -22,9 +21,8 @@ public class UserContextInputStream extends InputStream {
 	private ArrayList<ReadListener> readListeners;
 	/***/
 	
-	public UserContextInputStream(String cont)
+	public UserContextInputStream()
 	{
-		this.context = cont;
 		this.start = true;
 		this.readListeners = new ArrayList<ReadListener>();
 	}
@@ -72,42 +70,30 @@ public class UserContextInputStream extends InputStream {
 		 * Added IOLibrary.consoleExecution and IOLibrary.graphicExecution
 		 * to eliminate the problems of dependence 
 		 */
-		if(context.compareTo(IOLibrary.consoleExecution) == 0)
+
+
+		if(start)
 		{
-			
+			fireReadCalled();
+			getInput();
+			start = false;
+		}
+
+		do {
 			try {
-				while((i = System.in.read()) != -1)
+				i = result.read();
+
+				if(i == -1)
 				{
-					return i;
+					fireReadCalled();
+					getInput();
+					i = result.read();
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
-			}		
-		}
-		else if (context.compareTo(IOLibrary.graphicExecution) == 0)
-		{
-			if(start)
-			{
-				fireReadCalled();
-				getInput();
-				start = false;
 			}
-				
-			 do {
-		            try {
-		            	i = result.read();
-		    			
-		    			if(i == -1)
-		    			{
-		    				fireReadCalled();
-		    				getInput();
-		    				i = result.read();
-		    			}
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-		        } while (i < 0x20 && i >= -1);	
-		}
+		} while (i < 0x20 && i >= -1);	
+
 		return i;					
 	}
 	
