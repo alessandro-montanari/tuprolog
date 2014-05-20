@@ -57,7 +57,7 @@ public class JavaIDE
         System.out.println("tuProlog system - release " + Prolog.getVersion());
 
         Prolog engine = new Prolog();
-
+        
         tabbedPane = new TheoryTabbedPane();
         tabbedPane.setEngine(engine);
         toolBar = new ToolBar(tabbedPane,this);
@@ -160,8 +160,16 @@ public class JavaIDE
         
         //Aggiunto Mastrovito 12/2013
         IOLibrary IO = (IOLibrary)engine.getLibrary("alice.tuprolog.lib.IOLibrary");
-        IO.setExecutionType(IOLibrary.graphicExecution);
-        // InputDialog f = new InputDialog(IO.getUserContextInputStream()); // commented out by ED on Apr 3rd 2014, not used
+        IO.setExecutionType(IOLibrary.graphicExecution); // Matteo Librenti 03/2014 (change from IO.graphicExecution to IOLibrary.graphicExecution)
+        /**
+         * consoleDialog is registered as a listener for a read operation
+         * and input (InputDialog) is added inside of consoleDialog
+         */
+        IO.getUserContextInputStream().setReadListener(consoleDialog);
+        InputDialog input = new InputDialog(IO.getUserContextInputStream());
+        consoleDialog.setInputDialog(input);
+        /***/
+        
     }
     
     public static ConsoleManager getConsoleManager()

@@ -158,7 +158,7 @@ public class CUIConsole extends Automaton implements Serializable, OutputListene
     }
 
     public void onOutput(OutputEvent e) {
-        System.out.print(e.getMsg());
+        //System.out.print(e.getMsg());
     }
     public void onSpy(SpyEvent e) {
         System.out.println(e.getMsg());

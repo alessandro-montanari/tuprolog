@@ -9,27 +9,23 @@ import java.util.List;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
 
+import alice.util.VersionInfo;
+
 /**
-*
+* Implementation of the ScriptEngineFactory interface
 * @author Andrea Bucaletti
 */
 public class PrologScriptEngineFactory implements ScriptEngineFactory {
     
-    public static final PrologScriptEngineFactory DEFAULT_FACTORY;
+    public static final PrologScriptEngineFactory DEFAULT_FACTORY = new PrologScriptEngineFactory();
     
     private static final String ENGINE_NAME = "tuProlog";
-    private static final String ENGINE_VERSION = "1.0";
     
-    private static final String LANGUAGE_NAME = "prolog";
-    private static final String LANGUAGE_VERSION = "1.0";
+    private static final String LANGUAGE_NAME = "Prolog";
     
     private static final List<String> EXTENSIONS = Arrays.asList("pro", "pl", "2p");
     private static final List<String> MIME_TYPES = Arrays.asList("text/plain");
     private static final List<String> NAMES = Arrays.asList("tuProlog", "prolog");
-    
-    static {
-        DEFAULT_FACTORY = new PrologScriptEngineFactory();
-    }
     
 
     @Override
@@ -39,7 +35,7 @@ public class PrologScriptEngineFactory implements ScriptEngineFactory {
 
     @Override
     public String getEngineVersion() {
-        return ENGINE_VERSION;
+        return VersionInfo.getCompleteVersion();
     }
 
     @Override
@@ -64,7 +60,7 @@ public class PrologScriptEngineFactory implements ScriptEngineFactory {
 
     @Override
     public String getLanguageVersion() {
-        return LANGUAGE_VERSION;
+    	return VersionInfo.getCompleteVersion();
     }
 
     @Override
@@ -91,7 +87,7 @@ public class PrologScriptEngineFactory implements ScriptEngineFactory {
 
     @Override
     public String getOutputStatement(String string) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return "write('" + string + "')";
     }
 
     @Override

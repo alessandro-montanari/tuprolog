@@ -34,15 +34,32 @@ import java.io.*;
 @SuppressWarnings("serial")
 public class IOLibrary extends Library {
 
-	
-	protected UserContextInputStream input;
-    protected String inputStreamName = "stdin";
-    protected InputStream inputStream = System.in;
-    protected String outputStreamName = "stdout";
-    protected OutputStream outputStream = System.out;
-    private Random gen = new Random();
-    
+	/**
+     * Added the variable consoleExecution and graphicExecution
+     */
+    public static final String consoleExecution = "console";
     public static final String graphicExecution = "graphic";
+	
+    /**
+     * Added StandardInput and StandardOutput for JSR-223
+     */
+    private static final String STDIN_NAME = "stdin";
+	private static final String STDOUT_NAME = "stdout";
+	
+    protected InputStream stdIn = System.in;
+    protected OutputStream stdOut = System.out;
+    
+	/**
+	 * Current inputStream and outputStream initialized as StandardInput and StandardOutput*
+	 */
+    protected String inputStreamName = STDIN_NAME; 
+    protected InputStream inputStream = stdIn;
+    protected String outputStreamName = STDOUT_NAME;
+    protected OutputStream outputStream = stdOut;
+    /***************************************************************************************/
+    
+	protected UserContextInputStream input;
+    private Random gen = new Random();
 
     public IOLibrary() {
         gen.setSeed(System.currentTimeMillis());
@@ -54,23 +71,51 @@ public class IOLibrary extends Library {
     	return this.input;
     }
     
-    public void setExecutionType(String input)
+    /***
+     * This method defines whether you use the graphical version or version by console
+     * @param executionType
+     */
+    public void setExecutionType(String executionType)
     {
-    	this.inputStreamName = input;
-    	this.input = new UserContextInputStream(inputStreamName);
-    	inputStream = this.input;
-    }
-
-    public InputStream getInputStreamByContext(String inputStreamName)
-    {
-    	InputStream result = null;
+    	if(executionType.equals(consoleExecution)) {
+    		stdIn = System.in;
+    	}
+    	else if (executionType.equals(graphicExecution)) {
+    		input = new UserContextInputStream();
+    		stdIn = input;
+    	}
     	
-    	if(inputStreamName.compareTo("stdin") == 0)
-    		result = System.in;
-    	else if (inputStreamName.compareTo("graphic") == 0)
-    		result = input;
-    	return result;
+    	inputStream = stdIn;
+    	inputStreamName = STDIN_NAME;
     }
+    
+    /************************************************************/
+    
+    /**
+     * Added getters and setters of StandardInput and StandardOutput for JSR-223
+     */
+   
+    public void setStandardInput(InputStream is)  {
+    	if(is == null)
+    		throw new NullPointerException("Paramter 'is' is null");
+    	
+    	this.stdIn = is;
+    	if(inputStreamName.equals(STDIN_NAME)) 
+    		this.inputStream = stdIn;
+    }
+    
+    public void setStandardOutput(OutputStream os) {
+    	if(os == null)
+    		throw new NullPointerException("Parameter 'os' is null");
+    	
+    	this.stdOut = os;
+    	if(outputStreamName.equals(STDOUT_NAME))
+    		this.outputStream = stdOut;
+    }
+    
+    public InputStream getStandardInput() { return stdIn; }
+    public OutputStream getStandardOutput() { return stdOut; }
+    
     /************************************************************/
     
     public boolean see_1(Term arg) throws PrologError {
@@ -82,14 +127,15 @@ public class IOLibrary extends Library {
                     arg);
         }
         Struct arg0 = (Struct) arg.getTerm();
-        if (inputStream != System.in)
+        if (inputStream != stdIn) /* If the current inputStream is the StandardInput it will not be closed */
             try {
                 inputStream.close();
             } catch (IOException e) {
                 return false;
             }
-        if (arg0.getName().equals(inputStreamName)) {// Modificato Mastrovito: <arg0.getName().equals("stdin")>
-        	inputStream = getInputStreamByContext(inputStreamName); //Modificato Mastrovito: < = System.in >
+        if (arg0.getName().equals(STDIN_NAME)) { 
+        	inputStream = stdIn;
+        	inputStreamName = STDIN_NAME;
         } else {
             try {
                 inputStream = new FileInputStream(((Struct) arg0).getName());
@@ -103,14 +149,15 @@ public class IOLibrary extends Library {
     }
 
     public boolean seen_0() {
-        if (inputStream != getInputStreamByContext(inputStreamName)) { //Modificato Mastrovito: < != System.in >
+        if (inputStream != stdIn) { 
             try {
                 inputStream.close();
             } catch (IOException e) {
                 return false;
             }
-            inputStream = getInputStreamByContext(inputStreamName);; //Modificato Mastrovito < = System.in >
-            //Rimosso Mastrovito <inputStreamName = "stdin";>
+            
+            inputStream = stdIn;
+        	inputStreamName = STDIN_NAME;
         }
         return true;
     }
@@ -128,14 +175,15 @@ public class IOLibrary extends Library {
                     arg);
         }
         Struct arg0 = (Struct) arg.getTerm();
-        if (outputStream != System.out)
+        if (outputStream != stdOut)
             try {
                 outputStream.close();
             } catch (IOException e) {
                 return false;
             }
-        if (arg0.getName().equals("stdout")) {
-            outputStream = System.out;
+        if (arg0.getName().equals(STDOUT_NAME)) {
+            outputStream = stdOut;
+            outputStreamName = STDOUT_NAME;
         } else {
             try {
                 outputStream = new FileOutputStream(((Struct) arg0).getName());
@@ -149,14 +197,14 @@ public class IOLibrary extends Library {
     }
 
     public boolean told_0() {
-        if (outputStream != System.out) {
+        if (outputStream != stdOut) {
             try {
                 outputStream.close();
             } catch (IOException e) {
                 return false;
             }
-            outputStream = System.out;
-            outputStreamName = "stdout";
+            outputStream = stdOut;
+            outputStreamName = STDOUT_NAME;
         }
         return true;
     }
@@ -179,18 +227,20 @@ public class IOLibrary extends Library {
                 throw PrologError.type_error(engine.getEngineManager(), 1,
                         "character", arg);
             } else {
-                if (outputStreamName.equals("stdout")) {
+            	
+                if (outputStreamName.equals(STDOUT_NAME)) {
                     getEngine().stdOutput(ch);
-                } else {
-                    try {
-                        outputStream.write((byte) ch.charAt(0));
-                    } catch (IOException e) {
-                        throw PrologError.permission_error(engine
-                                .getEngineManager(), "output", "stream",
-                                new Struct(outputStreamName), new Struct(e
-                                        .getMessage()));
-                    }
+            	}
+                
+                try {
+                    outputStream.write((byte) ch.charAt(0));
+                } catch (IOException e) {
+                    throw PrologError.permission_error(engine
+                            .getEngineManager(), "output", "stream",
+                            new Struct(outputStreamName), new Struct(e
+                                    .getMessage()));
                 }
+           
                 return true;
             }
         }
@@ -240,22 +290,23 @@ public class IOLibrary extends Library {
                     "integer", arg);
         // int n = ((Int)arg).intValue(); // OLD BUGGED  VERSION (signaled by MViroli) 
         int n = ((Int)arg.getTerm()).intValue(); // NEW CORRECT VERSION (by MViroli, EDenti)
-        if (outputStreamName.equals("stdout")) {
+        if (outputStreamName.equals(STDOUT_NAME)) {
             for (int i = 0; i < n; i++) {
                 getEngine().stdOutput(" ");
             }
-        } else {
-            for (int i = 0; i < n; i++) {
-                try {
-                    outputStream.write(0x20);
-                } catch (IOException e) {
-                    throw PrologError.permission_error(engine
-                            .getEngineManager(), "output", "stream",
-                            new Struct(outputStreamName), new Struct(e
-                                    .getMessage()));
-                }
+        }
+        
+        for (int i = 0; i < n; i++) {
+            try {
+                outputStream.write(0x20);
+            } catch (IOException e) {
+                throw PrologError.permission_error(engine
+                        .getEngineManager(), "output", "stream",
+                        new Struct(outputStreamName), new Struct(e
+                                .getMessage()));
             }
         }
+        
         return true;
     }
 
@@ -322,17 +373,18 @@ public class IOLibrary extends Library {
         arg0 = arg0.getTerm();
         if (arg0 instanceof Var)
             throw PrologError.instantiation_error(engine.getEngineManager(), 1);
-        if (outputStreamName.equals("stdout")) {
+        if (outputStreamName.equals(STDOUT_NAME)) {
             getEngine().stdOutput(arg0.toString());
-        } else {
-            try {
-                outputStream.write(arg0.toString().getBytes());
-            } catch (IOException e) {
-                throw PrologError.permission_error(engine.getEngineManager(),
-                        "output", "stream", new Struct(outputStreamName),
-                        new Struct(e.getMessage()));
-            }
         }
+        
+        try {
+            outputStream.write(arg0.toString().getBytes());
+        } catch (IOException e) {
+            throw PrologError.permission_error(engine.getEngineManager(),
+                    "output", "stream", new Struct(outputStreamName),
+                    new Struct(e.getMessage()));
+        }
+        
         return true;
     }
 
@@ -340,35 +392,36 @@ public class IOLibrary extends Library {
         arg0 = arg0.getTerm();
         if (arg0 instanceof Var)
             throw PrologError.instantiation_error(engine.getEngineManager(), 1);
-        if (outputStreamName.equals("stdout")) {
+        if (outputStreamName.equals(STDOUT_NAME)) {
             getEngine().stdOutput(
                     alice.util.Tools.removeApices(arg0.toString()));
-        } else {
-            try {
-                outputStream.write(alice.util.Tools.removeApices(
-                        arg0.toString()).getBytes());
-            } catch (IOException e) {
-                throw PrologError.permission_error(engine.getEngineManager(),
-                        "output", "stream", new Struct(outputStreamName),
-                        new Struct(e.getMessage()));
-            }
         }
+        
+        try {
+            outputStream.write(alice.util.Tools.removeApices(
+                    arg0.toString()).getBytes());
+        } catch (IOException e) {
+            throw PrologError.permission_error(engine.getEngineManager(),
+                    "output", "stream", new Struct(outputStreamName),
+                    new Struct(e.getMessage()));
+        }
+        
         return true;
-
     }
 
     public boolean nl_0() throws PrologError {
-        if (outputStreamName.equals("stdout")) {
+        if (outputStreamName.equals(STDOUT_NAME)) {
             getEngine().stdOutput("\n");
-        } else {
-            try {
-                outputStream.write('\n');
-            } catch (IOException e) {
-                throw PrologError.permission_error(engine.getEngineManager(),
-                        "output", "stream", new Struct(outputStreamName),
-                        new Struct(e.getMessage()));
-            }
         }
+        
+        try {
+            outputStream.write('\n');
+        } catch (IOException e) {
+            throw PrologError.permission_error(engine.getEngineManager(),
+                    "output", "stream", new Struct(outputStreamName),
+                    new Struct(e.getMessage()));
+        }
+        
         return true;
     }
 
@@ -492,15 +545,16 @@ public class IOLibrary extends Library {
             throw PrologError.instantiation_error(engine.getEngineManager(), 1);
         if (outputStreamName.equals("stdout")) {
             getEngine().stdOutput(arg0.toString());
-        } else {
-            try {
-                outputStream.write(arg0.toString().getBytes());
-            } catch (IOException e) {
-                throw PrologError.permission_error(engine.getEngineManager(),
-                        "output", "stream", new Struct(outputStreamName),
-                        new Struct(e.getMessage()));
-            }
         }
+        
+        try {
+            outputStream.write(arg0.toString().getBytes());
+        } catch (IOException e) {
+            throw PrologError.permission_error(engine.getEngineManager(),
+                    "output", "stream", new Struct(outputStreamName),
+                    new Struct(e.getMessage()));
+        }
+        
         return true;
     }
 }

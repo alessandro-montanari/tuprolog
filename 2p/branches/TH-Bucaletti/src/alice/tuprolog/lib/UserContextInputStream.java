@@ -1,26 +1,30 @@
-package alice.tuprolog;
+package alice.tuprolog.lib;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.EventListener;
+import java.util.ArrayList;
 
 import alice.tuprolog.event.ReadEvent;
 import alice.tuprolog.event.ReadListener;
 
 
-public class UserContextInputStream extends InputStream implements Runnable{
+public class UserContextInputStream extends InputStream {
 	
 	private boolean avalaible;
 	private boolean start;
 	private int i;
-	private String context;	
 	private InputStream result;
-	private EventListener listener; 
+	/**
+	 * Changed from a single EventListener to multiple (ArrayList) ReadListeners
+	 *
+	 */
+	private ArrayList<ReadListener> readListeners;
+	/***/
 	
-	public UserContextInputStream(String cont)
+	public UserContextInputStream()
 	{
-		this.context = cont;
 		this.start = true;
+		this.readListeners = new ArrayList<ReadListener>();
 	}
 
 	public synchronized InputStream getInput()
@@ -62,56 +66,53 @@ public class UserContextInputStream extends InputStream implements Runnable{
 
 	public int read() throws IOException
 	{
-		if(context.compareTo("console") == 0)
+		/**
+		 * Added IOLibrary.consoleExecution and IOLibrary.graphicExecution
+		 * to eliminate the problems of dependence 
+		 */
+
+
+		if(start)
 		{
-			
+			fireReadCalled();
+			getInput();
+			start = false;
+		}
+
+		do {
 			try {
-				while((i = System.in.read()) != -1)
+				i = result.read();
+
+				if(i == -1)
 				{
-					return i;
+					fireReadCalled();
+					getInput();
+					i = result.read();
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
-			}		
-		}
-		else if (context.compareTo("graphic") == 0)
-		{
-			if(start)
-			{
-				fireReadCalled();
-				getInput();
-				start = false;
 			}
-				
-			 do {
-		            try {
-		            	i = result.read();
-		    			
-		    			if(i == -1)
-		    			{
-		    				fireReadCalled();
-		    				getInput();
-		    				i = result.read();
-		    			}
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-		        } while (i < 0x20 && i >= -1);	
-		}	
+		} while (i < 0x20 && i >= -1);	
+
 		return i;					
 	}
 	
+	/**
+	 * Changed these methods because there are more readListeners
+	 * from the previous version
+	 */
 	private void fireReadCalled()
 	{
 		ReadEvent event = new ReadEvent(this);
-		((ReadListener) listener).readCalled(event);
+		for(ReadListener r:readListeners){
+			r.readCalled(event);
+		}
+		
 	}
 	
 	public void setReadListener(ReadListener r)
 	{
-		this.listener = r;
+		this.readListeners.add(r);
 	}
-	
-	@Override
-	public void run() {}
+	/***/
 }

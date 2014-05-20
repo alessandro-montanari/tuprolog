@@ -15,10 +15,12 @@ import java.util.Collections;
 import java.util.List;
 import javax.script.Bindings;
 import javax.script.ScriptContext;
+import javax.script.SimpleBindings;
 
 /**
 *
 * @author Andrea Bucaletti
+* 
 */
 public class PrologScriptContext implements ScriptContext {
     
@@ -32,7 +34,7 @@ public class PrologScriptContext implements ScriptContext {
     }
     
     protected Prolog prolog;
-    protected Bindings variablesScope, engineScope, globalScope;
+    protected Bindings engineScope, globalScope;
     
     protected Reader reader;
     protected Writer writer, errorWriter;
