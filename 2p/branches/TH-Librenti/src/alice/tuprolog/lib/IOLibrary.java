@@ -138,7 +138,7 @@ public class IOLibrary extends Library {
             } catch (IOException e) {
                 return false;
             }
-        if (arg0.getName().equals(STDIN_NAME)) { 
+        if (arg0.getName().equals(STDIN_NAME)) { /*No matter what is the StandardInput ("console", "graphic", etc.). The user does not know what it is*/
         	inputStream = stdIn;
         	inputStreamName = STDIN_NAME;
         } else {
@@ -154,7 +154,7 @@ public class IOLibrary extends Library {
     }
 
     public boolean seen_0() {
-        if (inputStream != stdIn) { 
+        if (inputStream != stdIn) { /* If the current inputStream is the StandardInput it will not be closed */
             try {
                 inputStream.close();
             } catch (IOException e) {
@@ -180,13 +180,13 @@ public class IOLibrary extends Library {
                     arg);
         }
         Struct arg0 = (Struct) arg.getTerm();
-        if (outputStream != stdOut)
+        if (outputStream != stdOut) /* If the current outputStream is the StandardOutput it will not be closed */
             try {
                 outputStream.close();
             } catch (IOException e) {
                 return false;
             }
-        if (arg0.getName().equals(STDOUT_NAME)) {
+        if (arg0.getName().equals(STDOUT_NAME)) { /*No matter what is the StandardOutput ("console", "graphic", etc.). The user does not know what it is*/
             outputStream = stdOut;
             outputStreamName = STDOUT_NAME;
         } else {
@@ -202,7 +202,7 @@ public class IOLibrary extends Library {
     }
 
     public boolean told_0() {
-        if (outputStream != stdOut) {
+        if (outputStream != stdOut) { /* If the current outputStream is the StandardOutput it will not be closed */
             try {
                 outputStream.close();
             } catch (IOException e) {
@@ -232,7 +232,7 @@ public class IOLibrary extends Library {
                 throw PrologError.type_error(engine.getEngineManager(), 1,
                         "character", arg);
             } else {
-                if (outputStreamName.equals("stdout")) {
+                if (outputStreamName.equals(STDOUT_NAME)) { /* Changed from "stdout" to STDOUT_NAME */
                     getEngine().stdOutput(ch);
                 } else {
                     try {
@@ -293,7 +293,7 @@ public class IOLibrary extends Library {
                     "integer", arg);
         // int n = ((Int)arg).intValue(); // OLD BUGGED  VERSION (signaled by MViroli) 
         int n = ((Int)arg.getTerm()).intValue(); // NEW CORRECT VERSION (by MViroli, EDenti)
-        if (outputStreamName.equals("stdout")) {
+        if (outputStreamName.equals(STDOUT_NAME)) { /* Changed from STDOUT_NAME to STDOUT_NAME */
             for (int i = 0; i < n; i++) {
                 getEngine().stdOutput(" ");
             }
@@ -375,7 +375,7 @@ public class IOLibrary extends Library {
         arg0 = arg0.getTerm();
         if (arg0 instanceof Var)
             throw PrologError.instantiation_error(engine.getEngineManager(), 1);
-        if (outputStreamName.equals("stdout")) {
+        if (outputStreamName.equals(STDOUT_NAME)) { /* Changed from "stdout" to STDOUT_NAME */
             getEngine().stdOutput(arg0.toString());
         } else {
             try {
@@ -393,7 +393,7 @@ public class IOLibrary extends Library {
         arg0 = arg0.getTerm();
         if (arg0 instanceof Var)
             throw PrologError.instantiation_error(engine.getEngineManager(), 1);
-        if (outputStreamName.equals("stdout")) {
+        if (outputStreamName.equals(STDOUT_NAME)) { /* Changed from "stdout" to STDOUT_NAME */
             getEngine().stdOutput(
                     alice.util.Tools.removeApices(arg0.toString()));
         } else {
@@ -411,7 +411,7 @@ public class IOLibrary extends Library {
     }
 
     public boolean nl_0() throws PrologError {
-        if (outputStreamName.equals("stdout")) {
+        if (outputStreamName.equals(STDOUT_NAME)) { /* Changed from "stdout" to STDOUT_NAME */
             getEngine().stdOutput("\n");
         } else {
             try {
@@ -543,7 +543,7 @@ public class IOLibrary extends Library {
         
         if (arg0 instanceof Var)
             throw PrologError.instantiation_error(engine.getEngineManager(), 1);
-        if (outputStreamName.equals("stdout")) {
+        if (outputStreamName.equals(STDOUT_NAME)) { /* Changed from "stdout" to STDOUT_NAME */
             getEngine().stdOutput(arg0.toString());
         } else {
             try {

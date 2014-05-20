@@ -446,7 +446,7 @@ public class ISOIOLibrary extends Library{
         }
         else if(in != null){
             String in_name = get_input_name(in);
-            if(in_name.equals(inputStreamName)){ //Modificato Mastrovito < in_name.equals("stdin") >
+            if(in_name.equals("stdin")){ //Modificato Mastrovito < in_name.equals("stdin") >
                 return true;
             }
             try {
