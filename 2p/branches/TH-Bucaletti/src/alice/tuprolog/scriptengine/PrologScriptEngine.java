@@ -4,7 +4,18 @@
  */
 package alice.tuprolog.scriptengine;
 
-import alice.tuprolog.InvalidLibraryException;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.Reader;
+import java.util.List;
+import java.util.Map;
+
+import javax.script.Bindings;
+import javax.script.ScriptContext;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineFactory;
+import javax.script.ScriptException;
+
 import alice.tuprolog.InvalidTheoryException;
 import alice.tuprolog.MalformedGoalException;
 import alice.tuprolog.NoMoreSolutionException;
@@ -14,22 +25,11 @@ import alice.tuprolog.SolveInfo;
 import alice.tuprolog.Struct;
 import alice.tuprolog.Theory;
 import alice.tuprolog.Var;
-import alice.tuprolog.event.ExceptionEvent;
-import alice.tuprolog.event.ExceptionListener;
+import alice.tuprolog.lib.IOLibrary;
 import alice.tuprolog.lib.InvalidObjectIdException;
 import alice.tuprolog.lib.JavaLibrary;
-import alice.tuprolog.lib.SimpleIOLibrary;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.Reader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import javax.script.Bindings;
-import javax.script.ScriptContext;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineFactory;
-import javax.script.ScriptException;
+import alice.util.InputStreamAdapter;
+import alice.util.OutputStreamAdapter;
 
 
 /**
@@ -37,43 +37,41 @@ import javax.script.ScriptException;
  *
  * @author Andrea Bucaletti
  */
-public class PrologScriptEngine implements ScriptEngine, ExceptionListener {
-  
+public class PrologScriptEngine implements ScriptEngine {
+	
+	/*
+	 * Engine context keys-
+	 */
     public static final String CONTEXT = "context";
     public static final String THEORY = "theory";
     public static final String IS_SUCCESS =  "isSuccess";
     public static final String IS_HALTED = "isHalted";
     public static final String HAS_OPEN_ALTERNATIVES = "hasOpenAlternatives";
     
+    // Solution variables bound during the last call of eval(..)
     protected List<Var> solveVars;
+    
+    // The last evaluated script
     protected String previousScript;
+    
+    /* 	This is used to decide if the text call of eval(..) is going to use Prolog.solve()
+    	or Prolog.solveNext() */
     protected boolean useSolveNext;
    
+    /* The default script context */
     protected ScriptContext defaultContext;
-    protected Prolog prolog;
     
-    protected SimpleIOLibrary simpleIOLib; /* Test IO */
+    /* And instance of prolog used to solve the given scripts */
+    protected Prolog prolog;
     
     public PrologScriptEngine() {
         prolog = new Prolog();
 
-        
-        defaultContext = new PrologScriptContext(prolog);
-        
-        /* Test IO */
-        try {
-            // prolog.unloadLibrary("alice.tuprolog.lib.ISOIOLibrary");
-            simpleIOLib = new SimpleIOLibrary();
-            prolog.loadLibrary(simpleIOLib);
-        }
-        catch(InvalidLibraryException ex) {
-            ex.printStackTrace();
-        }
-        /* Fine Test IO */        
+        defaultContext = new PrologScriptContext(prolog);     
         
         useSolveNext = false;
         previousScript = null;
-        solveVars = new ArrayList<Var>();
+        solveVars = null;
     } 
 
     @Override
@@ -88,45 +86,57 @@ public class PrologScriptEngine implements ScriptEngine, ExceptionListener {
     
     @Override
     public Object eval(String script, ScriptContext sc) throws ScriptException {
-        /*
+    	
+    	setStandardIO(sc);
+    	
+    	/*
         As the jsr-223 part SCR.4.3.4.1.2 Script Execution :
         "In all cases, the ScriptContext used during a script execution must be
         a value in the Engine Scope of the ScriptEngine whose key is the
         String "context"     
          */
         
-        /* IO Test */
-        simpleIOLib.setStandardInput(sc.getReader());
-        simpleIOLib.setStandardOutput(sc.getWriter());
-        /* IO Test */
-        
+
         sc.getBindings(ScriptContext.ENGINE_SCOPE).put(CONTEXT, sc);
         return eval(script, sc.getBindings(ScriptContext.ENGINE_SCOPE));
     }
 
     @Override
-    public Object eval(Reader reader, ScriptContext sc) throws ScriptException {
-        /*
+    public Object eval(Reader reader, ScriptContext sc) throws ScriptException {           
+    	
+    	setStandardIO(sc);
+    	
+    	/*
         As the jsr-223 part SCR.4.3.4.1.2 Script Execution :
         "In all cases, the ScriptContext used during a script execution must be
         a value in the Engine Scope of the ScriptEngine whose key is the
         String "context"     
          */        
-
-       /* IO Test */
-        simpleIOLib.setStandardInput(sc.getReader());
-        simpleIOLib.setStandardOutput(sc.getWriter());
-        /* IO Test */        
         
         sc.getBindings(ScriptContext.ENGINE_SCOPE).put(CONTEXT, sc);
         return eval(reader, sc.getBindings(ScriptContext.ENGINE_SCOPE));
     }    
-    
+    /**
+     * Evaluates a script. After the evaluation, informations
+     * about the found solution are put in the Bindings passed as parameter. The key pair values
+     * that contains general informations about the solution are:
+     * { "isSuccess", Boolean }
+     * { "isHalted", Boolean }
+     * { "hasOpenAlternatives", Boolean }
+     * If the solution has bound variables, those values are put in the engine context
+     * as the key pair { String variableName, String value }. Those keys are removed from the context 
+     * when this method is called again.
+     * If the same script is executed 2 or more times in row, and the solution has open alternatives, solveNext()
+     * is used instead of solve() after the first evaluation.
+     * @param script The script to be executed.  
+     * @param bndngs The Bindings to be used as engine context for evaluation
+     * @return true if the script is executed correctly.
+     */
     @Override
     public Object eval(String script, Bindings bndngs) throws ScriptException {
         Theory theory = (Theory)bndngs.get(THEORY);
         SolveInfo info = null;
-         
+        
         /*
         As the jsr-223 part SCR.4.2.6 Bindings :
         "Each Java Script Engine has a Bindings known as its Engine Scope
@@ -171,11 +181,10 @@ public class PrologScriptEngine implements ScriptEngine, ExceptionListener {
                 info = prolog.solve(script);
            
             previousScript = script;
-
-            for(Var v : solveVars) 
-                bndngs.remove(v.getName());
-
-            solveVars.clear();
+            
+            if(solveVars != null)
+	            for(Var v : solveVars) 
+	                bndngs.remove(v.getName());
 
             bndngs.put(IS_SUCCESS, info.isSuccess());
             bndngs.put(IS_HALTED, info.isHalted());
@@ -249,12 +258,22 @@ public class PrologScriptEngine implements ScriptEngine, ExceptionListener {
 
     @Override
     public void setContext(ScriptContext sc) {
+    	if(sc == null)
+    		throw new NullPointerException("Given ScriptContext is null");
         defaultContext = sc;
     }
-
-    @Override
-    public void onException(ExceptionEvent ee) {
-        System.out.println(ee.getMsg());
+    
+    /**
+     * Sets the IOLibray's standard input/output with the streams specified in the ScriptContext
+     * @param sc the ScriptContext to use for the next evaluation
+     */
+    private void setStandardIO(ScriptContext sc) {
+        IOLibrary ioLib = (IOLibrary) prolog.getLibrary("alice.tuprolog.lib.IOLibrary");
+        
+        if(ioLib != null) {
+        	ioLib.setStandardInput(new InputStreamAdapter(sc.getReader()));
+        	ioLib.setStandardOutput(new OutputStreamAdapter(sc.getWriter()));
+        }    	
     }
     
 }

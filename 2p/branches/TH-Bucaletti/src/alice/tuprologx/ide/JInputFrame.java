@@ -10,6 +10,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
+
 import javax.imageio.IIOException;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
@@ -18,11 +20,13 @@ import javax.swing.JTextField;
  *
  * @author Andrea Bucaletti
  */
-public class JInputFrame extends InputStream implements KeyListener {
+public class JInputFrame extends Reader implements KeyListener {
+	
+	protected Object lock;
     
     protected boolean closed;
     
-    protected CircularBuffer buffer;
+    protected StringBuffer buffer;
     
     protected JFrame frame;
     protected JTextField inputText;
@@ -31,7 +35,9 @@ public class JInputFrame extends InputStream implements KeyListener {
     
     public JInputFrame() {
         
-        buffer = new CircularBuffer(1024);
+    	lock = new Object();
+    	
+        buffer = new StringBuffer();
         
         frame = new JFrame();
         
@@ -47,8 +53,8 @@ public class JInputFrame extends InputStream implements KeyListener {
     }
     
     @Override
-    public int available() {
-        return buffer.available();
+    public boolean ready() {
+    	return buffer.length() > 0;
     }
     
     @Override
@@ -56,21 +62,6 @@ public class JInputFrame extends InputStream implements KeyListener {
         closed = true;
     }
     
-    
-    @Override
-    public int read() throws IOException {
-        
-        if(closed)
-            throw new IOException("Stream closed");
-        
-        frame.setVisible(true);
-        if(endOfStream && buffer.available() == 0) {
-            frame.setVisible(false);
-            endOfStream = false;
-            return -1;
-        }
-        return 0x000000FF & buffer.get();
-    }
 
     @Override
     public void keyTyped(KeyEvent ke) {
@@ -80,9 +71,10 @@ public class JInputFrame extends InputStream implements KeyListener {
     @Override
     public void keyPressed(KeyEvent ke) {
         if(ke.getKeyCode() == KeyEvent.VK_ENTER) {
-            buffer.putString(inputText.getText());
+            buffer.append(inputText.getText() + '\n');
             inputText.setText("");
-            endOfStream = true;
+            frame.setVisible(false);
+            synchronized(lock) { lock.notifyAll(); }
         }
     }
 
@@ -90,5 +82,30 @@ public class JInputFrame extends InputStream implements KeyListener {
     public void keyReleased(KeyEvent ke) {
         
     }
+
+	@Override
+	public int read(char[] buf, int off, int len) throws IOException {
+		synchronized (lock) {
+						
+	        if(closed)
+	            throw new IOException("Stream closed");
+	        
+	        frame.setVisible(true);		
+			
+			while(buffer.length() == 0) {
+				try { lock.wait(); }
+				catch(InterruptedException ex) {}
+			}
+			
+			int r = 0;
+			
+			for(; r < len && buffer.length() > 0; r++) {
+				buf[r + off] = buffer.charAt(r);
+				buffer.deleteCharAt(r);
+			}
+			
+			return r;
+		}
+	}
 
 }
