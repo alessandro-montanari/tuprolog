@@ -2,6 +2,7 @@ package alice.tuprologx.eclipse.wizards;
 
 import java.lang.reflect.InvocationTargetException;
 
+import alice.tuprolog.lib.IOLibrary;
 import alice.tuprologx.eclipse.core.*;
 import alice.tuprologx.eclipse.properties.PropertyManager;
 import alice.tuprologx.eclipse.TuProlog;
@@ -118,6 +119,15 @@ public class PrologProjectWizard extends Wizard implements INewWizard {
 
 		for (int i = 0; i < libraries.length; i++)
 			engine.addLibrary(libraries[i]);
+		/**
+		 * As the JavaIDE has been set IO.setExecutionType(IOLibrary.graphicExecution)
+		 */
+		IOLibrary IO = (IOLibrary)engine.getLibrary("alice.tuprolog.lib.IOLibrary");
+		if (IO != null) { // IOLibrary could not be loaded
+			IO.setExecutionType(IOLibrary.graphicExecution);
+			System.out.println("IO.setExecutionType(IOLibrary.graphicExecution);");
+		}
+			
 		PropertyManager.addEngineInProperty(project, engine.getName());
 		PropertyManager.setLibraryInProperties(project, engine.getName(),
 				libraries);

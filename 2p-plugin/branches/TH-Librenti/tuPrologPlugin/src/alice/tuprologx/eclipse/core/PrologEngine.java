@@ -10,6 +10,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swt.widgets.Display;
 
+import alice.tuprolog.Library;
 import alice.tuprolog.SolveInfo;
 import alice.tuprolog.Term;
 import alice.tuprolog.Theory;
@@ -198,6 +199,13 @@ public class PrologEngine {
 		if (prolog == null)
 			return new String[] {};
 		return prolog.getCurrentLibraries();
+	}
+	
+	/**
+	 * Added to get a Library by its name
+	 */	
+	public Library getLibrary(String name) {
+		return prolog.getLibrary(name);
 	}
 
 	public void removeLibrary(String lib) {
