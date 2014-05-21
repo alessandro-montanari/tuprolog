@@ -7,6 +7,9 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.swt.SWT;
@@ -29,8 +32,11 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.part.ViewPart;
 
 import alice.tuprolog.Term;
+import alice.tuprolog.lib.IOLibrary;
 import alice.tuprologx.eclipse.TuProlog;
 import alice.tuprologx.eclipse.core.PrologEngine;
+import alice.tuprologx.eclipse.core.PrologEngineFactory;
+import alice.tuprologx.eclipse.core.PrologParser;
 import alice.tuprologx.eclipse.core.PrologQuery;
 import alice.tuprologx.eclipse.core.PrologQueryFactory;
 import alice.tuprologx.eclipse.core.PrologQueryResult;
@@ -39,6 +45,7 @@ import alice.tuprologx.eclipse.core.PrologQueryScope;
 public class ConsoleView extends ViewPart{
 	private Tree tree;
 	private SashForm sash;
+	private SashForm sashIn;
 	private boolean queryIsValid;
 	private Text fQueryText;
 	private Text spy;
@@ -54,6 +61,10 @@ public class ConsoleView extends ViewPart{
 	private Button next;
 	private Composite resultViewer;
 	public Composite outputViewer;
+	/***
+	 * Added InputViewer
+	 */
+	public Composite inputViewer;
 	/*Castagna 06/2011*/
 	public Composite exceptionViewer;
 	/**/
@@ -120,6 +131,13 @@ public class ConsoleView extends ViewPart{
 		CTabItem Output = new CTabItem(notebook,SWT.NONE);
 		Output.setImage(TuProlog.getIconFromResources("sample.gif"));
 		Output.setText("Output");
+		
+		/**
+		 * Added CTabItem "Input" to conform to Java Platform
+		 */
+		CTabItem Input = new CTabItem(notebook,SWT.NONE);
+		Input.setImage(TuProlog.getIconFromResources("sample.gif"));
+		Input.setText("Input");
 		
 		/*Castagna 06/2011*/
 		CTabItem Exception = new CTabItem(notebook,SWT.NONE);
@@ -372,8 +390,15 @@ public class ConsoleView extends ViewPart{
 		outputViewer.setLayout(tabLayout);
 		Label outputLabel = new Label(outputViewer,SWT.NONE);
 		outputLabel.setText("Output: ");
-		output = new Text(outputViewer, SWT.MULTI | SWT.BORDER | SWT.READ_ONLY | SWT.SCROLL_LINE); /* Eliminate SWT.SINGLE to fix nl bug*/
+		output = new Text(outputViewer, SWT.MULTI | SWT.BORDER | SWT.READ_ONLY | SWT.SCROLL_LINE); /* Eliminated SWT.SINGLE to fix nl bug*/
 		output.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		
+		/**
+		 * Creation tab Input
+		 */
+		sashIn = new SashForm(notebook, SWT.HORIZONTAL);
+		sashIn.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		Input.setControl(sashIn);
 		
 		/*Castagna 06/2011*/
 		SashForm sashException = new SashForm(notebook, SWT.HORIZONTAL);
@@ -413,6 +438,7 @@ public class ConsoleView extends ViewPart{
 			for(int i = 0; i < engines.size() ; i++)
 			{
 				PrologEngine engine = engines.get(i);
+				setInputViewer(engine);
 				TreeItem item = new TreeItem(tree,SWT.NONE);
 				item.setText(engine.getName());
 				item.setData(engine);
@@ -488,5 +514,16 @@ public class ConsoleView extends ViewPart{
 	}
 	public PrologQuery getQuery(){
 		return query;
+	}
+	
+	/**
+	 * Added this method
+	 */
+	private void setInputViewer(PrologEngine engine) {
+		
+		IOLibrary IO = (IOLibrary)engine.getLibrary("alice.tuprolog.lib.IOLibrary");
+		if (IO != null) { // IOLibrary could not be loaded
+			inputViewer = new InputViewer(sashIn,IO.getUserContextInputStream());
+		}
 	}
 }
