@@ -358,13 +358,11 @@ public class Struct extends Term {
             if (arity > tarity) {
                 return true;
             } else if (arity == tarity) {
-            	System.out.println("Compare di "+name+" con "+ts.name);
-                if (name.compareTo(ts.name) > 0) {
+            	if (name.compareTo(ts.name) > 0) {
                     return true;
                 } else if (name.compareTo(ts.name) == 0) {
                     for (int c = 0;c < arity;c++) {
-                    	System.out.println("Compare di "+arg[c]+" con "+ts.arg[c]);
-                        if (arg[c].isGreater(ts.arg[c])) {
+                    	if (arg[c].isGreater(ts.arg[c])) {
                             return true;
                         } else if (!arg[c].isEqual(ts.arg[c])) {
                             return false;

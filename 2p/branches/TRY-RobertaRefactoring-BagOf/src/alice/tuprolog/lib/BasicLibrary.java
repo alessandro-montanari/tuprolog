@@ -1425,7 +1425,6 @@ public class BasicLibrary extends Library {
     		(engine.getEngineManager()).setBagOFgoal(goal);
     		if ((engine.getEngineManager()).getBagOFbag()==null)
     			(engine.getEngineManager()).setBagOFbag(tList);
-    		System.out.println("tlist settata nella Bag of Bag "+tList);
     		
     	}
     		

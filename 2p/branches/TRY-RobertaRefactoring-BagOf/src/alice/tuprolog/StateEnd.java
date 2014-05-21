@@ -58,9 +58,9 @@ public class StateEnd extends State {
     void doJob(Engine e) {
         vars = new ArrayList<Var>();
         goal = (Struct)e.startGoal.copyResult(e.goalVars,vars);
-        System.out.println("STATE END: STAMPO LE VAR del GOAL****"+e.goalVars);
-        System.out.println("STATE END: STATE END "+vars+ " GOAL "+goal);  
-        System.out.println("STATE END GOALLLLLLL: "+e.query); 
+//        System.out.println("STATE END: STAMPO LE VAR del GOAL****"+e.goalVars);
+//        System.out.println("STATE END: STATE END "+vars+ " GOAL "+goal);  
+//        System.out.println("STATE END GOALLLLLLL: "+e.query); 
         
         if(this.endState==EngineRunner.TRUE || this.endState==EngineRunner.TRUE_CP)
         	relinkVar(e);      
@@ -159,10 +159,8 @@ public class StateEnd extends State {
 //	    			System.out.println("******** ARG 2  STRUCT ");
 //	    	}
 	    	
-	    	System.out.println("******** query  struct "+((Struct)query).getName()+" ");
-    		System.out.println("******** ARITY "+((Struct)query).getArity());
+	    	
     		if(((Struct)query).getName().equals(";")){
-    			System.out.println("******** query  struct ; ");
     			Struct query_temp = (Struct)((Struct)query).getArg(0);
     			if(((Struct)query_temp).getName().equals("setof") && setOfCounter==0){
     				query=query_temp;
@@ -176,16 +174,16 @@ public class StateEnd extends State {
     		}
 	    	
 	    	if(((Struct)query).getArity()>2 && ((Struct)query).getArg(2) instanceof Struct){ //casi in cui ci potrebbe essere problema di soluzione
-	    		System.out.println("STATE END relinkvar(): trovata struct in initBag "+((Var)initBag).getLink());
+	    		//System.out.println("STATE END relinkvar(): trovata struct in initBag "+((Var)initBag).getLink());
 		    	while (tgoal instanceof Var && ((Var)tgoal).getLink()!=null){
 		    		tgoal=((Var)tgoal).getLink();
-		    		System.out.println("STATE END relinkvar(): scorro goal "+tgoal);
+		    		//System.out.println("STATE END relinkvar(): scorro goal "+tgoal);
 		    		if(tgoal instanceof Struct){
 		    			tgoal=((Struct)tgoal).getArg(1);
-		    			System.out.println("STATE END relinkvar(): trovata struct con arg 1 "+tgoal);
+		    			//System.out.println("STATE END relinkvar(): trovata struct con arg 1 "+tgoal);
 		    			
 		    			if(p.unify(tgoal, ((Var)initBag).getLink())){ //In realtˆ sembra che giˆ qui non unifichi
-		    				System.out.println("STATE END relinkvar(): trovata struct con arg 1 che unifica con bag iniziale");
+		    				//System.out.println("STATE END relinkvar(): trovata struct con arg 1 che unifica con bag iniziale");
 		    				initGoalBag=tgoal; 	
 		    				find=true;
 		    				findSamePredicateIndicator=true;
@@ -193,9 +191,9 @@ public class StateEnd extends State {
 		    			} 
 		    			else if(((Var)initBag).getLink() instanceof Struct){
 		    				Struct s=(Struct)((Var)initBag).getLink();
-		    				System.out.println("primitive della bag iniziale "+s.getPredicateIndicator().toString());
+		    				//System.out.println("primitive della bag iniziale "+s.getPredicateIndicator().toString());
 		    				if(tgoal instanceof Struct && s.getPredicateIndicator().toString().compareTo(((Struct)tgoal).getPredicateIndicator().toString())==0){
-		    					System.out.println("primitive della bag tgoal "+((Struct)tgoal).getPredicateIndicator().toString());
+		    					//System.out.println("primitive della bag tgoal "+((Struct)tgoal).getPredicateIndicator().toString());
 		    					findSamePredicateIndicator=true;
 		    					find=true;
 		    					initGoalBag=tgoal;
@@ -203,7 +201,7 @@ public class StateEnd extends State {
 		    			}
 		    			//scorro initBagGoal e sostituisco i suoi nomi con i nomi delle variabili goal
 		    			if((find && initGoalBag instanceof Struct) ||(findSamePredicateIndicator && initGoalBag instanceof Struct)){
-		    				System.out.println("substituteVarGoalBO --- initGoalBag "+initGoalBag);
+		    				//System.out.println("substituteVarGoalBO --- initGoalBag "+initGoalBag);
 		    				Term a0=((Struct)initGoalBag).getArg(0);
 		    				Term a1=((Struct)initGoalBag).getArg(1);
 		    				if(a0 instanceof Var){
@@ -350,7 +348,7 @@ public class StateEnd extends State {
 		    	
 		    	if(findSamePredicateIndicator){
 			    	if(!(find && p.unify(initGoalBag, initBag))){
-			    		System.out.println("NOOOOOOOOOOOOOOOON unifica DOPO RELINK ");
+			    		//System.out.println("NOOOOOOOOOOOOOOOON unifica DOPO RELINK ");
 			    		String s = c.getEngineMan().getSetOfSolution()+ "\n\nfalse.";
 			    		c.getEngineMan().setSetOfSolution(s);
 			    		//settare la soluzione a false
@@ -549,26 +547,26 @@ public class StateEnd extends State {
 	    	ArrayList<String> bagString = (c.getEngineMan()).getBagOFresString();
 	    	int i=0;
 	    	String s="";
-	    	System.out.println("LGOAL VAR "+lGoalVar);
+	    	//System.out.println("LGOAL VAR "+lGoalVar);
 	    	for(int m=0; m<bagString.size(); m++){
 	    		String bagResString=bag.get(m).toString();
 	    		boolean var=false;
 	    		if(bag.get(m) instanceof Var && ((Var)bag.get(m)).getLink()!=null && (((Var)bag.get(m)).getLink() instanceof Struct) && !((Struct)((Var)bag.get(m)).getLink()).isAtomic())
 	    				var = true;
-	    		System.out.println("&&&&&& Var "+var);
+	    		//System.out.println("&&&&&& Var "+var);
 	    		if(var && bagResString.length()!=bagString.get(m).length()){
-	    			System.out.println("PROBLEMA STAMPA "+bagResString+" "+bagString.get(m));
+	    			//System.out.println("PROBLEMA STAMPA "+bagResString+" "+bagString.get(m));
 	    			StringTokenizer st = new StringTokenizer(bagString.get(m));
 	    			StringTokenizer st1 = new StringTokenizer(bagResString);
 			        while (st.hasMoreTokens()) {
 			        	String t1 =st.nextToken(" / ( ) , ;");
-			        	System.out.println("COMPARE "+t1);
+			        	//System.out.println("COMPARE "+t1);
 			        	String t2 =st1.nextToken(" / ( ) , ;");
-			        	System.out.println("COMPARE "+t1+" "+t2);
+			        	//System.out.println("COMPARE "+t1+" "+t2);
 			        	if(t1.compareTo(t2)!=0 && !t2.contains("_")){
-			        		System.out.println("DIVERSO TOKEN "+t1+" "+t2);
+			        		//System.out.println("DIVERSO TOKEN "+t1+" "+t2);
 			        		s=s+lGoalVar.get(i).toString()+"="+t2+" ";
-			        		System.out.println(s);
+			        		//System.out.println(s);
 			        		c.getEngineMan().setSetOfSolution(s);
 			        		i++;
 			        	}
@@ -582,8 +580,8 @@ public class StateEnd extends State {
 	     
 	    
 	    
-	    System.out.println("----goal vars a[y] dopo sostituzione "+e.goalVars);
-	    System.out.println("----dopo sostituzione STATE END "+vars+ " GOAL "+goal);  
+//	    System.out.println("----goal vars a[y] dopo sostituzione "+e.goalVars);
+//	    System.out.println("----dopo sostituzione STATE END "+vars+ " GOAL "+goal);  
 		    c.getEngineMan().setRelinkVar(false);
 		    c.getEngineMan().setBagOFres(null);
 		    c.getEngineMan().setBagOFgoal(null);
@@ -716,7 +714,7 @@ public class StateEnd extends State {
 		//System.out.println("Substitute var ---Termine "+t+" e termine "+tt);
 		if(tt!=null && tt instanceof Var){
 			int index = lSol.indexOf(((Var) tt).getName());
-			System.out.println("Substitute var ---Indice di tt in lSol "+index);
+			//System.out.println("Substitute var ---Indice di tt in lSol "+index);
 			s.setArg(1, new Var(lgoal.get(index)));
 			if(t instanceof Var){
 				int index1 = lSol.indexOf(((Var) t).getName());
@@ -744,7 +742,7 @@ public class StateEnd extends State {
 				s.setArg(0, s1);
 			}
 		}
-		//System.out.println("Substitute var ---t  nullo ritorno s "+s);
+		//System.out.println("Substitute var ---t  nullo ritorno s "+s); Compare di
 		return s;
     }
 
