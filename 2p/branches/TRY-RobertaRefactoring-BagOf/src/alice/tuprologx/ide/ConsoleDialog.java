@@ -401,6 +401,8 @@ public class ConsoleDialog
                 }
                 // visualize solution on the solution pane
                 String lastSolution = binds + "\nSolution: " + info.getSolution();
+                if(info.getSetOfSolution()!=null)
+                	lastSolution = binds + "\nSolution: " + info.getSetOfSolution();
                 solution.setText(lastSolution);
                 // store bindings for visualization on the binding pane
                 for (Var v: info.getBindingVars()) {
