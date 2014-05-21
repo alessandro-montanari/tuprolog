@@ -66,12 +66,6 @@ public class UserContextInputStream extends InputStream {
 
 	public int read() throws IOException
 	{
-		/**
-		 * Added IOLibrary.consoleExecution and IOLibrary.graphicExecution
-		 * to eliminate the problems of dependence 
-		 */
-
-
 		if(start)
 		{
 			fireReadCalled();

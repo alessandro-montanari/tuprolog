@@ -37,7 +37,7 @@ public class IOLibrary extends Library {
 	/**
      * Added the variable consoleExecution and graphicExecution
      */
-    public static final String consoleExecution = "console";
+	public static final String consoleExecution = "console";
     public static final String graphicExecution = "graphic";
 	
     /**
