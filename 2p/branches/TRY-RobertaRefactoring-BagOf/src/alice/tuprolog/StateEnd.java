@@ -31,6 +31,7 @@ public class StateEnd extends State {
     private int endState;    
     private Struct goal;
     private List<Var> vars;
+    private int setOfCounter = 0;
     
     /**
      * Constructor
@@ -128,13 +129,13 @@ public class StateEnd extends State {
     private void relinkVar(Engine e){
 	    if(c.getEngineMan().getRelinkVar()){ //devo fare il relink solo se ho var libere nella bagof E SE NON CI SONO ESISTENZE
 	   
-	    	//System.out.println("STATE END relinkvar(): Le var del risultato sono "+(c.getEngineMan()).getBagOFres()); 
-	    	//System.out.println("STATE END relinkvar(): Le var del risultato STRINGA sono "+(c.getEngineMan()).getBagOFresString());
+//	    	System.out.println("STATE END relinkvar(): Le var del risultato sono "+(c.getEngineMan()).getBagOFres()); 
+//	    	System.out.println("STATE END relinkvar(): Le var del risultato STRINGA sono "+(c.getEngineMan()).getBagOFresString());
 	    	ArrayList<Term> bag = (c.getEngineMan()).getBagOFres();
 	    	Term initBag = (c.getEngineMan()).getBagOFbag();
 	    	Term BOgoal=(c.getEngineMan()).getBagOFgoal();
-	    	//System.out.println("STATE END relinkvar(): la bag è "+(c.getEngineMan()).getBagOFbag());
-	    	//System.out.println("STATE END relinkvar(): il goal della BO è "+(c.getEngineMan()).getBagOFgoal());
+//	    	System.out.println("STATE END relinkvar(): la bag è "+(c.getEngineMan()).getBagOFbag());
+//	    	System.out.println("STATE END relinkvar(): il goal della BO è "+(c.getEngineMan()).getBagOFgoal());
 	    	
 	    	/* itero nel goal per cercare una eventuale struttura che deve fare match con la
 	    	 * result bag ESEMPIO setof(X,member(X,[V,U,f(U),f(V)]),[a,b,f(b),f(a)]).
@@ -158,9 +159,23 @@ public class StateEnd extends State {
 //	    			System.out.println("******** ARG 2 è STRUCT ");
 //	    	}
 	    	
+	    	System.out.println("******** query è struct "+((Struct)query).getName()+" ");
+    		System.out.println("******** ARITY "+((Struct)query).getArity());
+    		if(((Struct)query).getName().equals(";")){
+    			System.out.println("******** query è struct ; ");
+    			Struct query_temp = (Struct)((Struct)query).getArg(0);
+    			if(((Struct)query_temp).getName().equals("setof") && setOfCounter==0){
+    				query=query_temp;
+    				this.setOfCounter++;
+    			}
+    			else{ 
+    				query_temp = (Struct)((Struct)query).getArg(1);
+    				if(((Struct)query_temp).getName().equals("setof"))
+    					query=query_temp;
+    			}
+    		}
 	    	
-	    	
-	    	if(((Struct)query).getArg(2) instanceof Struct){ //casi in cui ci potrebbe essere problema di soluzione
+	    	if(((Struct)query).getArity()>2 && ((Struct)query).getArg(2) instanceof Struct){ //casi in cui ci potrebbe essere problema di soluzione
 	    		System.out.println("STATE END relinkvar(): trovata struct in initBag "+((Var)initBag).getLink());
 		    	while (tgoal instanceof Var && ((Var)tgoal).getLink()!=null){
 		    		tgoal=((Var)tgoal).getLink();
@@ -193,8 +208,8 @@ public class StateEnd extends State {
 		    				Term a1=((Struct)initGoalBag).getArg(1);
 		    				if(a0 instanceof Var){
 		    					Term link=a0;
-		    					System.out.println("substituteVarGoalBO --- a0 è var name  "+((Var)a0).getName()+" original name "+((Var)a0).getOriginalName()+" link "+((Var)a0).getLink());
-		    					System.out.println("SCORRO LINK VARIABILE "+a0);
+//		    					System.out.println("substituteVarGoalBO --- a0 è var name  "+((Var)a0).getName()+" original name "+((Var)a0).getOriginalName()+" link "+((Var)a0).getLink());
+//		    					System.out.println("SCORRO LINK VARIABILE "+a0);
 		    					initGoalBag=findVarName(link,a,initGoalBag,0); 
 		    					
 		    				}
@@ -203,11 +218,11 @@ public class StateEnd extends State {
 		    			}
 		    		}
 		    	}
-		    	System.out.println("INIT GOAL BAG DOPO RELINK "+initGoalBag+"init bag "+((Var)initBag).getLink());
+		    	//System.out.println("INIT GOAL BAG DOPO RELINK "+initGoalBag+"init bag "+((Var)initBag).getLink());
 
 		    	//riordino la struttura seguendo l'ordine di comparsa delle var nel goal
 		    	if(initGoalBag != null){
-			    	System.out.println("Creo una lista a partire dalla struttura di initGoalBag ");
+			    	//System.out.println("Creo una lista a partire dalla struttura di initGoalBag ");
 			    	ArrayList<Term> initGoalBagList=new ArrayList<Term>();
 			    	Struct initGoalBagTemp=(Struct)initGoalBag;
 			    	while(initGoalBagTemp.getArity()>0){
@@ -218,7 +233,7 @@ public class StateEnd extends State {
 			    			initGoalBagTemp=(Struct)t2;
 			    		}
 			    	}
-			    	System.out.println("Lista "+initGoalBagList);
+			    	//System.out.println("Lista "+initGoalBagList);
 			    	
 			    	// QUI FA ORDINAMENTO 
 			    	ArrayList<Term> initGoalBagListOrdered=new ArrayList<Term>();
@@ -228,7 +243,7 @@ public class StateEnd extends State {
 				    		if(initGoalBagList.get(m) instanceof Var)
 				    			initGoalBagListVar.add(((Var)initGoalBagList.get(m)).getName());
 				    	}
-				    	System.out.println("Lista VAR "+initGoalBagListVar);
+				    	//System.out.println("Lista VAR "+initGoalBagListVar);
 				    	ArrayList<Term> left=new ArrayList<Term>();
 				    	ArrayList<Term> left_temp=new ArrayList<Term>();
 				    	left.add(initGoalBagList.get(0));
@@ -239,11 +254,11 @@ public class StateEnd extends State {
 			    		int k=0;
 				    		for(k=0; k<left.size(); k++){
 				    			if(initGoalBagList.get(m).isGreaterRelink(left.get(k), initGoalBagListVar)){
-				    				System.out.println(initGoalBagList.get(m)+" più grande di "+left.get(k));
+				    				//System.out.println(initGoalBagList.get(m)+" più grande di "+left.get(k));
 				    				left_temp.add(left.get(k));
 				    			}
 				    			else{
-				    				System.out.println(initGoalBagList.get(m)+" più piccolo di "+left.get(k));
+				    				//System.out.println(initGoalBagList.get(m)+" più piccolo di "+left.get(k));
 				    				left_temp.add(initGoalBagList.get(m));
 				    				break;
 				    			}
@@ -283,10 +298,10 @@ public class StateEnd extends State {
 		    				//System.out.println(" ");
 				    	}
 				    	//ricreo la struttura del goal iniziale a partire dalla lista ordinata
-				    	System.out.println("Ricreo la struttura del goal iniziale a partire dalla lista ordinata ");
+				    	//System.out.println("Ricreo la struttura del goal iniziale a partire dalla lista ordinata ");
 				    	initGoalBagListOrdered.addAll(left);
 				    	initGoalBagListOrdered.addAll(right);
-				    	System.out.println("Lista ordinata "+initGoalBagListOrdered);   	
+				    	//System.out.println("Lista ordinata "+initGoalBagListOrdered);   	
 				    	//fine ordinamento
 			    	}
 			    	else initGoalBagListOrdered=initGoalBagList;
@@ -299,11 +314,11 @@ public class StateEnd extends State {
 			    		t1[i]=(Term)t[i];
 			    	}
 			    	Struct s = new Struct(initGoalBagTemp.getName(), t1);	   
-			    	System.out.println("initGoalBagTemp "+initGoalBagTemp);
-			    	System.out.println("nuovaSTRUCT "+s);
+//			    	System.out.println("initGoalBagTemp "+initGoalBagTemp);
+//			    	System.out.println("nuovaSTRUCT "+s);
 			    	initGoalBag=s;
 			    	
-			    	System.out.println("Creo una lista a partire dalla struttura di initBag ");//serve per unificare
+			    	//System.out.println("Creo una lista a partire dalla struttura di initBag ");//serve per unificare
 			    	ArrayList<Term> initBagList=new ArrayList<Term>();
 			    	Struct initBagTemp=(Struct)((Var)initBag).getLink();
 			    	while(initBagTemp.getArity()>0){
@@ -314,28 +329,30 @@ public class StateEnd extends State {
 			    			initBagTemp=(Struct)t2;
 			    		}
 			    	}
-			    	System.out.println("initBagList "+initBagList);
+			    	//System.out.println("initBagList "+initBagList);
 			    	Object[] tNoOrd=initBagList.toArray();
 			    	Term[] termNoOrd=new Term[tNoOrd.length];
 			    	for(int i=0; i<tNoOrd.length;i++){
 			    		termNoOrd[i]=(Term)tNoOrd[i];
 			    	}
 			    	Struct s2 = new Struct(initGoalBagTemp.getName(), termNoOrd);	   
-			    	System.out.println("initBagTemp "+initBagTemp.getName());
-			    	System.out.println("nuovaSTRUCT "+s);
+//			    	System.out.println("initBagTemp "+initBagTemp.getName());
+//			    	System.out.println("nuovaSTRUCT "+s);
 			    	initBag=s2;
 		    	}
 		    	
-		    	System.out.println("initGoalBag "+initGoalBag);
-		    	System.out.println("findSamePredicateIndicator "+findSamePredicateIndicator);
-		    	System.out.println("find "+find);
-		    	
-		    	System.out.println("Struttura INIZIALE con cui provo ad unificare "+initBag);
-		    	System.out.println("Struttura CREATA con cui provo ad unificare "+initGoalBag);
+//		    	System.out.println("initGoalBag "+initGoalBag);
+//		    	System.out.println("findSamePredicateIndicator "+findSamePredicateIndicator);
+//		    	System.out.println("find "+find);
+//		    	
+//		    	System.out.println("Struttura INIZIALE con cui provo ad unificare "+initBag);
+//		    	System.out.println("Struttura CREATA con cui provo ad unificare "+initGoalBag);
 		    	
 		    	if(findSamePredicateIndicator){
 			    	if(!(find && p.unify(initGoalBag, initBag))){
 			    		System.out.println("NOOOOOOOOOOOOOOOON unifica DOPO RELINK ");
+			    		String s = c.getEngineMan().getSetOfSolution()+ "\n\nfalse.";
+			    		c.getEngineMan().setSetOfSolution(s);
 			    		//settare la soluzione a false
 						e.nextState = c.END_FALSE;
 	                   
@@ -348,7 +365,7 @@ public class StateEnd extends State {
 			    		return;
 			    	}
 			    	else{
-			    		System.out.println("SIIIIIIIIIIIIIIIII unifica DOPO RELINK ");
+			    		//System.out.println("SIIIIIIIIIIIIIIIII unifica DOPO RELINK ");
 			    	}
 		    	}
 	    	}
@@ -412,7 +429,7 @@ public class StateEnd extends State {
 	    			lgoalBOVar.add(l_temp.get(w));
 	    		}
 	    	}//esistono casi in cui il goal non sia STRUCT ????
-	    	System.out.println("le variabili nel goal della bagof sono lgoalBOVar "+lgoalBOVar);
+	    	//System.out.println("le variabili nel goal della bagof sono lgoalBOVar "+lgoalBOVar);
 	    	
 	    	/*
 	    	 * STEP3: prendere il set di variabili libere della bagof
@@ -423,14 +440,14 @@ public class StateEnd extends State {
 	    	 * mette quindi in lGoalVar le variabili che compaiono in goalVars e sono anche libere 
 	    	 * per la bagof c.getEngineMan().getBagOFvarSet()
 	    	 */
-	    	System.out.println("Le var della bagof sono "+c.getEngineMan().getBagOFvarSet());
+	    	//System.out.println("Le var della bagof sono "+c.getEngineMan().getBagOFvarSet());
 	    	Var v=(Var)c.getEngineMan().getBagOFvarSet();
 	    	Struct varList=(Struct)v.getLink(); //lista delle variabili nel goal bagof con nomi interni alla bagof
 	    	ArrayList<String> lGoalVar=new ArrayList<String>() ; //lista delle variabili nel goal bagof con nomi goal
 	    	//ArrayList<String> lGoalVar_copy=new ArrayList<String>() ; //????????mi serve la copia per sostituire le var sia nel goal originale che nel risultato
-	    	System.out.println("Lista variabili goal bagof nomi interni alla bagof varList "+varList);
+	    	//System.out.println("Lista variabili goal bagof nomi interni alla bagof varList "+varList);
 	    	//Object[] a=(e.goalVars).toArray();
-	    	System.out.println("Lista variabili goal bagof nomi e.goalVars "+e.goalVars.toString());
+	    	//System.out.println("Lista variabili goal bagof nomi e.goalVars "+e.goalVars.toString());
 	    	//int r=0;
 	    	for (java.util.Iterator<? extends Term> it = varList.listIterator(); it.hasNext();) {
 	    		//System.out.println("Entro "+r);
@@ -438,13 +455,13 @@ public class StateEnd extends State {
 	    		Term var=it.next();
 	    		for(int y=0; y<a.length;y++){
 	    			Var vv=(Var)a[y];
-	    			if(vv.getLink().isEqual(var)/*&& !(var.toString().startsWith("_"))*/){
+	    			if(vv.getLink()!=null && vv.getLink().isEqual(var)/*&& !(var.toString().startsWith("_"))*/){
 	    				//System.out.println("Aggiungo trovata uguaglianza "+vv+" e var "+var);
 	    				lGoalVar.add(vv.getName());
 	    			}
 	    		}
 	    	}
-	    	System.out.println("********Lista variabili goal bagof nomi goal lGoalVar "+lGoalVar);
+	    	//System.out.println("********Lista variabili goal bagof nomi goal lGoalVar "+lGoalVar);
 	    	
 	    	/*
 	    	 * STEP4: pulisco lgoalBOVar lasciando solo i nomi che compaiono effettivamente in 
