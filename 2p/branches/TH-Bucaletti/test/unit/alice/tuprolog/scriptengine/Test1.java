@@ -24,8 +24,8 @@ import javax.swing.JFileChooser;
  */
 public class Test1 {
     public static void main(String[] args) throws ScriptException,InvalidTheoryException, IOException {
-        ScriptEngineManager manager = new ScriptEngineManager();
-        ScriptEngine engine = manager.getEngineByName("tuProlog");
+        //ScriptEngineManager manager = new ScriptEngineManager();
+        ScriptEngine engine = new PrologScriptEngine();
         JFileChooser fileChooser = new JFileChooser();
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         Theory theory;
@@ -33,7 +33,6 @@ public class Test1 {
         if(fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             theory = new Theory(new FileInputStream(fileChooser.getSelectedFile()));  
             engine.put(PrologScriptEngine.THEORY, theory);
-            
         }
        
         

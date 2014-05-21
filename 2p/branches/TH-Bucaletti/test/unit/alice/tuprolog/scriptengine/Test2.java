@@ -46,7 +46,7 @@ public class Test2 extends javax.swing.JFrame {
         
         inputFrame = new JInputFrame();
         
-        scriptEngine.getContext().setReader(new InputStreamReader(inputFrame));
+        scriptEngine.getContext().setReader(inputFrame);
         scriptEngine.getContext().setWriter(txtOutput.getWriter());
     }
 

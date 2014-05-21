@@ -16,16 +16,11 @@ import java.io.Reader;
 public class InputFrameTest {
     public static void main(String[] args) throws IOException, InterruptedException {
         final JInputFrame f = new JInputFrame();
-        InputStreamReader is = new InputStreamReader(f);
-        Reader rd = (Reader) is;
+
         
         while(true) {
-            System.out.print(is.read());
+            System.out.print((char)f.read());
         }
-        /*
-        ByteBuffer b = ByteBuffer.allocate(1000);
-        b.position(0);
-        b.asFloatBuffer().put(1);
-        System.out.println(b.asFloatBuffer().get());*/      
+   
     }
 }

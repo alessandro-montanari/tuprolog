@@ -5,6 +5,8 @@
 package alice.tuprolog.scriptengine;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
@@ -17,16 +19,45 @@ import alice.util.VersionInfo;
 */
 public class PrologScriptEngineFactory implements ScriptEngineFactory {
     
-    public static final PrologScriptEngineFactory DEFAULT_FACTORY = new PrologScriptEngineFactory();
+    public static final PrologScriptEngineFactory DEFAULT_FACTORY;
     
-    private static final String ENGINE_NAME = "tuProlog";
+    private static final String ENGINE_NAME;
+    private static final String ENGINE_VERSION;
     
-    private static final String LANGUAGE_NAME = "Prolog";
+    private static final String LANGUAGE_NAME;
+    private static final String LANGUAGE_VERSION;
     
-    private static final List<String> EXTENSIONS = Arrays.asList("pro", "pl", "2p");
-    private static final List<String> MIME_TYPES = Arrays.asList("text/plain");
-    private static final List<String> NAMES = Arrays.asList("tuProlog", "prolog");
+    private static final List<String> EXTENSIONS;
+    private static final List<String> MIME_TYPES;
+    private static final List<String> NAMES;
     
+    private static final HashMap<String, String> PARAMETERS;
+    
+    static {
+    	DEFAULT_FACTORY = new PrologScriptEngineFactory();
+    	
+    	ENGINE_NAME = "tuProlog";
+    	ENGINE_VERSION = VersionInfo.getEngineVersion();
+    	
+    	LANGUAGE_NAME = "Prolog";
+    	LANGUAGE_VERSION = VersionInfo.getEngineVersion();
+    	
+    	EXTENSIONS = Collections.unmodifiableList(Arrays.asList("pro", "pl", "2p"));
+    	
+    	MIME_TYPES  = Collections.unmodifiableList(Arrays.asList("text/plain"));
+    	
+    	NAMES = Collections.unmodifiableList(Arrays.asList("tuProlog", "Prolog", "prolog"));
+    	
+    	PARAMETERS = new HashMap<>();
+    	
+    	PARAMETERS.put("ENGINE", ENGINE_NAME);
+    	PARAMETERS.put("ENGINE_VERSION", ENGINE_VERSION);
+    	PARAMETERS.put("NAME", NAMES.get(0));
+    	PARAMETERS.put("LANGUAGE", LANGUAGE_NAME);
+    	PARAMETERS.put("LANGUAGE_VERSION", LANGUAGE_VERSION);
+    	PARAMETERS.put("THREADING", null);
+    	
+    }
 
     @Override
     public String getEngineName() {
@@ -35,7 +66,7 @@ public class PrologScriptEngineFactory implements ScriptEngineFactory {
 
     @Override
     public String getEngineVersion() {
-        return VersionInfo.getCompleteVersion();
+        return ENGINE_VERSION;
     }
 
     @Override
@@ -60,12 +91,12 @@ public class PrologScriptEngineFactory implements ScriptEngineFactory {
 
     @Override
     public String getLanguageVersion() {
-    	return VersionInfo.getCompleteVersion();
+    	return LANGUAGE_VERSION;
     }
 
     @Override
-    public Object getParameter(String string) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Object getParameter(String name) {
+        return PARAMETERS.get(name);
     }
 
     @Override
@@ -91,8 +122,14 @@ public class PrologScriptEngineFactory implements ScriptEngineFactory {
     }
 
     @Override
-    public String getProgram(String... strings) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public String getProgram(String... instr) {
+        
+    	String program = new String();
+        
+    	for(int i = 0; i < instr.length; i++)
+    		program += instr[i] + (i == instr.length - 1 ? "." : ",");
+    	
+    	return program;
     }
 
     @Override
