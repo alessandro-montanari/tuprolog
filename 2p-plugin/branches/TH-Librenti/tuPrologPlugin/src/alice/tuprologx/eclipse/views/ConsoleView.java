@@ -29,6 +29,8 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.part.ViewPart;
 
 import alice.tuprolog.Term;
+import alice.tuprolog.event.ReadEvent;
+import alice.tuprolog.event.ReadListener;
 import alice.tuprolog.lib.IOLibrary;
 import alice.tuprologx.eclipse.TuProlog;
 import alice.tuprologx.eclipse.core.PrologEngine;
@@ -37,7 +39,7 @@ import alice.tuprologx.eclipse.core.PrologQueryFactory;
 import alice.tuprologx.eclipse.core.PrologQueryResult;
 import alice.tuprologx.eclipse.core.PrologQueryScope;
 
-public class ConsoleView extends ViewPart{
+public class ConsoleView extends ViewPart implements ReadListener{
 	private Tree tree;
 	private SashForm sash;
 	private SashForm sashIn;
@@ -60,6 +62,8 @@ public class ConsoleView extends ViewPart{
 	 * Added InputViewer
 	 */
 	public Composite inputViewer;
+	private CTabItem Input;
+	private CTabFolder notebook;
 	/*Castagna 06/2011*/
 	public Composite exceptionViewer;
 	/**/
@@ -107,7 +111,7 @@ public class ConsoleView extends ViewPart{
 		mainFrame.setLayout(groupLayout);
 		mainFrame.setLayoutData(groupData);
 
-		CTabFolder notebook = new CTabFolder(mainFrame, SWT.TOP | SWT.BORDER);
+		notebook = new CTabFolder(mainFrame, SWT.TOP | SWT.BORDER);
 		notebook.setLayout(groupLayout);
 		notebook.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
@@ -130,7 +134,7 @@ public class ConsoleView extends ViewPart{
 		/**
 		 * Added CTabItem "Input" to conform to Java Platform
 		 */
-		CTabItem Input = new CTabItem(notebook,SWT.NONE);
+		Input = new CTabItem(notebook,SWT.NONE);
 		Input.setImage(TuProlog.getIconFromResources("sample.gif"));
 		Input.setText("Input");
 		
@@ -433,7 +437,8 @@ public class ConsoleView extends ViewPart{
 			for(int i = 0; i < engines.size() ; i++)
 			{
 				PrologEngine engine = engines.get(i);
-				setInputViewer(engine);
+				if(inputViewer == null)
+					setInputViewer(engine);
 				TreeItem item = new TreeItem(tree,SWT.NONE);
 				item.setText(engine.getName());
 				item.setData(engine);
@@ -518,7 +523,13 @@ public class ConsoleView extends ViewPart{
 		
 		IOLibrary IO = (IOLibrary)engine.getLibrary("alice.tuprolog.lib.IOLibrary");
 		if (IO != null) { // IOLibrary could not be loaded
+			IO.getUserContextInputStream().setReadListener(this);
 			inputViewer = new InputViewer(sashIn,IO.getUserContextInputStream());
 		}
+	}
+
+	@Override
+	public void readCalled(ReadEvent arg0) {
+		notebook.setSelection(Input);
 	}
 }
