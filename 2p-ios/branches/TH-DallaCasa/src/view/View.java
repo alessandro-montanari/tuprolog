@@ -1,5 +1,4 @@
 package view;
-import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
 
@@ -16,8 +15,6 @@ public class View extends UIApplicationDelegateAdapter {
             NSDictionary launchOptions) {
 
         window = new UIWindow(UIScreen.getMainScreen().getBounds());
-        UITextField textField = new UITextField();
-        UIButton button = new UIButton();
         viewController = new ViewController(this);
         window.setRootViewController(viewController);
         
