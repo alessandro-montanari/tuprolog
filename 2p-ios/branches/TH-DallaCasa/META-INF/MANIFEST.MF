@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: tuPrologMobile
+Bundle-SymbolicName: tuPrologMobile
+Bundle-Version: 1.0.0.qualifier
+Bundle-ClassPath: tuPrologMobile.jar,
+ lib/tuprolog.jar
+Export-Package: alice.tuprolog,
+ alice.tuprolog.event,
+ alice.tuprolog.interfaces,
+ alice.tuprolog.lib,
+ alice.util,
+ controller,
+ view
