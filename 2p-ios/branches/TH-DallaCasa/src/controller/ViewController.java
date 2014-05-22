@@ -1,24 +1,13 @@
 package controller;
 
-import java.io.IOException;
-
-import org.robovm.apple.coregraphics.CGRect;
+import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.objc.Selector;
 import org.robovm.objc.annotation.*;
 import org.robovm.rt.bro.annotation.*;
 
-import alice.tuprolog.MalformedGoalException;
-import alice.tuprolog.NoSolutionException;
-import alice.tuprolog.Prolog;
-import alice.tuprolog.SolveInfo;
-import alice.tuprolog.Var;
-import alice.tuprolog.event.OutputEvent;
-import alice.tuprolog.event.OutputListener;
-import alice.tuprolog.event.SpyEvent;
-import alice.tuprolog.event.SpyListener;
-import alice.tuprolog.event.WarningEvent;
-import alice.tuprolog.event.WarningListener;
+import alice.tuprolog.*;
+import alice.tuprolog.event.*;
 import view.View;
 
 @CustomClass("ViewController")
@@ -26,9 +15,8 @@ public class ViewController extends UIViewController implements WarningListener,
 	
 	private Prolog engine;
 	private View view = null;
-//	private UITextField textField = null;
-	UITextView text = new UITextView(new CGRect(48, 271, 252, 277));
-	private final String incipit = "tuProlog system - release " + Prolog.getVersion() + "\n2p-ios RoboVM Project";
+	private UITextView text = new UITextView(new CGRect(40, 271, 252, 277));
+	private final String incipit = "tuProlog system - release " + Prolog.getVersion() + "\n2p-ios RoboVM Project\n";
 	
     public ViewController() {
         super("ViewController", null);
@@ -196,12 +184,15 @@ public class ViewController extends UIViewController implements WarningListener,
     
     public void onOutput(OutputEvent e) {
         System.out.print(e.getMsg());
+        text.setText(e.getMsg());
     }
     public void onSpy(SpyEvent e) {
         System.out.println(e.getMsg());
+        text.setText(e.getMsg());
     }
     public void onWarning(WarningEvent e) {
         System.out.println(e.getMsg());
+        text.setText(e.getMsg());
     }
     
 }
