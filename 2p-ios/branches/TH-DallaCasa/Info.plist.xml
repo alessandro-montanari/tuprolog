@@ -24,6 +24,16 @@
     <string>${app.build}</string>
     <key>LSRequiresIPhoneOS</key>
     <true/>
+    <key>CFBundleIcons</key>
+    <dict>
+        <key>CFBundlePrimaryIcon</key>
+        <dict>
+            <key>CFBundleIconFiles</key>
+            <array>
+                <string>${app.icon57}</string>
+            </array>
+        </dict>
+    </dict>
     <key>UIDeviceFamily</key>
     <array>
         <integer>1</integer>
