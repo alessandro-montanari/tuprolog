@@ -7,9 +7,6 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IncrementalProjectBuilder;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.swt.SWT;
@@ -35,8 +32,6 @@ import alice.tuprolog.Term;
 import alice.tuprolog.lib.IOLibrary;
 import alice.tuprologx.eclipse.TuProlog;
 import alice.tuprologx.eclipse.core.PrologEngine;
-import alice.tuprologx.eclipse.core.PrologEngineFactory;
-import alice.tuprologx.eclipse.core.PrologParser;
 import alice.tuprologx.eclipse.core.PrologQuery;
 import alice.tuprologx.eclipse.core.PrologQueryFactory;
 import alice.tuprologx.eclipse.core.PrologQueryResult;

@@ -7,6 +7,7 @@ import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import alice.tuprolog.event.ReadEvent;
@@ -19,22 +20,15 @@ import alice.tuprolog.lib.UserContextInputStream;
  * that of JavaIDE 
  */
 
-public class InputViewer extends Composite {
+public class InputViewer extends Composite implements ReadListener {
 	
 	private UserContextInputStream stream;
-	private Text input = new Text(this, SWT.MULTI | SWT.BORDER |  SWT.SCROLL_LINE);
-
+	private Text input;
 	InputViewer(SashForm sashIn, UserContextInputStream str) {
 		super(sashIn, SWT.NONE);
 		init();
 		stream = str;
-		stream.setReadListener(new ReadListener(){
-			@Override
-			public void readCalled(ReadEvent event) {
-				input.setFocus();
-				input.setEnabled(true);
-			}
-		});
+		stream.setReadListener(this);
 	}
 	
 	public void init()
@@ -43,6 +37,10 @@ public class InputViewer extends Composite {
 		tabLayout.numColumns = 3;
 		this.setLayout(tabLayout);
 		
+		Label inputLabel = new Label(this, SWT.NONE);
+		inputLabel.setText("Input: ");
+		
+		input = new Text(this, SWT.MULTI | SWT.BORDER |  SWT.SCROLL_LINE);
 		input.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		input.setEnabled(false);
 		input.addKeyListener(new org.eclipse.swt.events.KeyListener() {
@@ -63,5 +61,11 @@ public class InputViewer extends Composite {
 	
 	public Text getInput() {
 		return input;
+	}
+
+	@Override
+	public void readCalled(ReadEvent arg0) {
+		input.setEnabled(true);
+		input.setFocus();
 	}
 }
