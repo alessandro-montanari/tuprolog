@@ -14,7 +14,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dNW-54-qC2">
+                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dNW-54-qC2">
                     <rect key="frame" x="48" y="108" width="60" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -64,8 +64,10 @@
             </accessibility>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="QAG-9i-06O" secondAttribute="trailing" constant="20" id="07X-1w-g62"/>
+                <constraint firstItem="dNW-54-qC2" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="48" id="7Qd-qr-rbU"/>
                 <constraint firstItem="QAG-9i-06O" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="48" id="DQx-eh-1tC"/>
                 <constraint firstItem="Axg-H3-Bs8" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="QTa-ba-caF"/>
+                <constraint firstItem="dNW-54-qC2" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="108" id="d1t-hP-X5L"/>
                 <constraint firstItem="QAG-9i-06O" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="146" id="fLX-JO-hGu"/>
                 <constraint firstItem="Axg-H3-Bs8" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="149" id="mkM-Zr-AkV"/>
             </constraints>
