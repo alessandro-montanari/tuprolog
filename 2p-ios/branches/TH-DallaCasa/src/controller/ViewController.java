@@ -1,6 +1,5 @@
 package controller;
 
-import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.objc.Selector;
 import org.robovm.objc.annotation.*;
@@ -15,32 +14,17 @@ public class ViewController extends UIViewController implements WarningListener,
 	
 	private Prolog engine;
 	private View view = null;
-	private UITextView text = new UITextView(new CGRect(40, 271, 252, 277));
-	private final String incipit = "tuProlog system - release " + Prolog.getVersion() + "\n2p-ios RoboVM Project\n";
-	
-    public ViewController() {
-        super("ViewController", null);
-    }
+	private String result = "";
+	private final String incipit = "tuProlog system - release " + Prolog.getVersion() +
+									"\n2p-ios RoboVM Project\n";
     
     public ViewController(View view) {
         super("ViewController", null);
         this.view = view;
     }
-    
- /* *
-    Costruttore a cui passare l'istanza di UITextField per poter sempre essere
-    in grado di recuperare il testo presente nella casella
-    public MyViewController(UITextField textField) {
-        super("MyViewController", null);
-        this.textField = textField;
-    }
- * */
 
     private void clicked(UIButton button) {
-//    	textField.getText() non funziona, l'istanza non e' quella della view 
-//        System.out.println("Testo: " + textField.getText());
-        System.out.println("Bottone cliccato");
-        
+//    	Handler del touchUpInside sul bottone
     }
     @Callback
     @BindSelector("clicked:")
@@ -57,18 +41,14 @@ public class ViewController extends UIViewController implements WarningListener,
     
     private void query(UITextField textField) {
     	String goal = textField.getText();
-    	System.out.println("TextField: finita la scrittura");
-    	System.out.println("Goal richiesto: " + goal);
     	textField.resignFirstResponder();
     	
     	if (goal != null && goal != "") {
     		init_prolog();
 	    	System.out.println(incipit);
-	        String result = solveGoal(goal);
+	        solveGoal(goal);
 	        
-	    	text.setFont(UIFont.getFont("Helvetica Neue", 16.0));
-	    	text.setText(incipit + "\n" + result);
-	    	view.addSubview(text);
+	        view.showResult(incipit + "\n" + result);
     	}
     }
     @Callback
@@ -76,62 +56,44 @@ public class ViewController extends UIViewController implements WarningListener,
     private static void query(ViewController self, Selector sel, UITextField textField) {
     	self.query(textField);
     }
-    
-/* *DEBUG HANDLER
-    private void keyboardInput(UITextField textField) {
-    	System.out.println("TextField: inserito un carattere");
-    	System.out.println(textField.getText());
-    }
-    @Callback
-    @BindSelector("keyboardInput:")
-      //Gestore dell'evento di cambiamento del testo del textField
-    private static void keyboardInput(MyViewController self, Selector sel, UITextField textField) {
-    	self.keyboardInput(textField);
-    }
-* */
 
-    String solveGoal(String goal){
+    void solveGoal(String goal){
 
-    	String output = "";
+    	result = "";
         try {
         	SolveInfo info = engine.solve(goal);
    
             /*Castagna 06/2011*/        	
-        	//if (engine.isHalted())
-        	//	System.exit(0);
-            /**/
+        	if (engine.isHalted())
+        		System.exit(0);
             if (!info.isSuccess()) {
             	/*Castagna 06/2011*/        		
-        		if(info.isHalted())
-        		{
+        		if(info.isHalted()) {
         			System.out.println("halt.");
-        			output = "halt.";
-        		}
-        		else {
-        		/**/ 
-                System.out.println("no.");
-                output = "no.";
+        			result += "halt.";
+        		} else {
+	                System.out.println("no.");
+	                result += "no.";
         		}
             } else
                 if (!engine.hasOpenAlternatives()) {
                     String binds = info.toString();
                     if (binds.equals("")) {
                         System.out.println("yes.");
-                        output = "yes.";
+                        result += "yes.";
                     } else {
-                    	output = solveInfoToString(info) + "\nyes.";
-                        System.out.println(output);
+                    	result += solveInfoToString(info) + "\nyes.";
+                        System.out.println(result);
                     }
                 } else {
-                	output = solveInfoToString(info) + " ? ";
-                    System.out.print(output);
+                	result += solveInfoToString(info) + " ? ";
+                    System.out.print(result);
 //                    become("getChoice");
                 }
         } catch (MalformedGoalException ex){
             System.out.println("syntax error in goal:\n"+goal);
-            output = "syntax error in goal:\n"+goal;
+            result += "syntax error in goal:\n"+goal;
         }
-        return output;
     }
     
     private String solveInfoToString(SolveInfo result) {
@@ -183,16 +145,16 @@ public class ViewController extends UIViewController implements WarningListener,
     */
     
     public void onOutput(OutputEvent e) {
-        System.out.print(e.getMsg());
-        text.setText(e.getMsg());
+        System.err.print(e.getMsg());
+        result += e.getMsg() + "\n\n";
     }
     public void onSpy(SpyEvent e) {
-        System.out.println(e.getMsg());
-        text.setText(e.getMsg());
+        System.err.println(e.getMsg());
+        result += e.getMsg() + "\n\n";
     }
     public void onWarning(WarningEvent e) {
-        System.out.println(e.getMsg());
-        text.setText(e.getMsg());
+        System.err.println(e.getMsg());
+        result += e.getMsg() + "\n\n";
     }
     
 }
