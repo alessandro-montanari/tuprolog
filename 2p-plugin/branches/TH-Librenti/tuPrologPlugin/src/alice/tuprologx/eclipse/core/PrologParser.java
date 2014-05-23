@@ -63,7 +63,7 @@ public class PrologParser extends IncrementalProjectBuilder {
 	private ArrayList<OperatorListener> opListeners = new ArrayList<OperatorListener>();
 	
 	private Vector<Operator> dynOps=null;
-	private ViewSet viewSet = new ViewSet();
+	private ViewSet viewSet = ViewSet.getInstance(); //changed from private ViewSet viewSet = new ViewSet();
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected IProject[] build(int kind, Map args, IProgressMonitor monitor)

@@ -24,9 +24,13 @@ public class InputViewer extends Composite implements ReadListener {
 	
 	private UserContextInputStream stream;
 	private Text input;
-	InputViewer(SashForm sashIn, UserContextInputStream str) {
+	
+	InputViewer(SashForm sashIn) {
 		super(sashIn, SWT.NONE);
 		init();
+	}
+	
+	public void setUserContextInputStream(UserContextInputStream str) {
 		stream = str;
 		stream.setReadListener(this);
 	}
@@ -40,7 +44,7 @@ public class InputViewer extends Composite implements ReadListener {
 		Label inputLabel = new Label(this, SWT.NONE);
 		inputLabel.setText("Input: ");
 		
-		input = new Text(this, SWT.MULTI | SWT.BORDER |  SWT.SCROLL_LINE);
+		input = new Text(this, SWT.MULTI | SWT.BORDER);
 		input.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		input.setEnabled(false);
 		input.addKeyListener(new org.eclipse.swt.events.KeyListener() {
@@ -65,7 +69,7 @@ public class InputViewer extends Composite implements ReadListener {
 
 	@Override
 	public void readCalled(ReadEvent arg0) {
+		this.setFocus();
 		input.setEnabled(true);
-		input.setFocus();
 	}
 }

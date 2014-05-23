@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.Display;
 public class PrologBuilder extends IncrementalProjectBuilder {
 
 	public static final String BUILDER_ID = "tuPrologPlugin.prologBuilder";
-	private ViewSet viewSet = new ViewSet();
+	private ViewSet viewSet = ViewSet.getInstance(); // changed from private ViewSet viewSet = new ViewSet();
 	private PrologEngine engine = null;
 	private static boolean alternativeBuild;
 	private static Theory lastBuiltTheory;

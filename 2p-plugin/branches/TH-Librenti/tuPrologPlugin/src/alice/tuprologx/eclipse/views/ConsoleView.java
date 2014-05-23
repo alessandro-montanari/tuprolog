@@ -31,7 +31,7 @@ import org.eclipse.ui.part.ViewPart;
 import alice.tuprolog.Term;
 import alice.tuprolog.event.ReadEvent;
 import alice.tuprolog.event.ReadListener;
-import alice.tuprolog.lib.IOLibrary;
+import alice.tuprolog.lib.UserContextInputStream;
 import alice.tuprologx.eclipse.TuProlog;
 import alice.tuprologx.eclipse.core.PrologEngine;
 import alice.tuprologx.eclipse.core.PrologQuery;
@@ -61,7 +61,7 @@ public class ConsoleView extends ViewPart implements ReadListener{
 	/***
 	 * Added InputViewer
 	 */
-	public Composite inputViewer;
+	public InputViewer inputViewer;
 	private CTabItem Input;
 	private CTabFolder notebook;
 	/*Castagna 06/2011*/
@@ -398,6 +398,8 @@ public class ConsoleView extends ViewPart implements ReadListener{
 		sashIn = new SashForm(notebook, SWT.HORIZONTAL);
 		sashIn.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		Input.setControl(sashIn);
+		inputViewer = new InputViewer(sashIn);
+		
 		
 		/*Castagna 06/2011*/
 		SashForm sashException = new SashForm(notebook, SWT.HORIZONTAL);
@@ -437,8 +439,6 @@ public class ConsoleView extends ViewPart implements ReadListener{
 			for(int i = 0; i < engines.size() ; i++)
 			{
 				PrologEngine engine = engines.get(i);
-				if(inputViewer == null)
-					setInputViewer(engine);
 				TreeItem item = new TreeItem(tree,SWT.NONE);
 				item.setText(engine.getName());
 				item.setData(engine);
@@ -517,15 +517,11 @@ public class ConsoleView extends ViewPart implements ReadListener{
 	}
 	
 	/**
-	 * Added this method
+	 * Added these methods
 	 */
-	private void setInputViewer(PrologEngine engine) {
-		
-		IOLibrary IO = (IOLibrary)engine.getLibrary("alice.tuprolog.lib.IOLibrary");
-		if (IO != null) { // IOLibrary could not be loaded
-			IO.getUserContextInputStream().setReadListener(this);
-			inputViewer = new InputViewer(sashIn,IO.getUserContextInputStream());
-		}
+	public void setUserContextInputStream(UserContextInputStream str) {
+		str.setReadListener(this);
+		inputViewer.setUserContextInputStream(str);
 	}
 
 	@Override
