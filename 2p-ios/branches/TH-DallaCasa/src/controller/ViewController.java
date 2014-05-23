@@ -12,7 +12,7 @@ import view.View;
 @CustomClass("ViewController")
 public class ViewController extends UIViewController implements WarningListener, OutputListener, SpyListener {
 	
-	private Prolog engine;
+	private Prolog engine = null;
 	private View view = null;
 	private String result = "";
 	private final String incipit = "tuProlog system - release " + Prolog.getVersion() +
@@ -33,10 +33,12 @@ public class ViewController extends UIViewController implements WarningListener,
     }
     
     private void init_prolog() {
-    	engine = new Prolog();
-        engine.addWarningListener(this);
-        engine.addOutputListener(this);
-        engine.addSpyListener(this);
+    	if (engine == null) {
+	    	engine = new Prolog();
+	        engine.addWarningListener(this);
+	        engine.addOutputListener(this);
+	        engine.addSpyListener(this);
+    	}
     }
     
     private void query(UITextField textField) {
@@ -45,9 +47,7 @@ public class ViewController extends UIViewController implements WarningListener,
     	
     	if (goal != null && goal != "") {
     		init_prolog();
-	    	System.out.println(incipit);
-	        solveGoal(goal);
-	        
+	        solveGoal(goal);   
 	        view.showResult(incipit + "\n" + result);
     	}
     }
@@ -68,30 +68,22 @@ public class ViewController extends UIViewController implements WarningListener,
         		System.exit(0);
             if (!info.isSuccess()) {
             	/*Castagna 06/2011*/        		
-        		if(info.isHalted()) {
-        			System.out.println("halt.");
+        		if(info.isHalted())
         			result += "halt.";
-        		} else {
-	                System.out.println("no.");
+        		else
 	                result += "no.";
-        		}
             } else
                 if (!engine.hasOpenAlternatives()) {
                     String binds = info.toString();
                     if (binds.equals("")) {
-                        System.out.println("yes.");
                         result += "yes.";
-                    } else {
+                    } else
                     	result += solveInfoToString(info) + "\nyes.";
-                        System.out.println(result);
-                    }
                 } else {
                 	result += solveInfoToString(info) + " ? ";
-                    System.out.print(result);
 //                    become("getChoice");
                 }
         } catch (MalformedGoalException ex){
-            System.out.println("syntax error in goal:\n"+goal);
             result += "syntax error in goal:\n"+goal;
         }
     }
@@ -145,15 +137,12 @@ public class ViewController extends UIViewController implements WarningListener,
     */
     
     public void onOutput(OutputEvent e) {
-        System.err.print(e.getMsg());
         result += e.getMsg() + "\n\n";
     }
     public void onSpy(SpyEvent e) {
-        System.err.println(e.getMsg());
         result += e.getMsg() + "\n\n";
     }
     public void onWarning(WarningEvent e) {
-        System.err.println(e.getMsg());
         result += e.getMsg() + "\n\n";
     }
     
