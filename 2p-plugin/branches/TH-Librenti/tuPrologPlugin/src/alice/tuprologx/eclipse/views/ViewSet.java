@@ -20,24 +20,6 @@ public class ViewSet implements Observer {
 	private QueryList queryList;
 	//	private ASTView ASTview;
 	
-	/***
-	 * Added to have an instance of ViewSet and of ConsoleView in PrologProjectWizard for management of the input
-	 */
-	
-	public static ViewSet instance;
-	
-	public static ViewSet getInstance() {
-		if(instance == null)
-			instance = new ViewSet();
-		return instance;
-	}
-	
-	public ConsoleView getConsoleView() {
-		return console;
-	}
-	
-	/******************************************************************************************/
-	
 	public ViewSet() {
 		PrologQueryFactory.getInstance().addObserver(this);
 	}
