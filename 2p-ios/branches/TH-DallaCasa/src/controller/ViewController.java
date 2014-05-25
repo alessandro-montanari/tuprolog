@@ -3,7 +3,7 @@ package controller;
 import org.robovm.apple.uikit.*;
 import org.robovm.objc.Selector;
 import org.robovm.objc.annotation.*;
-import org.robovm.rt.bro.annotation.*;
+import org.robovm.rt.bro.annotation.Callback;
 
 import alice.tuprolog.*;
 import alice.tuprolog.event.*;
@@ -12,8 +12,12 @@ import view.View;
 @CustomClass("ViewController")
 public class ViewController extends UIViewController implements WarningListener, OutputListener, SpyListener {
 	
+	@SuppressWarnings("unused")
+	private View view;
+	private UITextField textField;
+	private UITextView textView;
+	
 	private Prolog engine = null;
-	private View view = null;
 	private String result = "";
 	private final String incipit = "tuProlog system - release " + Prolog.getVersion() +
 									"\n2p-ios RoboVM Project\n";
@@ -21,15 +25,20 @@ public class ViewController extends UIViewController implements WarningListener,
     public ViewController(View view) {
         super("ViewController", null);
         this.view = view;
+        init_prolog();
     }
-
-    private void clicked(UIButton button) {
-//    	Handler del touchUpInside sul bottone
-    }
+    
     @Callback
-    @BindSelector("clicked:")
-    private static void clicked(ViewController self, Selector sel, UIButton button) {
-    	self.clicked(button);
+    @BindSelector("dismissKeyboard:")
+    private static void dismissKeyboard(ViewController self, Selector sel, UIView view) {
+    	self.textField.resignFirstResponder();
+    }
+    
+    @Callback
+    @BindSelector("solve:")
+    private static void solve(ViewController self, Selector sel, UIView view) {
+    	self.textField.resignFirstResponder();
+    	self.query(self.textField.getText());
     }
     
     private void init_prolog() {
@@ -41,20 +50,16 @@ public class ViewController extends UIViewController implements WarningListener,
     	}
     }
     
-    private void query(UITextField textField) {
-    	String goal = textField.getText();
-    	textField.resignFirstResponder();
-    	
+    private void query(String goal) {
     	if (goal != null && goal != "") {
-    		init_prolog();
 	        solveGoal(goal);   
-	        view.showResult(incipit + "\n" + result);
+	        showResult();
     	}
     }
-    @Callback
-    @BindSelector("query:")
-    private static void query(ViewController self, Selector sel, UITextField textField) {
-    	self.query(textField);
+    
+    private void showResult() {
+    	textView.setFont(UIFont.getFont("Helvetica Neue", 16.0));
+    	textView.setText(incipit + "\n" + result);
     }
 
     void solveGoal(String goal){
@@ -97,15 +102,13 @@ public class ViewController extends UIViewController implements WarningListener,
                 }
             }
             /*Castagna 06/2011*/
-            if(s.length()>0){
-            /**/
-                s.substring(0,s.length()-1);    
-            }
+            if(s.length()>0)
+                s.substring(0,s.length()-1);   
         } catch (NoSolutionException e) {}
         return s;
     }
 
-    /*
+    /**
     public void getChoice(){
         String choice="";
         try {
@@ -134,7 +137,7 @@ public class ViewController extends UIViewController implements WarningListener,
             }
         }
     }
-    */
+    **/
     
     public void onOutput(OutputEvent e) {
         result += e.getMsg() + "\n\n";
@@ -142,8 +145,30 @@ public class ViewController extends UIViewController implements WarningListener,
     public void onSpy(SpyEvent e) {
         result += e.getMsg() + "\n\n";
     }
-    public void onWarning(WarningEvent e) {
+
+	public void onWarning(WarningEvent e) {
         result += e.getMsg() + "\n\n";
     }
     
+    // TextField, TextView getter and setter
+    @Property
+    public UITextField getTextField() {
+    	return textField;
+    }
+    @Property
+    @TypeEncoding("v@:@")
+    public void setTextField(UITextField textField) {
+    	this.textField = textField;
+    }
+    @Property
+    public UITextView getTextView() {
+    	return textView;
+    }
+    @Property
+    @TypeEncoding("v@:@")
+    public void setTextView(UITextView textView) {
+    	this.textView = textView;
+    }
+    
+
 }
