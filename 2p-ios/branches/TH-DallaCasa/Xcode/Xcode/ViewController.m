@@ -35,4 +35,9 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)solve:(id)sender {
+}
+
+- (IBAction)dismissKeyboard:(id)sender {
+}
 @end
