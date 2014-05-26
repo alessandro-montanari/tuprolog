@@ -42,7 +42,7 @@ import alice.tuprologx.eclipse.core.PrologQueryScope;
 public class ConsoleView extends ViewPart implements ReadListener{
 	private Tree tree;
 	private SashForm sash;
-	private SashForm sashIn;
+	/*private SashForm sashIn;*/
 	private boolean queryIsValid;
 	private Text fQueryText;
 	private Text spy;
@@ -61,9 +61,9 @@ public class ConsoleView extends ViewPart implements ReadListener{
 	/***
 	 * Added InputViewer
 	 */
-	public InputViewer inputViewer;
-	private CTabItem Input;
-	private CTabFolder notebook;
+	/*public InputViewer inputViewer;
+	private CTabItem Input;*/
+	private UserContextInputStream stream;
 	/*Castagna 06/2011*/
 	public Composite exceptionViewer;
 	/**/
@@ -80,14 +80,16 @@ public class ConsoleView extends ViewPart implements ReadListener{
 	private Object[][] data; 
 	private Button bind;
 
+	private Composite parent;
 	public ConsoleView()
 	{
 		super();
 	}
 	
 	@Override
-	public void createPartControl(Composite parent) {
+	public void createPartControl(Composite p) {
 
+		parent = p;
 		GridData groupData = new GridData();
 		groupData.grabExcessHorizontalSpace = true;
 		groupData.horizontalAlignment = SWT.FILL;
@@ -111,7 +113,7 @@ public class ConsoleView extends ViewPart implements ReadListener{
 		mainFrame.setLayout(groupLayout);
 		mainFrame.setLayoutData(groupData);
 
-		notebook = new CTabFolder(mainFrame, SWT.TOP | SWT.BORDER);
+		CTabFolder notebook = new CTabFolder(mainFrame, SWT.TOP | SWT.BORDER);
 		notebook.setLayout(groupLayout);
 		notebook.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
@@ -134,9 +136,9 @@ public class ConsoleView extends ViewPart implements ReadListener{
 		/**
 		 * Added CTabItem "Input" to conform to Java Platform
 		 */
-		Input = new CTabItem(notebook,SWT.NONE);
+		/*Input = new CTabItem(notebook,SWT.NONE);
 		Input.setImage(TuProlog.getIconFromResources("sample.gif"));
-		Input.setText("Input");
+		Input.setText("Input");*/
 		
 		/*Castagna 06/2011*/
 		CTabItem Exception = new CTabItem(notebook,SWT.NONE);
@@ -234,7 +236,8 @@ public class ConsoleView extends ViewPart implements ReadListener{
 						PrologQueryFactory.getInstance().executeQueryWS(query);
 						queryResultIndex=0;
 						tree.setSelection(tree.getItem(0));
-						refreshResultViewer();}
+						refreshResultViewer();
+					}
 				}
 			}
 		});
@@ -395,11 +398,10 @@ public class ConsoleView extends ViewPart implements ReadListener{
 		/**
 		 * Creation tab Input
 		 */
-		sashIn = new SashForm(notebook, SWT.HORIZONTAL);
+		/*sashIn = new SashForm(notebook, SWT.HORIZONTAL);
 		sashIn.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		Input.setControl(sashIn);
-		inputViewer = new InputViewer(sashIn);
-		
+		inputViewer = new InputViewer(sashIn);*/
 		
 		/*Castagna 06/2011*/
 		SashForm sashException = new SashForm(notebook, SWT.HORIZONTAL);
@@ -520,12 +522,14 @@ public class ConsoleView extends ViewPart implements ReadListener{
 	 * Added these methods
 	 */
 	public void setUserContextInputStream(UserContextInputStream str) {
-		str.setReadListener(this);
-		inputViewer.setUserContextInputStream(str);
+		stream = str;
+		stream.setReadListener(this);
 	}
 
 	@Override
 	public void readCalled(ReadEvent arg0) {
-		notebook.setSelection(Input);
+		InputDialog inputDialog = new InputDialog();
+		inputDialog.setUserContextInputStream(stream);
+		inputDialog.setVisible(true);
 	}
 }

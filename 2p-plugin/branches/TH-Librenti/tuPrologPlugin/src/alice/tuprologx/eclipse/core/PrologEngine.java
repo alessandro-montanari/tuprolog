@@ -176,6 +176,7 @@ public class PrologEngine {
 	 *  Retrive useful information about the query solution
 	 * like variables bindings*/
 	public void query(final String q) {
+
 		try {
 			Info = new ArrayList<String>();
 			termList = new ArrayList<Term>();
@@ -193,6 +194,7 @@ public class PrologEngine {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 	}
 
 	public String[] getLibrary() {
