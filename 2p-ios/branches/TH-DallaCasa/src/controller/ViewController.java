@@ -62,7 +62,7 @@ public class ViewController extends UIViewController implements WarningListener,
     	textView.setText(incipit + "\n" + result);
     }
 
-    void solveGoal(String goal){
+    private void solveGoal(String goal){
 
     	result = "";
         try {
