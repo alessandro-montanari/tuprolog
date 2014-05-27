@@ -30,7 +30,11 @@
         <dict>
             <key>CFBundleIconFiles</key>
             <array>
+                <string>${app.icon120}</string>
+                <string>${app.icon152}</string>
                 <string>${app.icon57}</string>
+                <string>${app.icon72}</string>
+                <string>${app.icon76}</string>
             </array>
         </dict>
     </dict>
