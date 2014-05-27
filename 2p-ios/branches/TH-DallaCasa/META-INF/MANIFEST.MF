@@ -12,5 +12,5 @@ Export-Package: alice.tuprolog,
  alice.tuprolog.interfaces,
  alice.tuprolog.lib,
  alice.util,
- controller,
- view
+ application
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
