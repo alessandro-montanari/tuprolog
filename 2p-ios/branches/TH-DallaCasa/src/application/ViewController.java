@@ -29,12 +29,14 @@ public class ViewController extends UIViewController implements WarningListener,
 	private String result = "";
 	private final String incipit = "tuProlog system - release " + Prolog.getVersion() + "\n";
     
+	//Constructor
     public ViewController(ApplicationDelegate app) {
         super("ViewController", null);
         this.app = app;
         init_prolog();
     }
     
+    //Objective-C: bound handlers
     @Callback
     @BindSelector("setTheory:")
     private static void setTheory(ViewController self, Selector sel, UIButton button) {
@@ -79,6 +81,7 @@ public class ViewController extends UIViewController implements WarningListener,
     }
     
 
+    //Instance methods
     private void init_prolog() {
     	if (engine == null) {
 	    	engine = new Prolog();
@@ -100,7 +103,6 @@ public class ViewController extends UIViewController implements WarningListener,
     	} else
     		warningsTextView.setText("WARNING: Theory is empty");
     }
-    
     private void query(String goal) {
     	if (goal != null && goal != "") {
 	        solveGoal(goal);   
@@ -108,7 +110,6 @@ public class ViewController extends UIViewController implements WarningListener,
     	} else
     		solutionTextView.setText(incipit + "\n");
     }
-
     private void solveGoal(String goal){
     	result = "";
     	warningsTextView.setText("");
@@ -136,8 +137,7 @@ public class ViewController extends UIViewController implements WarningListener,
         } catch (MalformedGoalException ex){
             result += "syntax error in goal:\n"+goal;
         }
-    }
-    
+    }  
     private String solveInfoToString(SolveInfo result) {
         String s = "";
         try {
@@ -151,7 +151,6 @@ public class ViewController extends UIViewController implements WarningListener,
         } catch (NoSolutionException e) {}
         return s;
     }
-
     public void getNextSolution(){
     	if (info.hasOpenAlternatives()) {
     		try {
@@ -167,18 +166,20 @@ public class ViewController extends UIViewController implements WarningListener,
     	solutionTextView.setText(incipit + "\n" + result);
     }
     
-    
+    //Warning handlers
     public void onOutput(OutputEvent e) {
     	warningsTextView.setText(e.getMsg());
     }
     public void onSpy(SpyEvent e) {
     	warningsTextView.setText(e.getMsg());
     }
-	public void onWarning(WarningEvent e) {
-        warningsTextView.setText(e.getMsg());
+    public void onWarning(WarningEvent e) {
+    	warningsTextView.setText(e.getMsg());
     }
     
-    // TextField, TextView getter and setter
+    
+    
+    // View elements getters and setters
     @Property
     public UITextField getGoalTextField() {
     	return goalTextField;
