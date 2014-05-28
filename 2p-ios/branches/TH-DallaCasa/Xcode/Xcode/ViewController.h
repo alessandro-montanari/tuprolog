@@ -10,12 +10,18 @@
 
 @interface ViewController : UIViewController
 
-@property (weak, nonatomic) IBOutlet UITextField *textField;
-
-@property (weak, nonatomic) IBOutlet UITextView *textView;
+@property (weak, nonatomic) IBOutlet UITextView *theoryTextView;
+@property (weak, nonatomic) IBOutlet UIButton *theoryButton;
+@property (weak, nonatomic) IBOutlet UIButton *nextButton;
+@property (weak, nonatomic) IBOutlet UITextField *goalTextField;
+@property (weak, nonatomic) IBOutlet UITextView *warningsTextView;
+@property (weak, nonatomic) IBOutlet UITextView *solutionTextView;
 
 - (IBAction)solve:(id)sender;
-
 - (IBAction)dismissKeyboard:(id)sender;
+- (IBAction)getNextSolution:(id)sender;
+- (IBAction)setTheory:(id)sender;
+- (IBAction)theoryChanged:(id)sender;
+- (IBAction)editingBegun:(id)sender;
 
 @end
