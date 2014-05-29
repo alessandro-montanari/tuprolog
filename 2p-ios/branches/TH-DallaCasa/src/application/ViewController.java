@@ -36,6 +36,8 @@ public class ViewController extends UIViewController implements WarningListener,
         init_prolog();
     }
     
+    
+    
     //Objective-C: bound handlers
     @Callback
     @BindSelector("setTheory:")
@@ -46,6 +48,7 @@ public class ViewController extends UIViewController implements WarningListener,
     	else
     		self.setTheory(self.theoryTextView.getText());
     }
+    
     @Callback
     @BindSelector("theoryChanged:")
     private static void theoryChanged(ViewController self, Selector sel, UITextField textField) {
@@ -54,6 +57,7 @@ public class ViewController extends UIViewController implements WarningListener,
     	else
     		self.theoryButton.setEnabled(true);
     }
+    
     @Callback
     @BindSelector("editingBegun:")
     private static void editingBegun(ViewController self, Selector sel, UITextField textField) {
@@ -66,6 +70,7 @@ public class ViewController extends UIViewController implements WarningListener,
 			textField.setHidden(true);
 		}
     }
+    
     @Callback
     @BindSelector("dismissKeyboard:")
     private static void dismissKeyboard(ViewController self, Selector sel, UIView view) {
@@ -74,12 +79,14 @@ public class ViewController extends UIViewController implements WarningListener,
     	else if (self.goalTextField.isFirstResponder())
     		self.goalTextField.resignFirstResponder();
     } 
+    
     @Callback
     @BindSelector("solve:")
     private static void solve(ViewController self, Selector sel, UIView view) {
     	dismissKeyboard(self, sel, view);
     	self.query(self.goalTextField.getText());
     }
+    
     @Callback
     @BindSelector("getNextSolution:")
     private static void getNextSolution(ViewController self, Selector sel, UIButton button) {
@@ -87,6 +94,8 @@ public class ViewController extends UIViewController implements WarningListener,
     }
     
 
+    
+    
     //Instance methods
     private void init_prolog() {
     	if (engine == null) {
@@ -109,6 +118,7 @@ public class ViewController extends UIViewController implements WarningListener,
     	} else
     		warningsTextView.setText("WARNING: Theory is empty");
     }
+    
     private void query(String goal) {
     	if (goal != null && goal != "") {
 	        solveGoal(goal);   
@@ -116,6 +126,7 @@ public class ViewController extends UIViewController implements WarningListener,
     	} else
     		solutionTextView.setText(incipit + "\n");
     }
+    
     private void solveGoal(String goal){
     	result = "";
     	warningsTextView.setText("");
@@ -144,6 +155,7 @@ public class ViewController extends UIViewController implements WarningListener,
             result += "syntax error in goal:\n"+goal;
         }
     }  
+    
     private String solveInfoToString(SolveInfo result) {
         String s = "";
         try {
@@ -157,6 +169,7 @@ public class ViewController extends UIViewController implements WarningListener,
         } catch (NoSolutionException e) {}
         return s;
     }
+    
     public void getNextSolution(){
     	if (info.hasOpenAlternatives()) {
     		try {
@@ -172,6 +185,10 @@ public class ViewController extends UIViewController implements WarningListener,
     	solutionTextView.setText(incipit + "\n" + result);
     }
     
+    
+    
+    
+    
     //Warning handlers
     public void onOutput(OutputEvent e) {
     	warningsTextView.setText(e.getMsg());
@@ -182,6 +199,7 @@ public class ViewController extends UIViewController implements WarningListener,
     public void onWarning(WarningEvent e) {
     	warningsTextView.setText(e.getMsg());
     }
+    
     
     
     
