@@ -2,10 +2,8 @@ package alice.tuprologx.eclipse.wizards;
 
 import java.lang.reflect.InvocationTargetException;
 
-import alice.tuprolog.lib.IOLibrary;
 import alice.tuprologx.eclipse.core.*;
 import alice.tuprologx.eclipse.properties.PropertyManager;
-import alice.tuprologx.eclipse.views.ConsoleView;
 import alice.tuprologx.eclipse.TuProlog;
 
 import org.eclipse.core.resources.IProject;
@@ -19,11 +17,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
-import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.swt.widgets.Display;
 
 
@@ -31,7 +25,6 @@ public class PrologProjectWizard extends Wizard implements INewWizard {
 
 	private PrologProjectWizardPage page;
 	private Display display;
-	private ConsoleView console;
 
 	public PrologProjectWizard() {
 		super();
@@ -124,35 +117,6 @@ public class PrologProjectWizard extends Wizard implements INewWizard {
 
 		for (int i = 0; i < libraries.length; i++)
 			engine.addLibrary(libraries[i]);
-		/**
-		 * As the JavaIDE the execution of the application has been set IO.setExecutionType(IOLibrary.graphicExecution)
-		 */
-		final IOLibrary IO = (IOLibrary)engine.getLibrary("alice.tuprolog.lib.IOLibrary");
-		if (IO != null) { // IOLibrary could not be loaded
-			IO.setExecutionType(IOLibrary.graphicExecution);
-			System.out.println("IO.setExecutionType(IOLibrary.graphicExecution);");
-			/** 
-			 * PrologProjectWizard sets the UserContextInputStream to ConsoleView
-			 * so it takes a reference of ConsoleView via the following operations
-			 */
-			PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() { 
-				@Override
-				public void run() { 
-					IWorkbenchWindow dwindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow(); 
-					final IWorkbenchPage wp = dwindow.getActivePage(); 
-					try {
-						IViewReference[] viewList = wp.getViewReferences();
-						for(IViewReference ref : viewList){
-							if(ref.getId().equalsIgnoreCase("alice.tuprologx.eclipse.views.ConsoleView")){
-								console = (ConsoleView) ref.getView(false);
-								console.setUserContextInputStream(IO.getUserContextInputStream());
-							}
-						}
-					}
-					catch (NullPointerException e) {
-					}
-				}});
-		}
 			
 		PropertyManager.addEngineInProperty(project, engine.getName());
 		PropertyManager.setLibraryInProperties(project, engine.getName(),
