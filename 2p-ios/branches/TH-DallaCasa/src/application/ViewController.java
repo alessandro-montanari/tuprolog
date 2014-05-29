@@ -38,7 +38,7 @@ public class ViewController extends UIViewController implements WarningListener,
     
     
     
-    //Objective-C: bound handlers
+    //Objective-C: handlers collegati al file .nib creato con Xcode
     @Callback
     @BindSelector("setTheory:")
     private static void setTheory(ViewController self, Selector sel, UIButton button) {
