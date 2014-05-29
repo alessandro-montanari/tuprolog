@@ -21,7 +21,7 @@ public class ViewController extends UIViewController implements WarningListener,
 	private UIButton theoryButton;
 	private UITextView theoryTextView;
 	
-	//Permette di sceglere se visualizzare una textView o un textField per inserire la teoria
+	//Permette di scegliere se visualizzare una textView o un textField per inserire la teoria
 	private boolean useTextField = true;
 	
 	private Prolog engine = null;
