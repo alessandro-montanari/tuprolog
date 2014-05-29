@@ -38,8 +38,7 @@ public class ConsoleDialog
     private static final int BINDINGS_INDEX = 1;
     private static final int ALL_BINDINGS_INDEX = 2;
     private static final int OUTPUT_INDEX = 3;
-    /** Matteo Librenti 03/2014 */
-	private static final int INPUT_INDEX = 4;
+	private static final int INPUT_INDEX = 4; /* Index of Input Tab*/
     /*Castagna 06/2011*/	
 	private static final int EXCEPTION_INDEX = 5;
 	/**/
@@ -65,9 +64,7 @@ public class ConsoleDialog
     /*Castagna 06/2011*/	
 	private JTextPane exception;
 	/**/
-	/** Matteo Librenti 03/2014*/
 	private InputDialog input;
-	/***/
 	
     private JButton bNext;
     private JButton bAccept;
@@ -117,7 +114,7 @@ public class ConsoleDialog
         /**
          * Added an input tab ("input") to tp (JTabbedPane)
          */
-        tp.add("input", new JScrollPane());
+        tp.addTab("input", new JScrollPane());
         
         /*Castagna 06/2011*/  		
 		exceptionEnabled = true;
