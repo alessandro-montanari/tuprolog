@@ -57,8 +57,14 @@ public class ViewController extends UIViewController implements WarningListener,
     @Callback
     @BindSelector("editingBegun:")
     private static void editingBegun(ViewController self, Selector sel, UITextField textField) {
-		self.theoryTextView.setHidden(self.useTextField);
-		textField.setHidden(!self.useTextField);
+		if (self.useTextField) {
+			self.theoryTextView.setHidden(true);
+			textField.setHidden(false);
+		} else {
+			self.theoryTextView.setHidden(false);
+			self.theoryTextView.becomeFirstResponder();
+			textField.setHidden(true);
+		}
     }
     @Callback
     @BindSelector("dismissKeyboard:")
