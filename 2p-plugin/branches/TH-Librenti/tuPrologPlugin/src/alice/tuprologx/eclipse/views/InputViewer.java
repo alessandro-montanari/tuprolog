@@ -70,5 +70,6 @@ public class InputViewer extends Composite implements ReadListener {
 	@Override
 	public void readCalled(ReadEvent arg0) {
 		input.setEnabled(true);
+		input.setFocus();
 	}
 }
