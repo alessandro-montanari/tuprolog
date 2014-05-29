@@ -6,12 +6,11 @@ import org.robovm.objc.annotation.*;
 import org.robovm.rt.bro.annotation.Callback;
 
 import alice.tuprolog.*;
-import alice.tuprolog.event.*;
 
+@SuppressWarnings("unused")
 @CustomClass("ViewController")
-public class ViewController extends UIViewController implements WarningListener, OutputListener, SpyListener {
+public class ViewController extends UIViewController {
 	
-	@SuppressWarnings("unused")
 	private ApplicationDelegate app;
 	private UITextView solutionTextView;
 	private UITextView warningsTextView;
@@ -81,7 +80,7 @@ public class ViewController extends UIViewController implements WarningListener,
     @BindSelector("solve:")
     private static void solve(ViewController self, Selector sel, UIView view) {
     	dismissKeyboard(self, sel, view);
-    	self.query(self.goalTextField.getText());
+    	self.solve(self.goalTextField.getText());
     }
     
     @Callback
@@ -97,9 +96,6 @@ public class ViewController extends UIViewController implements WarningListener,
     private void init_prolog() {
     	if (engine == null) {
 	    	engine = new Prolog();
-	        engine.addWarningListener(this);
-	        engine.addOutputListener(this);
-	        engine.addSpyListener(this);
     	}
     }
     
@@ -110,18 +106,36 @@ public class ViewController extends UIViewController implements WarningListener,
 		    	solutionTextView.setText("Teoria aggiunta");
 				warningsTextView.setText("");
 			} catch (InvalidTheoryException e) {
-				warningsTextView.setText("ERROR: Failed to load theory");
+				warningsTextView.setText("Error setting theory: Syntax Error at/before line " + e.line);
 			}
     	} else
     		warningsTextView.setText("WARNING: Theory is empty");
     }
-    
-    private void query(String goal) {
-    	if (goal != null && goal != "") {
-	        solveGoal(goal);   
-	        solutionTextView.setText(incipit + "\n" + result);
-    	} else
-    		solutionTextView.setText(incipit + "\n");
+    public void solve(String goal)
+    {	
+    	result = "";
+    	warningsTextView.setText("");
+        if (!goal.equals(""))
+        {
+            if (!useTextField)
+            	setTheory(theoryTextView.getText());
+            try
+            {
+                result += "Solving...";
+                solveGoal(goal);
+            } catch (Exception e) {
+                warningsTextView.setText("Error: " + e);
+            }   
+        }
+        else//if (goal.equals(""))
+            /**
+             * without this if getGoal is void still remains
+             * status message of the precedent solve operation
+             */ 
+            result += "Ready.";
+        
+//        solutionTextView.setText(incipit + "\n" + result);
+        solutionTextView.setText(result);
     }
     
     private void solveGoal(String goal){
@@ -148,9 +162,9 @@ public class ViewController extends UIViewController implements WarningListener,
                 	result += solveInfoToString(info) + " ? ";
                 	nextButton.setEnabled(true);
                 }
-        } catch (MalformedGoalException ex){
-            result += "syntax error in goal:\n"+goal;
-        }
+    	} catch (MalformedGoalException ex) {
+    		warningsTextView.setText("Syntax Error: malformed goal.");
+    	}
     }  
     
     private String solveInfoToString(SolveInfo result) {
@@ -171,31 +185,20 @@ public class ViewController extends UIViewController implements WarningListener,
     	if (info.hasOpenAlternatives()) {
     		try {
 		        info = engine.solveNext();
-		        if (!info.isSuccess())
+		        if (!info.isSuccess()) {
 		            result += "no.\n";
-		        else
+		            nextButton.setEnabled(false);
+		        } else
 		        	result += solveInfoToString(info) + " ? ";
 		    } catch (NoMoreSolutionException ex) {
 		        result += "no.";
 		    }
-    	} 
-    	solutionTextView.setText(incipit + "\n" + result);
+    	}
+    			
+//    	solutionTextView.setText(incipit + "\n" + result);
+    	solutionTextView.setText(result);
     }
-    
-    
-    
-    
-    
-    //Warning handlers
-    public void onOutput(OutputEvent e) {
-    	warningsTextView.setText(e.getMsg());
-    }
-    public void onSpy(SpyEvent e) {
-    	warningsTextView.setText(e.getMsg());
-    }
-    public void onWarning(WarningEvent e) {
-    	warningsTextView.setText(e.getMsg());
-    }
+
     
     
     
