@@ -1,5 +1,8 @@
 package application;
 
+import java.util.ArrayList;
+
+import org.robovm.apple.coregraphics.CGRect;
 import org.robovm.apple.uikit.*;
 import org.robovm.objc.Selector;
 import org.robovm.objc.annotation.*;
@@ -16,12 +19,15 @@ public class ViewController extends UIViewController {
 	private UITextView warningsTextView;
 	private UITextField goalTextField;
 	private UITextField theoryTextField;
+	private UILabel label;
+	private UILabel solutionLabel;
+	private UIButton solveButton;
 	private UIButton nextButton;
 	private UIButton theoryButton;
 	private UITextView theoryTextView;
 	
 	//Permette di scegliere se visualizzare una textView o un textField per inserire la teoria
-	private boolean useTextField = true;
+	private boolean useTextField = false;
 	
 	private Prolog engine = null;
 	private SolveInfo info = null;
@@ -34,14 +40,29 @@ public class ViewController extends UIViewController {
         this.app = app;
         init_prolog();
     }
+  
     
     
     
     //Objective-C: handlers collegati al file .nib creato con Xcode
     @Callback
+    @BindSelector("viewDidLoad")
+    private static void viewDidLoad(ViewController self, Selector sel) {
+    	self.theoryTextView.setHidden(self.useTextField);
+    	self.theoryTextField.setHidden(!self.useTextField);
+    	if (!self.useTextField) {
+			self.theoryTextView.getLayer().setBorderColor(self.theoryTextView.getTextColor().getCGColor());
+			self.theoryTextView.setTextColor(UIColor.colorLightGray());
+			self.theoryTextView.getLayer().setCornerRadius(5.0);
+			self.theoryTextView.getLayer().setBorderWidth(1.0);
+			self.theoryTextView.setDelegate(new TextViewDelegate(self));
+    	}
+    }
+    
+    @Callback
     @BindSelector("setTheory:")
     private static void setTheory(ViewController self, Selector sel, UIButton button) {
-    	dismissKeyboard(self, sel, button);
+    	self.hideKeyboard();
     	if (self.useTextField)
     		self.setTheory(self.theoryTextField.getText());
     	else
@@ -51,35 +72,20 @@ public class ViewController extends UIViewController {
     @Callback
     @BindSelector("theoryChanged:")
     private static void theoryChanged(ViewController self, Selector sel, UITextField textField) {
-    	if (textField.getText().isEmpty())
-    		self.theoryButton.setEnabled(false);
-    	else
-    		self.theoryButton.setEnabled(true);
+    	boolean choice = self.theoryTextField.getText().isEmpty();
+    	self.enableTheoryButton(!choice);
     }
     
     @Callback
-    @BindSelector("editingBegun:")
-    private static void editingBegun(ViewController self, Selector sel, UITextField textField) {
-		if (!self.useTextField) {
-			self.theoryTextView.setHidden(false);
-			self.theoryTextView.becomeFirstResponder();
-			textField.setHidden(true);
-		}
-    }
-    
-    @Callback
-    @BindSelector("dismissKeyboard:")
-    private static void dismissKeyboard(ViewController self, Selector sel, UIView view) {
-    	if (self.theoryTextField.isFirstResponder())
-    		self.theoryTextField.resignFirstResponder();
-    	else if (self.goalTextField.isFirstResponder())
-    		self.goalTextField.resignFirstResponder();
+    @BindSelector("hideKeyboard:")
+    private static void hideKeyboard(ViewController self, Selector sel, UIView view) {
+    	self.hideKeyboard();
     } 
     
     @Callback
     @BindSelector("solve:")
     private static void solve(ViewController self, Selector sel, UIView view) {
-    	dismissKeyboard(self, sel, view);
+    	self.hideKeyboard();
     	self.solve(self.goalTextField.getText());
     }
     
@@ -111,14 +117,13 @@ public class ViewController extends UIViewController {
     	} else
     		warningsTextView.setText("WARNING: Theory is empty");
     }
+    
     public void solve(String goal)
     {	
     	result = "";
     	warningsTextView.setText("");
         if (!goal.equals(""))
         {
-            if (!useTextField)
-            	setTheory(theoryTextView.getText());
             try
             {
                 result += "Solving...";
@@ -199,23 +204,47 @@ public class ViewController extends UIViewController {
     	solutionTextView.setText(result);
     }
 
-    
-    
-    
-    
-    // View elements getters and setters
-    @Property
-    public UITextField getGoalTextField() {
-    	return goalTextField;
+    public void enableTheoryButton(boolean choice) {
+    	if ((theoryButton.isEnabled() && choice == false) || (!theoryButton.isEnabled() && choice == true))
+    		theoryButton.setEnabled(choice);
     }
+    
+    public void hideKeyboard() {
+    	if (theoryTextField.isFirstResponder())
+    		theoryTextField.resignFirstResponder();
+    	else if (theoryTextView.isFirstResponder())
+    		theoryTextView.resignFirstResponder();
+    	else if (goalTextField.isFirstResponder())
+    		goalTextField.resignFirstResponder();
+    }
+    
+    public void refreshView(double offset) {
+    	for (UIView view : getViews()) {
+    		CGRect rect = view.getFrame();
+    		view.setFrame(new CGRect(rect.origin().x(), rect.origin().y()+offset, rect.getWidth(), rect.getHeight()));
+    	}
+    }
+    
+    private ArrayList<UIView> getViews() {
+    	ArrayList<UIView> views = new ArrayList<UIView>();
+    	views.add(theoryButton);
+    	views.add(label);
+    	views.add(goalTextField);
+    	views.add(solveButton);
+    	views.add(nextButton);
+    	views.add(solutionLabel);
+    	views.add(solutionTextView);
+    	views.add(warningsTextView);
+    	return views;
+    }
+    
+    
+  
+    // View elements getters and setters
     @Property
     @TypeEncoding("v@:@")
     public void setGoalTextField(UITextField textField) {
     	this.goalTextField = textField;
-    }
-    @Property
-    public UITextView getSolutionTextView() {
-    	return solutionTextView;
     }
     @Property
     @TypeEncoding("v@:@")
@@ -223,17 +252,9 @@ public class ViewController extends UIViewController {
     	this.solutionTextView = textView;
     }
     @Property
-    public UITextView getWarningsTextView() {
-    	return warningsTextView;
-    }
-    @Property
     @TypeEncoding("v@:@")
     public void setWarningsTextView(UITextView textView) {
     	this.warningsTextView = textView;
-    }
-    @Property
-    public UIButton getNextButton() {
-    	return nextButton;
     }
     @Property
     @TypeEncoding("v@:@")
@@ -241,17 +262,14 @@ public class ViewController extends UIViewController {
     	this.nextButton = button;
     }
     @Property
-    public UIButton getTheoryButton() {
-    	return theoryButton;
-    }
-    @Property
     @TypeEncoding("v@:@")
     public void setTheoryButton(UIButton button) {
     	this.theoryButton = button;
     }
     @Property
-    public UITextField getTheoryTextField() {
-    	return theoryTextField;
+    @TypeEncoding("v@:@")
+    public void setSolveButton(UIButton button) {
+    	this.solveButton = button;
     }
     @Property
     @TypeEncoding("v@:@")
@@ -259,12 +277,20 @@ public class ViewController extends UIViewController {
     	this.theoryTextField = textField;
     }
     @Property
-    public UITextView getTheoryTextView() {
-    	return theoryTextView;
-    }
-    @Property
     @TypeEncoding("v@:@")
     public void setTheoryTextView(UITextView textView) {
     	this.theoryTextView = textView;
     }
+    @Property
+    @TypeEncoding("v@:@")
+    public void setLabel(UILabel label) {
+    	this.label = label;
+    }
+    @Property
+    @TypeEncoding("v@:@")
+    public void setSolutionLabel(UILabel label) {
+    	this.solutionLabel = label;
+    }
+
+
 }
