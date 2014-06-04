@@ -35,10 +35,11 @@
     // Dispose of any resources that can be recreated.
 }
 
+
 - (IBAction)solve:(id)sender {
 }
 
-- (IBAction)dismissKeyboard:(id)sender {
+- (IBAction)hideKeyboard:(id)sender {
 }
 
 - (IBAction)getNextSolution:(id)sender {
@@ -47,18 +48,7 @@
 - (IBAction)setTheory:(id)sender {
 }
 
-- (IBAction)theoryAdded:(id)sender {
-}
-
-- (IBAction)enterPressed:(id)sender {
-}
-
 - (IBAction)theoryChanged:(id)sender {
 }
 
-- (IBAction)editingBegun:(id)sender {
-}
-
-- (IBAction)keyboardInput:(id)sender {
-}
 @end

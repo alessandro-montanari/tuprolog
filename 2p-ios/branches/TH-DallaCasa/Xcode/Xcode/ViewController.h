@@ -9,7 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface ViewController : UIViewController
+@property (weak, nonatomic) IBOutlet UILabel *solutionLabel;
 
+@property (weak, nonatomic) IBOutlet UILabel *label;
+@property (weak, nonatomic) IBOutlet UIButton *solveButton;
 @property (weak, nonatomic) IBOutlet UITextView *theoryTextView;
 @property (weak, nonatomic) IBOutlet UIButton *theoryButton;
 @property (weak, nonatomic) IBOutlet UIButton *nextButton;
@@ -17,11 +20,11 @@
 @property (weak, nonatomic) IBOutlet UITextView *warningsTextView;
 @property (weak, nonatomic) IBOutlet UITextView *solutionTextView;
 
+
 - (IBAction)solve:(id)sender;
-- (IBAction)dismissKeyboard:(id)sender;
+- (IBAction)hideKeyboard:(id)sender;
 - (IBAction)getNextSolution:(id)sender;
 - (IBAction)setTheory:(id)sender;
 - (IBAction)theoryChanged:(id)sender;
-- (IBAction)editingBegun:(id)sender;
 
 @end
