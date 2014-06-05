@@ -71,7 +71,7 @@ public class TextViewDelegate extends UITextViewDelegateAdapter {
     	if (!staticLayout) {
     		double currentHeight = currentFrame.getHeight();
     		double contentHeight = textView.getContentSize().height();
-    		double maxHeight = originalFrame.getHeight()*4;
+    		double maxHeight = originalFrame.getHeight()*3.5;
 	    	if (reduce) {    		
 	    		reduce = false;
 				if (contentHeight < maxHeight && contentHeight < currentHeight) {
