@@ -9,7 +9,6 @@ public class TextViewDelegate extends UITextViewDelegateAdapter {
 	private ViewController viewController = null;
 	private CGRect originalFrame = null;
 	private CGRect currentFrame = null;
-	private double offset = 0;
 	private boolean staticLayout = false;
 	private boolean reduce = false;
 	private boolean enlarge = false;
@@ -24,17 +23,20 @@ public class TextViewDelegate extends UITextViewDelegateAdapter {
     		textView.setText("");
     		textView.setTextColor(UIColor.colorBlack());
     	}
+    	
     	if (originalFrame == null) {
     		originalFrame = textView.getFrame();
-    		offset = (staticLayout) ? 40.0 : 0.0;
-    		currentFrame = new CGRect(originalFrame.origin().x(), originalFrame.origin().y(), originalFrame.getWidth(), originalFrame.getHeight()+offset);
+    		currentFrame = originalFrame;
     	}
     	if (staticLayout) {
     		/**Static Layout**/
+    		double offset = 40.0;
+    		currentFrame = new CGRect(originalFrame.origin().x(), originalFrame.origin().y(), originalFrame.getWidth(), originalFrame.getHeight()+offset);
     		textView.setFrame(currentFrame);
 			viewController.refreshView(offset);
     	} else if (!staticLayout){
     		/**Dynamic Layout**/
+    		double offset = 0.0;
     		double originalHeight = originalFrame.getHeight();
     		double contentHeight = textView.getContentSize().height();
     		double maxHeight = originalFrame.getHeight()*3;
@@ -65,6 +67,7 @@ public class TextViewDelegate extends UITextViewDelegateAdapter {
     	boolean choice = (textView.getText().isEmpty()) ? false : true;
     	viewController.enableTheoryButton(choice);
     	
+    	double offset = 0.0;
     	if (!staticLayout) {
     		double currentHeight = currentFrame.getHeight();
     		double contentHeight = textView.getContentSize().height();
