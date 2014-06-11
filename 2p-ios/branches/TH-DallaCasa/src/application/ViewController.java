@@ -25,23 +25,21 @@ public class ViewController extends UIViewController {
 	private UIButton nextButton;
 	private UIButton theoryButton;
 	private UITextView theoryTextView;
-	
-	//Permette di scegliere se visualizzare una textView o un textField per inserire la teoria
-	private boolean useTextField = false;
-	
+		
 	private Prolog engine = null;
 	private SolveInfo info = null;
 	private String result = "";
 	private final String incipit = "tuProlog system - release " + Prolog.getVersion() + "\n";
     
+	//Permette di scegliere se inserire la teoria in una textView o in un textField
+	private boolean useTextField = false;
+	
 	//Constructor
     public ViewController(ApplicationDelegate app) {
         super("ViewController", null);
         this.app = app;
         init_prolog();
     }
-  
-    
     
     
     //Objective-C: handlers collegati al file .nib creato con Xcode
@@ -94,8 +92,6 @@ public class ViewController extends UIViewController {
     private static void getNextSolution(ViewController self, Selector sel, UIButton button) {
     	self.getNextSolution();
     }
-    
-
     
     
     //Instance methods
@@ -240,7 +236,7 @@ public class ViewController extends UIViewController {
     
     
   
-    // View elements getters and setters
+    // View elements setters
     @Property
     @TypeEncoding("v@:@")
     public void setGoalTextField(UITextField textField) {
