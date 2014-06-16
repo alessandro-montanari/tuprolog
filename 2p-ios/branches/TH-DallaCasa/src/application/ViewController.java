@@ -105,7 +105,7 @@ public class ViewController extends UIViewController {
     	if (theory != null && theory != "") {
 			try {
 				engine.setTheory(new Theory(theory));
-		    	solutionTextView.setText("Teoria aggiunta");
+		    	solutionTextView.setText("Theory set!");
 				warningsTextView.setText("");
 			} catch (InvalidTheoryException e) {
 				warningsTextView.setText("Error setting theory: Syntax Error at/before line " + e.line);
