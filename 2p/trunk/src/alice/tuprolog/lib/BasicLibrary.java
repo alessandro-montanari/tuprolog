@@ -1041,10 +1041,17 @@ public class BasicLibrary extends Library {
                 + "'=..'(T,L)  :- compound(T),!, '$tolist'(T,L). \n                                                          "
                 + "'=..'(T,L)  :- nonvar(L), catch('$fromlist'(T,L),Error,false). \n                                                          "
                 
+                /* commented by Roberta Calegari 29/04/14 it causes a loop: functor bug issue 14 google code, rewritten functor predicate
                 + "functor(Term, Name, Arity) :- atomic(Term), !, Name = Term, Arity = 0. \n"
                 + "functor(Term, Name, Arity) :- compound(Term), !, Term =.. [Name | Args], length(Args, Arity). \n"
                 + "functor(Term, Name, Arity) :- var(Term), atomic(Name), Arity == 0, !, Term = Name. \n"
                 + "functor(Term, Name, Arity) :- var(Term), atom(Name), integer(Arity), Arity > 0, current_prolog_flag(max_arity, Max), Arity=<Max, !, newlist([], Arity, L), Term =.. [Name | L]. \n"
+                */
+                + "functor(Term, Functor, Arity) :- \\+ var(Term), !, Term =.. [Functor|ArgList],length(ArgList, Arity).\n"
+                + "functor(Term, Functor, Arity) :- var(Term), atomic(Functor), Arity == 0, !, Term = Functor.\n"
+                + "functor(Term, Functor, Arity) :- var(Term), atom(Functor), number(Arity), Arity > 0, !,length(ArgList, Arity),Term =.. [Functor|ArgList].\n"
+                + "functor(_Term, _Functor, _Arity) :- throw('Arguments are not sufficiently instantiated.').\n"
+                
                 
                 + "arg(N,C,T):- arg_guard(N,C,T), C =.. [_|Args], element(N,Args,T).\n"
                 + "clause(H, B) :- clause_guard(H,B), L = [], '$find'(H, L), copy_term(L, LC), member((':-'(H, B)), LC). \n"
@@ -1272,9 +1279,11 @@ public class BasicLibrary extends Library {
                 + "element(P,L,E):- element_guard(P,L,E), element0(P,L,E). \n                                                                              "
                 + "element0(1,[E|L],E):- !. \n                                                                              "
                 + "element0(N,[_|L],E):- M is N - 1,element0(M,L,E). \n                                                      "
+                /* commented by Roberta Calegari 29/04/14 it causes a loop
                 + "newlist(Ls,0,Ls):- !. \n                                                                                "
                 + "newlist(Ls,N,Ld):- !, append(X,Ls,Ld), length(X,N). \n                                                                                "
                 + "newlist(Ls,N,Ld):- M is N - 1,newlist([_|Ls],M,Ld). \n                                                  "
+                */
                 + "quicksort([],Pred,[]).                             \n"
                 + "quicksort([X|Tail],Pred,Sorted):-                  \n"
                 + "   split(X,Tail,Pred,Small,Big),                   \n"
