@@ -392,7 +392,7 @@ public class ConsoleDialog
     {
         if (event.getSolveType()==1)//if there is information about a solveAll operation
         {
-            showAllSolutions(event.getQueryResults());
+            showAllSolutions(event.getQueryResults(),event.getQueryResultsString());
         }
         if (event.getSolveType()==0)//if there is information about a solve operation
         {
@@ -427,6 +427,8 @@ public class ConsoleDialog
                 }
                 // visualize solution on the solution pane
                 String lastSolution = binds + "\nSolution: " + info.getSolution();
+                if(info.getSetOfSolution()!=null)
+                	lastSolution = binds + "\nSolution: " + info.getSetOfSolution();
                 solution.setText(lastSolution);
                 // store bindings for visualization on the binding pane
                 for (Var v: info.getBindingVars()) {
@@ -455,7 +457,7 @@ public class ConsoleDialog
             setStatusMessage("Internal error. " + ex.getMessage() + " " + ex.getLocalizedMessage());
         }
     }
-    private void showAllSolutions(QueryEvent[] querySolutions)
+    private void showAllSolutions(QueryEvent[] querySolutions,ArrayList<String> querySolutionsString)
     {
         enableStopButton(false);
         enableSolutionCommands(false);
@@ -466,7 +468,18 @@ public class ConsoleDialog
         for (int i = 0; i < querySolutions.length; i++) {
             SolveInfo s = querySolutions[i].getSolveInfo();
             if (s.isSuccess()) {
-                buffer.append(s.toString()).append("\nSolution: ");
+                //System.out.println("s.toString() "+s.toString()+" lunghezza "+s.toString().length()); 
+                //System.out.println("querySolutionsString.get(i) "+querySolutionsString.get(i)+" lunghezza "+querySolutionsString.get(i).length());
+            	
+            	if (s.toString().length()<querySolutionsString.get(i).length()){
+                	buffer.append(querySolutionsString.get(i)).append("\nSolution: ");
+                }
+                else
+                	buffer.append(s.toString()).append("\nSolution: ");
+                
+            	if(s.getSetOfSolution()!=null)
+                	buffer.append(s.getSetOfSolution()).append("\nSolution: ");
+            	
                 try {
                     buffer.append(s.getSolution().toString());
                 } catch (NoSolutionException e) {
