@@ -11,13 +11,14 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.*;
-
 /*Castagna 06/2011*/
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import javax.swing.text.BadLocationException;
 /**/
+
+
 
 import java.awt.*;
 import java.awt.event.*;
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 
 public class ConsoleDialog
     extends JPanel
-    implements OutputListener, InformationToDisplayListener, PropertyChangeListener, MouseListener, ChangeListener/*Castagna 06/2011*/,	ExceptionListener/**/
+    implements OutputListener, ReadListener, InformationToDisplayListener, PropertyChangeListener, MouseListener, ChangeListener/*Castagna 06/2011*/,	ExceptionListener/**/
     {
     static final long serialVersionUID = 0;
     
@@ -37,10 +38,11 @@ public class ConsoleDialog
     private static final int BINDINGS_INDEX = 1;
     private static final int ALL_BINDINGS_INDEX = 2;
     private static final int OUTPUT_INDEX = 3;
+	private static final int INPUT_INDEX = 4; /* Index of Input Tab*/
     /*Castagna 06/2011*/	
-	private static final int EXCEPTION_INDEX = 4;
+	private static final int EXCEPTION_INDEX = 5;
 	/**/
-    
+	    
     private String statusMessage;
     private PropertyChangeSupport propertyChangeSupport;
     private Console consoleManager;
@@ -61,8 +63,8 @@ public class ConsoleDialog
     private JTextPane output;
     /*Castagna 06/2011*/	
 	private JTextPane exception;
-	
 	/**/
+	private InputDialog input;
 	
     private JButton bNext;
     private JButton bAccept;
@@ -108,6 +110,11 @@ public class ConsoleDialog
         output = new JTextPane();
         output.setEditable(false);
         tp.addTab("output",new JScrollPane(output));
+        
+        /**
+         * Added an input tab ("input") to tp (JTabbedPane)
+         */
+        tp.addTab("input", new JScrollPane());
         
         /*Castagna 06/2011*/  		
 		exceptionEnabled = true;
@@ -200,7 +207,16 @@ public class ConsoleDialog
         tp.addChangeListener(this);
         
     }
-
+    
+    /**
+     * Method to insert an InputDialog inside the ConsoleDialog
+     */
+    public void setInputDialog(InputDialog input)
+    {
+    	this.input = input;
+    	tp.setComponentAt(INPUT_INDEX, new JScrollPane(this.input));
+    }
+    
     /**
 	 * Set the file manager referenced by the toolbar for use in Input/Output tasks.
 	 * @param fileManager  The file manager we want the toolbar to use.
@@ -348,6 +364,16 @@ public class ConsoleDialog
         tp.setBackgroundAt(OUTPUT_INDEX, new Color(184, 229, 207));
         
     }
+    
+    /** 
+     * Implemented the method readCalled because the consoleDialog is
+     * a ReadListener.
+     * When it is called a read operation the input tab is selected
+     */
+    public void readCalled(ReadEvent event) {
+    	tp.setSelectedIndex(INPUT_INDEX);
+    }
+    /***/
     
     /*Castagna 06/2011*/  	
 	public void onException(ExceptionEvent event) {
@@ -797,6 +823,15 @@ public class ConsoleDialog
 			setExceptionJTextPaneRendering();
 		}
 		/**/
+		/**
+		 * Matteo Librenti 03/2014
+		 */
+		if (tp.getSelectedIndex() == INPUT_INDEX)
+		{
+			tp.setBackgroundAt(INPUT_INDEX, new Color(238,238,238));
+			bClear.setEnabled(false);
+		}
+		/***/
     }
     
     /*Castagna 06/2011*/  
