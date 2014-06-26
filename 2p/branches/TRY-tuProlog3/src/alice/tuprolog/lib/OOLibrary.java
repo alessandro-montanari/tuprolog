@@ -32,10 +32,8 @@ import java.util.EventListener;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
-
 import java.util.Map;
 import java.util.Vector;
-
 
 import alice.tuprolog.Int;
 import alice.tuprolog.JavaException;
@@ -66,7 +64,7 @@ import alice.util.JavaDynamicClassLoader;
  * 
  */
 @SuppressWarnings("serial")
-public class JavaLibrary extends Library {
+public class OOLibrary extends Library {
 
     /**
          * java objects referenced by prolog terms (keys)
@@ -84,6 +82,11 @@ public class JavaLibrary extends Library {
          * progressive conter used to identify registered objects
          */
     private int id = 0;
+    /**
+     * progressive conter used to generate lambda function dinamically
+     */
+    private int counter = 0;
+    
     
     /**
 	 * @author Alessio Mercurio
@@ -96,7 +99,7 @@ public class JavaLibrary extends Library {
      * library theory
      */
     
-    public JavaLibrary()
+    public OOLibrary()
     {
     	if (System.getProperty("java.vm.name").equals("Dalvik"))
 		{
@@ -271,6 +274,41 @@ public class JavaLibrary extends Library {
         }
     }
     
+    public <T> boolean new_lambda_3(Term interfaceName, Term implementation, Term id)throws JavaException, Exception { 
+    	counter++;
+    	String target_class=(interfaceName.toString()).substring(1, interfaceName.toString().length()-1);
+    	String lambda_expression=(implementation.toString()).substring(1, implementation.toString().length()-1);
+    	//following lines allow to delete escape char from received string
+    	target_class = org.apache.commons.lang3.StringEscapeUtils.unescapeJava(target_class);
+    	lambda_expression = org.apache.commons.lang3.StringEscapeUtils.unescapeJava(lambda_expression);
+    	
+		Class<?> lambdaFunction = alice.util.proxyGenerator.Generator.make(
+				ClassLoader.getSystemClassLoader(),
+		        "MyLambdaFunction"+counter,
+		        "" +           
+		            "public class MyLambdaFunction"+counter+" {\n" +
+		            "  public "+target_class+" getFunction() {\n" + 
+				    " 		return "+lambda_expression+"; \n"+ 
+		            "  }\n" +
+		            "}\n"
+		 );
+		
+		Object lf = lambdaFunction.newInstance();
+		Class<?> lf_clazz = lf.getClass();
+		Method[] allMethods = lf_clazz.getDeclaredMethods();
+		T funct=null;
+		for (Method m : allMethods) {
+			String mname = m.getName();
+			if (mname.startsWith("getFunction"))
+				funct=(T) m.invoke(lf);
+		}
+		id = id.getTerm();
+		if (bindDynamicObject(id, funct))
+            return true;
+        else
+            throw new JavaException(new Exception());
+
+    }
 
     /*
      * @author Michele Mannino
@@ -491,7 +529,7 @@ public class JavaLibrary extends Library {
 					try {
 						// works only with JDK 1.2, NOT in Sun Application
 						// Server!
-						// m.setAccessible(true);
+						m.setAccessible(true);
 
 						res = m.invoke(obj, args_values);
 
