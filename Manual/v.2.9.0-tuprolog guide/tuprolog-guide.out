@@ -152,18 +152,20 @@
 \BOOKMARK [2][]{subsection.8.7.1}{8.7.1 P@.NET via code generators}{section.8.7}% 152
 \BOOKMARK [1][]{section.8.8}{8.8 Putting everything together}{chapter.8}% 153
 \BOOKMARK [2][]{subsection.8.8.1}{8.8.1 Example: Multi-language TicTacToe}{section.8.8}% 154
-\BOOKMARK [0][]{chapter.9}{9 Version history}{}% 155
-\BOOKMARK [1][]{subsection.9.0.2}{9.0.2 Version 2.0}{chapter.9}% 156
-\BOOKMARK [2][]{subsection.9.0.3}{9.0.3 From Version 2.0 to Version 2.0.1}{subsection.9.0.2}% 157
-\BOOKMARK [2][]{subsection.9.0.4}{9.0.4 From Version 2.0.1 to Version 2.1}{subsection.9.0.2}% 158
-\BOOKMARK [2][]{subsection.9.0.5}{9.0.5 From Version 2.1 to Version 2.2}{subsection.9.0.2}% 159
-\BOOKMARK [2][]{subsection.9.0.6}{9.0.6 From Version 2.2 to Version 2.3.0}{subsection.9.0.2}% 160
-\BOOKMARK [2][]{subsection.9.0.7}{9.0.7 From Version 2.3.0 to Version 2.3.1}{subsection.9.0.2}% 161
-\BOOKMARK [2][]{subsection.9.0.8}{9.0.8 From Version 2.3.1 to Version 2.4}{subsection.9.0.2}% 162
-\BOOKMARK [2][]{subsection.9.0.9}{9.0.9 From Version 2.4 to Version 2.5}{subsection.9.0.2}% 163
-\BOOKMARK [2][]{subsection.9.0.10}{9.0.10 From Version 2.5 to Version 2.6}{subsection.9.0.2}% 164
-\BOOKMARK [2][]{subsection.9.0.11}{9.0.11 From Version 2.6 to Version 2.7}{subsection.9.0.2}% 165
-\BOOKMARK [2][]{subsection.9.0.12}{9.0.12 From Version 2.7 to Version 2.7.2}{subsection.9.0.2}% 166
-\BOOKMARK [2][]{subsection.9.0.13}{9.0.13 From Version 2.7.2 to Version 2.8}{subsection.9.0.2}% 167
-\BOOKMARK [2][]{subsection.9.0.14}{9.0.14 From Version 2.8 to Version 2.9}{subsection.9.0.2}% 168
-\BOOKMARK [1][]{section.9.1}{9.1 Acknowledgments}{chapter.9}% 169
+\BOOKMARK [0][]{chapter.9}{9 Multi-paradigm programming in Prolog and Android}{}% 155
+\BOOKMARK [1][]{section.9.1}{9.1 Class path issues}{chapter.9}% 156
+\BOOKMARK [0][]{chapter.10}{10 Version history}{}% 157
+\BOOKMARK [1][]{subsection.10.0.1}{10.0.1 Version 2.0}{chapter.10}% 158
+\BOOKMARK [2][]{subsection.10.0.2}{10.0.2 From Version 2.0 to Version 2.0.1}{subsection.10.0.1}% 159
+\BOOKMARK [2][]{subsection.10.0.3}{10.0.3 From Version 2.0.1 to Version 2.1}{subsection.10.0.1}% 160
+\BOOKMARK [2][]{subsection.10.0.4}{10.0.4 From Version 2.1 to Version 2.2}{subsection.10.0.1}% 161
+\BOOKMARK [2][]{subsection.10.0.5}{10.0.5 From Version 2.2 to Version 2.3.0}{subsection.10.0.1}% 162
+\BOOKMARK [2][]{subsection.10.0.6}{10.0.6 From Version 2.3.0 to Version 2.3.1}{subsection.10.0.1}% 163
+\BOOKMARK [2][]{subsection.10.0.7}{10.0.7 From Version 2.3.1 to Version 2.4}{subsection.10.0.1}% 164
+\BOOKMARK [2][]{subsection.10.0.8}{10.0.8 From Version 2.4 to Version 2.5}{subsection.10.0.1}% 165
+\BOOKMARK [2][]{subsection.10.0.9}{10.0.9 From Version 2.5 to Version 2.6}{subsection.10.0.1}% 166
+\BOOKMARK [2][]{subsection.10.0.10}{10.0.10 From Version 2.6 to Version 2.7}{subsection.10.0.1}% 167
+\BOOKMARK [2][]{subsection.10.0.11}{10.0.11 From Version 2.7 to Version 2.7.2}{subsection.10.0.1}% 168
+\BOOKMARK [2][]{subsection.10.0.12}{10.0.12 From Version 2.7.2 to Version 2.8}{subsection.10.0.1}% 169
+\BOOKMARK [2][]{subsection.10.0.13}{10.0.13 From Version 2.8 to Version 2.9}{subsection.10.0.1}% 170
+\BOOKMARK [1][]{section.10.1}{10.1 Acknowledgments}{chapter.10}% 171

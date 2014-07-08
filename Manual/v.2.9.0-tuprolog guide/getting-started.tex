@@ -299,13 +299,15 @@ The bottom icons in Figure \ref{fig:gui-library-manager} are used to load and st
 \label{ssec:input-from-console}
 %------------------------------------------------------
 
-Until \tuprolog{} 2.7.x, an input from the standard input stream (e.g. via some of the IOLibrary/ISOIOLibrary input predicates, like \texttt{read}), could only be performed in the CUIConsole: any attempt to perform keyboard reading on the GUIConsole led to exception, because the underlying \emph{stdin} was uncaptured by the Prolog GUI.
-This behaviour has been fixed in \tuprolog{} 2.8: henceforth, if a query performs a read operation from the standard input stream, the GUIConsole intercepts the request and shows the corresponding dialog (Figure \ref{fig:gui-InputFromConsole}). More on this in Section \ref{sec:io-library}.
+Until \tuprolog{} 2.7.x, an input from the standard input stream (via some IOLibrary/ISOIOLibrary input predicates, like \texttt{read}), could only be performed in the CUIConsole: any attempt to perform keyboard reading on the GUIConsole led to exception, because the underlying \emph{stdin} was uncaptured by the Prolog GUI.
+This behaviour was partially fixed in \tuprolog{} 2.8, where such a read operation caused a dialog to appear. 
+
+In \tuprolog{} 2.9, a new \textit{input tab} has been added to the GUI Console that enables the user to enter data from the keyboard without leaving the main GUI, in a much more coherent way (Figure \ref{fig:gui-InputFromConsole}): data entry must be confirmed by hitting the ENTER key on the keyboard (no mouse operation is intentionally supported in this context, since keyboard the is obviously already being used for data entry). Details about I/O handling can be found in Section \ref{sec:io-library}.
 
 \begin{figure}
 \centering
-  \includegraphics[width=7cm]{images/gui-InputFromConsole.png}
-  \caption{Keyboard input management in the case of a read operation from the standard input.}\label{fig:gui-InputFromConsole}
+  \includegraphics[width=10.5cm]{images/gui-InputFromConsole.png}
+  \caption{Keyboard input management from the GUI in \tuprolog{} 2.9.}\label{fig:gui-InputFromConsole}
 \end{figure}
 
 %=======================================================================
@@ -443,51 +445,51 @@ Since \tuprolog{} is written in Java, the Java-Android developer wishing to incl
 
 The Prolog-Android user, instead, can take advantage of the \tuprolog{} app, which shares the same core and libraries as the standard Java version, the only difference being the redesigned GUI--with special regard to the interaction with the file system.
 
-Upon the application loading, the splash screen appears, immediately followed in a few seconds by the \textit{Home Activity} (Figure \ref{fig:android12}, left).
+Upon the application loading, the splash screen appears, immediately followed in a few seconds by the \textit{Home Activity} (Figure \ref{fig:android1e2}, left).
 %
 At the top, the name of the selected theory is reported (none at the beginning); below is the query textfield.
 %
 Four buttons enable the user to execute a query, ask for the next solution (when applicable), show the current solution and view the output console.
 %
-The menu button triggers the pop-up shown in Figure \ref{fig:android12} (right), whose main feature is \textit{List Theories}.
+The menu button triggers the pop-up shown in Figure \ref{fig:android1e2} (right), whose main feature is \textit{List Theories}.
 
 \begin{figure}
 \centering
   \includegraphics[width=200px]{images/android1.png}
   \includegraphics[width=200px]{images/android2.png}
-  \caption{Home Activity (left) and its pop-up menu (right).}\label{fig:android12}
+  \caption{Home Activity (left) and its pop-up menu (right).}\label{fig:android1e2}
 \end{figure}
 
 Indeed, in \tuprolog{} for Android theories are not loaded directly in the Prolog engine from the file system, as in the standard Java version: rather, following Android recommendations, a \textit{theory database} mediator is provided, so as to separate the loading of a theory from its validity check---the latter being performed only when the theory is actually selected for being loaded into the engine. In this way, invalid theories (possibly incomplete, work-in-progress theories) can seamlessly be stored in the theory database, independently of their invalid nature.
 
-So, theories of interest must be first loaded into the theory database (Figure \ref{fig:android34}, left): then, the theory to be actually loaded will be selected from such theories.
+So, theories of interest must be first loaded into the theory database (Figure \ref{fig:android3e4}, left): then, the theory to be actually loaded will be selected from such theories.
 %
-More precisely, to add a theory to the database, the menu option \textit{Import Theory to Database} is provided (Figure \ref{fig:android34}, right): a new activity opens that lets you browser the device's file system (Figure \ref{fig:android56}, left). Only the files that can be actually selected for addition to the theory database are shown: after a theory is successfully imported, the activity remembers the path for the next time, so as to make it faster to import multiple files.
+More precisely, to add a theory to the database, the menu option \textit{Import Theory to Database} is provided (Figure \ref{fig:android3e4}, right): a new activity opens that lets you browser the device's file system (Figure \ref{fig:android5e6}, left). Only the files that can be actually selected for addition to the theory database are shown: after a theory is successfully imported, the activity remembers the path for the next time, so as to make it faster to import multiple files.
 
 \begin{figure}
 \centering
   \includegraphics[width=150px]{images/android3.png}
   \includegraphics[width=150px]{images/android4.png}
-  \caption{Theory database (left) and context menu (right)}\label{fig:android34}
+  \caption{Theory database (left) and context menu (right)}\label{fig:android3e4}
 \end{figure}
 
 \begin{figure}
 \centering
   \includegraphics[width=150px]{images/android6.png}
   \includegraphics[width=150px]{images/android5.png}
-  \caption{Browsing theories (left) and theory operations (right)}\label{fig:android56}
+  \caption{Browsing theories (left) and theory operations (right)}\label{fig:android5e6}
 \end{figure}
 
 \begin{figure}
 \centering
   \includegraphics[width=150px]{images/android7.png}
   \includegraphics[width=150px]{images/android8.png}
-  \caption{Theory editing (left) and query execution (right)}\label{fig:android78}
+  \caption{Theory editing (left) and query execution (right)}\label{fig:android7e8}
 \end{figure}
 
-Theories in the database can be deleted, edited and exported in a (long-)click, using the proper the context menu item (Figure \ref{fig:android56}, right). The export path can be changed via the \textit{Edit Export Path} in the activity menu.
+Theories in the database can be deleted, edited and exported in a (long-)click, using the proper the context menu item (Figure \ref{fig:android5e6}, right). The export path can be changed via the \textit{Edit Export Path} in the activity menu.
 
-Editing (Figure \ref{fig:android78}, left) applies both to existing (loaded) files and to brand new theories: to create a new theory, just click on \textit{New Theory} option in the context menu.
+Editing (Figure \ref{fig:android7e8}, left) applies both to existing (loaded) files and to brand new theories: to create a new theory, just click on \textit{New Theory} option in the context menu.
 %
 After editing, to make your changes permanent, the modified theory must be saved to the theory database by clicking the \textit{Confirm} button: alternatively, the back button discards changes.
 
@@ -495,8 +497,7 @@ When a valid theory is loaded, a query can be written in the input field (Figure
 %
 Pressing \textit{Execute}, the query solution is shown in the \textit{Solution} tab, along with variable bindings; any output performed by the application is available in the \textit{Output} tab. If multiple solutions exist, the \textit{Next} button is enabled and can be exploited to browse them---the corresponding output being shown in the \textit{Output} tab.
 
-Finally, if the query performs an operation requiring an input from the standard input stream (e.g. via some of the IOLibrary/ISOIOLibrary input predicates, like \texttt{read}), the app intercepts the request and shows the corresponding dialog (Figure \ref{fig:android9}): this feature is available since \tuprolog{} 2.8.
-More on this in Section \ref{sec:io-library}.
+Finally, if the query performs an operation requiring an input from the standard input stream (e.g. via some of the IOLibrary/ISOIOLibrary input predicates, like \texttt{read}), the app intercepts the request and shows the corresponding dialog (Figure \ref{fig:android9}): this feature is available since \tuprolog{} 2.8 (more on this in Section \ref{sec:io-library} on page \pageref{sec:io-library}).
 
 \begin{figure}
 \centering
@@ -509,24 +510,39 @@ More on this in Section \ref{sec:io-library}.
 \label{ssec:android-classloading-issues}
 %---------------------------------------------------
 
-As of \tuprolog{} 2.8, one limitation had always applied to the Android app -- the lack of support for the dynamic loading of user-defined libraries (via Library Manager) and classes (via JavaLibrary--see Section \ref{sec:java-library}) --, the underlying reason being the architectural differences between the Java SE and the Android platforms.
-In fact, although both platforms do formally load JAR files, the inner structure of such archives is inherently different: while a Java SE archive includes the (zipped) \texttt{.class} files of each class, an Android archive mandatorily includes \textit{one single \texttt{classes.dex} file} containing the Android-compiled version of all classes.
-As a result, new libraries and classes, quietly found and loaded by the Java SE class loader, could not be found by the Android loader, which expects a different format.
-To overcome this limitation, a specific behaviour needed to be put in place for the Android version. At the same time, this difference could undermine the code unity that \tuprolog{} had always preserved among all its supported platforms.
+In all \tuprolog{} versions until 2.8 (included), one limitation had always applied to the Android app: the lack of support for the dynamic loading of user-defined libraries (via Library Manager) and classes (via JavaLibrary--see Section \ref{sec:java-library}).
 
-For these reasons, effective \tuprolog{} 2.9, a code refactoring has been designed that faces this issue.\footnote{The support for  \textit{DexClassLoader} was added inside the \textit{loadLibrary} method of the Library Manager, making the former \texttt{DynamiClassLoader} class abstract, and adding two new concrete platform-dependent implementations that encapsulate the platform-specific issues.}
+The underlying reason lies in the architectural differences between the Java SE and the Android platforms: although both platforms do load JAR files, the inner structure of such archives is different, because a Java SE archive includes the (zipped) \texttt{.class} files of each class, while an Android archive mandatorily includes \textit{one single \texttt{classes.dex} file} containing the Android-compiled version of all classes.
+As a result, ``standard'' (i.e., JavaSE) libraries and classes, normally found and loaded by the Java SE class loader, cannot be found ``as they are'' by the Android loader, because the latter expects a different format.
+
+To overcome this limitation, a specific behaviour needed to be put in place for the Android version -- while obviously guaranteeing that the code unity that \tuprolog{} had always preserved throughout its life among all its supported platforms is not undermined.
+
+For these reasons, effective \tuprolog{} 2.9, a new, Android-specific class loader has been added\footnote{%
+    More precisely, the support for the new \textit{DexClassLoader} has been added inside the \textit{loadLibrary} method of the Library Manager: at the same time, the former \texttt{DynamiClassLoader} class has been made abstract, and two new concrete platform-dependent implementations have been added that encapsulate the platform-specific issues.}%
+that is able to handle ``Android-JAR'' archives, containing the Android-specific (i.e., \textit{``dexed''}) versions of the Java classes.
+Users just have to generate the ``dexed'' JAR archive -- by convention, named with a suitable \texttt{\_dexed} suffix with respect to the original Java SE version: then, the \tuprolog{} loading engine will take care of the correct processing.
+
+To convert a Java SE JAR archive into an Android JAR archive, the Android SDK provides the \texttt{dx} tool:
+
+\begin{center}
+\texttt{dx --dex --output = \textit{dexed}.jar \textit{input}.jar}
+\end{center}
+
+\noindent where \texttt{\textit{input}.jar} is the Java SE JAR file, containing only the \texttt{class} files to be converted, and \texttt{\textit{dexed}.jar} is the generated Android JAR file, containing the single \texttt{classes.dex} required.
+%
+Of course, the resulting JAR must be put into a directory that is accessible to the Android class loader.
+
 Results are shown in the following screenshots.
-
-In Figure \ref{fig:android9a}, a Java library is loaded into the Android app via the \texttt{load\_library/2} predicate.
+%
+In Figure \ref{fig:android9a}, a Java library is loaded into the Android app: \texttt{MyTestLibrary} is loaded via the \texttt{load\_library} predicate, referencing the \texttt{MyTestLibrary\_dexed.jar} Android archive (left), and then executed (right).
 %
 \begin{figure}
 \centering
   \includegraphics[width=250px]{images/android9a.png}
-  \caption{Loading and exploting a new Java library in the Android app, via \texttt{load\_library/2}.}\label{fig:android9a}
+  \caption{Loading and using a new Java library in the Android app: notice the ``dexed'' JAR archive referenced in the \texttt{load\_library/2} predicate.}\label{fig:android9a}
 \end{figure}
 
-Alternatively, \textit{a new specific activity} has been introduced to \textit{add/remove libraries interactively}, at run time: 
-as shown in Figure \ref{fig:android10}, the new library JAR file can be either browsed (left) and loaded (center), or entered directly and loaded via the \textit{Add} button (right).
+Libraries can also be added/removed interactively, with the \textit{new activity} shown in Figure \ref{fig:android10}: the library JAR file can be either browsed (left) and loaded (center), or, rather, entered and loaded via the \textit{Add} button (right).
 %
 \begin{figure}
 \centering
@@ -534,14 +550,3 @@ as shown in Figure \ref{fig:android10}, the new library JAR file can be either b
   \includegraphics[height=230px]{images/android11.png}
   \caption{Loading and exploting a new Java library interactively, either browsing the JAR file (top) or entering its name directly (bottom).}\label{fig:android10}
 \end{figure}
-
-Analogously, the class path handling predicates, \texttt{set\_classpath} and \texttt{get\_classpath}, now operate on Android paths, too, enabling the Java object creation via JavaLibrary to operate correctly (Figure \ref{fig:android12}), as in the Java SE version.
-%
-\begin{figure}
-\centering
-  \includegraphics[height=250px]{images/android12.png} \includegraphics[height=250px]{images/android13.png}
-  \caption{Managing class paths (left), loading the theory (center), and creating objects dynamically via JavaLibrary (right).}\label{fig:android12}
-\end{figure}
-
-This behaviour has been tested on both virtual devices (Android 2.3.3 Gingerbread, Android 4.3 Jelly Bean) and some real devices (Samsung Galaxy W - Android 2.3.6 Gingerbread, Samsung Galaxy S3 Mini - Android 4.1.2 Jelly Bean, iOcean X7 - Android 4.2.1 Jelly Bean).
-
