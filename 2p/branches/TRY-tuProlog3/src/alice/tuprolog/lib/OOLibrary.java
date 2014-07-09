@@ -51,7 +51,7 @@ import alice.util.JavaDynamicClassLoader;
  * This class represents a tuProlog library enabling the interaction with the
  * Java environment from tuProlog.
  * 
- * Works only with JDK 1.2 (because of setAccessible method)
+ * Warning we use the setAccessible method
  * 
  * The most specific method algorithm used to find constructors / methods has
  * been inspired by the article "What Is Interactive Scripting?", by Michael
@@ -59,16 +59,13 @@ import alice.util.JavaDynamicClassLoader;
  * 2000 CMP Media Inc., a United News and Media Company
  * 
  * Library/Theory Dependency: BasicLibrary
- * 
- * 
- * 
  */
 @SuppressWarnings("serial")
 public class OOLibrary extends Library {
 
     /**
-         * java objects referenced by prolog terms (keys)
-         */
+     * java objects referenced by prolog terms (keys)
+     */
     private HashMap<String,Object> currentObjects = new HashMap<String, Object>();
     /**
          * inverse map useful for implementation issue
@@ -79,11 +76,11 @@ public class OOLibrary extends Library {
     private IdentityHashMap<Object,Struct> staticObjects_inverse = new IdentityHashMap<Object, Struct>();
 
     /**
-         * progressive conter used to identify registered objects
+         * progressive counter used to identify registered objects
          */
     private int id = 0;
     /**
-     * progressive conter used to generate lambda function dinamically
+     * progressive counter used to generate lambda function dinamically
      */
     private int counter = 0;
     
@@ -121,22 +118,9 @@ public class OOLibrary extends Library {
                 + ":- op(200,xfx,'as').\n"
                 + ":- op(600,xfx,'.'). \n"
                 +
-                //
-                // flags defined by the JavaLibrary theory
-                //
-                // ":- flag(java_object_backtrackable,[true,false],false,true).\n"
-                // +
-                //
-                //
-                // "java_object(ClassName,Args,Id):- current_prolog_flag(java_object_backtrackable,false),!,java_object_nb(ClassName,Args,Id).\n"
-                // +
-                // "java_object(ClassName,Args,Id):- !,java_object_bt(ClassName,Args,Id).\n"
-                // +
-
                 "java_object_bt(ClassName,Args,Id):- java_object(ClassName,Args,Id).\n"
                 + "java_object_bt(ClassName,Args,Id):- destroy_object(Id).\n"
-                //+ "class(Path,Class) <- What :- !, java_call(Path, Class, What, Res), Res \\== false.\n"
-				//+ "class(Path,Class) <- What returns Res :- !,  java_call(Path, Class, What, Res).\n"
+                
                 + "Obj <- What :- java_call(Obj,What,Res), Res \\== false.\n"
                 + "Obj <- What returns Res :- java_call(Obj,What,Res).\n"
                 + "java_array_set(Array,Index,Object):- class('java.lang.reflect.Array') <- set(Array as 'java.lang.Object',Index,Object as 'java.lang.Object'), !.\n"
@@ -148,7 +132,6 @@ public class OOLibrary extends Library {
                 + "java_array_length(Array,Length):- class('java.lang.reflect.Array') <- getLength(Array as 'java.lang.Object') returns Length.\n"
                 + "java_object_string(Object,String):- Object <- toString returns String.    \n"
                 +
-                // java_catch/3
                 "java_catch(JavaGoal, List, Finally) :- call(JavaGoal), call(Finally).\n";
     }
 
@@ -165,7 +148,6 @@ public class OOLibrary extends Library {
     }
 
     public void onSolveBegin(Term goal) {
-        // id = 0;
         currentObjects.clear();
         currentObjects_inverse.clear();
         Iterator<Map.Entry<Object,Struct>> it = staticObjects_inverse.entrySet().iterator();
@@ -195,17 +177,26 @@ public class OOLibrary extends Library {
         }
     }
 
-    // ----------------------------------------------------------------------------
-
-    /**
+     /**
      * @author Michele Mannino
-     * 
+     * Deprecated from tuProlog 3.0 use new_object
      * Creates of a java object - not backtrackable case
      * 
      * @throws JavaException
      */
-    public boolean java_object_3(Term className, Term argl, Term id)
-            throws JavaException {
+    public boolean java_object_3(Term className, Term argl, Term id) throws JavaException {
+    	return new_object_3(className, argl,id);
+    }
+    
+    /**
+     * creates a new object in java
+     * @param className
+     * @param argl
+     * @param id
+     * @return
+     * @throws JavaException
+     */
+    public boolean new_object_3(Term className, Term argl, Term id) throws JavaException {
         className = className.getTerm();
         Struct arg = (Struct) argl.getTerm();
         id = id.getTerm();
@@ -233,12 +224,7 @@ public class OOLibrary extends Library {
             try {
             	Class<?> cl = Class.forName(clName, true, dynamicLoader);
                 Object[] args_value = args.getValues();
-                //
-                // Constructor co=cl.getConstructor(args.getTypes());
-                Constructor<?> co = lookupConstructor(cl, args.getTypes(),
-                        args_value);
-                //
-                //
+                Constructor<?> co = lookupConstructor(cl, args.getTypes(),args_value);
                 if (co == null) {
                     getEngine().warn("Constructor not found: class " + clName);
                     throw new JavaException(new NoSuchMethodException(
@@ -269,12 +255,22 @@ public class OOLibrary extends Library {
                 throw new JavaException(ex);
             }
         } catch (Exception ex) {
-            // ex.printStackTrace();
             throw new JavaException(ex);
         }
     }
     
-    public <T> boolean new_lambda_3(Term interfaceName, Term implementation, Term id)throws JavaException, Exception { 
+    /**
+     * @author Roberta Calegari
+     * 
+     * Creates of a lambda object - not backtrackable case
+     * @param interfaceName represent the name of the target interface i.e. 'java.util.function.Predicate<String>'
+     * @param implementation contains the function implementation i.e. 's -> s.length()>4 '
+     * @param id represent the identification_name of the created object function i.e. MyLambda
+     * 
+     * @throws JavaException, Exception
+     */
+    @SuppressWarnings("unchecked")
+	public <T> boolean new_lambda_3(Term interfaceName, Term implementation, Term id)throws JavaException,Exception { 
     	counter++;
     	String target_class=(interfaceName.toString()).substring(1, interfaceName.toString().length()-1);
     	String lambda_expression=(implementation.toString()).substring(1, implementation.toString().length()-1);
@@ -304,53 +300,11 @@ public class OOLibrary extends Library {
 		}
 		id = id.getTerm();
 		if (bindDynamicObject(id, funct))
-            return true;
-        else
-            throw new JavaException(new Exception());
-
+			return true;
+	    else
+	        throw new JavaException(new Exception());
     }
 
-    /*
-     * @author Michele Mannino
-     * Creates of a java object - not backtrackable case
-     * @param className The name of the class 
-     * @oaram path The list of the paths where the class may be contained
-     * @param argl The list of the arguments used by the constructor
-     * @param id The name of the prolog term
-     * @throws JavaException
-     * 
-     * Deprecated in 2.8, see the manual.
-     * 
-    public boolean java_object_4(Term className, Term argl, Term id, Term paths)
-            throws JavaException {
-        paths = paths.getTerm();
-        try
-        {
-        	if(!paths.isList())
-        		throw new IllegalArgumentException();
-        	String[] listOfPaths = getStringArrayFromStruct((Struct) paths);
-        	URL[] urls = getURLsFromStringArray(listOfPaths);
-        	// Update the list of paths of the URLClassLoader
-        	classLoader.addURLs(urls);
-        	
-        	// Delegation to java_object_3 method used to load the class
-        	boolean result = java_object_3(className, argl, id);
-        	
-        	// Reset the URLClassLoader at default configuration
-        	classLoader.removeURLs(urls);
-        	
-        	return result;
-        }catch(IllegalArgumentException e)
-        {
-        	getEngine().warn("Illegal list of paths " + paths);
-            throw new JavaException(e);
-        }
-        catch (Exception e) {
-        	throw new JavaException(e);
-		}
-    }
-    */
-    
     /**
      * Destroy the link to a java object - called not directly, but from
      * predicate java_object (as second choice, for backtracking)
@@ -365,25 +319,35 @@ public class OOLibrary extends Library {
             }
             return true;
         } catch (Exception ex) {
-            // ex.printStackTrace();
             throw new JavaException(ex);
         }
     }
 
     /**
-     * Creates of a java class
+     * Deprecated from tuProlog 3.0 use new_class
      * 
      * @throws JavaException
      */
-    public boolean java_class_4(Term clSource, Term clName, Term clPathes,
-            Term id) throws JavaException {
-        Struct classSource = (Struct) clSource.getTerm();
-        Struct className = (Struct) clName.getTerm();
-        Struct classPathes = (Struct) clPathes.getTerm();
-        id = id.getTerm();
-        try {
-            String fullClassName = alice.util.Tools.removeApices(className
-                    .toString());
+    public boolean java_class_4(Term clSource, Term clName, Term clPathes,Term id) throws JavaException {
+    	return new_class_4(clSource,  clName,  clPathes, id);
+    }
+    
+    /**
+     * The java class/4 creates, compiles and loads a new Java class from a source text
+     * @param clSource: is a string representing the text source of the new Java class
+     * @param clName: full class name
+     * @param clPathes: is a (possibly empty) Prolog list of class paths that may be required for a successful dynamic compilation of this class
+     * @param id: reference to an instance of the meta-class java.lang.Class rep- resenting the newly-created class
+     * @return boolean: true if created false otherwise
+     * @throws JavaException
+     */
+	public boolean new_class_4(Term clSource, Term clName, Term clPathes,Term id) throws JavaException {
+		Struct classSource = (Struct) clSource.getTerm();
+		Struct className = (Struct) clName.getTerm();
+		Struct classPathes = (Struct) clPathes.getTerm();
+		id = id.getTerm();
+		try {
+            String fullClassName = alice.util.Tools.removeApices(className.toString());
 
             String fullClassPath = fullClassName.replace('.', '/');
             Iterator<? extends Term> it = classPathes.listIterator();
@@ -400,10 +364,6 @@ public class OOLibrary extends Library {
             }
 
             String text = alice.util.Tools.removeApices(classSource.toString());
-
-            // System.out.println("class source: "+text+
-            // "\nid: "+id+
-            // "\npath: "+fullClassPath);
             try {
                 FileWriter file = new FileWriter(fullClassPath + ".java");
                 file.write(text);
@@ -415,7 +375,7 @@ public class OOLibrary extends Library {
                 throw new JavaException(ex);
             }
             String cmd = "javac " + cp + " " + fullClassPath + ".java";
-            // System.out.println("EXEC: "+cmd);
+
             try {
                 Process jc = Runtime.getRuntime().exec(cmd);
                 int res = jc.waitFor();
@@ -461,7 +421,6 @@ public class OOLibrary extends Library {
                 throw new JavaException(ex);
             }
         } catch (Exception ex) {
-            // ex.printStackTrace();
             throw new JavaException(ex);
         }
     }
@@ -483,9 +442,6 @@ public class OOLibrary extends Library {
 		String methodName = null;
 		try {
 			methodName = method.getName();
-			// check for accessing field Obj.Field <- set/get(X)
-			// in that case: objId is '.'(Obj, Field)
-
 			if (!objId.isAtom()) {
 				if (objId instanceof Var) {
 					throw new JavaException(new IllegalArgumentException(objId
@@ -511,42 +467,25 @@ public class OOLibrary extends Library {
 			if (args == null) {
 				throw new JavaException(new IllegalArgumentException());
 			}
-			// System.out.println(args);
 			String objName = alice.util.Tools.removeApices(objId.toString());
 			obj = staticObjects.containsKey(objName) ? staticObjects.get(objName) : currentObjects.get(objName);
 			Object res = null;
 
 			if (obj != null) {
 				Class<?> cl = obj.getClass();
-				//
-				//
 				Object[] args_values = args.getValues();
-				Method m = lookupMethod(cl, methodName, args.getTypes(),
-						args_values);
-				//
-				//
+				Method m = lookupMethod(cl, methodName, args.getTypes(),args_values);
 				if (m != null) {
 					try {
-						// works only with JDK 1.2, NOT in Sun Application
-						// Server!
 						m.setAccessible(true);
-
 						res = m.invoke(obj, args_values);
-
 					} catch (IllegalAccessException ex) {
-						getEngine().warn(
-								"Method invocation failed: " + methodName
-								+ "( signature: " + args + " )");
-						// ex.printStackTrace();
+						getEngine().warn("Method invocation failed: " + methodName+ "( signature: " + args + " )");
 						throw new JavaException(ex);
 					}
 				} else {
-					getEngine().warn(
-							"Method not found: " + methodName + "( signature: "
-									+ args + " )");
-					throw new JavaException(new NoSuchMethodException(
-							"Method not found: " + methodName + "( signature: "
-									+ args + " )"));
+					getEngine().warn("Method not found: " + methodName + "( signature: "+ args + " )");
+					throw new JavaException(new NoSuchMethodException("Method not found: " + methodName + "( signature: "+ args + " )"));
 				}
 			} else {
 				if (objId.isCompound()) {
@@ -558,9 +497,6 @@ public class OOLibrary extends Library {
 									.removeApices(id.getArg(0).toString());
 							Class<?> cl = Class.forName(clName, true, dynamicLoader);
 							
-							
-//							Method m = cl.getMethod(methodName, args.getTypes());
-							
 							Method m = InspectionUtils.searchForMethod(cl, methodName, args.getTypes());
 							m.setAccessible(true);
 							res = m.invoke(null, args.getValues());
@@ -568,43 +504,9 @@ public class OOLibrary extends Library {
 							// if not found even as a class id -> consider as a
 							// String object value
 							getEngine().warn("Unknown class.");
-							// ex.printStackTrace();
 							throw new JavaException(ex);
 						}
 					}
-					/*
-					 * Deprecated in 2.8, see the manual.
-					 * 
-					else if (id.getArity() == 2 && id.getName().equals("class")) {
-
-						String clName = alice.util.Tools.removeApices(((Struct) objId).getArg(1).toString());
-						Struct paths = (Struct) ((Struct) objId).getArg(0);
-
-						String[] listOfPaths = getStringArrayFromStruct((Struct) paths);
-
-						classLoader.addURLs(getURLsFromStringArray(listOfPaths));
-
-						try {
-							Class<?> cl = Class.forName(clName, true, classLoader);
-
-//							Method m = cl.getMethod(methodName, args.getTypes());
-							Method m = InspectionUtils.searchForMethod(cl, methodName, args.getTypes());
-							m.setAccessible(true);
-							res = m.invoke(null, args.getValues());
-						} catch (ClassNotFoundException ex) {
-							// if not found even as a class id -> consider as a
-							// String object value
-							getEngine().warn("Unknown class.");
-							// ex.printStackTrace();
-							throw new JavaException(ex);
-						}
-						finally
-						{
-							// Pulisco il class loader (solo gli URL inseriti)
-							classLoader.removeURLs(getURLsFromStringArray(listOfPaths));
-						}
-					} 
-					*/
 					else {
 						// the object is the string itself
 						Method m = java.lang.String.class.getMethod(methodName, args.getTypes());
@@ -628,23 +530,18 @@ public class OOLibrary extends Library {
 					"Method failed: " + methodName + " - ( signature: " + args
 					+ " ) - Original Exception: "
 					+ ex.getTargetException());
-			// ex.printStackTrace();
 			throw new JavaException(new IllegalArgumentException());
 		} catch (NoSuchMethodException ex) {
-			// ex.printStackTrace();
 			getEngine().warn(
 					"Method not found: " + methodName + " - ( signature: "
 							+ args + " )");
 			throw new JavaException(ex);
 		} catch (IllegalArgumentException ex) {
-			// ex.printStackTrace();
 			getEngine().warn(
 					"Invalid arguments " + args + " - ( method: " + methodName
 					+ " )");
-			// ex.printStackTrace();
 			throw new JavaException(ex);
 		} catch (Exception ex) {
-			// ex.printStackTrace();
 			getEngine()
 			.warn("Generic error in method invocation " + methodName);
 			throw new JavaException(ex);
@@ -711,10 +608,7 @@ public class OOLibrary extends Library {
         	}
         	else
         		stringURLs = "[]";
-//        	pathTerm = orderPathList(Term.createTerm(stringURLs));
         	pathTerm = Term.createTerm(stringURLs);
-//        	if(paths.isList())
-//          		paths = orderPathList(paths);
         	return unify(paths, pathTerm);
     	}catch(IllegalArgumentException e)
         {
@@ -726,50 +620,10 @@ public class OOLibrary extends Library {
 		}
     }
 	
-//	private Term orderPathList(Term path)
-//	{
-//		Term result = null;
-//		if(path == null)
-//			return result;
-//		if(path.isList())
-//		{
-//			path = path.getTerm();
-//			List<String> list = new ArrayList<String>();
-//			Struct str = (Struct) path.getTerm();
-//			if(!str.isEmptyList())
-//			{
-//				for (Iterator<?> iterator = str.listIterator();iterator.hasNext();) {
-//					list.add(((Term)iterator.next()).toString());
-//				}
-//				Collections.sort(list);
-//				result = getStructFromStringList(list);
-//			}
-//			else
-//				result = path;
-//		}
-//		return result;
-//	}
-//	
-//	
-//	private Struct getStructFromStringList(List<String> paths)
-//	{
-//		Term[] array = null;
-//		if(paths == null)
-//			return null;
-//		array = new Term[paths.size()];
-//		int i = 0;
-//		for (String string : paths) {
-//			array[i++] = Term.createTerm(string);
-//		}
-//		return new Struct(array);
-//	}
-	
-	
     /**
      * set the field value of an object
      */
     private boolean java_set(Term objId, Term fieldTerm, Term what) {
-        // System.out.println("SET "+objId+" "+fieldTerm+" "+what);
         what = what.getTerm();
         if (!fieldTerm.isAtom() || what instanceof Var)
             return false;
@@ -780,26 +634,9 @@ public class OOLibrary extends Library {
             if(objId.isCompound() && ((Struct) objId).getName().equals("class"))
             {
             	String clName = null;
-//            	String[] listOfPaths = null;
             	// Case: class(className)
             	if(((Struct) objId).getArity() == 1)         	
             		 clName = alice.util.Tools.removeApices(((Struct) objId).getArg(0).toString());
-            	
-            	/*
-            	 * Deprecated in 2.8, see the manual.
-            	// Case: class(paths, className)
-            	else if(((Struct) objId).getArity() == 2)
-            	{
-            		clName = alice.util.Tools.removeApices(((Struct) objId)
-                            .getArg(1).toString());
-                	Struct paths = (Struct) ((Struct) objId).getArg(0);
-                	
-                	listOfPaths = getStringArrayFromStruct((Struct) paths);
-                	
-                	classLoader.addURLs(getURLsFromStringArray(listOfPaths));
-            	}
-            	*/
-            	
             	if(clName != null)
             	{
             		try {
@@ -817,13 +654,6 @@ public class OOLibrary extends Library {
                                                         .getArg(0).toString()));
                         return false;
                     }
-                    /*
-                     * Deprecated in 2.8, see the manual.
-                    finally{
-                    	if(((Struct) objId).getArity() == 2)
-                    		classLoader.removeURLs(getURLsFromStringArray(listOfPaths));
-                    }
-                    */
             	}
             }
             else {
@@ -869,16 +699,14 @@ public class OOLibrary extends Library {
                     "Field " + fieldName + " not found in class " + objId);
             return false;
         } catch (Exception ex) {
-            // ex.printStackTrace();
             return false;
         }
     }
 
-    /*
+    /**
      * get the value of the field
      */
     private boolean java_get(Term objId, Term fieldTerm, Term what) {
-        // System.out.println("GET "+objId+" "+fieldTerm+" "+what);
         if (!fieldTerm.isAtom()) {
             return false;
         }
@@ -889,26 +717,8 @@ public class OOLibrary extends Library {
             if(objId.isCompound() && ((Struct) objId).getName().equals("class"))
             {
             	String clName = null;
-//            	String[] listOfPaths = null;
-            	// Case: class(className)
             	if(((Struct) objId).getArity() == 1)         	
-            		 clName = alice.util.Tools.removeApices(((Struct) objId)
-                             .getArg(0).toString());
-            	/*
-            	 * Deprecated in 2.8, see the manual.
-            	// Case: class(paths, className)
-            	else if(((Struct) objId).getArity() == 2)
-            	{
-            		clName = alice.util.Tools.removeApices(((Struct) objId)
-                            .getArg(1).toString());
-                	Struct paths = (Struct) ((Struct) objId).getArg(0);
-                	
-                	listOfPaths = getStringArrayFromStruct((Struct) paths);
-                	
-                	classLoader.addURLs(getURLsFromStringArray(listOfPaths));
-            	}
-            	*/
-            	
+            		 clName = alice.util.Tools.removeApices(((Struct) objId).getArg(0).toString());
             	if(clName != null)
             	{
             		try {
@@ -926,18 +736,10 @@ public class OOLibrary extends Library {
                                                         .getArg(0).toString()));
                         return false;
                     }
-                    /*
-                     * Deprecated in 2.8, see the manual.
-            		finally{
-                    	if(((Struct) objId).getArity() == 2)
-                    		classLoader.removeURLs(getURLsFromStringArray(listOfPaths));
-                    }
-                    */
             	}
             }
             else {
-                String objName = alice.util.Tools
-                        .removeApices(objId.toString());
+                String objName = alice.util.Tools.removeApices(objId.toString());
                 obj = currentObjects.get(objName);
                 if (obj == null) {
                     return false;
@@ -947,10 +749,7 @@ public class OOLibrary extends Library {
 
             Field field = cl.getField(fieldName);
             Class<?> fc = field.getType();
-            // work only with JDK 1.2
             field.setAccessible(true);
-
-            // first check for primitive types
             if (fc.equals(Integer.TYPE) || fc.equals(Byte.TYPE)) {
                 int value = field.getInt(obj);
                 return unify(what, new alice.tuprolog.Int(value));
@@ -968,11 +767,6 @@ public class OOLibrary extends Library {
                 Object res = field.get(obj);
                 return bindDynamicObject(what, res);
             }
-            // } catch (ClassNotFoundException ex){
-            // getEngine().warn("object of unknown class "+objId);
-            // ex.printStackTrace();
-            // return false;
-            
             
         } catch (NoSuchFieldException ex) {
             getEngine().warn(
@@ -980,17 +774,27 @@ public class OOLibrary extends Library {
             return false;
         } catch (Exception ex) {
             getEngine().warn("Generic error in accessing the field");
-            // ex.printStackTrace();
             return false;
         }
     }
 
-    public boolean java_array_set_primitive_3(Term obj_id, Term i, Term what)
+    /**
+     * Deprecated from tuProlog 3.0
+     * @param obj_id
+     * @param i
+     * @param what
+     * @return
+     * @throws JavaException
+     */
+    public boolean java_array_set_primitive_3(Term obj_id, Term i, Term what) throws JavaException {
+    	return array_set_primitive_3( obj_id,  i,  what);
+    }
+    
+    public boolean array_set_primitive_3(Term obj_id, Term i, Term what)
             throws JavaException {
         Struct objId = (Struct) obj_id.getTerm();
         Number index = (Number) i.getTerm();
         what = what.getTerm();
-        // System.out.println("SET "+objId+" "+fieldTerm+" "+what);
         Object obj = null;
         if (!index.isInteger()) {
             throw new JavaException(new IllegalArgumentException(index
@@ -1072,17 +876,34 @@ public class OOLibrary extends Library {
             }
             return true;
         } catch (Exception ex) {
-            // ex.printStackTrace();
             throw new JavaException(ex);
         }
     }
+    
+    /**
+     * Deprecated from tuProlog 3.0
+     * @param obj_id
+     * @param i
+     * @param what
+     * @return
+     * @throws JavaException
+     */
+    public boolean java_array_get_primitive_3(Term obj_id, Term i, Term what)throws JavaException {
+    	return array_get_primitive_3( obj_id,  i,  what);
+    }
 
-    public boolean java_array_get_primitive_3(Term obj_id, Term i, Term what)
-            throws JavaException {
+    /**
+     * 
+     * @param obj_id
+     * @param i
+     * @param what
+     * @return
+     * @throws JavaException
+     */
+    public boolean array_get_primitive_3(Term obj_id, Term i, Term what) throws JavaException {
         Struct objId = (Struct) obj_id.getTerm();
         Number index = (Number) i.getTerm();
         what = what.getTerm();
-        // System.out.println("SET "+objId+" "+fieldTerm+" "+what);
         Object obj = null;
         if (!index.isInteger()) {
             throw new JavaException(new IllegalArgumentException(index
@@ -1641,9 +1462,7 @@ public class OOLibrary extends Library {
      * @return fresh id
      */
     public Struct register(Object obj) {
-        // System.out.println("lib: "+this+" current id: "+this.id);
-
-        // already registered object?
+    	// already registered object?
         synchronized (staticObjects) {
             Object aKey = staticObjects_inverse.get(obj);
             if (aKey != null) {
