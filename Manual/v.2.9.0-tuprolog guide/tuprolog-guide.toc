@@ -144,28 +144,28 @@
 \contentsline {subsubsection}{\numberline {8.4.0.3}OOLibrary: predicates}{205}{subsubsection.8.4.0.3}
 \contentsline {subsection}{\numberline {8.4.1}Examples}{206}{subsection.8.4.1}
 \contentsline {subsection}{\numberline {8.4.2}Handling .NET Exceptions}{210}{subsection.8.4.2}
-\contentsline {section}{\numberline {8.5}Using Prolog from .NET: the API}{210}{section.8.5}
-\contentsline {section}{\numberline {8.6}Augmenting Prolog via .NET:\\developing new libraries}{211}{section.8.6}
-\contentsline {subsection}{\numberline {8.6.1}Capturing exceptions raised in .NET libraries}{215}{subsection.8.6.1}
-\contentsline {subsection}{\numberline {8.6.2}Capturing the .NET output in Prolog}{215}{subsection.8.6.2}
-\contentsline {section}{\numberline {8.7}Augmenting .NET via Prolog:\\the P@J framework revised}{215}{section.8.7}
-\contentsline {subsection}{\numberline {8.7.1}P@.NET via code generators}{218}{subsection.8.7.1}
+\contentsline {section}{\numberline {8.5}Using Prolog from .NET: the API}{212}{section.8.5}
+\contentsline {section}{\numberline {8.6}Augmenting Prolog via .NET:\\developing new libraries}{212}{section.8.6}
+\contentsline {subsection}{\numberline {8.6.1}Capturing exceptions raised in .NET libraries}{216}{subsection.8.6.1}
+\contentsline {subsection}{\numberline {8.6.2}Capturing the .NET output in Prolog}{216}{subsection.8.6.2}
+\contentsline {section}{\numberline {8.7}Augmenting .NET via Prolog:\\the P@J framework revised}{218}{section.8.7}
+\contentsline {subsection}{\numberline {8.7.1}P@.NET via code generators}{219}{subsection.8.7.1}
 \contentsline {section}{\numberline {8.8}Putting everything together}{220}{section.8.8}
-\contentsline {subsection}{\numberline {8.8.1}Example: Multi-language TicTacToe}{222}{subsection.8.8.1}
-\contentsline {chapter}{\numberline {9}Multi-paradigm programming in Prolog and Android}{226}{chapter.9}
-\contentsline {section}{\numberline {9.1}Class path issues}{226}{section.9.1}
-\contentsline {chapter}{\numberline {10}Version history}{228}{chapter.10}
-\contentsline {subsection}{\numberline {10.0.1}Version 2.0}{228}{subsection.10.0.1}
-\contentsline {subsection}{\numberline {10.0.2}From Version 2.0 to Version 2.0.1}{229}{subsection.10.0.2}
-\contentsline {subsection}{\numberline {10.0.3}From Version 2.0.1 to Version 2.1}{231}{subsection.10.0.3}
-\contentsline {subsection}{\numberline {10.0.4}From Version 2.1 to Version 2.2}{234}{subsection.10.0.4}
-\contentsline {subsection}{\numberline {10.0.5}From Version 2.2 to Version 2.3.0}{234}{subsection.10.0.5}
-\contentsline {subsection}{\numberline {10.0.6}From Version 2.3.0 to Version 2.3.1}{236}{subsection.10.0.6}
-\contentsline {subsection}{\numberline {10.0.7}From Version 2.3.1 to Version 2.4}{236}{subsection.10.0.7}
-\contentsline {subsection}{\numberline {10.0.8}From Version 2.4 to Version 2.5}{236}{subsection.10.0.8}
-\contentsline {subsection}{\numberline {10.0.9}From Version 2.5 to Version 2.6}{236}{subsection.10.0.9}
-\contentsline {subsection}{\numberline {10.0.10}From Version 2.6 to Version 2.7}{237}{subsection.10.0.10}
-\contentsline {subsection}{\numberline {10.0.11}From Version 2.7 to Version 2.7.2}{237}{subsection.10.0.11}
-\contentsline {subsection}{\numberline {10.0.12}From Version 2.7.2 to Version 2.8}{237}{subsection.10.0.12}
-\contentsline {subsection}{\numberline {10.0.13}From Version 2.8 to Version 2.9}{238}{subsection.10.0.13}
-\contentsline {section}{\numberline {10.1}Acknowledgments}{239}{section.10.1}
+\contentsline {subsection}{\numberline {8.8.1}Example: Multi-language TicTacToe}{223}{subsection.8.8.1}
+\contentsline {chapter}{\numberline {9}Multi-paradigm programming in Prolog and Android}{227}{chapter.9}
+\contentsline {section}{\numberline {9.1}Class path issues}{227}{section.9.1}
+\contentsline {chapter}{\numberline {10}Version history}{229}{chapter.10}
+\contentsline {subsection}{\numberline {10.0.1}Version 2.0}{229}{subsection.10.0.1}
+\contentsline {subsection}{\numberline {10.0.2}From Version 2.0 to Version 2.0.1}{230}{subsection.10.0.2}
+\contentsline {subsection}{\numberline {10.0.3}From Version 2.0.1 to Version 2.1}{232}{subsection.10.0.3}
+\contentsline {subsection}{\numberline {10.0.4}From Version 2.1 to Version 2.2}{235}{subsection.10.0.4}
+\contentsline {subsection}{\numberline {10.0.5}From Version 2.2 to Version 2.3.0}{235}{subsection.10.0.5}
+\contentsline {subsection}{\numberline {10.0.6}From Version 2.3.0 to Version 2.3.1}{237}{subsection.10.0.6}
+\contentsline {subsection}{\numberline {10.0.7}From Version 2.3.1 to Version 2.4}{237}{subsection.10.0.7}
+\contentsline {subsection}{\numberline {10.0.8}From Version 2.4 to Version 2.5}{237}{subsection.10.0.8}
+\contentsline {subsection}{\numberline {10.0.9}From Version 2.5 to Version 2.6}{237}{subsection.10.0.9}
+\contentsline {subsection}{\numberline {10.0.10}From Version 2.6 to Version 2.7}{238}{subsection.10.0.10}
+\contentsline {subsection}{\numberline {10.0.11}From Version 2.7 to Version 2.7.2}{238}{subsection.10.0.11}
+\contentsline {subsection}{\numberline {10.0.12}From Version 2.7.2 to Version 2.8}{238}{subsection.10.0.12}
+\contentsline {subsection}{\numberline {10.0.13}From Version 2.8 to Version 2.9}{239}{subsection.10.0.13}
+\contentsline {section}{\numberline {10.1}Acknowledgments}{240}{section.10.1}

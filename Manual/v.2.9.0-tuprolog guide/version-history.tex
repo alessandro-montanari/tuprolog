@@ -21,6 +21,8 @@
    2.6         & Swing & yes & -- & 693K (+600K javassist) & new class loader to overcome previous limitations; new register/1 predicate\\
    2.7         & Swing & yes & -- & 504K (+600K javassist) & new .NET augmenting (P@J for .NET) via Visual Studio code generators, \texttt{SocketLib}, new multi-threading architecture and \texttt{ThreadLib}, support for relative paths in the \texttt{consult} predicate\\
    2.7.2       & Swing & yes & -- & 504K (+600K javassist) & many bug fixes, new SpyFrame \\% and query tree view\\
+   2.8         & Swing & yes & -- & 537K (+600K javassist) & classpath issues, many bugfixes, first keyboard input support in GUI\\
+   2.9         & Swing & yes & -- & 537K (+600K javassist) & setof/bagof bug fixes, better class loading in Android, keyboard input support via input tab, extensive ISO-compliance testing\\
    \hline
  \end{tabular}
  \caption{Version comparison}\label{tab:version-history-comparison}
@@ -342,7 +344,7 @@ More precisely:
   \item user-defined libraries and classes can now be loaded also in the Android version -- previously, Android could only load pre-defined classes and libraries, due to the different loading mechanism used by this platform (one single \textit{classes.dex} file inside tha app); improved screenshots have been added in section \ref{sec:android-user-perspective};
 
   \item the new \textit{input tab} is now available in Java and .NET versions, replacing the old-fashioned input dialog (support for the Eclipse plugin will be released later this year);
-      
+
   \item the \texttt{setof} and \texttt{bagof} primitives, previously flawed (bug \cite{bug16}) finally behave as expected, retaining variable bindings where and when expected. Predicate disjunction now behaves correctly (bug \cite{bug20}). The bug causing the \texttt{functor/3} predicate to enter an endless loop when the first argument was unbound and the second referred to the term itself has been fixed (bug \cite{bug14})
       The behaviour has been extensively verified onto an International conformance test suite \cite{test-suite-bagof}.
 \end{itemize}
@@ -377,6 +379,7 @@ The following people deserve a big thanks for their help and support in \tuprolo
   \item Support for keyboard input in IOLibrary/ISOIOLibrary also on the GUIConsole and Android app in 2.8.0: Mirco Mastrovito (2013)
   \item Extensive bug fix in the engine state machine, including assert/retract handling in 2.8.0: Roberta Calegari (2013)
   \item Extensive bug fix in the engine state machine, for \texttt{setof} and \texttt{bagof} in 2.9.0: Roberta Calegari (2014)
+  \item Further bug fixing (see issues \# 20, 14, 16 on Google Code), and other minor issues: Roberta Calegari (2014)
   \item New input tab for keyboard input in 2.9.0: Matteo Librenti (2014)
   \item Support for the theory/class loading in Android in 2.9.0: Alessio Mercurio 2014)
 \end{itemize}

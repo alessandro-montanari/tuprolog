@@ -335,8 +335,12 @@ OOLibrary puts together the easy of use and immediateness of JavaLibrary with th
 {\small
 \begin{verbatim}
 public class OOLibrary {
+  public bool new_object_3(Term className,
+                           Term args, Term objRef)
   public bool new_object_4(Term conventionName, Term className,
                            Term args, Term objRef)
+  public bool new_object_4(Term conventionName, Term className,
+                           Term constructorName, Term args, Term objRef)
   public bool destroy_object_1(Term objRef)
   public bool method_call_3(Term objRef, Term methodName, Term resRef)
   public bool load_convention_3(Term assemblyName,
@@ -496,15 +500,37 @@ This issue is covered more in detail in Section \ref{sec:dotnet-putting-together
 \label{ssec:dotnet-oolibrary-exceptions}
 %-------------------------------------
 
-Since OOLibrary is rooted on JavaLibrary, exceptions raised during the execution of methods on .NET objects accessed from Prolog behave exactly as in the Java case (see Section \ref{ssec:java-exceptions-in-tuprolog})---that is, .NET exceptions are never perceived as such: rather, they are encapsulated in some Java exception.
+Since OOLibrary is rooted on JavaLibrary, exceptions raised during the execution of methods on .NET objects accessed from Prolog behave exactly as in the Java case (see Section \ref{ssec:java-exceptions-in-tuprolog})---that is, \textit{.NET exceptions are never perceived as such: rather, they are encapsulated in some Java exception.}
 
-Accordingly, these exceptions are handled in \tuprolog{}.NET via the same \texttt{java\_catch/3} predicate defined in Section \ref{ssec:java-exceptions-in-tuprolog} for the Java version.
+Accordingly, these exceptions are handled in \tuprolog{}.NET via the same \texttt{java\_catch/3} predicate defined in Section \ref{ssec:java-exceptions-in-tuprolog} for the Java version: syntax and use are identical to the Java case, too.
+
+For instance, let us suppose that the \texttt{Counter} class has been defined in .NET, and we wish to intercept the case that the class is not available at run time for loading. This means that the OOLibrary's \texttt{new\_object} predicate could fail to load the class, raising an exception. 
+In a standard .NET environment, the exception raised would be a .NET \texttt{TypeNotFoundException}, but \textit{this is not the case here, because the mediation of IKVM encapsulates such events and re-throws them as Java exceptions.}
+As a result, a \texttt{java.lang.ClassNotFoundException} has to be matched against, as in the following example:
+
+\begin{verbatim}
+test:-
+  java_catch( new_object('Counter',[], c),
+    [ ('java.lang.ClassNotFoundException'(Cause, Msg, _), 
+        write(Msg) )],
+    write('+++') ).
+\end{verbatim}
 %
-Syntax and use are identical to the Java case, and so are the possible examples: thus, we forward the interested reader to Section \ref{ssec:java-exception-examples} on page \pageref{ssec:java-exception-examples}.
+This is why the predicate name remains \texttt{java\_catch}, as in JavaLibrary -- in fact, it captures Java exceptions only.
 
-\color{red}
-Please be aware that the \texttt{java\_catch/3} predicate may be renamed in some future \tuprolog{} version in order to make it more ``language neutral'' (a likely name might be \texttt{oo\_catch/3}: stay tuned for news\ldots).
-\normalcolor
+Figure \ref{fig:dotnet-exceptions} shows the above examples and the corresponding output in the \tuprolog{} GUI.
+%
+\begin{figure}
+\centering
+  \includegraphics[width=12cm]{images/dotnet-exceptions}
+  \caption{\texttt{java\_catch} example in .NET}\label{fig:dotnet-exceptions}
+\end{figure}
+%
+However, please note that this is by no way a definitive choice, since future developments might include the ability to trap .NET exceptions natively.
+
+For further examples, the interested reader can refer to Section \ref{ssec:java-exception-examples} on page \pageref{ssec:java-exception-examples}, where Java-related exceptions are presented and discussed.
+
+
 
 %-----------------------------------------------------------------------
 \section{Using Prolog from .NET: the API}
