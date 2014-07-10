@@ -51,7 +51,7 @@ import alice.util.JavaDynamicClassLoader;
  * This class represents a tuProlog library enabling the interaction with the
  * Java environment from tuProlog.
  * 
- * Warning we use the setAccessible method
+ * Warning we use the setAccessible method 
  * 
  * The most specific method algorithm used to find constructors / methods has
  * been inspired by the article "What Is Interactive Scripting?", by Michael
@@ -117,22 +117,35 @@ public class OOLibrary extends Library {
                 + ":- op(850,xfx,'returns').\n"
                 + ":- op(200,xfx,'as').\n"
                 + ":- op(600,xfx,'.'). \n"
-                +
-                "java_object_bt(ClassName,Args,Id):- java_object(ClassName,Args,Id).\n"
-                + "java_object_bt(ClassName,Args,Id):- destroy_object(Id).\n"
+                + 
+                "new_object_bt(ClassName,Args,Id):- new_object(ClassName,Args,Id).\n"
+                + "new_object_bt(ClassName,Args,Id):- destroy_object(Id).\n"
                 
                 + "Obj <- What :- java_call(Obj,What,Res), Res \\== false.\n"
                 + "Obj <- What returns Res :- java_call(Obj,What,Res).\n"
+                
+                + "array_set(Array,Index,Object):- class('java.lang.reflect.Array') <- set(Array as 'java.lang.Object',Index,Object as 'java.lang.Object'), !.\n"
+                + "array_set(Array,Index,Object):- array_value_set(Array,Index,Object).\n"
+                + "array_get(Array,Index,Object):- class('java.lang.reflect.Array') <- get(Array as 'java.lang.Object',Index) returns Object,!.\n"
+                + "array_get(Array,Index,Object):- array_value_get(Array,Index,Object).\n"
+                
+				+ "array_length(Array,Length):- class('java.lang.reflect.Array') <- getLength(Array as 'java.lang.Object') returns Length.\n"
+
+                
+                + //**** following section deprecated from tuProlog 3.0  ***//
+                "java_object_bt(ClassName,Args,Id):- java_object(ClassName,Args,Id).\n"
+                + "java_object_bt(ClassName,Args,Id):- destroy_object(Id).\n"
+                
                 + "java_array_set(Array,Index,Object):- class('java.lang.reflect.Array') <- set(Array as 'java.lang.Object',Index,Object as 'java.lang.Object'), !.\n"
                 + "java_array_set(Array,Index,Object):- java_array_set_primitive(Array,Index,Object).\n"
                 + "java_array_get(Array,Index,Object):- class('java.lang.reflect.Array') <- get(Array as 'java.lang.Object',Index) returns Object,!.\n"
                 + "java_array_get(Array,Index,Object):- java_array_get_primitive(Array,Index,Object).\n"
                 
-
                 + "java_array_length(Array,Length):- class('java.lang.reflect.Array') <- getLength(Array as 'java.lang.Object') returns Length.\n"
                 + "java_object_string(Object,String):- Object <- toString returns String.    \n"
                 +
                 "java_catch(JavaGoal, List, Finally) :- call(JavaGoal), call(Finally).\n";
+        		//**** end section deprecated from tuProlog 3.0  ***//
     }
 
     public void dismiss() {
@@ -178,18 +191,14 @@ public class OOLibrary extends Library {
     }
 
      /**
-     * @author Michele Mannino
      * Deprecated from tuProlog 3.0 use new_object
-     * Creates of a java object - not backtrackable case
-     * 
-     * @throws JavaException
      */
     public boolean java_object_3(Term className, Term argl, Term id) throws JavaException {
     	return new_object_3(className, argl,id);
     }
     
     /**
-     * creates a new object in java
+     * Creates of a java object - not backtrackable case
      * @param className
      * @param argl
      * @param id
@@ -779,7 +788,7 @@ public class OOLibrary extends Library {
     }
 
     /**
-     * Deprecated from tuProlog 3.0
+     * Deprecated from tuProlog 3.0 use array_value_set
      * @param obj_id
      * @param i
      * @param what
@@ -787,10 +796,18 @@ public class OOLibrary extends Library {
      * @throws JavaException
      */
     public boolean java_array_set_primitive_3(Term obj_id, Term i, Term what) throws JavaException {
-    	return array_set_primitive_3( obj_id,  i,  what);
+    	return array_value_set_3( obj_id,  i,  what);
     }
     
-    public boolean array_set_primitive_3(Term obj_id, Term i, Term what)
+    /**
+     * 
+     * @param obj_id
+     * @param i
+     * @param what
+     * @return
+     * @throws JavaException
+     */
+    public boolean array_value_set_3(Term obj_id, Term i, Term what)
             throws JavaException {
         Struct objId = (Struct) obj_id.getTerm();
         Number index = (Number) i.getTerm();
@@ -881,7 +898,7 @@ public class OOLibrary extends Library {
     }
     
     /**
-     * Deprecated from tuProlog 3.0
+     * Deprecated from tuProlog 3.0 use array_value_get
      * @param obj_id
      * @param i
      * @param what
@@ -889,7 +906,7 @@ public class OOLibrary extends Library {
      * @throws JavaException
      */
     public boolean java_array_get_primitive_3(Term obj_id, Term i, Term what)throws JavaException {
-    	return array_get_primitive_3( obj_id,  i,  what);
+    	return array_value_get_3( obj_id,  i,  what);
     }
 
     /**
@@ -900,14 +917,13 @@ public class OOLibrary extends Library {
      * @return
      * @throws JavaException
      */
-    public boolean array_get_primitive_3(Term obj_id, Term i, Term what) throws JavaException {
+    public boolean array_value_get_3(Term obj_id, Term i, Term what) throws JavaException {
         Struct objId = (Struct) obj_id.getTerm();
         Number index = (Number) i.getTerm();
         what = what.getTerm();
         Object obj = null;
         if (!index.isInteger()) {
-            throw new JavaException(new IllegalArgumentException(index
-                    .toString()));
+            throw new JavaException(new IllegalArgumentException(index.toString()));
         }
         try {
             Class<?> cl = null;
@@ -916,26 +932,21 @@ public class OOLibrary extends Library {
             if (obj != null) {
                 cl = obj.getClass();
             } else {
-                throw new JavaException(new IllegalArgumentException(objId
-                        .toString()));
+                throw new JavaException(new IllegalArgumentException(objId.toString()));
             }
 
             if (!cl.isArray()) {
-                throw new JavaException(new IllegalArgumentException(objId
-                        .toString()));
+                throw new JavaException(new IllegalArgumentException(objId.toString()));
             }
             String name = cl.toString();
             if (name.equals("class [I")) {
-                Term value = new alice.tuprolog.Int(Array.getInt(obj, index
-                        .intValue()));
+                Term value = new alice.tuprolog.Int(Array.getInt(obj, index.intValue()));
                 if (unify(what, value))
                     return true;
                 else
-                    throw new JavaException(new IllegalArgumentException(what
-                            .toString()));
+                    throw new JavaException(new IllegalArgumentException(what.toString()));
             } else if (name.equals("class [D")) {
-                Term value = new alice.tuprolog.Double(Array.getDouble(obj,
-                        index.intValue()));
+                Term value = new alice.tuprolog.Double(Array.getDouble(obj,index.intValue()));
                 if (unify(what, value))
                     return true;
                 else
