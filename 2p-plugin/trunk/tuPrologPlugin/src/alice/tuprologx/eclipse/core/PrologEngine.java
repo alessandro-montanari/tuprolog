@@ -9,7 +9,12 @@ import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IViewReference;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 
+import alice.tuprolog.Library;
 import alice.tuprolog.SolveInfo;
 import alice.tuprolog.Term;
 import alice.tuprolog.Theory;
@@ -21,6 +26,8 @@ import alice.tuprolog.interfaces.IOperatorManager;
 import alice.tuprolog.interfaces.IPrimitiveManager;
 import alice.tuprolog.interfaces.IProlog;
 import alice.tuprolog.interfaces.PrologFactory;
+import alice.tuprolog.lib.IOLibrary;
+import alice.tuprologx.eclipse.views.ConsoleView;
 
 public class PrologEngine {
 	private String name;
@@ -175,6 +182,30 @@ public class PrologEngine {
 	 *  Retrive useful information about the query solution
 	 * like variables bindings*/
 	public void query(final String q) {
+		
+		final IOLibrary IO = (IOLibrary)prolog.getLibrary("alice.tuprolog.lib.IOLibrary");
+		if (IO != null) { // IOLibrary could not be loaded
+			IO.setExecutionType(IOLibrary.graphicExecution);
+			ConsoleView console = null;
+			IWorkbenchWindow dwindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow(); 
+			final IWorkbenchPage wp = dwindow.getActivePage(); 
+			//final IWorkbenchPage wp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+			try {
+				IViewReference[] viewList = wp.getViewReferences();
+				for(IViewReference ref : viewList){
+					if(ref.getId().equalsIgnoreCase("alice.tuprologx.eclipse.views.ConsoleView")){
+						console = (ConsoleView) ref.getView(false);
+					}
+				}
+				if(console != null){
+					IO.getUserContextInputStream().setReadListener(console);
+					console.inputViewer.setUserContextInputStream(IO.getUserContextInputStream());
+				}
+			} catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
 		try {
 			Info = new ArrayList<String>();
 			termList = new ArrayList<Term>();
@@ -192,12 +223,20 @@ public class PrologEngine {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 	}
 
 	public String[] getLibrary() {
 		if (prolog == null)
 			return new String[] {};
 		return prolog.getCurrentLibraries();
+	}
+	
+	/**
+	 * Added to get a Library by its name
+	 */	
+	public Library getLibrary(String name) {
+		return prolog.getLibrary(name);
 	}
 
 	public void removeLibrary(String lib) {

@@ -20,7 +20,6 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.swt.widgets.Display;
 
-;
 
 public class PrologProjectWizard extends Wizard implements INewWizard {
 
@@ -118,6 +117,7 @@ public class PrologProjectWizard extends Wizard implements INewWizard {
 
 		for (int i = 0; i < libraries.length; i++)
 			engine.addLibrary(libraries[i]);
+			
 		PropertyManager.addEngineInProperty(project, engine.getName());
 		PropertyManager.setLibraryInProperties(project, engine.getName(),
 				libraries);
