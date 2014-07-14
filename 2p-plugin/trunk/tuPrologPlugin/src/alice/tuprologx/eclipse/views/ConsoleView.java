@@ -29,6 +29,8 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.part.ViewPart;
 
 import alice.tuprolog.Term;
+import alice.tuprolog.event.ReadEvent;
+import alice.tuprolog.event.ReadListener;
 import alice.tuprologx.eclipse.TuProlog;
 import alice.tuprologx.eclipse.core.PrologEngine;
 import alice.tuprologx.eclipse.core.PrologQuery;
@@ -36,7 +38,8 @@ import alice.tuprologx.eclipse.core.PrologQueryFactory;
 import alice.tuprologx.eclipse.core.PrologQueryResult;
 import alice.tuprologx.eclipse.core.PrologQueryScope;
 
-public class ConsoleView extends ViewPart{
+public class ConsoleView extends ViewPart implements ReadListener{
+	private CTabFolder notebook;
 	private Tree tree;
 	private SashForm sash;
 	private boolean queryIsValid;
@@ -54,6 +57,11 @@ public class ConsoleView extends ViewPart{
 	private Button next;
 	private Composite resultViewer;
 	public Composite outputViewer;
+	/***
+	 * Added InputViewer
+	 */
+	public InputViewer inputViewer;
+	private CTabItem Input;
 	/*Castagna 06/2011*/
 	public Composite exceptionViewer;
 	/**/
@@ -101,7 +109,7 @@ public class ConsoleView extends ViewPart{
 		mainFrame.setLayout(groupLayout);
 		mainFrame.setLayoutData(groupData);
 
-		CTabFolder notebook = new CTabFolder(mainFrame, SWT.TOP | SWT.BORDER);
+		notebook = new CTabFolder(mainFrame, SWT.TOP | SWT.BORDER);
 		notebook.setLayout(groupLayout);
 		notebook.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
@@ -120,7 +128,14 @@ public class ConsoleView extends ViewPart{
 		CTabItem Output = new CTabItem(notebook,SWT.NONE);
 		Output.setImage(TuProlog.getIconFromResources("sample.gif"));
 		Output.setText("Output");
-
+		
+		/**
+		 * Added CTabItem "Input" to conform to Java Platform
+		 */
+		Input = new CTabItem(notebook,SWT.NONE);
+		Input.setImage(TuProlog.getIconFromResources("sample.gif"));
+		Input.setText("Input");
+		
 		/*Castagna 06/2011*/
 		CTabItem Exception = new CTabItem(notebook,SWT.NONE);
 		Exception.setImage(TuProlog.getIconFromResources("exception.gif"));
@@ -217,7 +232,8 @@ public class ConsoleView extends ViewPart{
 						PrologQueryFactory.getInstance().executeQueryWS(query);
 						queryResultIndex=0;
 						tree.setSelection(tree.getItem(0));
-						refreshResultViewer();}
+						refreshResultViewer();
+					}
 				}
 			}
 		});
@@ -372,9 +388,17 @@ public class ConsoleView extends ViewPart{
 		outputViewer.setLayout(tabLayout);
 		Label outputLabel = new Label(outputViewer,SWT.NONE);
 		outputLabel.setText("Output: ");
-		output = new Text(outputViewer, SWT.MULTI | SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY | SWT.SCROLL_LINE);
+		output = new Text(outputViewer, SWT.MULTI | SWT.BORDER | SWT.READ_ONLY | SWT.SCROLL_LINE); /* Eliminated SWT.SINGLE to fix nl bug*/
 		output.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-
+		
+		/**
+		 * Creation tab Input
+		 */
+		SashForm sashIn = new SashForm(notebook, SWT.HORIZONTAL);
+		sashIn.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		Input.setControl(sashIn);
+		inputViewer = new InputViewer(sashIn);
+		
 		/*Castagna 06/2011*/
 		SashForm sashException = new SashForm(notebook, SWT.HORIZONTAL);
 		sashException.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
@@ -488,5 +512,10 @@ public class ConsoleView extends ViewPart{
 	}
 	public PrologQuery getQuery(){
 		return query;
+	}
+
+	@Override
+	public void readCalled(ReadEvent arg0) {
+		notebook.setSelection(Input);
 	}
 }
