@@ -11,7 +11,7 @@ import alice.tuprolog.NoMoreSolutionException;
 import alice.tuprolog.NoSolutionException;
 import alice.tuprolog.Prolog;
 import alice.tuprolog.SolveInfo;
-import alice.tuprolog.UserContextInputStream;
+import alice.tuprolog.lib.UserContextInputStream;
 import alice.tuprolog.Var;
 import alice.tuprolog.event.ExceptionEvent;
 import alice.tuprolog.event.ExceptionListener;
@@ -93,7 +93,7 @@ public class CUIConsole extends Automaton implements Serializable,
     tup = tuP;
     
     IOLibrary IO = (IOLibrary) engine.getLibrary("alice.tuprolog.lib.IOLibrary");
-    IO.setExecutionType(IO.graphicExecution);
+    IO.setExecutionType(IOLibrary.graphicExecution); // changed from IO.graphicExecution to IOLibrary.graphicExecution
     stream = IO.getUserContextInputStream();
     
     setReadEventListener();
