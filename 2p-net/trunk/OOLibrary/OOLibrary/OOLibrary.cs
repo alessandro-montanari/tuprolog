@@ -73,7 +73,9 @@ namespace OOLibrary
                       "array_set(Array,Index,Object):-      java_array_set_primitive(Array,Index,Object).\n" +
                       "array_get(Array,Index,Object):-      class('java.lang.reflect.Array') <- get(Array as 'java.lang.Object',Index) returns Object,!.\n" +
                       "array_get(Array,Index,Object):-      java_array_get_primitive(Array,Index,Object).\n" +
-                      "array_length(Array,Length):-         class('java.lang.reflect.Array') <- getLength(Array as 'java.lang.Object') returns Length.\n";
+                      "array_length(Array,Length):-         class('java.lang.reflect.Array') <- getLength(Array as 'java.lang.Object') returns Length.\n"+
+                      "java_catch(Goal, List, Finally) :-   call(Goal), call(Finally).\n";
+        
         }
 
         /// <summary>
