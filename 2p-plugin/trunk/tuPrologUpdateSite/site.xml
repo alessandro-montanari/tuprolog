@@ -22,8 +22,11 @@
    <feature url="features/tuPrologFeature_2.7.2.1.jar" id="tuPrologFeature" version="2.7.2.1">
       <category name="tuProlog Plug-in Features"/>
    </feature>
-   <feature url="features/tuPrologFeature_2.9.0.jar" id="tuPrologFeature" version="2.9.0">
+   
+<!--<feature url="features/tuPrologFeature_2.9.0.jar" id="tuPrologFeature" version="2.9.0">
       <category name="tuProlog Plug-in Features"/>
    </feature>
+
+-->
    <category-def name="tuProlog Plug-in Features" label="tuProlog Plug-in Features"/>
 </site>
