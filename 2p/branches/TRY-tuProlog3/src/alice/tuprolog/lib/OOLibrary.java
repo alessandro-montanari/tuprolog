@@ -124,10 +124,10 @@ public class OOLibrary extends Library {
                 + "Obj <- What :- java_call(Obj,What,Res), Res \\== false.\n"
                 + "Obj <- What returns Res :- java_call(Obj,What,Res).\n"
                 
-                + "array_set(Array,Index,Object):- class('java.lang.reflect.Array') <- set(Array as 'java.lang.Object',Index,Object as 'java.lang.Object'), !.\n"
-                + "array_set(Array,Index,Object):- array_value_set(Array,Index,Object).\n"
-                + "array_get(Array,Index,Object):- class('java.lang.reflect.Array') <- get(Array as 'java.lang.Object',Index) returns Object,!.\n"
-                + "array_get(Array,Index,Object):- array_value_get(Array,Index,Object).\n"
+                + "array_value_set(Array,Index,Object):- class('java.lang.reflect.Array') <- set(Array as 'java.lang.Object',Index,Object as 'java.lang.Object'), !.\n"
+                + "array_value_set(Array,Index,Object):- java_array_set_primitive(Array,Index,Object).\n"
+                + "array_value_get(Array,Index,Object):- class('java.lang.reflect.Array') <- get(Array as 'java.lang.Object',Index) returns Object,!.\n"
+                + "array_value_get(Array,Index,Object):- java_array_get_primitive(Array,Index,Object).\n"
                 
 				+ "array_length(Array,Length):- class('java.lang.reflect.Array') <- getLength(Array as 'java.lang.Object') returns Length.\n"
 
@@ -287,28 +287,28 @@ public class OOLibrary extends Library {
     	target_class = org.apache.commons.lang3.StringEscapeUtils.unescapeJava(target_class);
     	lambda_expression = org.apache.commons.lang3.StringEscapeUtils.unescapeJava(lambda_expression);
     	
-		Class<?> lambdaFunction = alice.util.proxyGenerator.Generator.make(
+		Class<?> lambdaMetaFactory = alice.util.proxyGenerator.Generator.make(
 				ClassLoader.getSystemClassLoader(),
-		        "MyLambdaFunction"+counter,
+		        "MyLambdaFactory"+counter,
 		        "" +           
-		            "public class MyLambdaFunction"+counter+" {\n" +
+		            "public class MyLambdaFactory"+counter+" {\n" +
 		            "  public "+target_class+" getFunction() {\n" + 
 				    " 		return "+lambda_expression+"; \n"+ 
 		            "  }\n" +
 		            "}\n"
 		 );
 		
-		Object lf = lambdaFunction.newInstance();
-		Class<?> lf_clazz = lf.getClass();
-		Method[] allMethods = lf_clazz.getDeclaredMethods();
-		T funct=null;
+		Object myLambdaFactory = lambdaMetaFactory.newInstance(); 
+		Class<?> myLambdaClass = myLambdaFactory.getClass(); 
+		Method[] allMethods = myLambdaClass.getDeclaredMethods();
+		T myLambdaInstance=null; 
 		for (Method m : allMethods) {
 			String mname = m.getName();
 			if (mname.startsWith("getFunction"))
-				funct=(T) m.invoke(lf);
+				myLambdaInstance=(T) m.invoke(myLambdaFactory);
 		}
 		id = id.getTerm();
-		if (bindDynamicObject(id, funct))
+		if (bindDynamicObject(id, myLambdaInstance))
 			return true;
 	    else
 	        throw new JavaException(new Exception());
@@ -786,18 +786,6 @@ public class OOLibrary extends Library {
             return false;
         }
     }
-
-    /**
-     * Deprecated from tuProlog 3.0 use array_value_set
-     * @param obj_id
-     * @param i
-     * @param what
-     * @return
-     * @throws JavaException
-     */
-    public boolean java_array_set_primitive_3(Term obj_id, Term i, Term what) throws JavaException {
-    	return array_value_set_3( obj_id,  i,  what);
-    }
     
     /**
      * 
@@ -807,7 +795,7 @@ public class OOLibrary extends Library {
      * @return
      * @throws JavaException
      */
-    public boolean array_value_set_3(Term obj_id, Term i, Term what)
+    public boolean java_array_set_primitive_3(Term obj_id, Term i, Term what)
             throws JavaException {
         Struct objId = (Struct) obj_id.getTerm();
         Number index = (Number) i.getTerm();
@@ -897,17 +885,7 @@ public class OOLibrary extends Library {
         }
     }
     
-    /**
-     * Deprecated from tuProlog 3.0 use array_value_get
-     * @param obj_id
-     * @param i
-     * @param what
-     * @return
-     * @throws JavaException
-     */
-    public boolean java_array_get_primitive_3(Term obj_id, Term i, Term what)throws JavaException {
-    	return array_value_get_3( obj_id,  i,  what);
-    }
+    
 
     /**
      * 
@@ -917,7 +895,7 @@ public class OOLibrary extends Library {
      * @return
      * @throws JavaException
      */
-    public boolean array_value_get_3(Term obj_id, Term i, Term what) throws JavaException {
+    public boolean java_array_get_primitive_3(Term obj_id, Term i, Term what) throws JavaException {
         Struct objId = (Struct) obj_id.getTerm();
         Number index = (Number) i.getTerm();
         what = what.getTerm();
