@@ -787,14 +787,6 @@ public class OOLibrary extends Library {
         }
     }
     
-    /**
-     * 
-     * @param obj_id
-     * @param i
-     * @param what
-     * @return
-     * @throws JavaException
-     */
     public boolean java_array_set_primitive_3(Term obj_id, Term i, Term what)
             throws JavaException {
         Struct objId = (Struct) obj_id.getTerm();
@@ -886,9 +878,8 @@ public class OOLibrary extends Library {
     }
     
     
-
     /**
-     * 
+     * Sets the value of the field 'i' with 'what'
      * @param obj_id
      * @param i
      * @param what
