@@ -7,6 +7,7 @@ package alice.tuprolog.scriptengine;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.Writer;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
 import javax.script.ScriptException;
+import javax.script.SimpleScriptContext;
 
 import alice.tuprolog.InvalidTheoryException;
 import alice.tuprolog.MalformedGoalException;
@@ -25,6 +27,10 @@ import alice.tuprolog.SolveInfo;
 import alice.tuprolog.Struct;
 import alice.tuprolog.Theory;
 import alice.tuprolog.Var;
+import alice.tuprolog.event.ExceptionEvent;
+import alice.tuprolog.event.ExceptionListener;
+import alice.tuprolog.event.OutputEvent;
+import alice.tuprolog.event.OutputListener;
 import alice.tuprolog.lib.IOLibrary;
 import alice.tuprolog.lib.InvalidObjectIdException;
 import alice.tuprolog.lib.JavaLibrary;
@@ -37,7 +43,7 @@ import alice.util.OutputStreamAdapter;
  *
  * @author Andrea Bucaletti
  */
-public class PrologScriptEngine implements ScriptEngine {
+public class PrologScriptEngine implements ScriptEngine, ExceptionListener, OutputListener {
 	
 	/*
 	 * Engine context keys-
@@ -64,10 +70,15 @@ public class PrologScriptEngine implements ScriptEngine {
     /* And instance of prolog used to solve the given scripts */
     protected Prolog prolog;
     
+    /* Current Standard Output and Error */
+    protected Writer outputWriter, errorWriter;
+    
     public PrologScriptEngine() {
         prolog = new Prolog();
+        prolog.addExceptionListener(this);
+        prolog.addOutputListener(this);
 
-        defaultContext = new PrologScriptContext(prolog);     
+        defaultContext = new SimpleScriptContext();     
         
         useSolveNext = false;
         previousScript = null;
@@ -87,7 +98,7 @@ public class PrologScriptEngine implements ScriptEngine {
     @Override
     public Object eval(String script, ScriptContext sc) throws ScriptException {
     	
-    	setStandardIO(sc);
+    	setupStandardIO(sc);
     	
     	/*
         As the jsr-223 part SCR.4.3.4.1.2 Script Execution :
@@ -104,7 +115,7 @@ public class PrologScriptEngine implements ScriptEngine {
     @Override
     public Object eval(Reader reader, ScriptContext sc) throws ScriptException {           
     	
-    	setStandardIO(sc);
+    	setupStandardIO(sc);
     	
     	/*
         As the jsr-223 part SCR.4.3.4.1.2 Script Execution :
@@ -267,13 +278,35 @@ public class PrologScriptEngine implements ScriptEngine {
      * Sets the IOLibray's standard input/output with the streams specified in the ScriptContext
      * @param sc the ScriptContext to use for the next evaluation
      */
-    private void setStandardIO(ScriptContext sc) {
+    private void setupStandardIO(ScriptContext sc) {
         IOLibrary ioLib = (IOLibrary) prolog.getLibrary("alice.tuprolog.lib.IOLibrary");
         
         if(ioLib != null) {
         	ioLib.setStandardInput(new InputStreamAdapter(sc.getReader()));
-        	ioLib.setStandardOutput(new OutputStreamAdapter(sc.getWriter()));
+        	outputWriter = sc.getWriter();
+        	errorWriter = sc.getErrorWriter();
         }    	
     }
+
+	@Override
+	public void onException(ExceptionEvent e) {
+		try {
+			if(errorWriter != null) {
+				errorWriter.write(e.getMsg() + "\n");
+				errorWriter.flush();
+			}
+		}
+		catch(IOException ex) {}
+	}
+
+	@Override
+	public void onOutput(OutputEvent e) {
+		try {
+			if(outputWriter != null) {
+				outputWriter.write(e.getMsg());
+			}
+		}
+		catch(IOException ex) {}
+	}
     
 }

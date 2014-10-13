@@ -56,7 +56,6 @@ public class PrologScriptEngineFactory implements ScriptEngineFactory {
     	PARAMETERS.put("LANGUAGE", LANGUAGE_NAME);
     	PARAMETERS.put("LANGUAGE_VERSION", LANGUAGE_VERSION);
     	PARAMETERS.put("THREADING", null);
-    	
     }
 
     @Override
