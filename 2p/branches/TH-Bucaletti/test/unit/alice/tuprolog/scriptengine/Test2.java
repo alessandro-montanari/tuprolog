@@ -11,6 +11,9 @@ import java.awt.event.KeyEvent;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Map;
+
+import javax.script.Bindings;
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -184,9 +187,11 @@ public class Test2 extends javax.swing.JFrame {
     }
     
     private void printEngineScope() {
-        txtOutput.append("\n-------------------ENGINE SCOPE------------------\n" 
-                + scriptEngine.getBindings(ScriptContext.ENGINE_SCOPE).toString()
-        		+ "-------------------------------------------------------------\n");           
+        txtOutput.append("\n-------------------ENGINE SCOPE------------------\n");
+        Bindings engineScope = scriptEngine.getBindings(ScriptContext.ENGINE_SCOPE);
+        for(Map.Entry<String, Object> e : engineScope.entrySet())
+        	txtOutput.append("[" + e.getKey() + "] ->" + e.getValue() + "\n");
+        txtOutput.append("-------------------------------------------------------------\n");           
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
