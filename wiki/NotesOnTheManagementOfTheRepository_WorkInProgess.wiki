@@ -332,7 +332,19 @@ The steps to be performed to tag the Eclipse version are the following:
   # run the target "03.tag", it will request the password for the specified user and the password can be found at this address https://code.google.com/hosting/settings.
 
 ===.NET===
-In the .NET version, the Ant target is called "02.tag" and it is responsible of tagging the code and coping in the tag folder also the release zip file.
+In the .NET version, there is obviously no Eclipse project. Several Visual Studio projects are present, but are not needed to tag: all is needed is the Ant tool, to be run from the command line.
+
+So, in order to tag the .NET version:
+# first, modify the externals settings and svn properties, as above
+# then, launch Ant from a terminal window with the "02.tag" target.
+Please note: the Ant tool should be run from the "ant" folder, running the command "ant 02.tag". The tool will compile and tag everything, that is, it will also copy the release zip file to the tag folder.
+
+If you do not have a stand-alone Ant installation, there is one in a subfolder of the Eclipse folder - just look for the proper path
+
+If you use a newer IKVM version, load it to the repository, too: you will find
+a "2p-net/ikvm" folder, with subfolders for each ikvm version. Then, remember to change all the externals in the trunk (see the ".NET Special Considerations" section).
+
+NB: warnings are possible during the build, about IKVM: most of them can be safely ignored, they just refer to unsed DLLs
 
 The steps to be performed to tag the .NET version are the following:
   # modify the value of the `svn:externals` property to refer to the new version of the core (2p.exe, tuprolog.dll, etc.) as explained before;
