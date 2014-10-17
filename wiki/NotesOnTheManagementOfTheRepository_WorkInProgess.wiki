@@ -335,8 +335,8 @@ The steps to be performed to tag the Eclipse version are the following:
 In the .NET version, there is obviously no Eclipse project. Several Visual Studio projects are present, but are not needed to tag: all is needed is the Ant tool, to be run from the command line.
 
 So, in order to tag the .NET version:
-# first, modify the externals settings and svn properties, as above
-# then, launch Ant from a terminal window with the "02.tag" target.
+  # first, modify the externals settings and svn properties, as above
+  # then, launch Ant from a terminal window with the "02.tag" target.
 Please note: the Ant tool should be run from the "ant" folder, running the command "ant 02.tag". The tool will compile and tag everything, that is, it will also copy the release zip file to the tag folder.
 
 If you do not have a stand-alone Ant installation, there is one in a subfolder of the Eclipse folder - just look for the proper path
