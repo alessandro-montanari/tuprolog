@@ -2,7 +2,7 @@
 <feature
       id="tuPrologFeature"
       label="tuProlog Plug-in Feature"
-      version="2.9.0"
+      version="2.9.1"
       provider-name="tuprolog team @ Alma Mater Studiorum - Università di Bologna"
       plugin="tuPrologPlugin">
 
@@ -193,6 +193,6 @@ Library.
          id="tuPrologPlugin"
          download-size="0"
          install-size="0"
-         version="2.9.0"/>
+         version="2.9.1"/>
 
 </feature>
