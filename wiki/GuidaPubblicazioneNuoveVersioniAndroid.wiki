@@ -14,5 +14,5 @@ Poi:
 
 _Cosa può andare storto:_
 
-  * nel punto 5), il build fallisce se esiste già un tag omonimo sul server; in tal caso, occorre prima cancellarlo e per farlo sid eve prima fare un update, poi svn -> delete, poi commit
-  * nel punto 5), il build fallirà anche se la pwd dell'utente Google Code è errata (ricordare che *non* è quella di Gmail ma la stringa alfanumerica speciale che si trova in Google Code sotto *project home -> nome utente -> settings*)
+  * nel punto 6), il build fallisce se esiste già un tag omonimo sul server; in tal caso, occorre prima cancellarlo e per farlo sid eve prima fare un update, poi svn -> delete, poi commit
+  * nel punto 6), il build fallirà anche se la pwd dell'utente Google Code è errata (ricordare che *non* è quella di Gmail ma la stringa alfanumerica speciale che si trova in Google Code sotto *project home -> nome utente -> settings*)
