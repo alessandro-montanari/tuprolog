@@ -1,0 +1,7 @@
+MIEI PATH X SCRIPT .NET
+-----------------------
+
+
+D:\eclipse\plugins\org.apache.ant_1.8.4.v201303080030\bin
+
+D:\ikvm-7.2.4630.5
