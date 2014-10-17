@@ -311,15 +311,17 @@ The steps to be performed to tag the Java version are the following:
   # run the target "12.tag", it will request the password for the specified user and the password can be found at this address https://code.google.com/hosting/settings.
 
 ===Android===
-Similarly to the java version, also the Android version has an Ant target that must be used to tag the code. The target is called "03.tag" and apart from tagging the code it only changes the name of the project in ".project" file.
+The Android release must be performed by an Android-enabled Eclipse installation, such as the ADT tool.
+
+Like the Java version, the Android version also has an Ant target to tag the code. The target is called "03.tag" and apart from tagging the code it only changes the name of the project in ".project" file.
 
 The steps to be performed to tag the Android version are the following:
-  # modify the value of the `svn:externals` property to refer to the new version of the core as explained before;
-  # commit, update and verify that everything works as expected;
+  # modify the value of the `svn:externals` property to refer to the new version of the core, as explained before (or below in the .NET case);
+  # commit, update and verify that everything is OK (as in the .NET case);
   # modify the version number in the file [http://code.google.com/p/tuprolog/source/browse/2p-android/trunk/AndroidManifest.xml AndroidManifest.xml] as specified [http://code.google.com/p/tuprolog/wiki/ProjectsVersionManagement here];
-  # run the application in the emulator to be sure that the apk file is generated;
-  # in the file ant/environment.properties setup the Google Code username.
-  # run the target "03.tag", it will request the password for the specified user and the password can be found at this address https://code.google.com/hosting/settings.
+  # run the application in the emulator to force the apk file to be generated;
+  # in the file ant/environment.properties setup the Google Code username;
+  # run the target "03.tag": this will request the password for the specified Google Code, which can be found at https://code.google.com/hosting/settings.
 
 ===Eclipse===
 Exactly as for the Android version, the Eclipse version has an Ant target called "03.tag" that tags the code and changes the name of the project in ".project". It requires to set up the Google Code username in the file ant/environment.properties.
