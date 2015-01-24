@@ -1,5 +1,8 @@
 package alice.util.proxyGenerator;
 import javax.tools.*;
+
+import cli.System.Reflection.Assembly;
+
 import java.lang.reflect.*;
 import java.util.*;
 
@@ -24,9 +27,13 @@ public class Generator {
     } catch (NoSuchMethodException e) {
       throw new ExceptionInInitializerError(e);
     }
+    
+    if(System.getProperty("java.vm.name").equals("IKVM.NET"))
+    	ikvm.runtime.Startup.addBootClassPathAssemby(Assembly.Load("IKVM.OpenJDK.Tools"));
+    
     jc = ToolProvider.getSystemJavaCompiler();
     if (jc == null) {
-      throw new UnsupportedOperationException( "Cannot find java compiler!  " + "Probably only JRE installed.");
+    	throw new UnsupportedOperationException( "Cannot find java compiler!  " + "Probably only JRE installed.");
     }
   }
 
