@@ -678,7 +678,7 @@
 			<!--  I use <name> </name> because in this way I'm sure that I replace the name of the project and nothing else called 2p -->
 			<replace file="${tmp.dir}/.project" token="&lt;name&gt;2p&lt;/name&gt;" value="&lt;name&gt;tuProlog REL-${engine.version}.${JavaSpecific.version}&lt;/name&gt;"/>
 		
-		<echo>Tagging the code...</echo>
+		<echo>Tagging the code (be patient this will take a while)...</echo>
 		<!-- It is not possible to put echo messahes inside the svn tag -->
 		<svn refid="settings">
 		    
@@ -724,6 +724,13 @@
 				message="${TagMessage}" 
 				recurse="false" >
 			</import>  
+			
+			<import
+				path="${build.archives.net.dir}/commons-lang3-3.3.2.dll" 
+				url="https://tuprolog.googlecode.com/svn/2p/tags/REL-${engine.version}.${JavaSpecific.version}/build/archives/net/commons-lang3-3.3.2.dll"
+				message="${TagMessage}" 
+				recurse="false" >
+			</import>
 			
 			<import
 				path="${build.archives.net.dir}/javassist.dll" 
