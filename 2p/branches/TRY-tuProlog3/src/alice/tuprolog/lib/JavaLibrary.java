@@ -22,9 +22,10 @@ import alice.tuprolog.Library;
 
 /**
  * 
- * Deprecated from tuProlog 3.0
+ * @deprecated From tuProlog 3.0, use alice.tuprolog.lib.OOLibrary.
  */
 @SuppressWarnings("serial")
+@Deprecated
 public class JavaLibrary extends Library {
 
 }
