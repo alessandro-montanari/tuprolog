@@ -280,14 +280,15 @@ public class OOLibrary extends Library {
      */
     @SuppressWarnings("unchecked")
 	public <T> boolean new_lambda_3(Term interfaceName, Term implementation, Term id)throws JavaException,Exception { 
-    	counter++;
-    	String target_class=(interfaceName.toString()).substring(1, interfaceName.toString().length()-1);
-    	String lambda_expression=(implementation.toString()).substring(1, implementation.toString().length()-1);
-    	//following lines allow to delete escape char from received string
-    	target_class = org.apache.commons.lang3.StringEscapeUtils.unescapeJava(target_class);
-    	lambda_expression = org.apache.commons.lang3.StringEscapeUtils.unescapeJava(lambda_expression);
+    	try {
+    		counter++;
+    		String target_class=(interfaceName.toString()).substring(1, interfaceName.toString().length()-1);
+    		String lambda_expression=(implementation.toString()).substring(1, implementation.toString().length()-1);
+    		//following lines allow to delete escape char from received string
+    		target_class = org.apache.commons.lang3.StringEscapeUtils.unescapeJava(target_class);
+    		lambda_expression = org.apache.commons.lang3.StringEscapeUtils.unescapeJava(lambda_expression);
     	
-		Class<?> lambdaMetaFactory = alice.util.proxyGenerator.Generator.make(
+    		Class<?> lambdaMetaFactory = alice.util.proxyGenerator.Generator.make(
 				ClassLoader.getSystemClassLoader(),
 		        "MyLambdaFactory"+counter,
 		        "" +           
@@ -296,22 +297,25 @@ public class OOLibrary extends Library {
 				    " 		return "+lambda_expression+"; \n"+ 
 		            "  }\n" +
 		            "}\n"
-		 );
+    		);
 		
-		Object myLambdaFactory = lambdaMetaFactory.newInstance(); 
-		Class<?> myLambdaClass = myLambdaFactory.getClass(); 
-		Method[] allMethods = myLambdaClass.getDeclaredMethods();
-		T myLambdaInstance=null; 
-		for (Method m : allMethods) {
-			String mname = m.getName();
-			if (mname.startsWith("getFunction"))
-				myLambdaInstance=(T) m.invoke(myLambdaFactory);
-		}
-		id = id.getTerm();
-		if (bindDynamicObject(id, myLambdaInstance))
-			return true;
-	    else
-	        throw new JavaException(new Exception());
+    		Object myLambdaFactory = lambdaMetaFactory.newInstance(); 
+    		Class<?> myLambdaClass = myLambdaFactory.getClass(); 
+    		Method[] allMethods = myLambdaClass.getDeclaredMethods();
+    		T myLambdaInstance=null; 
+    		for (Method m : allMethods) {
+    			String mname = m.getName();
+    			if (mname.startsWith("getFunction"))
+    				myLambdaInstance=(T) m.invoke(myLambdaFactory);
+    		}
+    		id = id.getTerm();
+    		if (bindDynamicObject(id, myLambdaInstance))
+    			return true;
+    		else
+    			throw new JavaException(new Exception());
+    	} catch (Exception ex) {
+            throw new JavaException(ex);
+        }
     }
 
     /**

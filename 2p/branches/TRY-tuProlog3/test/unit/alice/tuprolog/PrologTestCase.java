@@ -16,7 +16,7 @@ public class PrologTestCase extends TestCase {
 		assertNotNull(engine.getLibrary("alice.tuprolog.lib.BasicLibrary"));
 		assertNotNull(engine.getLibrary("alice.tuprolog.lib.ISOLibrary"));
 		assertNotNull(engine.getLibrary("alice.tuprolog.lib.IOLibrary"));
-		assertNotNull(engine.getLibrary("alice.tuprolog.lib.JavaLibrary"));
+		assertNotNull(engine.getLibrary("alice.tuprolog.lib.OOLibrary"));
 	}
 	
 	public void testLoadLibraryAsString() throws InvalidLibraryException {

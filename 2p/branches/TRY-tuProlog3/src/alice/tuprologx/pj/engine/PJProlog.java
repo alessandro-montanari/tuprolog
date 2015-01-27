@@ -25,7 +25,7 @@ public class PJProlog /*extends alice.tuprolog.Prolog*/ {
     public PJProlog() {
         engine = new alice.tuprolog.Prolog();        
         try {
-            engine.unloadLibrary("alice.tuprolog.lib.JavaLibrary");
+            engine.unloadLibrary("alice.tuprolog.lib.OOLibrary");
             engine.loadLibrary("alice.tuprologx.pj.lib.PJLibraryNew");
             engine.loadLibrary("alice.tuprolog.lib.DCGLibrary");
         }
