@@ -143,9 +143,9 @@ public class OOLibrary extends Library {
                 
                 + "java_array_length(Array,Length):- class('java.lang.reflect.Array') <- getLength(Array as 'java.lang.Object') returns Length.\n"
                 + "java_object_string(Object,String):- Object <- toString returns String.    \n"
-                +
+                +//**** end section deprecated from tuProlog 3.0  ***//
                 "java_catch(JavaGoal, List, Finally) :- call(JavaGoal), call(Finally).\n";
-        		//**** end section deprecated from tuProlog 3.0  ***//
+        		
     }
 
     public void dismiss() {
