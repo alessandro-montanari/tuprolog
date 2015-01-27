@@ -9,5 +9,7 @@
 	<classpathentry kind="lib" path="lib/junit.jar"/>
 	<classpathentry kind="lib" path="lib/ikvm-api.jar"/>
 	<classpathentry kind="lib" path="lib/mscorlib.jar"/>
+	<classpathentry kind="lib" path="lib/autocomplete.jar"/>
+	<classpathentry kind="lib" path="lib/rsyntaxtextarea.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
