@@ -2,14 +2,11 @@
 	
 <project name="tuProlog build file" basedir=".." default="help">
 
-	<taskdef name="fit" classname="com.cmdev.fit.ant.FitTask">
-		<classpath>
-			<fileset dir="lib">
-				<include name="fit.jar"/>
-				<include name="antfit.jar"/> 
-			</fileset>
-		</classpath>
-	</taskdef>
+	
+	  <path id="compile.classpath">
+	        <fileset dir="lib" includes="*.jar"/>
+	    </path>
+	
 	
 	<path id="path.svnant">
  		<pathelement location="lib/svnant.jar"/>
@@ -62,7 +59,9 @@
     			
     			<mkdir dir="${build.tests.dir}"/>
     			<mkdir dir="${build.tests.dir}/unit"/>
-    			<mkdir dir="${build.tests.dir}/fixtures"/>
+		    	
+    			<!-- <mkdir dir="${build.tests.dir}/fixtures"/> -->
+		    	<mkdir dir="${build.tests.dir}/concordion"/>
     			
     			<javac destdir="${build.tests.dir}/unit" debug="@{debug}" 
     				deprecation="false" optimize="@{optimize}" failonerror="true" includeantruntime="false" target="${target}" source="${target}">
@@ -70,13 +69,6 @@
     	            <classpath refid="ant-classpath"/>
     	        	<classpath location="${build.classes.dir}"/>
     	        </javac>
-    			
-    			<javac destdir="${build.tests.dir}/fixtures" debug="@{debug}"
-    				deprecation="false" optimize="@{optimize}" failonerror="true" target="${target}" source="${target}">
-    		        <src path="${test.dir}/fit/fixtures"/>
-    		        <classpath refid="ant-classpath"/>
-    		    	<classpath location="${build.classes.dir}"/>
-    			</javac>
 		    	
 	 		</sequential>
 	</macrodef>
@@ -269,8 +261,7 @@
 			06.unit.test.report	run unit tests (junit) and save the report in html format
 								Destination: ${build.unit.reports.dir}
 		
-			07.fit.test   		run acceptance tests (FIT) and save the report in html format
-								Destination: ${build.fit.reports.dir}
+			07.concordion.test  run acceptance tests (Concordion) and save the report in html format
 		
 			08.package        	create the application jar files
 								Destination: ${build.archives.dir}
@@ -317,8 +308,7 @@
         <mkdir dir="${build.classes.dir}"/>
         <mkdir dir="${build.tests.dir}"/>
         <mkdir dir="${build.archives.dir}"/>
-		<mkdir dir="${build.unit.reports.dir}"/>
-		<mkdir dir="${build.fit.reports.dir}"/>
+		<mkdir dir="${build.unit.reports.dir}"/>		
 		<mkdir dir="${build.archives.net.dir}"/>
 		<mkdir dir="${lib.dir}"/>
 		<delete dir="${tmp.dir}" />
@@ -362,24 +352,49 @@
 		<echo>Look directory ${build.unit.reports.dir}/html-report</echo>
 	</target>
 	
-	<target name="07.fit.test" depends="05.build.tests">
+	<target name="07.concordion.test" depends="05.build.tests">
+		<property name="dir.concordion.output" value="../build/tests/concordion"/>
 		
-		<delete includeemptydirs="true">
-			<fileset dir="${build.fit.reports.dir}" includes="**/*"/>
-		</delete>
+		<mkdir dir="../build/tests/concordion/classes"/>
+		<javac classpathref="compile.classpath"
+			destdir="../build/tests/concordion/classes"
+		    srcdir="src:test/concordiontests"
+		    debug="yes"
+		    failonerror="yes"
+		    source="1.5"
+		    target="1.5"
+		    includeantruntime="no"
+		/>
+
+		<copy todir="../build/tests/concordion/classes">
+			<!-- <fileset dir="test/concordiontests" /> -->
+			<fileset dir="test/concordiontests" />
+		</copy>
 		
-		<fit destdir="${build.fit.reports.dir}" usewiki="false" fork="true">
-			<classpath refid="ant-classpath"/>
-			<classpath path="${build.classes.dir}"/>
-			<classpath path="${build.tests.dir}/fixtures"/>
+		<mkdir dir="../build/tests/concordion/test-output"/>
+		<mkdir dir="../build/tests/concordion/concordion-output"/>
+
+		<junit fork="yes" forkmode="once" printsummary="yes" showoutput="yes">
+			<jvmarg value="-Dconcordion.output.dir=../build/tests/concordion/concordion-output"/>
+		            <classpath>
+		                <path refid="compile.classpath"/>
+		                <pathelement location="../build/tests/concordion/classes"/>
+		            </classpath>
+
+		            <formatter type="plain" usefile="false"/>
+
+		            <batchtest todir="../build/tests/concordion/test-output">
+		                <fileset dir="test/concordiontests">
+		                    <include name="**/*Test.java"/>
+		                    <include name="**/*General.java"/>
+		                    <exclude name="**/Abstract*"/>
+		                </fileset>
+		            </batchtest>
+		        </junit>
+
+		        
 		
-			<fileset dir="${test.dir}/fit/doc">
-				<include name="AcceptanceTests.html"/> 
-		    </fileset>
-			
-		</fit>
 		
-		<echo>Look directory ${build.fit.reports.dir}</echo>
 	</target>
     
     <target name="08.package" depends="01.set.classpath, 04.prepare" description="Create runnable Jar" >
@@ -587,7 +602,7 @@
 	    	<echo>Look directory ${doc.dir}/javadoc</echo>
 	    </target>
 	
-		<target name="11.release.bin" depends="01.set.classpath, 04.prepare, 06.unit.test.report, 07.fit.test, 08.package, 10.javadoc " description="Creates the structure for the release">
+		<target name="11.release.bin" depends="01.set.classpath, 04.prepare, 06.unit.test.report, 08.package, 10.javadoc " description="Creates the structure for the release">
 			
 			<delete includeemptydirs="true">
 				<fileset dir="${build.release.dir}" includes="**/*"/>
