@@ -337,6 +337,8 @@ The steps to be performed to tag the Eclipse version are the following:
 In the .NET version, there is obviously no Eclipse project. Several Visual Studio projects are present, but are not needed to tag: all is needed is the Ant tool, to be run from the command line, and the "csc" compiler, which must be on the system path.
 The IKVM tool must also be available in the path, since the ant script has to copy the required DLL libraries in the release (it is not used to compile, however -- this step has already been performed during the generation of the main Java target).
 
+First, go to the 2p-net\trunk\ant subdirectory in the repository.
+
 So, in order to tag the .NET version:
   # first, modify the externals settings and svn properties (details below)
   # then, launch Ant from a terminal window with the "02.tag" target. This will compile all the required Csharp files, via csc, and tag the release as appropriate.
