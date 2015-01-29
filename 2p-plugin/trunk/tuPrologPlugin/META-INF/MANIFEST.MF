@@ -56,7 +56,6 @@ Export-Package: alice.tuprolog,
  prefuse.visual.sort,
  prefuse.visual.tuple
 Require-Bundle: javax.xml,
- org.apache.lucene,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.ui,
