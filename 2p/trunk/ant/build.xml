@@ -119,17 +119,15 @@
 			    </manifest>
 		 	</jar>
 	    	
-	    	<jar destfile="${build.tests.dir}/fixtures.jar" basedir="${build.tests.dir}/fixtures">
+<!--	    	<jar destfile="${build.tests.dir}/fixtures.jar" basedir="${build.tests.dir}/fixtures">
 		    	<manifest>
-			      	<!-- Who is building this jar? -->
 			      	<attribute name="Built-By" value="${user.name}"/>
-			      	<!-- Information about the program itself -->
 			      	<attribute name="Implementation-Vendor" value="tuProlog team"/>
 			      	<attribute name="Implementation-Title" value="tuProlog Engine"/>
 			      	<attribute name="Implementation-Version" value="${engine.version}.${JavaSpecific.version}"/>
 			    </manifest>
 	    	</jar>
-	    	
+-->
 	    	<echo>Look directories ${build.archives.dir} and ${build.tests.dir}</echo>
 		</sequential>
 	</macrodef>
