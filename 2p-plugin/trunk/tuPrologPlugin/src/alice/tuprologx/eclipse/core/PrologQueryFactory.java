@@ -27,8 +27,8 @@ public class PrologQueryFactory extends Observable {
 		
 	private static PrologQueryFactory instance;
 	Vector<PrologQuery> queries;
-	private int queryId;
-	private static boolean init;
+	// private int queryId;
+	// private static boolean init;
 	private static Theory lastTheory;
 	public static PrologQueryFactory getInstance(){
 		if (instance == null){
@@ -39,7 +39,7 @@ public class PrologQueryFactory extends Observable {
 	
 	public PrologQueryFactory()
 	{
-		queryId = 0;
+		//queryId = 0;
 		queries = new Vector<PrologQuery>();
 		try {
 			lastTheory = new Theory("");
@@ -47,7 +47,7 @@ public class PrologQueryFactory extends Observable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		init = true;
+		//PrologQueryFactory.init = true;
 	}
 	
 	public void addQuery(PrologQuery query)
