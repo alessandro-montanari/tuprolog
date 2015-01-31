@@ -42,6 +42,8 @@
 			<copy todir="${build.classes.dir}/alice/tuprologx/ide/img">
 				<fileset dir="${src.dir}/alice/tuprologx/ide/img"/>
 			</copy>
+	    	
+	    	<copy file="${src.dir}/alice/tuprologx/ide/docs.txt" todir="${build.classes.dir}/alice/tuprologx/ide"/>
 			
 	    </sequential>
 	</macrodef>
@@ -80,6 +82,8 @@
 			<delete includeemptydirs="true">
 	    		<fileset dir="${build.archives.dir}" includes="**/*"/>
 	    	</delete>
+			
+
 	    	
 	    	<jar destfile="${build.archives.dir}/2p.jar" basedir="${build.classes.dir}">
 	    	    <manifest>
@@ -90,8 +94,14 @@
 	    	      	<attribute name="Implementation-Title" value="tuProlog Engine"/>
 	    	      	<attribute name="Implementation-Version" value="${engine.version}.${JavaSpecific.version}"/>
 	    	      	<!-- details -->
-	    	   		<attribute name="Main-Class" value="alice.tuprologx.ide.GUILauncher"/>
+	    	    	
+	    	    	<attribute name="Main-Class" value="alice.tuprologx.ide.GUILauncher"/>
+	    	    	<attribute name="Class-Path" value="."/>
 	    	    </manifest>
+	    		
+	    		<zipgroupfileset excludes="META-INF/*.SF" dir="${lib.dir}" includes="*.jar"/>
+	    		<zipgroupfileset excludes="META-INF/*.SF" dir="${lib.dir}/jflex" includes="*.jar"/>
+	    
 	    	  </jar>
 	    	
 	    	<jar destfile="${build.archives.dir}/tuprolog.jar" 	basedir="${build.classes.dir}" 
@@ -396,7 +406,7 @@
 	</target>
     
     <target name="08.package" depends="01.set.classpath, 04.prepare" description="Create runnable Jar" >
-    
+  
     	<build debug="false" optimize="true"/>
     	<build-tests debug="false" optimize="true"/>
     	
