@@ -21,9 +21,8 @@ package alice.tuprolog;
  * Base class for tuProlog exceptions. Used
  * also for representing generic 2P exceptions.
  */
-@SuppressWarnings("serial")
 public class PrologException extends Exception {
-    
+	private static final long serialVersionUID = 1L;
     public PrologException() {}
     
     public PrologException(String st) {

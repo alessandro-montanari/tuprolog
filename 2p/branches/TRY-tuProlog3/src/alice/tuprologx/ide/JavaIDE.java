@@ -22,9 +22,11 @@ import alice.tuprolog.event.*;
 import alice.tuprolog.lib.IOLibrary;
 
 import javax.swing.*;
+import org.fife.ui.autocomplete.DefaultCompletionProvider;
 
 import java.awt.*;
 import java.awt.event.*;
+
 
 /**
  * The tuProlog IDE to be run on a Java2 platform. Makes use of Thinlet and
@@ -56,9 +58,12 @@ public class JavaIDE
     private void initComponents() {
         System.out.println("tuProlog system - release " + Prolog.getVersion());
 
-        Prolog engine = new Prolog();
+        final Prolog engine = new Prolog();
         
-        tabbedPane = new TheoryTabbedPane();
+        DefaultCompletionProvider commonCompletionProvider = CompletionUtils.createCompletionProvider();
+        engine.addTheoryListener(new CompletionUpdateTheoryListener(commonCompletionProvider));
+        
+        tabbedPane = new TheoryTabbedPane(commonCompletionProvider);
         tabbedPane.setEngine(engine);
         toolBar = new ToolBar(tabbedPane,this);
         tabbedPane.setToolBar(toolBar);
@@ -68,8 +73,8 @@ public class JavaIDE
 
         TheoryEditor editor = new TheoryEditor(tabbedPane);
         tabbedPane.setTheoryEditor(editor);
-
-        JavaInputField inputField = new JavaInputField();
+        
+        JavaInputField inputField = new JavaInputField(commonCompletionProvider);
         tabbedPane.setInputField(inputField);
 
         consoleManager=new ConsoleManager(tabbedPane);
@@ -149,10 +154,10 @@ public class JavaIDE
         IDEPanel.add(statusBar, BorderLayout.SOUTH);
 
         getContentPane().add(IDEPanel);
-
+        
         pack();
+        splitPaneV.setDividerLocation(200);
         setSize(new Dimension(585,675));
-        splitPaneV.setResizeWeight(0.7);
 
         // Set a title bar icon
         ImageIcon icon = new ImageIcon(getClass().getResource("img/tuProlog.gif"));
@@ -222,12 +227,11 @@ public class JavaIDE
         }
     }
 
-    class WindowListener extends WindowAdapter
+	class WindowListener extends WindowAdapter
     {
         public void windowClosing(WindowEvent w)
         {
             onClose();
         }
     }
-    
-} // end JavaIDE class
+}

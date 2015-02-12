@@ -29,9 +29,8 @@ import java.util.Iterator;
  * @see Prolog
  *
  */
-@SuppressWarnings("serial")
 public class Theory implements Serializable {
-
+	private static final long serialVersionUID = 1L;
     private String theory;
     private Struct clauseList;
 

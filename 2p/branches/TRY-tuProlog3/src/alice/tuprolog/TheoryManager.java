@@ -46,9 +46,8 @@ import alice.util.Tools;
  *
  * @see Theory
  */
-@SuppressWarnings("serial")
 public class TheoryManager implements Serializable {
-
+	private static final long serialVersionUID = 1L;
 	private ClauseDatabase dynamicDBase;
 	private ClauseDatabase staticDBase;
 	private ClauseDatabase retractDBase;
