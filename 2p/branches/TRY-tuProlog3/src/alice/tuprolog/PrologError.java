@@ -3,9 +3,8 @@ package alice.tuprolog;
 /**
  * @author Matteo Iuliani
  */
-@SuppressWarnings("serial")
 public class PrologError extends Throwable {
-
+	private static final long serialVersionUID = 1L;
 	// termine Prolog che rappresenta l'argomento di throw/1
 	private Term error;
 	/*Castagna 06/2011*/

@@ -72,7 +72,7 @@ public class StateEnd extends State {
 			//System.out.println("substituteVarGoalBO --- a1 "+a1);
 			Term a10=((Struct)a1).getArg(0);
 			if(a10 instanceof Var){
-				//System.out.println("substituteVarGoalBO --- a10 è var name  "+((Var)a10).getName()+" original name "+((Var)a10).getOriginalName());
+				//System.out.println("substituteVarGoalBO --- a10 var name  "+((Var)a10).getName()+" original name "+((Var)a10).getOriginalName());
 				//System.out.println("substituteVarGoalBO faccio findvar e sostisuisco a1 pos 0 "+a1);
 				initGoalBag=findVarName(a10,a,a1,0);
 				//System.out.println("substituteVarGoalBO dopo sostituzione "+a1);
@@ -81,7 +81,7 @@ public class StateEnd extends State {
 			else if(a10 instanceof Struct){
 				Term a100;
 				a100 = ((Struct)a10).getArg(0);
-				//System.out.println("substituteVarGoalBO --- a10 è Struct name  "+a10);
+				//System.out.println("substituteVarGoalBO --- a10 Struct name  "+a10);
 				//System.out.println("substituteVarGoalBO --- a10 faccio solve di "+a100+" a1 "+a1);
 				a10=solve(a100,a,a10);
 				((Struct)a1).setArg(0,a10);
@@ -93,7 +93,7 @@ public class StateEnd extends State {
 			a1=a11;
 		}
 		if(a1 instanceof Var){
-			//System.out.println("substituteVarGoalBO --- a1 è var name  "+((Var)a1).getName()+" original name "+((Var)a1).getOriginalName());
+			//System.out.println("substituteVarGoalBO --- a1 var name  "+((Var)a1).getName()+" original name "+((Var)a1).getOriginalName());
 			initGoalBag=findVarName(a1,a,initGoalBag,0);
 		}
 		return initGoalBag;
@@ -110,7 +110,7 @@ public class StateEnd extends State {
 				while(!findName && gVar !=null && gVar instanceof Var){
 					//System.out.println("**** ----- verifico uguaglianza con "+gVar);
 					if(((Var)gVar).getName().toString().compareTo(((Var)link).getName().toString())==0){
-						//System.out.println(link +" **** ----- ***** il nome è uguale a "+gVar);
+						//System.out.println(link +" **** ----- ***** il nome uguale a "+gVar);
 						//System.out.println(((Struct)initGoalBag).getArg(0));
 						//System.out.println(link +" **** ----- ***** sostituisco "+initGoalBag+" in pos "+pos+" con "+(Var)a[y]);
 						((Struct)initGoalBag).setArg(pos,new Var(((Var)a[y]).getName().toString()));
@@ -134,8 +134,8 @@ public class StateEnd extends State {
 	    	ArrayList<Term> bag = (c.getEngineMan()).getBagOFres();
 	    	Term initBag = (c.getEngineMan()).getBagOFbag();
 	    	Term BOgoal=(c.getEngineMan()).getBagOFgoal();
-//	    	System.out.println("STATE END relinkvar(): la bag è "+(c.getEngineMan()).getBagOFbag());
-//	    	System.out.println("STATE END relinkvar(): il goal della BO è "+(c.getEngineMan()).getBagOFgoal());
+//	    	System.out.println("STATE END relinkvar(): la bag ÔøΩ "+(c.getEngineMan()).getBagOFbag());
+//	    	System.out.println("STATE END relinkvar(): il goal della BO ÔøΩ "+(c.getEngineMan()).getBagOFgoal());
 	    	
 	    	/* itero nel goal per cercare una eventuale struttura che deve fare match con la
 	    	 * result bag ESEMPIO setof(X,member(X,[V,U,f(U),f(V)]),[a,b,f(b),f(a)]).
@@ -151,12 +151,12 @@ public class StateEnd extends State {
 	    	
 	    	Term query = e.query;
 //	    	if(query instanceof Struct && (((Struct)query).getName().equals("setof") || ((Struct)query).getName().equals("bagof"))){
-//	    		System.out.println("******** query è struct "+((Struct)query).getName()+" ");
+//	    		System.out.println("******** query ÔøΩ struct "+((Struct)query).getName()+" ");
 //	    		System.out.println("******** ARG 0 "+((Struct)query).getArg(0));
 //	    		System.out.println("******** ARG 1 "+((Struct)query).getArg(1));
 //	    		System.out.println("******** ARG 2 "+((Struct)query).getArg(2));
 //	    		if(((Struct)query).getArg(2) instanceof Struct)
-//	    			System.out.println("******** ARG 2 è STRUCT ");
+//	    			System.out.println("******** ARG 2 STRUCT ");
 //	    	}
 	    	
 	    	
@@ -182,7 +182,7 @@ public class StateEnd extends State {
 		    			tgoal=((Struct)tgoal).getArg(1);
 		    			//System.out.println("STATE END relinkvar(): trovata struct con arg 1 "+tgoal);
 		    			
-		    			if(p.unify(tgoal, ((Var)initBag).getLink())){ //In realtà sembra che già qui non unifichi
+		    			if(p.unify(tgoal, ((Var)initBag).getLink())){ //In realtÀÜ sembra che giÀÜ qui non unifichi
 		    				//System.out.println("STATE END relinkvar(): trovata struct con arg 1 che unifica con bag iniziale");
 		    				initGoalBag=tgoal; 	
 		    				find=true;
@@ -206,7 +206,7 @@ public class StateEnd extends State {
 		    				Term a1=((Struct)initGoalBag).getArg(1);
 		    				if(a0 instanceof Var){
 		    					Term link=a0;
-//		    					System.out.println("substituteVarGoalBO --- a0 è var name  "+((Var)a0).getName()+" original name "+((Var)a0).getOriginalName()+" link "+((Var)a0).getLink());
+//		    					System.out.println("substituteVarGoalBO --- a0  var name  "+((Var)a0).getName()+" original name "+((Var)a0).getOriginalName()+" link "+((Var)a0).getLink());
 //		    					System.out.println("SCORRO LINK VARIABILE "+a0);
 		    					initGoalBag=findVarName(link,a,initGoalBag,0); 
 		    					
@@ -252,11 +252,11 @@ public class StateEnd extends State {
 			    		int k=0;
 				    		for(k=0; k<left.size(); k++){
 				    			if(initGoalBagList.get(m).isGreaterRelink(left.get(k), initGoalBagListVar)){
-				    				//System.out.println(initGoalBagList.get(m)+" più grande di "+left.get(k));
+				    				//System.out.println(initGoalBagList.get(m)+" piÔøΩ grande di "+left.get(k));
 				    				left_temp.add(left.get(k));
 				    			}
 				    			else{
-				    				//System.out.println(initGoalBagList.get(m)+" più piccolo di "+left.get(k));
+				    				//System.out.println(initGoalBagList.get(m)+" piÔøΩ piccolo di "+left.get(k));
 				    				left_temp.add(initGoalBagList.get(m));
 				    				break;
 				    			}
@@ -376,7 +376,7 @@ public class StateEnd extends State {
 	    	
 	    	ArrayList<String> lSolVar=new ArrayList<String>() ;
 	    	//System.out.println("Le var del risultato sono BAG "+bag); 
-	    	/*NB lSolVar ha lunghezza multipla di lGoal var, se ho più soluzioni si ripete 
+	    	/*NB lSolVar ha lunghezza multipla di lGoal var, se ho piÔøΩ soluzioni si ripete 
 	    	 * servirebbe esempio con 2 bag */
 	    	for (int i=0; i<bag.size();i++) {
 	    		Var resVar = (Var)bag.get(i);
@@ -386,7 +386,7 @@ public class StateEnd extends State {
 	    		if(t!=null){
 	    			if(t instanceof Struct){
 	    				Struct t1 = ((Struct)t);
-	    				//System.out.println("RESVAR BAG LINK è STRUCT "+t1);
+	    				//System.out.println("RESVAR BAG LINK ÔøΩ STRUCT "+t1);
 	    				//uso lista temporanea per aggiustare ordine, dalla struct con findvar escono al contrario
 	    				ArrayList<String> l_temp=new ArrayList<String>();
 	    				l_temp= findVar(t1,l_temp);
@@ -397,7 +397,7 @@ public class StateEnd extends State {
 	    			else if(t instanceof Var){
 	    				while(t!=null && t instanceof Var){
 		    				resVar = (Var)t;
-		    	    		//System.out.println("---RESVAR BAG è VAR "+resVar); 
+		    	    		//System.out.println("---RESVAR BAG ÔøΩ VAR "+resVar); 
 		    	    		t = resVar.getLink();
 		    	    		//System.out.println("---RESVAR BAG LINK "+resVar);	
 	    				}
@@ -414,9 +414,9 @@ public class StateEnd extends State {
 	    	 * memorizzate nell'ArrayList<String> lgoalBOVar
 	    	 * lgoalBOVar = [Z_e0, X_e73, Y_e74, V_e59, WithRespectTo_e31, U_e588, V_e59, H_e562, X_e73, Y_e74, F_e900]
 	    	 */
-	    	//System.out.println("il goal interno bag of è "+(c.getEngineMan()).getBagOFgoal());
+	    	//System.out.println("il goal interno bag of ÔøΩ "+(c.getEngineMan()).getBagOFgoal());
 	    	Var goalBO = (Var)(c.getEngineMan()).getBagOFgoal();
-	    	//System.out.println("il goal interno bag of è var con link "+goalBO.getLink());
+	    	//System.out.println("il goal interno bag of ÔøΩ var con link "+goalBO.getLink());
 	    	ArrayList<String> lgoalBOVar=new ArrayList<String>() ; 
 	    	Term goalBOvalue = goalBO.getLink();
 	    	if(goalBOvalue instanceof Struct){
@@ -432,7 +432,7 @@ public class StateEnd extends State {
 	    	/*
 	    	 * STEP3: prendere il set di variabili libere della bagof
 	    	 * fare il match con le variabili del goal in modo da avere i nomi del goal esterno
-	    	 * questo elenco ci servirà per eliminare le variabili in più che abbiamo in lgoalBOVar
+	    	 * questo elenco ci servirÀÜ per eliminare le variabili in piÔøΩ che abbiamo in lgoalBOVar
 	    	 * ovvero tutte le variabili associate al template
 	    	 * lGoalVar [Y_e74, U_e588, V_e59, X_e73, Y_e74, U_e588, F_e900]
 	    	 * mette quindi in lGoalVar le variabili che compaiono in goalVars e sono anche libere 
@@ -447,23 +447,24 @@ public class StateEnd extends State {
 	    	//Object[] a=(e.goalVars).toArray();
 	    	//System.out.println("Lista variabili goal bagof nomi e.goalVars "+e.goalVars.toString());
 	    	//int r=0;
-	    	for (java.util.Iterator<? extends Term> it = varList.listIterator(); it.hasNext();) {
-	    		//System.out.println("Entro "+r);
-	    		//r++;
-	    		Term var=it.next();
-	    		for(int y=0; y<a.length;y++){
-	    			Var vv=(Var)a[y];
-	    			if(vv.getLink()!=null && vv.getLink().isEqual(var)/*&& !(var.toString().startsWith("_"))*/){
-	    				//System.out.println("Aggiungo trovata uguaglianza "+vv+" e var "+var);
-	    				lGoalVar.add(vv.getName());
-	    			}
-	    		}
-	    	}
+	    	if (varList != null)
+		    	for (java.util.Iterator<? extends Term> it = varList.listIterator(); it.hasNext();) {
+		    		//System.out.println("Entro "+r);
+		    		//r++;
+		    		Term var=it.next();
+		    		for(int y=0; y<a.length;y++){
+		    			Var vv=(Var)a[y];
+		    			if(vv.getLink()!=null && vv.getLink().isEqual(var)/*&& !(var.toString().startsWith("_"))*/){
+		    				//System.out.println("Aggiungo trovata uguaglianza "+vv+" e var "+var);
+		    				lGoalVar.add(vv.getName());
+		    			}
+		    		}
+		    	}
 	    	//System.out.println("********Lista variabili goal bagof nomi goal lGoalVar "+lGoalVar);
 	    	
 	    	/*
 	    	 * STEP4: pulisco lgoalBOVar lasciando solo i nomi che compaiono effettivamente in 
-	    	 * lGoalVar (che è la rappresentazione con nomi esterni delle variabili libere nel
+	    	 * lGoalVar (che ÔøΩ la rappresentazione con nomi esterni delle variabili libere nel
 	    	 * goal della bagof
 	    	 */
 	    	lgoalBOVar.retainAll(lGoalVar);
@@ -495,7 +496,7 @@ public class StateEnd extends State {
 		    			t=resVar;
 		    		}
 		    		//System.out.println("----link NOT null"+t);
-		    		//scorro le variabili del goal per vedere quale è il risultato e ne memorizzo il nome
+		    		//scorro le variabili del goal per vedere quale ÔøΩ il risultato e ne memorizzo il nome
 		    		bagVarName = null;
 		    		for(int y=0; y<a.length;y++){
 		    			Var vv=(Var)a[y];
@@ -526,7 +527,7 @@ public class StateEnd extends State {
 		   			}
 		    		
 		    	}
-		    	//System.out.println("La variabile da sostituire è "+bagVarName+" con valore "+goalSolution);
+		    	//System.out.println("La variabile da sostituire ÔøΩ "+bagVarName+" con valore "+goalSolution);
 		    	for(int j=0; j<vars.size(); j++){
 		    		Var vv=(Var)vars.get(j);
 		    		if(vv.getOriginalName().equals(bagVarName)){
@@ -618,7 +619,7 @@ public class StateEnd extends State {
     	while(v.getLink()!=null){ 
     		//System.out.println("*** cerco il valore v "+v+" link "+v.getLink());
     		if(v.getLink()instanceof Var){
-    			//System.out.println("*** il link è var");
+    			//System.out.println("*** il link ÔøΩ var");
     			v=(Var)v.getLink();
     		}
     		else if(v.getLink()instanceof Struct){
@@ -651,7 +652,7 @@ public class StateEnd extends State {
     	while(v.getLink()!=null){ 
     		//System.out.println("+++ cerco il valore v "+v+" link "+v.getLink());
     		if(v.getLink()instanceof Var){
-    			//System.out.println("+++ il link è var");
+    			//System.out.println("+++ il link ÔøΩ var");
     			v=(Var)v.getLink();
     		}
     		else if(v.getLink()instanceof Struct){
@@ -725,7 +726,7 @@ public class StateEnd extends State {
 				//System.out.println("Substitute var-------Trovata struct t "+t);
 				//System.out.println("Substitute var-------Trovata struct t arity "+((Struct)t).getArity());
 				Struct s1 = substituteVar((Struct)t,lSol,lgoal);
-				//System.out.println("Substitute var ---t è struct ritorno s1 "+s1);
+				//System.out.println("Substitute var ---t ÔøΩ struct ritorno s1 "+s1);
 				s.setArg(0, s1);
 			}
 		}
@@ -738,11 +739,11 @@ public class StateEnd extends State {
 			if(t instanceof Struct){
 				//System.out.println("Substitute var-------Trovata struct ");
 				Struct s1 = substituteVar((Struct)t,lSol,lgoal);
-				//System.out.println("Substitute var ---t è struct ritorno s1 "+s1);
+				//System.out.println("Substitute var ---t ÔøΩ struct ritorno s1 "+s1);
 				s.setArg(0, s1);
 			}
 		}
-		//System.out.println("Substitute var ---t è nullo ritorno s "+s); Compare di
+		//System.out.println("Substitute var ---t ÔøΩ nullo ritorno s "+s); Compare di
 		return s;
     }
 

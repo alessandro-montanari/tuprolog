@@ -26,11 +26,10 @@ import alice.tuprolog.SolveInfo;
  * @since 1.3
  *
  */
-@SuppressWarnings("serial")
 public class QueryEvent extends PrologEvent {
 
    private SolveInfo info;
-    
+   private static final long serialVersionUID = 1L;
     public QueryEvent(Prolog source, SolveInfo info){
         super(source);
         this.info=info;

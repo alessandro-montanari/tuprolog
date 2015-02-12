@@ -25,9 +25,8 @@ import java.util.List;
  * Int class represents the integer prolog data type
  *
  */
-@SuppressWarnings("serial")
 public class Int extends Number {
-    
+   private static final long serialVersionUID = 1L; 
    private int      value;
     
     public Int(int v) {

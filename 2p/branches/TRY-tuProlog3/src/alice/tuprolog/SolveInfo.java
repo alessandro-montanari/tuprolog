@@ -28,9 +28,8 @@ import java.util.*;
  * 
  * @author Alex Benini
  */
-@SuppressWarnings("serial")
 public class SolveInfo implements Serializable/*, ISolution<Term,Term,Term>*/  {
-    
+	private static final long serialVersionUID = 1L;
     /*
      * possible values returned by step functions
      * and used as eval state flags

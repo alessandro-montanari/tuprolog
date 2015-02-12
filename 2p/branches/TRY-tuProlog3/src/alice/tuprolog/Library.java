@@ -39,9 +39,8 @@ import java.util.*;
  * </ul>
  * <p>
  */
-@SuppressWarnings("serial")
 public abstract class Library implements Serializable, IPrimitives {
-    
+	private static final long serialVersionUID = 1L;
     /**
 	 * prolog core which loaded the library
 	 */

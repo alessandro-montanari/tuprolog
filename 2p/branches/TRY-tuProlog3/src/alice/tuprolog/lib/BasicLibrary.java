@@ -30,9 +30,8 @@ import alice.tuprolog.Number;
  * 
  * 
  */
-@SuppressWarnings("serial")
 public class BasicLibrary extends Library {
-
+	private static final long serialVersionUID = 1L;
     public BasicLibrary() {
     }
 
@@ -1049,8 +1048,10 @@ public class BasicLibrary extends Library {
                 */
                 + "functor(Term, Functor, Arity) :- \\+ var(Term), !, Term =.. [Functor|ArgList],length(ArgList, Arity).\n"
                 + "functor(Term, Functor, Arity) :- var(Term), atomic(Functor), Arity == 0, !, Term = Functor.\n"
+                + "functor(Term, Functor, Arity) :- var(Term), current_prolog_flag(max_arity, Max), Arity>Max, !, false.\n"
                 + "functor(Term, Functor, Arity) :- var(Term), atom(Functor), number(Arity), Arity > 0, !,length(ArgList, Arity),Term =.. [Functor|ArgList].\n"
-                + "functor(_Term, _Functor, _Arity) :- throw('Arguments are not sufficiently instantiated.').\n"
+                //+ "functor(_Term, _Functor, _Arity) :- throw('Arguments are not sufficiently instantiated.').\n"
+                + "functor(_Term, _Functor, _Arity) :-false.\n"
                 
                 
                 + "arg(N,C,T):- arg_guard(N,C,T), C =.. [_|Args], element(N,Args,T).\n"
