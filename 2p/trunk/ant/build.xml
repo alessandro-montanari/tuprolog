@@ -429,6 +429,7 @@
 	 		<mkdir dir="${build.archives.net.dir}/lib"/>
 	 		<mkdir dir="${build.archives.net.dir}/test"/>
 	 	
+	 		<!-- Copy all ikvm dlls to be sure that 2p runs correctly -->
 	 		<copy todir="${build.archives.net.dir}">
 	 			<fileset dir="${ikvm.dir}/bin/">
 	 				<include name="*.dll"/>
@@ -453,7 +454,6 @@
 
 	        <echo>Building JUnit...</echo>
 			<exec executable="${ikvmc}">
-	            <!-- <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Text.dll" /> -->
 	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Core.dll" />
 	            <arg value="-target:exe" />
 	            <arg value="-compressresources" />
@@ -514,7 +514,6 @@
 			<exec executable="${ikvmc}">
 	            <!-- <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Text.dll" /> -->
 	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Core.dll" />
-				<arg value="-reference:${build.archives.net.dir}/commons-lang3-3.3.2.dll" />
 				<arg value="-reference:mscorlib.dll" />							<!-- Added by Mannino-->
 				<arg value="-reference:${ikvm.dir}/bin/IKVM.Reflection.dll" />	<!-- Added by Mannino-->
 	            <arg value="-target:library" />
@@ -672,6 +671,7 @@
 				recurse="false" >
 			</import>  
 			
+			<!--
 			<import
 				path="${build.archives.net.dir}/commons-lang3-3.3.2.dll" 
 				url="https://tuprolog.googlecode.com/svn/2p/tags/REL-${engine.version}.${JavaSpecific.version}/build/archives/net/commons-lang3-3.3.2.dll"
@@ -679,12 +679,14 @@
 				recurse="false" >
 			</import>
 			
+			
 			<import
 				path="${build.archives.net.dir}/javassist.dll" 
 				url="https://tuprolog.googlecode.com/svn/2p/tags/REL-${engine.version}.${JavaSpecific.version}/build/archives/net/javassist.dll"
 				message="${TagMessage}" 
 				recurse="false" >
 			</import>  
+			-->
 			
 			<import
 				path="${build.archives.net.dir}/lib" 
