@@ -549,7 +549,7 @@
 	    	<echo>Look directory ${doc.dir}/javadoc</echo>
 	    </target>
 	
-		<target name="11.release.bin" depends="01.set.classpath, 04.prepare, 06.unit.test.report, 08.package, 10.javadoc " description="Creates the structure for the release">
+		<target name="11.release.bin" depends="01.set.classpath, 04.prepare, 06.unit.test.report, 08.package, 10.javadoc, 09.build.NET" description="Creates the structure for the release">
 			
 			<delete includeemptydirs="true">
 				<fileset dir="${build.release.dir}" includes="**/*"/>
@@ -592,6 +592,8 @@
 			<zip destfile="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}.zip"
 		       	 basedir="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}"
 		 	 	/>
+			
+			<delete dir="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}"/>
 			
 			<echo>Look directory ${build.release.dir}</echo>
 		</target>
