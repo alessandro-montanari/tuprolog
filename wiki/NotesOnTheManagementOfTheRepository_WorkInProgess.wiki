@@ -308,7 +308,10 @@ Since this target has to build also the .NET files it must to be executed on a W
 The steps to be performed to tag the Java version are the following:
   # modify the version number in the file [http://code.google.com/p/tuprolog/source/browse/2p/trunk/src/alice/util/VersionInfo.java VersionInfo.java] as specified [http://code.google.com/p/tuprolog/wiki/ProjectsVersionManagement here];
   # in the file ant/environment.properties setup the path to the IKVM.NET folder and the Google Code username.
-  # run the target "12.tag", it will request the password for the specified user and the password can be found at this address https://code.google.com/hosting/settings.
+  # ~~run the target "12.tag", it will request the password for the specified user and the password can be found at this address https://code.google.com/hosting/settings.~~
+  # run the target "11.release.bin" to produce all the release files (2p.jar, tuprolog.jar, 2p.exe, tuprolog.dll, REL-x.y.z.zip, ...);
+  # commit all the changes (basically you will commit the files produced at the previous step);
+  # tag the code using your SVN client (e.g. Sublicpse, TortoiseSVN, ...). Remember to use the correct name for tag folder: "REL-x.y.z".
 
 ===Android===
 The Android release must be performed by an Android-enabled Eclipse installation, such as the ADT tool.
