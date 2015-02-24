@@ -15,7 +15,7 @@ The changes are listed below:
 || java_array_get_primitive || array_get_primitive || ||
 || java_array_set_primitive || array_set_primitive || ||
 || java_catch || java_catch || This predicate is not yet available on the .NET platform ||
-|| java_class || java_compile || This predicate is not yet available on the .NET platform ||
+|| java_class || new_class || This predicate is not yet available on the .NET platform ||
 || set_classpath || set_classpath|| ||
 || get_classpath || get_classpath|| ||
 || register || register|| ||
