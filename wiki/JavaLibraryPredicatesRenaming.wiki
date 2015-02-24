@@ -8,12 +8,12 @@ The changes are listed below:
 || *Old Name* || *New Name* || *Notes* ||
 || java_object || new_object || ||
 || java_object_bt || new_object_bt || ||
-|| java_call || method_call || ||
+|| java_call || method_call || This predicate has the new name in the .NET version of the OOLibrary but it still has the old name in the Java version of the OOLibrary ||
 || java_array_set || array_set || ||
 || java_array_get || array_get || ||
 || java_array_lenght || array_length || ||
-|| java_array_get_primitive || array_get_primitive || ||
-|| java_array_set_primitive || array_set_primitive || ||
+|| java_array_get_primitive || array_get_primitive || This predicate has to be renamed in the .NET and Java version of the OOLibrary ||
+|| java_array_set_primitive || array_set_primitive || This predicate has to be renamed in the .NET and Java version of the OOLibrary ||
 || java_catch || java_catch || This predicate is not yet available on the .NET platform ||
 || java_class || new_class || This predicate is not yet available on the .NET platform ||
 || set_classpath || set_classpath|| ||
@@ -24,7 +24,7 @@ The changes are listed below:
 = Private methods Renaming =
 These methods are used internally and are not available for the user on the prolog side.
 || *Old Name* || *New Name* || *Notes* ||
-|| java_set/java_get || property_get/property_set || ||
-|| java_array || create_array || ||
+|| java_set/java_get || property_get/property_set || This method has to be renamed in the .NET and Java version of the OOLibrary ||
+|| java_array || create_array || This method has to be renamed in the .NET and Java version of the OOLibrary ||
 
 Note: after the renaming, the old names will be kept for backward compatibility for at least one version of tuProlog.
