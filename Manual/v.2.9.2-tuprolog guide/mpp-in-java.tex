@@ -179,7 +179,7 @@ For the sake of concreteness, Table \ref{tab:javalibrary-counter-example} report
         \texttt{~~~~~\textit{ObjectRef} as \textit{Type}}
 
         By writing so, the object represented by \texttt{\textit{ObjectRef}} is considered to belong to type \texttt{\textit{Type}}, which can be either a class name, as above, or a primitive Java type such as \texttt{int}.
-        It is important to highlight that this operator \textit{may be used only inside method calls}: it is \textit{not} available as a general tool to cast objects arbitrarily. 
+        It is important to highlight that this operator \textit{may be used only inside method calls}: it is \textit{not} available as a general tool to cast objects arbitrarily.
 
   \item [classpath specification and class loading]
 
@@ -370,6 +370,7 @@ The following predicate description details all the JavaLibrary predicates: a su
 %
 Throughout this Section, only the exceptions specifically related to the JavaLibrary predicates' behaviors are listed: other exceptions might obviously occur, based on the exceptions possibly raised by the invoked method, which can not be foreseen in any way.
 
+
 \begin{table}
     \begin{center}{\scriptsize
     \begin{tabular}{p{2.3cm}p{6.6cm}p{4.6cm}}\hline\hline
@@ -382,10 +383,8 @@ Throughout this Section, only the exceptions specifically related to the JavaLib
     %--------------------------------------------------------------------------
     Object creation
     &
-    \texttt{java\_object(+\textit{ClassName}, +\textit{ArgList}, ?\textit{ObjRef})}\newline
-%    \texttt{java\_object(+\textit{ClassName}, +\textit{ArgList}, ?\textit{ObjRef},
-%    \mbox{~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~}+\textit{PathList})}\newline
-    \texttt{java\_object(+\textit{ClassName}[], [+\textit{Len}], ?\textit{ObjRef})}
+    \texttt{java\_object(+\textit{ClassName}, +\textit{ArgList}, ?\textit{Ref})}\newline
+    \texttt{java\_object(+`\textit{ClassName}[]', [+\textit{Len}], ?\textit{Ref})}
     \newline
     \newline
     Examples:\newline
@@ -393,14 +392,11 @@ Throughout this Section, only the exceptions specifically related to the JavaLib
     \texttt{java\_object(`java.lang.Integer', [303], n)}\newline
     \texttt{java\_object(`java.awt.Point'[], [100], V)}
     &
-    Creates a Java object of class \textit{\texttt{ClassName}} calling the
-    constructor matching the arguments in \textit{\texttt{ArgList}}; if
-    \textit{\texttt{ClassName}} is followed by \texttt{[]}, an array is created.
-    The class \textit{\texttt{ClassName}} must be in the current class path.
-    % or in the paths specified in \texttt{\textit{PathList}}.
-    On success, \textit{\texttt{ObjRef}} is bound to a term representing the
-    object: if it was a variable, it is bound to a system-generated atom
-    of the form \texttt{\$obj\_\textit{N}}.
+    The first form creates a \textit{\texttt{ClassName}} instance using the
+    constructor matching the arguments in \textit{\texttt{ArgList}}; the second
+    form creates an array of \textit{\texttt{ClassName}}.
+    \textit{\texttt{Ref}} is bound to a term representing the new object 
+    (possibly a system-generated atom like \texttt{'\$obj\_\textit{N}'}).
     \\\\\hline\\
     %--------------------------------------------------------------------------
     Method\newline invocation
@@ -414,8 +410,9 @@ Throughout this Section, only the exceptions specifically related to the JavaLib
     Example 1:\newline
     \texttt{java\_object(`java.awt.Point', [2,3], P),}\newline
     \texttt{P} \verb <- ~\texttt{getX returns X}\newline
+    %\newline
     Example 2:\newline
-    \texttt{Intclass = class(`java.lang.Integer')}\newline
+    \texttt{Intclass = class(`java.lang.Integer'),}\newline
     \texttt{Intclass} \verb <- ~\texttt{parseInt(`200') returns N}
     &
     Invokes the method \textit{\texttt{MethodName}} on the object associated
@@ -428,45 +425,60 @@ Throughout this Section, only the exceptions specifically related to the JavaLib
     as \texttt{\textit{TargetRef}}.
     \\\\\hline\\
     %--------------------------------------------------------------------------
-    Field (property) access
+    Field properties
     &
     \texttt{\textit{TargetRef} . \textit{FieldName}} \verb <- ~\texttt{set(+\textit{Arg})}\newline
     \texttt{\textit{TargetRef} . \textit{FieldName}} \verb <- ~\texttt{get(+\textit{Arg})}\newline
     \newline
     &
     Accesses the public field (property) \texttt{\textit{FieldName}} of object
-    \texttt{\textit{TargetRef}} to set/get its value to the
-    value (or object reference) denoted by \texttt{\textit{Arg}}.
+    \texttt{\textit{TargetRef}} to set/get its value to \texttt{\textit{Arg}}.
     %
-    For static fields, the compound term \texttt{class(\textit{ClassName})}
-    shall be used as \texttt{\textit{TargetRef}}.
+    For static fields, \texttt{\textit{TargetRef}} takes the form \texttt{class(\textit{ClassName})}.
     \\\\\hline\\
     %--------------------------------------------------------------------------
-    Array access\newline and management
+    Array\\management
     &
     \texttt{java\_array\_set(+\textit{ArrayRef}, +\textit{Pos}, +\textit{Content})}\newline
     \texttt{java\_array\_get(+\textit{ArrayRef}, +\textit{Pos}, ?\textit{Content})}\newline
     \texttt{java\_array\_length(+\textit{ArrayRef}, ?\textit{Length})}\newline
     \newline
-    Example:\newline
-    \texttt{java\_object(`java.awt.Point'[], [100], V),}\newline
-    \texttt{java\_object(`java.awt.Point', [1,2], Point),}\newline
-    \texttt{java\_array\_set(A, 0, Point)}
+    Example 1:\newline
+    \texttt{java\_object(`java.awt.Point[]', [100], A),}\newline
+    \texttt{java\_object(`java.awt.Point', [1,2], P1),}\newline
+    \texttt{java\_array\_set(A, 0, P1)}\newline
+    %\newline
+    Example 2:\newline
+    \texttt{java\_object(`int[]', [5], A),}\newline
+    \texttt{java\_object(`java.lang.Integer', [51], X),}\newline
+	%\texttt{java\_object('java.lang.Integer', [42], Y),}\newline
+	\texttt{java\_array\_set(A, 0, X),}\newline
+	%\texttt{java\_array\_set(A, 1, Y),}\newline
+	\texttt{java\_array\_get(A, 0, V0)} \textit{\% retrieves 51}
     &
     Accesses position \texttt{\textit{Pos}} of the array bound to the
     \texttt{\textit{ArrayRef}} term to set/get the content of that position
-    to the value (or object reference) associated to the \texttt{\textit{Content}} term.
+    to the object reference associated to the \texttt{\textit{Content}} term.
     \newline
     The third predicate retrieves the array length and binds it to the
-    \textit{\texttt{Length}} term.
+    \textit{\texttt{Length}} term.\newline
+    Note that primitive values \textit{must} be wrapped appropriately:
+    the direct use of primitive constants is not supported in array management
+    predicates (see Example 2 aside).
     \\\\\hline\\
     %--------------------------------------------------------------------------
     Cast
     &
     \texttt{\textit{Arg} as \textit{TypeName}}\newline
+    \newline
+    Example:\newline
+    \texttt{X=2, \% integer value}\newline
+    \texttt{class('java.lang.Math') <- cos(X as double)}\newline
+    \mbox{~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~}\texttt{ returns CosX}\newline
     &
-    Forces argument \texttt{\textit{Arg}} to be considered of type
-    \texttt{\textit{TypeName}}.
+    Casts \texttt{\textit{Arg}} to \texttt{\textit{TypeName}} for overloading 
+    resolution purposes. Note that this predicate is \textit{only} usable in 
+    method calls, not to cast object instances arbitrarily.
     \\\\\hline\\
     %--------------------------------------------------------------------------
     Dynamic class \newline compilation
@@ -489,6 +501,126 @@ Throughout this Section, only the exceptions specifically related to the JavaLib
     \caption{Summary of \texttt{JavaLibrary} predicates.}
     \label{tab:summary-of-javalibrary-predicates}
 \end{table}
+%
+%\begin{table}
+%    \begin{center}{\scriptsize
+%    \begin{tabular}{p{2.3cm}p{6.6cm}p{4.6cm}}\hline\hline
+%    \\
+%    %--------------------------------------------------------------------------
+%    {\small \textbf{Functionality}} &
+%    {\small \textbf{Predicate(s)}} &
+%    {\small \textbf{Description}}
+%    \\\\\hline\\
+%    %--------------------------------------------------------------------------
+%    Object creation
+%    &
+%    \texttt{java\_object(+\textit{ClassName}, +\textit{ArgList}, ?\textit{ObjRef})}\newline
+%%    \texttt{java\_object(+\textit{ClassName}, +\textit{ArgList}, ?\textit{ObjRef},
+%%    \mbox{~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~}+\textit{PathList})}\newline
+%    \texttt{java\_object(+\textit{ClassName}[], [+\textit{Len}], ?\textit{ObjRef})}
+%    \newline
+%    \newline
+%    Examples:\newline
+%    \texttt{java\_object(`java.awt.Point', [2,3], P)}\newline
+%    \texttt{java\_object(`java.lang.Integer', [303], n)}\newline
+%    \texttt{java\_object(`java.awt.Point'[], [100], V)}
+%    &
+%    Creates a Java object of class \textit{\texttt{ClassName}} calling the
+%    constructor matching the arguments in \textit{\texttt{ArgList}}; if
+%    \textit{\texttt{ClassName}} is followed by \texttt{[]}, an array is created.
+%    The class \textit{\texttt{ClassName}} must be in the current class path.
+%    % or in the paths specified in \texttt{\textit{PathList}}.
+%    On success, \textit{\texttt{ObjRef}} is bound to a term representing the
+%    object: if it was a variable, it is bound to a system-generated atom
+%    of the form \texttt{\$obj\_\textit{N}}.
+%    \\\\\hline\\
+%    %--------------------------------------------------------------------------
+%    Method\newline invocation
+%    &
+%    \textit{\texttt{TargetRef}} \verb <- ~\texttt{\textit{MethodName}}\newline
+%    \textit{\texttt{TargetRef}} \verb <- ~\texttt{\textit{MethodName}(+\textit{Arg0},+\textit{Arg1},\ldots)}\newline
+%    \textit{\texttt{TargetRef}} \verb <- ~\texttt{\textit{MethodName} returns \textit{Res}}\newline
+%    \textit{\texttt{TargetRef}} \verb <- ~\texttt{\textit{MethodName}(+\textit{Arg0},+\textit{Arg1},\ldots)\newline
+%    \mbox{~~~~~~~~~~~~~~~~~~~~~~~~}returns \textit{Res}}
+%    \newline
+%    Example 1:\newline
+%    \texttt{java\_object(`java.awt.Point', [2,3], P),}\newline
+%    \texttt{P} \verb <- ~\texttt{getX returns X}\newline
+%    Example 2:\newline
+%    \texttt{Intclass = class(`java.lang.Integer')}\newline
+%    \texttt{Intclass} \verb <- ~\texttt{parseInt(`200') returns N}
+%    &
+%    Invokes the method \textit{\texttt{MethodName}} on the object associated
+%    to the \textit{\texttt{TargetRef}} term, possibly passing arguments
+%    \textit{\texttt{Arg0}}, \textit{\texttt{Arg1}}, etc., and possibly binding
+%    the return argument to the \texttt{\textit{Res}} term.
+%    \newline
+%    Static methods are invoked using \texttt{class(\textit{ClassName})}
+%    %or \texttt{class(\textit{ClassName}, \textit{PathList})}
+%    as \texttt{\textit{TargetRef}}.
+%    \\\\\hline\\
+%    %--------------------------------------------------------------------------
+%    Field (property) access
+%    &
+%    \texttt{\textit{TargetRef} . \textit{FieldName}} \verb <- ~\texttt{set(+\textit{Arg})}\newline
+%    \texttt{\textit{TargetRef} . \textit{FieldName}} \verb <- ~\texttt{get(+\textit{Arg})}\newline
+%    \newline
+%    &
+%    Accesses the public field (property) \texttt{\textit{FieldName}} of object
+%    \texttt{\textit{TargetRef}} to set/get its value to the
+%    value (or object reference) denoted by \texttt{\textit{Arg}}.
+%    %
+%    For static fields, the compound term \texttt{class(\textit{ClassName})}
+%    shall be used as \texttt{\textit{TargetRef}}.
+%    \\\\\hline\\
+%    %--------------------------------------------------------------------------
+%    Array access\newline and management
+%    &
+%    \texttt{java\_array\_set(+\textit{ArrayRef}, +\textit{Pos}, +\textit{Content})}\newline
+%    \texttt{java\_array\_get(+\textit{ArrayRef}, +\textit{Pos}, ?\textit{Content})}\newline
+%    \texttt{java\_array\_length(+\textit{ArrayRef}, ?\textit{Length})}\newline
+%    \newline
+%    Example:\newline
+%    \texttt{java\_object(`java.awt.Point'[], [100], V),}\newline
+%    \texttt{java\_object(`java.awt.Point', [1,2], Point),}\newline
+%    \texttt{java\_array\_set(A, 0, Point)}
+%    &
+%    Accesses position \texttt{\textit{Pos}} of the array bound to the
+%    \texttt{\textit{ArrayRef}} term to set/get the content of that position
+%    to the value (or object reference) associated to the \texttt{\textit{Content}} term.
+%    \newline
+%    The third predicate retrieves the array length and binds it to the
+%    \textit{\texttt{Length}} term.
+%    \\\\\hline\\
+%    %--------------------------------------------------------------------------
+%    Cast
+%    &
+%    \texttt{\textit{Arg} as \textit{TypeName}}\newline
+%    &
+%    Forces argument \texttt{\textit{Arg}} to be considered of type
+%    \texttt{\textit{TypeName}}.
+%    \\\\\hline\\
+%    %--------------------------------------------------------------------------
+%    Dynamic class \newline compilation
+%    &
+%    \texttt{java\_class(+\textit{Source}, +\textit{ClassName},}\newline
+%    \mbox{~~~~~~~~~~~~~~~~}\texttt{+\textit{PathList}, ?\textit{ClassRef})}\newline
+%    &
+%    Dynamically compiles the source text \texttt{\textit{Source}}
+%    to define the new class named \texttt{\textit{ClassName}}.
+%    \texttt{\textit{PathList}} denotes the class path to be used
+%    for compilation.
+%    The compiled class, available as a \texttt{Class} instance,
+%    is associated to the \texttt{\textit{ClassRef}} term.
+%    \\
+%    %--------------------------------------------------------------------------
+%    \\
+%    \hline\hline
+%    \end{tabular}
+%    }\end{center}
+%    \caption{Summary of \texttt{JavaLibrary} predicates.}
+%    \label{tab:summary-of-javalibrary-predicates}
+%\end{table}
 
 %---------------------------------------------------------------------
 \subsubsection{Object creation, class compilation and method invocation}
