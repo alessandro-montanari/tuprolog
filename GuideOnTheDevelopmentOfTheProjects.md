@@ -1,0 +1,2 @@
+# Compilation Target for Android #
+At the moment (Nov-2012) the Android SDK is not capable to use java libraries compiled with target level 1.7, this will lead to a `JavaClassNotFoundException`. For this reason the default target level for the java project is set to 1.6 (file ant/environment.properties).
